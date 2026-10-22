@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>81-maktab FK</title>
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--ink:#16181f;--mute:#6b6f7a;--line:#e2ddd3;--flame:#e4402b;--amber:#f2a33a;--ok:#1f8a4c;--bad:#c62828;--onflame:#fff;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141a;--card:#1b1e27;--ink:#f3f0ea;--mute:#a1a5b0;--line:#2c303c;--ok:#4cc27f;--bad:#ff7a70;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12141a;--card:#1b1e27;--ink:#f3f0ea;--mute:#a1a5b0;--line:#2c303c;--ok:#4cc27f;--bad:#ff7a70;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:16px;line-height:1.45}
+body{max-width:520px;margin:0 auto;padding:0 16px 96px}
+h1,h2,h3{font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;font-weight:800;letter-spacing:-.01em;margin:0}
+h2{font-size:26px;margin:22px 0 12px}
+p{margin:0 0 10px}
+.mute{color:var(--mute);font-size:14px}
+.hero{margin:18px 0 14px;padding:22px 18px;border-radius:20px;background:#16181f;color:#f6f3ee;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f2a33a,#e4402b 60%,transparent 62%);opacity:.95}
+.hero h1{font-size:44px;line-height:.95;position:relative;z-index:1}
+.hero p{position:relative;z-index:1;max-width:80%;color:#d9d5cc;margin-top:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:12px}
+.grow{flex:1;min-width:0}
+.btn{appearance:none;border:0;border-radius:12px;background:var(--flame);color:var(--onflame);font:inherit;font-weight:700;padding:13px 16px;width:100%;cursor:pointer}
+.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn:active{transform:scale(.98)}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.day{display:flex;justify-content:space-between;align-items:center;padding:16px}
+.day b{font-family:"Arial Narrow",Arial,sans-serif;font-size:22px}
+.time{font-family:"Arial Narrow",Arial,sans-serif;font-weight:800;font-size:28px;text-align:right}
+.plus{display:inline-block;background:var(--amber);color:#2b1c00;font-weight:700;font-size:13px;border-radius:99px;padding:2px 10px}
+.num{width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:800}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:4px 0 12px}
+.bar i{display:block;height:100%;background:var(--flame);border-radius:99px}
+.bar+.bar{margin-top:0}
+.tot{font-family:"Arial Narrow",Arial,sans-serif;font-size:54px;font-weight:800;line-height:1}
+label{display:block;font-weight:700;margin:14px 0 6px}
+input,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px}
+input:focus,textarea:focus,.btn:focus-visible,.tab:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
+.err{color:var(--bad);font-size:14px;min-height:20px;margin-top:4px}
+.good{color:var(--ok);font-weight:700}
+.note{background:rgba(242,163,58,.18);border-radius:10px;padding:8px 12px;font-size:14px;margin:10px 0}
+.card-num{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:20px;letter-spacing:.04em}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+nav div{display:flex;max-width:520px;width:100%}
+.tab{flex:1;appearance:none;border:0;background:none;color:var(--mute);font:inherit;font-size:12px;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:10px}
+.tab span{font-size:20px}
+.tab[aria-selected="true"]{color:var(--flame);font-weight:700}
+section{display:none}section.on{display:block}
+</style>
+</head>
+<body>
+<section id="home" class="on">
+  <div class="hero"><h1>81-maktab<br>FK</h1><p>Yosh futbolchilar to’garagi: jadval, jamoa, yozilish va to’lov bir joyda.</p></div>
+  <div class="quick">
+    <button class="btn" data-go="reg">Yozilish</button>
+    <button class="btn alt" data-go="pay">To’lov</button>
+  </div>
+  <h2>Murabbiy</h2>
+  <div class="card row"><div class="num">AS</div><div class="grow"><b>Abbosov Shohruh, 23 yosh</b><div class="mute">Qarabag, Bunyodkor va Oqtepa futbol klublarida o’ynagan. Bolalarga o’z tajribasini o’rgatadi.</div></div></div>
+  <h2>Mashg’ulotlar haqida</h2>
+  <p>Futbol mashg’ulotlari bolalarning sog’lig’ini mustahkamlaydi, chaqqonlik va chidamlilikni oshiradi, intizomga va jamoada ishlashga o’rgatadi. Har bir bola o’z darajasiga mos mashq qiladi.</p>
+</section>
+
+<section id="sched">
+  <h2>Haftalik jadval</h2>
+  <div class="card day"><b>Dushanba</b><div><div class="time">16:00–17:30</div><span class="plus">+10 daqiqa</span></div></div>
+  <div class="card day"><b>Shanba</b><div><div class="time">15:00–16:30</div><span class="plus">+15 daqiqa</span></div></div>
+  <div class="card day"><b>Yakshanba</b><div><div class="time">11:00–12:30</div><span class="plus">+20 daqiqa</span></div></div>
+  <p class="mute">Qo’shimcha daqiqalar mashg’ulot vaqtiga qo’shib beriladi.</p>
+</section>
+
+<section id="team">
+  <h2>Jamoa</h2>
+  <div class="note">Bu namuna ma’lumot. Haqiqiy o’yinchilar va foizlarni murabbiy kiritadi.</div>
+  <div id="list"></div>
+  <div id="pcard" hidden></div>
+</section>
+
+<section id="reg">
+  <h2>To’garakka yozilish</h2>
+  <div id="regform">
+    <label for="f1">Bolaning ismi va familiyasi</label><input id="f1" placeholder="Ali Valiyev" autocomplete="off">
+    <div class="err" id="e1"></div>
+    <label for="f2">Yoshi</label><input id="f2" inputmode="numeric" placeholder="12"><div class="err" id="e2"></div>
+    <label for="f3">Sinfi</label><input id="f3" placeholder="5a"><div class="err" id="e3"></div>
+    <label for="f4">Sog’lig’i: kasallik yoki cheklov bormi?</label><input id="f4" placeholder="Yo’q bo’lsa: yo’q"><div class="err" id="e4"></div>
+    <label for="f5">Ota yoki onaning ismi va familiyasi</label><input id="f5" placeholder="Vali Valiyev" autocomplete="off"><div class="err" id="e5"></div>
+    <label for="f6">Telefon raqami</label><input id="f6" inputmode="tel" placeholder="+998 90 123 45 67"><div class="err" id="e6"></div>
+    <button class="btn" id="send" style="margin-top:12px">Arizani yuborish</button>
+    <p class="mute" style="margin-top:10px">Sog’liq haqidagi javob faqat mashg’ulot xavfsizligi uchun murabbiyga yetkaziladi.</p>
+  </div>
+  <div id="done" class="card" hidden></div>
+</section>
+
+<section id="pay">
+  <h2>To’lov</h2>
+  <div class="card"><div class="mute">Oylik to’lov</div><div class="tot">300 000 so’m</div><div class="mute">Har oyning 10-sanasida</div></div>
+  <div class="quick"><button class="btn" data-demo="Click sahifasi ochiladi">Click</button><button class="btn" data-demo="Payme sahifasi ochiladi">Payme</button></div>
+  <h2 style="font-size:20px">Karta orqali</h2>
+  <div class="card"><div class="mute">Ipoteka Bank (namuna raqam)</div><div class="card-num" id="cn">8600 0000 0000 0000</div><div class="mute">Karta egasi: namuna</div>
+  <button class="btn alt" id="copy" style="margin-top:10px">Raqamni nusxalash</button></div>
+  <h2 style="font-size:20px">Chek yuborish</h2>
+  <div class="card"><p class="mute">To’lagach, chek skrinshotini yuboring. Murabbiy tekshirib, tasdiqlagach sizga xabar beradi.</p>
+  <input type="file" id="chek" accept="image/*"><label for="cn2">Bolaning ismi va familiyasi</label><input id="cn2" placeholder="Ali Valiyev"><div class="err" id="ec"></div>
+  <button class="btn" id="chsend" style="margin-top:8px">Chekni yuborish</button><div id="chok" class="good" style="margin-top:10px"></div></div>
+</section>
+
+<nav><div role="tablist">
+  <button class="tab" role="tab" data-go="home" aria-selected="true"><span>⚽</span>Asosiy</button>
+  <button class="tab" role="tab" data-go="sched" aria-selected="false"><span>📅</span>Jadval</button>
+  <button class="tab" role="tab" data-go="team" aria-selected="false"><span>👥</span>Jamoa</button>
+  <button class="tab" role="tab" data-go="reg" aria-selected="false"><span>📝</span>Yozilish</button>
+  <button class="tab" role="tab" data-go="pay" aria-selected="false"><span>💳</span>To’lov</button>
+</div></nav>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+function go(id){document.querySelectorAll("section").forEach(function(s){s.classList.toggle("on",s.id===id)});
+document.querySelectorAll(".tab").forEach(function(t){t.setAttribute("aria-selected",t.dataset.go===id)});window.scrollTo(0,0)}
+document.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g)go(g.dataset.go);
+var d=e.target.closest("[data-demo]");if(d)alert("Namuna: haqiqiy mini app’da "+d.dataset.demo+".")});
+
+/* Jamoa (namuna ma’lumot) */
+var P=[{n:"Ali Valiyev",no:9,pos:"Hujumchi",d:92,t:84,o:88,i:95},{n:"Jasur Karimov",no:1,pos:"Darvozabon",d:88,t:76,o:81,i:90},
+{n:"Bobur Rahimov",no:5,pos:"Himoyachi",d:95,t:72,o:79,i:92},{n:"Madiyor Nurmatov",no:8,pos:"Yarim himoyachi",d:80,t:90,o:86,i:84}];
+P.forEach(function(p){p.u=Math.round((p.d+p.t+p.o+p.i)/4)});
+var top=P.slice().sort(function(a,b){return b.u-a.u})[0];
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+$("list").innerHTML=P.map(function(p,k){return '<button class="card row" style="width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer" data-p="'+k+'"><div class="num">'+p.no+'</div><div class="grow"><b>'+esc(p.n)+'</b><div class="mute">'+p.pos+(p===top?' · TOP 1':'')+'</div></div><b>'+p.u+'%</b></button>'}).join("");
+$("list").addEventListener("click",function(e){var b=e.target.closest("[data-p]");if(!b)return;var p=P[+b.dataset.p];
+var bars=[["Davomat",p.d],["Texnika",p.t],["O’yin ko’rsatkichi",p.o],["Intizom",p.i]].map(function(x){return '<div class="row"><span class="grow">'+x[0]+'</span><b>'+x[1]+'%</b></div><div class="bar"><i style="width:'+x[1]+'%"></i></div>'}).join("");
+$("pcard").hidden=false;$("pcard").innerHTML='<div class="card"><h3 style="font-size:22px">'+esc(p.n)+'</h3><div class="mute">'+p.pos+', №'+p.no+'</div><div style="margin:14px 0">'+bars+'</div><div class="mute">Umumiy</div><div class="tot">'+p.u+'%</div><p style="margin-top:10px">Har bir mashq, har bir harakat va har bir urinish sizni kuchliroq qiladi!</p><div class="note">TOP 1, oyning eng yaxshi o’yinchisi: '+esc(top.n)+'</div></div>';
+$("pcard").scrollIntoView({behavior:"smooth"})});
+
+/* Tekshiruvlar (botdagi qoidalar bilan bir xil) */
+var V=new Set("aeiouаеёиоуыэюяў"),KB=["qwer","wert","asdf","sdfg","zxcv","xcvb","qaz","wsx"];
+function wordOk(w){if(!/^[A-Za-zА-Яа-яЁёЎўҚқҒғҲҳ'ʻʼ’`\-]{2,25}$/.test(w))return false;
+var L=w.toLowerCase().split("").filter(function(c){return c.toLowerCase()!==c.toUpperCase()});if(L.length<2)return false;
+if(!L.some(function(c){return V.has(c)}))return false;if(/(.)\1\1/.test(L.join("")))return false;
+var r=0;for(var i=0;i<L.length;i++){if(V.has(L[i]))r=0;else if(++r>4)return false}
+if(L.filter(function(c){return V.has(c)}).length/L.length<.2)return false;
+return !KB.some(function(x){return w.toLowerCase().indexOf(x)>-1})}
+function name(t){var s=t.trim().split(/\s+/);return s.length===2&&s.every(wordOk)}
+function phone(t){if(/[A-Za-zА-Яа-я]/.test(t))return null;var d=t.replace(/\D/g,"");if(d.length===12&&d.indexOf("998")===0)d=d.slice(3);
+if(d.length!==9||"20 33 50 55 77 88 90 91 93 94 95 97 98 99".split(" ").indexOf(d.slice(0,2))<0)return null;
+if(/^(.)\1+$/.test(d.slice(2)))return null;return"+998 "+d.slice(0,2)+" "+d.slice(2,5)+" "+d.slice(5,7)+" "+d.slice(7)}
+function age(t){var m=t.trim().replace(/\s*(yoshda|yosh)$/i,"");return /^\d+$/.test(m)&&+m>=5&&+m<=18?+m:null}
+function cls(t){var m=t.trim().replace(/\s*sinf$/i,"").match(/^(1[01]|[1-9])\s*-?\s*([A-Za-zА-Яа-я]?)$/);return m?m[1]+m[2].toUpperCase():null}
+
+$("send").addEventListener("click",function(){
+var v={f1:$("f1").value,f2:$("f2").value,f3:$("f3").value,f4:$("f4").value.trim(),f5:$("f5").value,f6:$("f6").value},ok=true;
+function set(k,bad,msg){$("e"+k).textContent=bad?msg:"";if(bad)ok=false}
+set(1,!name(v.f1),"Haqiqiy ism va familiyani yozing. Masalan: Ali Valiyev");
+set(2,age(v.f2)===null,"Yoshni 5 dan 18 gacha raqam bilan yozing.");
+set(3,!cls(v.f3),"Sinfni 1 dan 11 gacha yozing. Masalan: 5a");
+set(4,!v.f4||v.f4.length>300,"Kasallik yo’q bo’lsa: yo’q");
+set(5,!name(v.f5),"Haqiqiy ism va familiyani yozing. Masalan: Vali Valiyev");
+set(6,!phone(v.f6),"Telefon raqami noto’g’ri. Masalan: +998 90 123 45 67");
+if(!ok)return;
+$("regform").hidden=true;$("done").hidden=false;
+$("done").innerHTML='<div class="good" style="font-size:18px">✅ Arizangiz yuborildi</div><p class="mute">Murabbiy tez orada siz bilan bog’lanadi. Namuna rejimi: ariza hech kimga yuborilmadi.</p><p><b>Bola:</b> '+esc(v.f1.trim())+', '+age(v.f2)+' yosh, '+cls(v.f3)+'<br><b>Sog’lig’i:</b> '+esc(v.f4)+'<br><b>Ota-ona:</b> '+esc(v.f5.trim())+'<br><b>Telefon:</b> '+phone(v.f6)+'</p><button class="btn alt" id="again">Yangi ariza</button>';
+$("again").onclick=function(){$("done").hidden=true;$("regform").hidden=false;["f1","f2","f3","f4","f5","f6"].forEach(function(k){$(k).value=""})}});
+
+/* To’lov */
+$("copy").addEventListener("click",function(){var t=$("cn").textContent;
+function done(){$("copy").textContent="Nusxalandi ✓"}
+try{navigator.clipboard.writeText(t).then(done,done)}catch(e){done()}});
+$("chsend").addEventListener("click",function(){
+if(!$("chek").files.length){$("ec").textContent="Chek rasmini tanlang.";return}
+if(!name($("cn2").value)){$("ec").textContent="Bolaning haqiqiy ism va familiyasini yozing.";return}
+$("ec").textContent="";$("chok").textContent="✅ Chek murabbiyga yetkazildi (namuna rejimi). Tasdiqlangach xabar keladi."});
+</script>
+</body>
+</html>
