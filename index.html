@@ -18,8 +18,8 @@
       --card: #FFFFFF;
       --primary: #2563EB;
       --primary-light: #EFF6FF;
-      --secondary: #10B981; /* Yashil */
-      --danger: #EF4444; /* Qizil */
+      --secondary: #10B981;
+      --danger: #EF4444;
       --warning: #F59E0B;
       --text-dark: #1E293B;
       --text-muted: #64748B;
@@ -72,26 +72,36 @@
     .input-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-dark); font-size: 14px; outline: none; }
     .input-control:focus { border-color: var(--primary); }
 
-    .btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; }
     .btn:active { transform: scale(0.97); }
     .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-sm { padding: 8px 12px; font-size: 11px; width: auto; border-radius: 8px; }
     .btn-danger { background: var(--danger); color: white; border: none; }
     
-    /* O'quvchi profili (Eskiz bo'yicha) */
-    .player-hero { text-align: center; margin-bottom: 16px; }
+    /* O'quvchi Profili */
+    .player-hero { text-align: center; margin-bottom: 16px; position: relative; }
     .player-photo { width: 120px; height: 150px; object-fit: cover; border-radius: 12px; border: 3px solid var(--primary); margin: 0 auto 15px; display: block; background: #1E293B; box-shadow: var(--shadow); }
     .player-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-    .player-username { color: var(--primary); font-size: 13px; font-weight: 600; margin-bottom: 15px; }
+    .player-username { color: var(--primary); font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    
+    /* Nishonlar */
+    .badges-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 15px; }
+    .badge-icon { font-size: 20px; background: var(--primary-light); padding: 5px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: bold; color: var(--primary); border: 1px solid var(--primary); }
+    .star-badge { background: #FEF3C7; color: #D97706; border-color: #F59E0B; }
 
-    /* Ustunlar (Progress Barlar) */
-    .stat-bar-container { margin-bottom: 15px; }
+    /* Ustunlar */
+    .stat-bar-container { margin-bottom: 12px; }
     .stat-bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-    .stat-bar-bg { width: 100%; height: 14px; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+    .stat-bar-bg { width: 100%; height: 12px; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
     .stat-bar-fill { height: 100%; border-radius: 10px; transition: width 0.8s ease-in-out; }
     .fill-green { background-color: var(--secondary); }
     .fill-red { background-color: var(--danger); }
     
+    /* Galereya */
+    .gallery-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+    .gallery-scroll::-webkit-scrollbar { display: none; }
+    .gallery-img { width: 100px; height: 100px; border-radius: 10px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; }
+
     /* Taymer va Motivatsiya */
     .timer-box { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; box-shadow: var(--shadow); }
     .timer-text { font-size: 22px; font-family: 'Montserrat'; margin-top: 5px; }
@@ -99,16 +109,19 @@
     .motivation-title { font-size: 14px; font-weight: 700; opacity: 0.9; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
     .motivation-text { font-size: 16px; font-weight: 600; font-style: italic; line-height: 1.4; }
 
+    /* To'lov */
     .badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; display: inline-block; }
     .bg-success { background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid #10B981; }
     .bg-danger { background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid #EF4444; }
     .bg-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid #F59E0B; }
 
+    /* Tabs */
     .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 5px; }
     .tabs::-webkit-scrollbar { display: none; }
     .tab { padding: 10px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow); }
     .tab.active { background: var(--primary); color: #FFF; border-color: var(--primary); }
 
+    /* Modals */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-radius: 20px 20px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s ease; z-index: 101; max-height: 90vh; overflow-y: auto; color: var(--text-dark); border-top: 1px solid var(--border); }
@@ -116,9 +129,13 @@
 
     .hidden { display: none !important; }
     .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--input-bg); border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border); font-size: 13px; }
-    
     .announcement { background: rgba(245, 158, 11, 0.15); color: #B45309; padding: 12px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; border: 1px solid #F59E0B; display: none; }
     .dark-mode .announcement { color: #FCD34D; }
+    
+    .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+    .finance-card { background: var(--bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
+    .finance-val { font-size: 18px; font-weight: 800; color: var(--primary); }
+    .finance-lbl { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -161,7 +178,7 @@
       <div class="brand">81 <span>IDUM</span></div>
       <div class="top-controls">
         <button class="icon-btn" onclick="toggleTheme()">🌙</button>
-        <button class="btn btn-outline btn-sm" onclick="logout()" data-uz="Chiqish" data-ru="Выйти">Chiqish</button>
+        <button class="btn btn-outline btn-sm" onclick="logout()">Chiqish</button>
       </div>
     </div>
 
@@ -172,60 +189,68 @@
       <div class="timer-text" id="countdownTimer">Yuklanmoqda...</div>
     </div>
 
-    <!-- MOTIVATSIYA -->
     <div class="motivation-card">
       <div class="motivation-title" data-uz="Murabbiy nasihati" data-ru="Совет тренера">Murabbiy nasihati</div>
       <div class="motivation-text" id="motivationText">"Mehnat qilgan yutadi!"</div>
     </div>
 
-    <!-- O'QUVCHI PROFILI VA STATISTIKASI (Siz chizgandek) -->
     <div class="card player-hero">
       <img id="pPhoto" class="player-photo" src="https://ui-avatars.com/api/?name=U&background=1E293B&color=3B82F6&size=150">
       <h2 class="player-name" id="pFullName">Ism</h2>
       <p class="player-username" id="pUsername">@username</p>
 
-      <!-- Ustunlar (Progress Barlar) -->
-      <div style="text-align: left; margin-top: 20px;">
-        
+      <div class="badges-container" id="badgesContainer"></div>
+
+      <div style="text-align: left;">
         <div class="stat-bar-container">
           <div class="stat-bar-header"><span>O'zlashtirish</span> <span id="pProgressTxt">0%</span></div>
           <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barProgress" style="width: 0%;"></div></div>
         </div>
-
         <div class="stat-bar-container">
           <div class="stat-bar-header"><span>Gollar</span> <span id="pGoalsTxt">0 ta</span></div>
           <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barGoals" style="width: 0%;"></div></div>
         </div>
-
         <div class="stat-bar-container">
           <div class="stat-bar-header"><span>Asistlar</span> <span id="pAssistsTxt">0 ta</span></div>
           <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barAssists" style="width: 0%;"></div></div>
         </div>
-
         <div class="stat-bar-container">
           <div class="stat-bar-header"><span>Tezlik</span> <span id="pSpeedTxt">0%</span></div>
           <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barSpeed" style="width: 0%;"></div></div>
         </div>
-
         <div class="stat-bar-container">
           <div class="stat-bar-header"><span>Mashg'ulotlar</span> <span id="pTrainingsTxt">0 marta</span></div>
           <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barTrainings" style="width: 0%;"></div></div>
         </div>
-
       </div>
     </div>
 
+    <div class="card" id="medicalCard" style="display: none;">
+      <h3 style="margin-bottom: 10px; color: var(--danger);">🩺 Tibbiy ma'lumot</h3>
+      <p id="pMedicalText" style="font-size: 14px; line-height: 1.5;"></p>
+    </div>
+
+    <div class="card" id="galleryCard" style="display: none;">
+      <h3 style="margin-bottom: 10px; color: var(--primary);">📸 Foto Galereya</h3>
+      <div class="gallery-scroll" id="pGallery"></div>
+    </div>
+
     <div class="card" style="text-align: center;">
-      <h3 style="margin-bottom: 10px;" data-uz="To'lov holati" data-ru="Статус оплаты">To'lov holati</h3>
+      <h3 style="margin-bottom: 10px;">To'lov holati</h3>
       <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
-      <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;" data-uz="Oylik:" data-ru="В месяц:">Oylik: <b id="pPayAmount" style="color:var(--text-dark);">350 000</b></p>
-      <button id="btnPay" class="btn" onclick="openPaymentModal()" data-uz="TO'LOV QILISH" data-ru="ОПЛАТИТЬ">TO'LOV QILISH</button>
-      <button class="btn btn-outline" style="margin-top: 8px;" onclick="openHistoryModal()" data-uz="TO'LOVLAR TARIXI" data-ru="ИСТОРИЯ ПЛАТЕЖЕЙ">TO'LOVLAR TARIXI</button>
+      <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;">Oylik: <b id="pPayAmount" style="color:var(--text-dark);">350 000</b></p>
+      <button id="btnPay" class="btn" onclick="openPaymentModal()">TO'LOV QILISH</button>
+      <button class="btn btn-outline" style="margin-top: 8px;" onclick="openHistoryModal()">TO'LOVLAR TARIXI</button>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom: 10px; color: var(--primary);" data-uz="Akademiya reytingi (Top 5)" data-ru="Рейтинг академии (Топ 5)">Akademiya reytingi (Top 5)</h3>
+      <h3 style="margin-bottom: 10px; color: var(--primary);">Akademiya reytingi (Top 5)</h3>
       <div id="leaderboardList"></div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+      <h3 style="margin-bottom: 10px;">Savollaringiz bormi?</h3>
+      <a href="https://t.me/Arif_Arazada" class="btn" style="background:#2AABEE; text-decoration: none;">💬 Murabbiy bilan bog'lanish</a>
     </div>
   </div>
 
@@ -239,23 +264,38 @@
       </div>
     </div>
 
+    <!-- YANGI ARXIV TABI QO'SHILDI -->
     <div class="tabs">
-      <div class="tab active" onclick="switchAdminTab('apps')" data-uz="Arizalar" data-ru="Заявки">Arizalar <span id="appBadge" class="hidden" style="background:var(--danger); color:white; border-radius:50%; padding:2px 6px; font-size:10px;">0</span></div>
-      <div class="tab" onclick="switchAdminTab('students')" data-uz="O'quvchilar" data-ru="Ученики">O'quvchilar</div>
-      <div class="tab" onclick="switchAdminTab('stats')" data-uz="Natijalar" data-ru="Результаты">Natijalar</div>
-      <div class="tab" onclick="switchAdminTab('settings')" data-uz="Sozlamalar" data-ru="Настройки">Sozlamalar</div>
+      <div class="tab active" onclick="switchAdminTab('apps')">Arizalar <span id="appBadge" class="hidden" style="background:var(--danger); color:white; border-radius:50%; padding:2px 6px; font-size:10px;">0</span></div>
+      <div class="tab" onclick="switchAdminTab('students')">O'quvchilar</div>
+      <div class="tab" onclick="switchAdminTab('stats')">Natijalar</div>
+      <div class="tab" onclick="switchAdminTab('archive')" style="color:var(--danger); border-color:var(--danger);">Arxiv</div>
+      <div class="tab" onclick="switchAdminTab('settings')">Sozlamalar</div>
     </div>
 
     <div id="adminTabApps" class="card"><p style="text-align:center; color:var(--text-muted);">Yuklanmoqda...</p></div>
     
     <div id="adminTabStudents" class="hidden">
+      <div class="finance-grid">
+        <div class="finance-card"><div class="finance-val" id="finPaid">0</div><div class="finance-lbl">To'langan (so'm)</div></div>
+        <div class="finance-card"><div class="finance-val" style="color:var(--danger);" id="finDebt">0</div><div class="finance-lbl">Qarzdorlik (so'm)</div></div>
+      </div>
+      
       <button class="btn btn-sm" style="margin-bottom: 10px;" onclick="exportToCSV()">📥 Excelga yuklash (CSV)</button>
       <div class="card" id="adminStudentList"></div>
     </div>
 
-    <!-- ADMIN NATIJALAR (Ustunlar bilan) -->
     <div id="adminTabStats" class="hidden">
       <div class="card" id="adminStatsList"></div>
+    </div>
+
+    <!-- YANGI ARXIV BO'LIMI -->
+    <div id="adminTabArchive" class="hidden">
+      <div class="card">
+        <h3 style="margin-bottom: 10px; color: var(--danger);">Arxivlangan o'quvchilar</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Bu yerdagi o'quvchilar tizimga kira olmaydi. Ularni qayta tiklash uchun "TIKLASH" tugmasini bosing.</p>
+        <div id="adminArchiveList"></div>
+      </div>
     </div>
 
     <div id="adminTabSettings" class="hidden">
@@ -308,8 +348,17 @@
     <div class="input-group"><label>Ism</label><input type="text" id="pEditName" class="input-control"></div>
     <div class="input-group"><label>Login</label><input type="text" id="pLogin" class="input-control"></div>
     <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="input-control"></div>
-    <div class="input-group"><label>Rasm URL (3x4)</label><input type="text" id="pPhotoUrl" class="input-control" placeholder="https://..."></div>
+    
+    <div class="input-group">
+      <label>Rasm yuklash (Telefondan)</label>
+      <input type="file" id="pImageUpload" accept="image/*" class="input-control" style="padding: 8px;">
+      <input type="hidden" id="pPhotoUrl">
+      <img id="imgPreview" style="width: 60px; height: 80px; margin-top: 10px; border-radius: 8px; object-fit: cover; display: none;">
+    </div>
+
     <div class="input-group"><label>Guruh (Masalan: 2012)</label><input type="text" id="pGroup" class="input-control"></div>
+    <div class="input-group"><label>Tibbiy ma'lumot</label><textarea id="pMedical" class="input-control" rows="2"></textarea></div>
+    <div class="input-group"><label>Galereya rasmlari (vergul bilan)</label><textarea id="pGallery" class="input-control" rows="2" placeholder="https://rasm1.jpg, https://rasm2.jpg"></textarea></div>
     
     <div style="display:flex; gap:10px;">
       <div class="input-group" style="flex:1;"><label>Gollar</label><input type="number" id="pGoalsInput" class="input-control" value="0"></div>
@@ -329,6 +378,12 @@
         <option value="paid">To'langan</option>
       </select>
     </div>
+    
+    <div class="input-group" style="display:flex; align-items:center; gap:10px;">
+      <input type="checkbox" id="pStar" style="width:20px; height:20px;">
+      <label for="pStar" style="margin:0;">Oyning eng yaxshi o'yinchisi (Yulduzcha)</label>
+    </div>
+
     <button class="btn" onclick="savePlayer()">SAQLASH</button>
     <button class="btn btn-outline" onclick="closeModal()">BEKOR QILISH</button>
   </div>
@@ -345,10 +400,9 @@
     let currentUser = null;
     let appSettings = { card: "8600", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00", announcement: "", motivation: "Mehnat qilgan yutadi!" };
     let timerInterval;
+    let base64Image = "";
 
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-    }
+    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
 
     let currentLang = 'uz';
     function toggleLang() {
@@ -366,14 +420,10 @@
         const annEl = document.getElementById('parentAnnouncement');
         if(appSettings.announcement && document.getElementById('parentScreen').classList.contains('active')) {
           if(annEl) { annEl.innerText = appSettings.announcement; annEl.style.display = 'block'; }
-        } else if(annEl) {
-          annEl.style.display = 'none';
-        }
+        } else if(annEl) { annEl.style.display = 'none'; }
 
         const motEl = document.getElementById('motivationText');
-        if(motEl && appSettings.motivation) {
-          motEl.innerText = `"${appSettings.motivation}"`;
-        }
+        if(motEl && appSettings.motivation) motEl.innerText = `"${appSettings.motivation}"`;
       }
     });
 
@@ -392,7 +442,6 @@
         const now = new Date();
         let targetDate = new Date();
         targetDate.setHours(targetHour, targetMinute, 0, 0);
-
         let daysDiff = targetDay - now.getDay();
         if (daysDiff < 0 || (daysDiff === 0 && targetDate.getTime() < now.getTime())) daysDiff += 7;
         targetDate.setDate(targetDate.getDate() + daysDiff);
@@ -408,7 +457,6 @@
       }, 1000);
     }
 
-    // USTUNLARNI TO'LDIRISH FUNKSIYASI
     function updateStatBar(barId, txtId, value, maxValue, suffix = "") {
       let percent = (value / maxValue) * 100;
       if (percent > 100) percent = 100;
@@ -420,13 +468,8 @@
       if (bar && txt) {
         bar.style.width = percent + '%';
         txt.innerText = value + suffix;
-        
-        // Agar 50% dan past bo'lsa qizil, yuqori bo'lsa yashil
-        if (percent < 50) {
-          bar.className = 'stat-bar-fill fill-red';
-        } else {
-          bar.className = 'stat-bar-fill fill-green';
-        }
+        if (percent < 50) bar.className = 'stat-bar-fill fill-red';
+        else bar.className = 'stat-bar-fill fill-green';
       }
     }
 
@@ -443,28 +486,19 @@
       const phone = document.getElementById('appPhone').value.trim();
       const age = document.getElementById('appAge').value.trim();
 
-      if (!parentName || !childName || !phone) { 
-        alert("Iltimos, barcha joylarni to'ldiring!"); 
-        return; 
-      }
+      if (!parentName || !childName || !phone) { alert("Iltimos, hamma joyni to'ldiring!"); return; }
 
       const btn = document.getElementById('btnSubmitApp');
-      btn.innerText = "Yuborilmoqda...";
-      btn.disabled = true;
+      btn.innerText = "Yuborilmoqda..."; btn.disabled = true;
 
       db.ref('applications').push({ parentName, childName, phone, age, date: new Date().toLocaleDateString() }).then(() => {
-        alert("Arizangiz muvaffaqiyatli yuborildi!");
-        document.getElementById('appParentName').value = '';
-        document.getElementById('appChildName').value = '';
-        document.getElementById('appPhone').value = '';
-        document.getElementById('appAge').value = '';
+        alert("Arizangiz yuborildi!");
+        document.getElementById('appParentName').value = ''; document.getElementById('appChildName').value = '';
+        document.getElementById('appPhone').value = ''; document.getElementById('appAge').value = '';
         showScreen('loginScreen');
-        btn.innerText = "YUBORISH";
-        btn.disabled = false;
+        btn.innerText = "YUBORISH"; btn.disabled = false;
       }).catch(error => {
-        alert("Xatolik yuz berdi: " + error.message);
-        btn.innerText = "YUBORISH";
-        btn.disabled = false;
+        alert("Xatolik: " + error.message); btn.innerText = "YUBORISH"; btn.disabled = false;
       });
     }
 
@@ -480,12 +514,17 @@
       db.ref('players/' + user).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const pData = snapshot.val();
+          
+          if (pData.isArchived) {
+            alert("Sizning hisobingiz arxivlangan (o'chirilgan). Iltimos, murabbiy bilan bog'laning.");
+            return; 
+          }
+
           if (pData.password === pass) {
             currentUser = pData; currentUser.id = user;
-            loadParentData(); 
-            showScreen('parentScreen');
-          } else { alert("Parol xato! Qayta urinib ko'ring."); }
-        } else { alert("Bunday login yo'q! Iltimos, admin bilan bog'laning."); }
+            loadParentData(); showScreen('parentScreen');
+          } else { alert("Parol xato!"); }
+        } else { alert("Bunday login yo'q!"); }
       }).catch(e => alert("Bazaga ulanishda xato: " + e.message));
     }
 
@@ -494,40 +533,51 @@
       showScreen('loginScreen');
     }
 
-    // O'QUVCHI PANELINI YUKLASH
     function loadParentData() {
-      try {
-        const elFullName = document.getElementById('pFullName');
-        if(elFullName) elFullName.innerText = currentUser.name || 'Ism kiritilmagan';
-        
-        let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
-        const elUsername = document.getElementById('pUsername');
-        if(elUsername) elUsername.innerText = "@" + uname;
-        
-        const elPhoto = document.getElementById('pPhoto');
-        if(elPhoto) elPhoto.src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=1E293B&color=3B82F6&size=150`;
-        
-        // Ustunlarni yangilash (Maksimal qiymatlar: O'zlashtirish 100, Gollar 20, Asistlar 20, Tezlik 100, Mashg'ulot 30)
-        updateStatBar('barProgress', 'pProgressTxt', parseInt(currentUser.progress) || 0, 100, "%");
-        updateStatBar('barGoals', 'pGoalsTxt', parseInt(currentUser.goals) || 0, 20, " ta");
-        updateStatBar('barAssists', 'pAssistsTxt', parseInt(currentUser.assists) || 0, 20, " ta");
-        updateStatBar('barSpeed', 'pSpeedTxt', parseInt(currentUser.speed) || 0, 100, "%");
-        updateStatBar('barTrainings', 'pTrainingsTxt', parseInt(currentUser.trainings) || 0, 30, " marta");
+      document.getElementById('pFullName').innerText = currentUser.name || 'Ism kiritilmagan';
+      let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
+      document.getElementById('pUsername').innerText = "@" + uname;
+      
+      document.getElementById('pPhoto').src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=1E293B&color=3B82F6&size=150`;
+      
+      updateStatBar('barProgress', 'pProgressTxt', parseInt(currentUser.progress) || 0, 100, "%");
+      updateStatBar('barGoals', 'pGoalsTxt', parseInt(currentUser.goals) || 0, 20, " ta");
+      updateStatBar('barAssists', 'pAssistsTxt', parseInt(currentUser.assists) || 0, 20, " ta");
+      updateStatBar('barSpeed', 'pSpeedTxt', parseInt(currentUser.speed) || 0, 100, "%");
+      updateStatBar('barTrainings', 'pTrainingsTxt', parseInt(currentUser.trainings) || 0, 30, " marta");
 
-        const elPayAmount = document.getElementById('pPayAmount');
-        if(elPayAmount) elPayAmount.innerText = appSettings.amount || '350 000';
-        
-        const elPayCard = document.getElementById('payCard');
-        if(elPayCard) elPayCard.innerText = appSettings.card || '8600...';
-        
-        const elPayAmountModal = document.getElementById('payAmount');
-        if(elPayAmountModal) elPayAmountModal.innerText = appSettings.amount || '350 000';
-        
-        updateParentPayStatus();
-        loadLeaderboard();
-      } catch(err) {
-        console.log("Profil yuklashda xatolik:", err);
+      let badgesHtml = '';
+      if (currentUser.isStar) badgesHtml += `<div class="badge-icon star-badge">⭐ Oyning eng yaxshisi</div>`;
+      if (parseInt(currentUser.goals) >= 10) badgesHtml += `<div class="badge-icon">🥇 Gol Hujumchisi</div>`;
+      if (parseInt(currentUser.speed) >= 80) badgesHtml += `<div class="badge-icon">⚡ Tezkor</div>`;
+      if (parseInt(currentUser.progress) >= 80) badgesHtml += `<div class="badge-icon">🧠 Aqlli o'yinchi</div>`;
+      document.getElementById('badgesContainer').innerHTML = badgesHtml;
+
+      if (currentUser.medical) {
+        document.getElementById('medicalCard').style.display = 'block';
+        document.getElementById('pMedicalText').innerText = currentUser.medical;
+      } else {
+        document.getElementById('medicalCard').style.display = 'none';
       }
+
+      if (currentUser.gallery) {
+        const imgs = currentUser.gallery.split(',').map(s => s.trim()).filter(s => s);
+        if (imgs.length > 0) {
+          document.getElementById('galleryCard').style.display = 'block';
+          document.getElementById('pGallery').innerHTML = imgs.map(src => `<img src="${src}" class="gallery-img">`).join('');
+        } else {
+          document.getElementById('galleryCard').style.display = 'none';
+        }
+      } else {
+        document.getElementById('galleryCard').style.display = 'none';
+      }
+
+      document.getElementById('pPayAmount').innerText = appSettings.amount;
+      document.getElementById('payCard').innerText = appSettings.card;
+      document.getElementById('payAmount').innerText = appSettings.amount;
+      
+      updateParentPayStatus();
+      loadLeaderboard();
     }
 
     function updateParentPayStatus() {
@@ -595,7 +645,7 @@
       }
     }
 
-    // ADMIN PANELINI YUKLASH
+    // ADMIN LOGIKASI
     function loadAdminData() {
       document.getElementById('setCard').value = appSettings.card || "";
       document.getElementById('setAmount').value = appSettings.amount || "";
@@ -632,21 +682,46 @@
       db.ref('players').on('value', (snapshot) => {
         const studentList = document.getElementById('adminStudentList');
         const statsList = document.getElementById('adminStatsList');
-        studentList.innerHTML = ''; statsList.innerHTML = '';
+        const archiveList = document.getElementById('adminArchiveList');
+        
+        studentList.innerHTML = ''; statsList.innerHTML = ''; archiveList.innerHTML = '';
+        
+        let totalPaid = 0; let totalDebt = 0;
+        let activeCount = 0; let archiveCount = 0;
 
         if (snapshot.exists()) {
           const players = snapshot.val();
           for (let id in players) {
             const p = players[id];
-            if(p.isArchived) continue;
+            
+            // ARXIVDAGILARNI KO'RSATISH
+            if (p.isArchived) {
+              archiveCount++;
+              archiveList.innerHTML += `
+                <div class="list-item">
+                  <div><b>${p.name}</b><br><small>Login: ${id}</small></div>
+                  <div>
+                    <button class="btn btn-sm" style="background:var(--secondary);" onclick="restorePlayer('${id}')">TIKLASH</button>
+                    <button class="btn btn-sm btn-danger" style="margin-top:5px;" onclick="deletePlayerPermanently('${id}')">BUTUNLAY O'CHIRISH</button>
+                  </div>
+                </div>`;
+              continue; // Arxivdagilarni faol ro'yxatga qo'shmaymiz
+            }
 
-            // O'quvchilar ro'yxati (Tugmalar bilan)
+            // FAOL O'QUVCHILAR
+            activeCount++;
+            if (p.paid === true || p.paid === "paid") totalPaid += parseInt(appSettings.amount.replace(/\D/g,'')) || 0;
+            else totalDebt += parseInt(appSettings.amount.replace(/\D/g,'')) || 0;
+
             let badgeClass = p.paid === true ? 'bg-success' : (p.paid === "pending" ? 'bg-warning' : 'bg-danger');
             let badgeText = p.paid === true ? 'To\'langan' : (p.paid === "pending" ? 'Kutilmoqda' : 'Qarzdor');
             
             studentList.innerHTML += `
               <div class="list-item">
-                <div><b>${p.name}</b><br><small>Guruh: ${p.group || '-'} | Login: ${id}</small></div>
+                <div>
+                  ${p.isStar ? '⭐ ' : ''}<b>${p.name}</b><br>
+                  <small>Guruh: ${p.group || '-'} | Login: ${id}</small>
+                </div>
                 <div style="text-align:right">
                   <span class="badge ${badgeClass}">${badgeText}</span><br>
                   <button class="btn btn-sm" style="margin-top: 5px; background:var(--primary)" onclick="markAttendance('${id}')">Davomat +1</button>
@@ -655,7 +730,6 @@
                 </div>
               </div>`;
 
-            // NATIJALAR BO'LIMI (Ustunlar bilan)
             let pProgress = parseInt(p.progress) || 0;
             let pGoals = parseInt(p.goals) || 0;
             let pAssists = parseInt(p.assists) || 0;
@@ -666,8 +740,6 @@
                   <b>${p.name}</b>
                   <button class="btn btn-sm btn-outline" onclick="editPlayer('${id}')">TAHRIRLASH</button>
                 </div>
-                
-                <!-- Admin uchun ham ustunlar -->
                 <div class="stat-bar-container" style="margin-bottom: 8px;">
                   <div class="stat-bar-header"><span style="font-size:11px;">O'zlashtirish</span> <span style="font-size:11px;">${pProgress}%</span></div>
                   <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pProgress < 50 ? 'fill-red' : 'fill-green'}" style="width: ${pProgress}%;"></div></div>
@@ -680,12 +752,31 @@
                   <div class="stat-bar-header"><span style="font-size:11px;">Asistlar</span> <span style="font-size:11px;">${pAssists} ta</span></div>
                   <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pAssists < 5 ? 'fill-red' : 'fill-green'}" style="width: ${Math.min((pAssists/20)*100, 100)}%;"></div></div>
                 </div>
-              </div>
-            `;
+              </div>`;
           }
         } 
-        if(studentList.innerHTML === '') { studentList.innerHTML = "<p style='text-align:center;'>O'quvchilar yo'q</p>"; statsList.innerHTML = studentList.innerHTML; }
+        
+        document.getElementById('finPaid').innerText = totalPaid.toLocaleString() + " so'm";
+        document.getElementById('finDebt').innerText = totalDebt.toLocaleString() + " so'm";
+        
+        if(activeCount === 0) { studentList.innerHTML = "<p style='text-align:center;'>O'quvchilar yo'q</p>"; statsList.innerHTML = studentList.innerHTML; }
+        if(archiveCount === 0) { archiveList.innerHTML = "<p style='text-align:center;'>Arxiv bo'sh</p>"; }
       });
+    }
+
+    // ARXIVDAN TIKLASH
+    function restorePlayer(id) {
+      if(confirm("O'quvchini qayta tiklaysizmi? U yana tizimga kira oladi.")) {
+        db.ref('players/' + id + '/isArchived').set(false); // Yoki remove() qilsa ham bo'ladi
+        alert("O'quvchi tiklandi!");
+      }
+    }
+
+    // BUTUNLAY O'CHIRISH
+    function deletePlayerPermanently(id) {
+      if(confirm("DIQQAT! O'quvchi bazadan butunlay o'chib ketadi. Rozimisiz?")) {
+        db.ref('players/' + id).remove();
+      }
     }
 
     function markAttendance(id) {
@@ -698,7 +789,7 @@
     }
 
     function archivePlayer(id) {
-      if(confirm("O'quvchini arxivga o'tkazasizmi?")) db.ref('players/' + id + '/isArchived').set(true);
+      if(confirm("O'quvchini arxivga o'tkazasizmi? (U qayta kira olmaydi)")) db.ref('players/' + id + '/isArchived').set(true);
     }
 
     function exportToCSV() {
@@ -733,6 +824,31 @@
       });
     }
 
+    document.getElementById('pImageUpload').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const maxW = 300; 
+            const scale = maxW / img.width;
+            canvas.width = maxW;
+            canvas.height = img.height * scale;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            base64Image = canvas.toDataURL('image/jpeg', 0.7); 
+            document.getElementById('imgPreview').src = base64Image;
+            document.getElementById('imgPreview').style.display = 'block';
+          }
+          img.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
     function editPlayer(id) {
       db.ref('players/' + id).once('value').then((snapshot) => {
         if(snapshot.exists()){
@@ -742,14 +858,27 @@
           document.getElementById('pEditName').value = p.name;
           document.getElementById('pLogin').value = id;
           document.getElementById('pPass').value = p.password;
+          
+          base64Image = p.photoUrl || "";
           document.getElementById('pPhotoUrl').value = p.photoUrl || "";
+          if(p.photoUrl) {
+            document.getElementById('imgPreview').src = p.photoUrl;
+            document.getElementById('imgPreview').style.display = 'block';
+          } else {
+            document.getElementById('imgPreview').style.display = 'none';
+          }
+
           document.getElementById('pGroup').value = p.group || "";
+          document.getElementById('pMedical').value = p.medical || "";
+          document.getElementById('pGallery').value = p.gallery || "";
           document.getElementById('pGoalsInput').value = p.goals || 0;
           document.getElementById('pAssistsInput').value = p.assists || 0;
           document.getElementById('pSpeedInput').value = p.speed || 0;
           document.getElementById('pProgressInput').value = p.progress || 0;
           document.getElementById('pTrainingsInput').value = p.trainings || 0;
           document.getElementById('pPay').value = p.paid === true ? "paid" : (p.paid === "pending" ? "pending" : "unpaid");
+          document.getElementById('pStar').checked = p.isStar || false;
+          
           document.getElementById('modalOverlay').classList.add('active');
           document.getElementById('playerModal').classList.add('active');
         }
@@ -765,14 +894,18 @@
       const data = {
         name: document.getElementById('pEditName').value,
         password: document.getElementById('pPass').value,
-        photoUrl: document.getElementById('pPhotoUrl').value.trim(),
+        photoUrl: base64Image,
         group: document.getElementById('pGroup').value.trim(),
+        medical: document.getElementById('pMedical').value.trim(),
+        gallery: document.getElementById('pGallery').value.trim(),
         goals: document.getElementById('pGoalsInput').value,
         assists: document.getElementById('pAssistsInput').value,
         speed: document.getElementById('pSpeedInput').value,
         progress: document.getElementById('pProgressInput').value,
         trainings: document.getElementById('pTrainingsInput').value,
-        paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false)
+        paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false),
+        isStar: document.getElementById('pStar').checked,
+        isArchived: false // Tahrirlanganda arxivdan chiqadi
       };
 
       if (oldLogin && oldLogin !== newLogin) db.ref('players/' + oldLogin).remove(); 
@@ -783,7 +916,7 @@
 
     function acceptApplication(appId, phone, name) {
       const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
-      const newPlayer = { name: name, password: randomPass, paid: false, goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0 };
+      const newPlayer = { name: name, password: randomPass, paid: false, goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0, isArchived: false };
       db.ref('players/' + phone).set(newPlayer).then(() => {
         db.ref('applications/' + appId).remove();
         alert(`Qabul qilindi!\nLogin: ${phone}\nParol: ${randomPass}`);
@@ -797,11 +930,13 @@
       document.getElementById('adminTabApps').classList.add('hidden');
       document.getElementById('adminTabStudents').classList.add('hidden');
       document.getElementById('adminTabStats').classList.add('hidden');
+      document.getElementById('adminTabArchive').classList.add('hidden'); // Yangi
       document.getElementById('adminTabSettings').classList.add('hidden');
       
       if(tab === 'apps') document.getElementById('adminTabApps').classList.remove('hidden');
       if(tab === 'students') document.getElementById('adminTabStudents').classList.remove('hidden');
       if(tab === 'stats') document.getElementById('adminTabStats').classList.remove('hidden');
+      if(tab === 'archive') document.getElementById('adminTabArchive').classList.remove('hidden'); // Yangi
       if(tab === 'settings') document.getElementById('adminTabSettings').classList.remove('hidden');
     }
 
