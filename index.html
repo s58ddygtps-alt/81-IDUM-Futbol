@@ -13,58 +13,44 @@
 
   <style>
     :root {
-      /* Yorqin rejim (Light Mode) - Shaffof Glass */
-      --bg-image: url('https://images.unsplash.com/photo-1518605368461-1e1e38ce81cb?q=80&w=1000&auto=format&fit=crop');
-      --card: rgba(255, 255, 255, 0.85);
+      --bg: #F4F7FB;
+      --bg-gradient: linear-gradient(135deg, #F4F7FB 0%, #E2E8F0 100%);
+      --card: #FFFFFF;
       --primary: #2563EB;
       --primary-light: #EFF6FF;
-      --secondary": #10B981;
- data      --text-dark: #1E293B;
-      --text-m-ruuted=": #64748B;
-      --dangerИ: #EF4444;
+      --secondary: #10B981;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --danger: #EF4444;
       --warning: #F59E0B;
-      --border: rgba(255, 255, 255, 0.5);
-      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-      --input-bg: rgba(255, 255, 255, 0.6);
+      --border: #E2E8F0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --input-bg: #F8FAFC;
     }
 
     body.dark-mode {
-      /* Qorong'u rejim (Dark Mode) - Shaffof Glass */
-      --bg-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop');
-      --card: rgba(15, 23, 42, 0.85);
+      --bg: #0F172A;
+      --bg-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      --card: #1E293B;
       --primary: #3B82F6;
-      --primary-light: rgba(59, 130, 246, 0.2);
+      --primary-light: #1E3A8A;
       --text-dark: #F8FAFC;
       --text-muted: #94A3B8;
-      --border: rgba(255, 255, 255, 0.1);
-      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-      --input-bg: rgba(0, 0, 0, 0.3);
+      --border: #334155;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --input-bg: #0F172A;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s, color 0.3s; }
     
     body { 
+      background: var(--bg-gradient);
       color: var(--text-dark); 
       font-family: 'Inter', sans-serif;
       min-height: 100vh; 
       padding-bottom: 30px;
-      background-image: var(--bg-image);
-      background-size: cover;
-      background-position: center;
       background-attachment: fixed;
-      background-repeat: no-repeat;
     }
-
-    /* Orqa fonga qoraytiruvchi parda (rasm yozuvlarga xalal bermasligi uchun) */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(255,255,255,0.3);
-      z-index: -1;
-      transition: 0.3s;
-    }
-    body.dark-mode::before { background: rgba(0,0,0,0.6); }
 
     h1, h2, h3, .brand, .btn { font-family: 'Montserrat', sans-serif; }
 
@@ -72,67 +58,64 @@
     .screen.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Header */
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .brand { font-size: 20px; font-weight: 800; color: var(--primary); text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
-    .dark-mode .brand { text-shadow: none; }
+    .brand { font-size: 20px; font-weight: 800; color: var(--primary); }
     .brand span { color: var(--text-dark); }
     
     .top-controls { display: flex; gap: 8px; }
-    .icon-btn { background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; color: var(--text-dark); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow); }
+    .icon-btn { background: var(--card); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; color: var(--text-dark); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow); }
     
-    /* Shaffof Kartalar (Glassmorphism) */
-    .card { background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
     
     .input-group { margin-bottom: 12px; }
     .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .input-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-dark); font-size: 14px; outline: none; backdrop-filter: blur(5px); }
+    .input-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-dark); font-size: 14px; outline: none; }
     .input-control:focus { border-color: var(--primary); }
 
-    .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); }
+    .btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
     .btn:active { transform: scale(0.97); }
-    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); box-shadow: none; }
+    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-sm { padding: 8px 12px; font-size: 11px; width: auto; border-radius: 8px; }
-    .btn-danger { background: var(--danger); color: white; border: none; box-shadow: none; }
+    .btn-danger { background: var(--danger); color: white; border: none; }
     
-    /* FIFA Style Card */
-    .fifa-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); backdrop-filter: blur(10px); color: white; border-radius: 20px; padding: 20px; text-align: center; position: relative; overflow: hidden; border: 1px solid #334155; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .fifa-card { background: linear-gradient(135deg, #1E293B, #0F172A); color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px; border: 1px solid #334155; box-shadow: var(--shadow); }
     
-    .player-photo { width: 100px; height: 130px; object-fit: cover; border-radius: 12px; border: 2px solid #3B82F6; margin: 0 auto 10px; display: block; background: #1E293B; }
+    .player-photo { width: 100px; height: 130px; object-fit: cover; border-radius: 10px; border: 2px solid #3B82F6; margin: 0 auto 10px; display: block; background: #1E293B; }
     .player-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; color: white; }
     .player-username { color: #93C5FD; font-size: 13px; font-weight: 600; margin-bottom: 15px; }
 
-    /* Stats & Info */
-    .timer-box { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 16px; margin-bottom: 16px; font-weight: bold; box-shadow: var(--shadow); }
-    .timer-text { font-size: 24px; font-family: 'Montserrat'; margin-top: 5px; }
+    .timer-box { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; box-shadow: var(--shadow); }
+    .timer-text { font-size: 22px; font-family: 'Montserrat'; margin-top: 5px; }
     
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .stat-box { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+    .stat-box { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
     .stat-val { font-size: 18px; font-weight: 800; color: #3B82F6; }
     .stat-lbl { font-size: 11px; color: #94A3B8; font-weight: 600; margin-top: 4px; }
 
     .badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; display: inline-block; }
-    .bg-success { background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid #10B981; }
-    .bg-danger { background: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid #EF4444; }
-    .bg-warning { background: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 1px solid #F59E0B; }
+    .bg-success { background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid #10B981; }
+    .bg-danger { background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid #EF4444; }
+    .bg-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid #F59E0B; }
 
-    /* Tabs */
     .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 5px; }
     .tabs::-webkit-scrollbar { display: none; }
-    .tab { padding: 10px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
+    .tab { padding: 10px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow); }
     .tab.active { background: var(--primary); color: #FFF; border-color: var(--primary); }
 
-    /* Modals */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); backdrop-filter: blur(20px); border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s ease; z-index: 101; max-height: 90vh; overflow-y: auto; color: var(--text-dark); border-top: 1px solid var(--border); }
+    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-radius: 20px 20px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s ease; z-index: 101; max-height: 90vh; overflow-y: auto; color: var(--text-dark); border-top: 1px solid var(--border); }
     .modal-content.active { transform: translateY(0); }
 
     .hidden { display: none !important; }
-    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--input-bg); border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border); }
+    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--input-bg); border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border); font-size: 13px; }
     
-    .announcement { background: rgba(245, 158, 11, 0.2); color: #92400E; padding: 12px; border-radius: 12px; font-size: 13px; margin-bottom: 16px; border: 1px solid #F59E0B; display: none; backdrop-filter: blur(5px); }
+    .announcement { background: rgba(245, 158, 11, 0.15); color: #B45309; padding: 12px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; border: 1px solid #F59E0B; display: none; }
     .dark-mode .announcement { color: #FCD34D; }
+
+    .motivation-card { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: none; }
+    .motivation-title { font-size: 14px; font-weight: 700; opacity: 0.9; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .motivation-text { font-size: 16px; font-weight: 600; font-style: italic; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -148,8 +131,8 @@
     </div>
     <div class="card" style="margin-top: 10vh;">
       <h2 style="text-align: center; margin-bottom: 20px;" data-uz="Tizimga kirish" data-ru="Вход в систему">Tizimga kirish</h2>
-      <div class="input-group"><label data-uz="Login" data-ru="Логин">Login</label><input type="text" id="loginUser" class="input-control"></div>
-      <div class="input-group"><label data-uz="Parol" data-ru="Пароль">Parol</label><input type="password" id="loginPass" class="input-control"></div>
+      <div class="input-group"><label data-uz="Login" data-ru="Логин">Login</label><input type="text" id="loginUser" class="input-control" placeholder="Arif / 1111"></div>
+      <div class="input-group"><label data-uz="Parol" data-ru="Пароль">Parol</label><input type="password" id="loginPass" class="input-control" placeholder="••••"></div>
       <button class="btn" onclick="login()" data-uz="KIRISH" data-ru="ВОЙТИ">KIRISH</button>
       <button class="btn btn-outline" onclick="showScreen('applyScreen')" data-uz="ARIZA TOPSHIRISH" data-ru="ПОДАТЬ ЗАЯВКУ">ARIZA TOPSHIRISH</button>
     </div>
@@ -161,11 +144,11 @@
     <button class="btn btn-outline btn-sm" style="margin-bottom: 15px;" onclick="showScreen('loginScreen')">← Orqaga</button>
     <div class="card">
       <h2 style="text-align: center; margin-bottom: 20px;" data-uz="Yangi Ariza" data-ru="Новая Заявка">Yangi Ariza</h2>
-      <div class="input-group"><label data-uz="Ota-onaning ismiмя родителя">Ota-onaning ismi</label><input type="text" id="appParentName" class="input-control"></div>
+      <div class="input-group"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input type="text" id="appParentName" class="input-control"></div>
       <div class="input-group"><label data-uz="Bolaning ismi" data-ru="Имя ребенка">Bolaning ismi</label><input type="text" id="appChildName" class="input-control"></div>
       <div class="input-group"><label data-uz="Telefon (Login)" data-ru="Телефон (Логин)">Telefon (Login)</label><input type="text" id="appPhone" class="input-control"></div>
       <div class="input-group"><label data-uz="Yoshi" data-ru="Возраст">Yoshi</label><input type="number" id="appAge" class="input-control"></div>
-      <button class="btn" onclick="submitApplication()" data-uz="YUBORISH" data-ru="ОТПРАВИТЬ">YUBORISH</button>
+      <button id="btnSubmitApp" class="btn" onclick="submitApplication()" data-uz="YUBORISH" data-ru="ОТПРАВИТЬ">YUBORISH</button>
     </div>
   </div>
 
@@ -184,6 +167,12 @@
     <div class="timer-box">
       <div style="font-size: 12px; opacity: 0.9;" data-uz="Keyingi mashg'ulotga:" data-ru="До следующей тренировки:">Keyingi mashg'ulotga:</div>
       <div class="timer-text" id="countdownTimer">Yuklanmoqda...</div>
+    </div>
+
+    <!-- MOTIVATSIYA -->
+    <div class="motivation-card">
+      <div class="motivation-title" data-uz="Murabbiy nasihati" data-ru="Совет тренера">Murabbiy nasihati</div>
+      <div class="motivation-text" id="motivationText">"Mehnat qilgan yutadi, dangasa yig'laydi!"</div>
     </div>
 
     <div class="fifa-card">
@@ -242,8 +231,9 @@
 
     <div id="adminTabSettings" class="hidden">
       <div class="card">
-        <h3 style="margin-bottom: 10px; color: var(--primary);">E'lonlar</h3>
-        <div class="input-group"><textarea id="setAnnouncement" class="input-control" rows="2" placeholder="Ota-onalarga xabar..."></textarea></div>
+        <h3 style="margin-bottom: 10px; color: var(--primary);">E'lon va Motivatsiya</h3>
+        <div class="input-group"><label>E'lon (Ota-onalarga)</label><textarea id="setAnnouncement" class="input-control" rows="2" placeholder="Masalan: Ertaga mashg'ulot yo'q..."></textarea></div>
+        <div class="input-group"><label>Motivatsiya (O'quvchilarga)</label><textarea id="setMotivation" class="input-control" rows="2" placeholder="Masalan: Sen bugun eng zo'rsan!"></textarea></div>
         
         <h3 style="margin: 15px 0 10px; color: var(--primary);">To'lov</h3>
         <div class="input-group"><label>Karta raqami</label><input type="text" id="setCard" class="input-control"></div>
@@ -324,7 +314,7 @@
     const ADMIN_BOT_USERNAME = "api_bot_coll"; 
     
     let currentUser = null;
-    let appSettings = { card: "8600", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00", announcement: "" };
+    let appSettings = { card: "8600", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00", announcement: "", motivation: "Mehnat qilgan yutadi!" };
     let timerInterval;
 
     function toggleTheme() {
@@ -339,6 +329,7 @@
       });
     }
 
+    // Firebase'dan sozlamalarni yuklash
     db.ref('settings').on('value', (snapshot) => {
       if (snapshot.exists()) {
         appSettings = { ...appSettings, ...snapshot.val() };
@@ -350,6 +341,11 @@
           annEl.style.display = 'block';
         } else {
           annEl.style.display = 'none';
+        }
+
+        // Motivatsiyani yangilash
+        if(appSettings.motivation) {
+          document.getElementById('motivationText').innerText = `"${appSettings.motivation}"`;
         }
       }
     });
@@ -391,10 +387,43 @@
       else window.open(tgLink, '_blank');
     }
 
+    // ARIZA YUBORISH (Xatosiz)
+    function submitApplication() {
+      const parentName = document.getElementById('appParentName').value.trim();
+      const childName = document.getElementById('appChildName').value.trim();
+      const phone = document.getElementById('appPhone').value.trim();
+      const age = document.getElementById('appAge').value.trim();
+
+      if (!parentName || !childName || !phone) { 
+        alert("Iltimos, barcha joylarni to'ldiring!"); 
+        return; 
+      }
+
+      const btn = document.getElementById('btnSubmitApp');
+      btn.innerText = "Yuborilmoqda...";
+      btn.disabled = true;
+
+      db.ref('applications').push({ parentName, childName, phone, age, date: new Date().toLocaleDateString() }).then(() => {
+        alert("Arizangiz muvaffaqiyatli yuborildi! Murabbiy qabul qilgach, sizga login va parol beriladi.");
+        document.getElementById('appParentName').value = '';
+        document.getElementById('appChildName').value = '';
+        document.getElementById('appPhone').value = '';
+        document.getElementById('appAge').value = '';
+        showScreen('loginScreen');
+        btn.innerText = "YUBORISH";
+        btn.disabled = false;
+      }).catch(error => {
+        alert("Xatolik yuz berdi: " + error.message);
+        btn.innerText = "YUBORISH";
+        btn.disabled = false;
+      });
+    }
+
+    // LOGIN (Xatosiz)
     function login() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
-      if (!user || !pass) { alert("Login/Parol kiriting!"); return; }
+      if (!user || !pass) { alert("Login va parolni kiriting!"); return; }
 
       if (user === ADMIN_LOGIN && pass === ADMIN_PASS) {
         showScreen('adminScreen'); loadAdminData(); return;
@@ -406,9 +435,9 @@
           if (pData.password === pass) {
             currentUser = pData; currentUser.id = user;
             loadParentData(); showScreen('parentScreen');
-          } else { alert("Parol xato!"); }
-        } else { alert("Bunday login yo'q!"); }
-      });
+          } else { alert("Parol xato! Qayta urinib ko'ring."); }
+        } else { alert("Bunday login yo'q! Iltimos, admin bilan bog'laning."); }
+      }).catch(e => alert("Bazaga ulanishda xato: " + e.message));
     }
 
     function logout() {
@@ -503,6 +532,7 @@
       document.getElementById('setScheduleDay').value = appSettings.scheduleDay !== undefined ? appSettings.scheduleDay : 1;
       document.getElementById('setScheduleTime').value = appSettings.scheduleTime || "16:00";
       document.getElementById('setAnnouncement').value = appSettings.announcement || "";
+      document.getElementById('setMotivation').value = appSettings.motivation || "";
 
       db.ref('applications').on('value', (snapshot) => {
         const appList = document.getElementById('adminTabApps');
@@ -601,7 +631,8 @@
         amount: document.getElementById('setAmount').value,
         scheduleDay: document.getElementById('setScheduleDay').value,
         scheduleTime: document.getElementById('setScheduleTime').value,
-        announcement: document.getElementById('setAnnouncement').value
+        announcement: document.getElementById('setAnnouncement').value,
+        motivation: document.getElementById('setMotivation').value
       };
       db.ref('settings').update(newSettings).then(() => { 
         appSettings = { ...appSettings, ...newSettings }; 
