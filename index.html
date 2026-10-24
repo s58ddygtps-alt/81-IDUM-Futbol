@@ -21,18 +21,15 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg-color); color: var(--text-light); min-height: 100vh; overflow-x: hidden; position: relative; padding-bottom: 20px; }
     
-    /* Orqa fon */
     .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at 50% 0%, #1e1e24 0%, #09090b 100%); }
     .bubble { position: absolute; background: var(--primary-glow); border-radius: 50%; animation: float 20s infinite linear; filter: blur(40px); }
     @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
-    /* Umumiy */
     .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
     .screen { display: none; padding: 20px 16px; animation: slideUp 0.4s ease; }
     .screen.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Kirish va Ariza */
     #loginScreen, #applyScreen { text-align: center; margin-top: 5vh; }
     .logo-icon { font-size: 70px; margin-bottom: 15px; text-shadow: 0 0 20px var(--primary-glow); }
     .title { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
@@ -48,7 +45,6 @@
     .btn-outline { background: transparent; border: 1px solid var(--glass-border); box-shadow: none; }
     .btn-outline:active { background: var(--glass-bg); }
 
-    /* Ota-ona Profil */
     .profile-section { text-align: center; margin-bottom: 20px; }
     .profile-img { width: 90px; height: 120px; object-fit: cover; border-radius: 12px; border: 2px solid var(--primary); box-shadow: 0 0 15px var(--primary-glow); margin-bottom: 10px; }
     .profile-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
@@ -56,7 +52,6 @@
     .profile-stats { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
     .stat-badge { background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 12px; border: 1px solid var(--glass-border); font-size: 14px; font-weight: 600; }
 
-    /* Dashboard */
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .user-info h2 { font-size: 18px; }
     .user-info p { color: var(--primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
@@ -67,12 +62,10 @@
     .badge-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
     .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
 
-    /* Tabs */
     .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
     .tab { padding: 10px 16px; border-radius: 20px; background: var(--glass-bg); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
     .tab.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 
-    /* Modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: #18181b; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 101; max-height: 90vh; overflow-y: auto; border-top: 1px solid var(--glass-border); }
@@ -153,7 +146,6 @@
       <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="logout()">Chiqish</button>
     </header>
 
-    <!-- Profil qismi -->
     <div class="profile-section">
       <img id="pPhoto" class="profile-img" src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150" alt="Rasm">
       <h2 class="profile-name" id="pFullName">Ism</h2>
@@ -165,26 +157,23 @@
       </div>
     </div>
 
-    <!-- To'lov qismi (Ixcham) -->
     <div class="glass-panel" style="padding: 15px;">
       <div class="list-item" style="padding: 8px 0; border:none;">
         <span style="font-size:14px; color:var(--text-muted)">To'lov holati:</span>
         <span id="pPayStatus" class="badge badge-danger">To'lanmagan</span>
-     Amount </div>
-      <div class="list-item"" style="padding: 8px 0; border:n styleone;">
-       =" <span style="font-size:14px;font color:var(--text-muted)">Oylik to'lov:</span>
-        <span id="pPay-weight:bold; font-size: 15px;">350 000 so'm</span>
+      </div>
+      <div class="list-item" style="padding: 8px 0; border:none;">
+        <span style="font-size:14px; color:var(--text-muted)">Oylik to'lov:</span>
+        <span id="pPayAmount" style="font-weight:bold; font-size: 15px;">350 000 so'm</span>
       </div>
       <button id="btnPay" class="btn" style="margin-top: 10px; padding: 12px; font-size: 14px;" onclick="openPaymentModal()">To'lash / Chek yuborish</button>
     </div>
 
-    <!-- Jadval -->
     <div class="glass-panel">
       <h3 style="margin-bottom: 10px; font-size: 15px; color:var(--primary)">Mashg'ulot jadvali</h3>
       <p id="pSchedule" style="font-size: 13px; color: var(--text-light); line-height: 1.5; white-space: pre-line;"></p>
     </div>
 
-    <!-- Murabbiy haqida -->
     <div class="glass-panel coach-info">
       <h3 style="margin-bottom: 10px; font-size: 15px; color:var(--primary)">Murabbiy haqida</h3>
       <p><strong>Arıf Arazadəı / Abbosov Shohruh Elimxanovich</strong></p>
@@ -245,7 +234,6 @@
   <!-- Modallar -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
   
-  <!-- To'lov Modali -->
   <div class="modal-content" id="paymentModal">
     <h3 style="margin-bottom: 15px; text-align:center;">To'lov qilish</h3>
     <p style="font-size: 14px; margin-bottom: 10px; text-align:center;">Karta: <b id="payCard" style="color:var(--primary)">8600...</b></p>
@@ -260,13 +248,12 @@
     <button class="btn btn-outline" onclick="closeModal()">Yopish</button>
   </div>
 
-  <!-- O'quvchi qo'shish Modali -->
   <div class="modal-content" id="playerModal">
     <h3 style="margin-bottom: 15px;" id="playerModalTitle">O'quvchi</h3>
     <input type="hidden" id="editPlayerId">
     <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pEditName" class="glass-input"></div>
-    <div class="input-group"><label>Login (Telefon raqam)</label><input type="text" id="pLogin" class="glass-input"></div>
-    <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="glass-input"></div>
+    <div class="input-group"><label>Login (Telefon raqam)</label><input type="text" id="pLogin" class="glass-input"></:div>
+    <div class="input-group"><label> "Parol</httpslabel><input type="://text" id="idumpPass" class="glass-input"></div>
     <div class="input-group"><label>Rasm URL (3x4)</label><input type="text" id="pPhotoUrl" class="glass-input" placeholder="https://..."></div>
     <div class="input-group"><label>Futbolka raqami</label><input type="number" id="pJerseyNum" class="glass-input"></div>
     <div class="input-group"><label>O'zlashtirish (%)</label><input type="number" id="pProgressVal" class="glass-input"></div>
@@ -283,8 +270,7 @@
   </div>
 
   <script>
-    // === FIREBASE SOZLAMALARI ===
-    const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
+    const firebaseConfig = { databaseURL-futbol-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -292,7 +278,6 @@
     const ADMIN_PASS = "0717"; 
     const BOT_LINK = "https://t.me/todo_plus_bot";
 
-    // Orqa fon animatsiyasi
     const bg = document.getElementById('bgAnim');
     for(let i=0; i<10; i++) {
       let bubble = document.createElement('div');
@@ -317,7 +302,6 @@
       document.getElementById(id).classList.add('active');
     }
 
-    // --- BOTGA O'TISH (Muvaffaqiyatli usul) ---
     function openBot() {
       if (window.Telegram && window.Telegram.WebApp) {
         window.Telegram.WebApp.openTelegramLink(BOT_LINK);
@@ -326,7 +310,6 @@
       }
     }
 
-    // --- ARIZA TOPSHIRISH ---
     function submitApplication() {
       const parentName = document.getElementById('appParentName').value.trim();
       const childName = document.getElementById('appChildName').value.trim();
@@ -352,7 +335,6 @@
       }).catch(e => alert("Xatolik: " + e.message));
     }
 
-    // --- LOGIN ---
     function login() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
@@ -373,8 +355,13 @@
           if (pData.password === pass) {
             currentUser = pData;
             currentUser.id = user;
-            loadParentData();
-            showScreen('parentScreen');
+            try {
+                loadParentData();
+                showScreen('parentScreen');
+            } catch (err) {
+                alert("Ma'lumotlarni yuklashda xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
+                console.error(err);
+            }
           } else { alert("Parol xato!"); }
         } else { alert("Bunday login topilmadi! Ariza topshirganmisiz?"); }
       }).catch(e => alert("Bazaga ulanishda xato: " + e.message));
@@ -387,27 +374,45 @@
       showScreen('loginScreen');
     }
 
-    // --- OTA-ONA QISMI ---
     function loadParentData() {
-      document.getElementById('pFullName').innerText = currentUser.name;
+      if(!currentUser) return;
       
-      // Username yaratish (ismdan @ belgisi bilan)
-      let uname = currentUser.name.toLowerCase().replace(/\s+/g, '_');
-      document.getElementById('pUsername').innerText = "@" + uname;
+      const pNameEl = document.getElementById('pName');
+      if(pNameEl) pNameEl.innerText = currentUser.name || 'Ism kiritilmagan';
       
-      // Rasm yuklash (agar URL bo'lsa o'shani, bo'lmasa harflar bilan avatar)
-      if (currentUser.photoUrl) {
-        document.getElementById('pPhoto').src = currentUser.photoUrl;
-      } else {
-        document.getElementById('pPhoto').src = `https://ui-avatars.com/api/?name=${currentUser.name}&background=10b981&color=fff&size=150`;
+      const pFullNameEl = document.getElementById('pFullName');
+      if(pFullNameEl) pFullNameEl.innerText = currentUser.name || 'Ism kiritilmagan';
+
+      let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
+      const pUsernameEl = document.getElementById('pUsername');
+      if(pUsernameEl) pUsernameEl.innerText = "@" + uname;
+      
+      const pPhotoEl = document.getElementById('pPhoto');
+      if(pPhotoEl) {
+          if (currentUser.photoUrl) {
+            pPhotoEl.src = currentUser.photoUrl;
+          } else {
+            pPhotoEl.src = `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=10b981&color=fff&size=150`;
+          }
       }
 
-      document.getElementById('pJersey').innerText = currentUser.jersey || '-';
-      document.getElementById('pProgress').innerText = currentUser.progress || '0';
-      document.getElementById('pSchedule').innerText = appSettings.schedule;
-      document.getElementById('payCard').innerText = appSettings.card;
-      document.getElementById('payAmount').innerText = appSettings.amount;
-      document.getElementById('pPayAmount').innerText = appSettings.amount;
+      const pJerseyEl = document.getElementById('pJersey');
+      if(pJerseyEl) pJerseyEl.innerText = currentUser.jersey || '-';
+      
+      const pProgressEl = document.getElementById('pProgress');
+      if(pProgressEl) pProgressEl.innerText = currentUser.progress || '0';
+      
+      const pScheduleEl = document.getElementById('pSchedule');
+      if(pScheduleEl) pScheduleEl.innerText = appSettings.schedule || "Kiritilmagan";
+      
+      const payCardEl = document.getElementById('payCard');
+      if(payCardEl) payCardEl.innerText = appSettings.card || "Kiritilmagan";
+      
+      const payAmountEl = document.getElementById('payAmount');
+      if(payAmountEl) payAmountEl.innerText = appSettings.amount || "350 000 so'm";
+      
+      const pPayAmountEl = document.getElementById('pPayAmount');
+      if(pPayAmountEl) pPayAmountEl.innerText = appSettings.amount || "350 000 so'm";
       
       updateParentPayStatus();
     }
@@ -415,6 +420,7 @@
     function updateParentPayStatus() {
       const statusBadge = document.getElementById('pPayStatus');
       const btnPay = document.getElementById('btnPay');
+      if(!statusBadge || !btnPay) return;
       
       if (currentUser.paid === true || currentUser.paid === "paid") {
         statusBadge.innerText = "To'langan ✅";
@@ -447,14 +453,14 @@
       }
     }
 
-    // --- ADMIN QISMI ---
     function loadAdminData() {
-      document.getElementById('setSchedule').value = appSettings.schedule;
-      document.getElementById('setCard').value = appSettings.card;
-      document.getElementById('setAmount').value = appSettings.amount;
+      document.getElementById('setSchedule').value = appSettings.schedule || "";
+      document.getElementById('setCard').value = appSettings.card || "";
+      document.getElementById('setAmount').value = appSettings.amount || "";
 
       db.ref('players').on('value', (snapshot) => {
         const list = document.getElementById('adminPlayerList');
+        if(!list) return;
         list.innerHTML = '';
         if (snapshot.exists()) {
           const players = snapshot.val();
@@ -483,6 +489,7 @@
       db.ref('applications').on('value', (snapshot) => {
         const appList = document.getElementById('adminAppList');
         const appBadge = document.getElementById('appBadge');
+        if(!appList || !appBadge) return;
         appList.innerHTML = '';
         
         if (snapshot.exists()) {
@@ -515,19 +522,11 @@
 
     function acceptApplication(appId, phone, name) {
       const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
-      
-      const newPlayer = {
-        name: name,
-        password: randomPass,
-        jersey: "", 
-        progress: 0,
-        paid: false,
-        photoUrl: "" // Admin keyin qo'shadi
-      };
+      const newPlayer = { name: name, password: randomPass, jersey: "", progress: 0, paid: false, photoUrl: "" };
 
       db.ref('players/' + phone).set(newPlayer).then(() => {
         db.ref('applications/' + appId).remove();
-        alert(`Ariza qabul qilindi!\n\nOta-onaga quyidagi ma'lumotlarni yuboring:\nLogin: ${phone}\nParol: ${randomPass}`);
+        alert(`Ariza qabul qilindi!\n\nOta-onaga yuboring:\nLogin: ${phone}\nParol: ${randomPass}`);
       }).catch(e => alert("Xatolik: " + e.message));
     }
 
@@ -561,7 +560,6 @@
       }).catch(e => alert("Xato: " + e.message));
     }
 
-    // --- O'QUVCHI QO'SHISH / TAHRIRLASH ---
     function openAddPlayerModal() {
       document.getElementById('playerModalTitle').innerText = "Yangi o'quvchi";
       document.getElementById('editPlayerId').value = "";
