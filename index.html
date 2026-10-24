@@ -10,267 +10,267 @@
 
   <style>
     :root {
-      --bg-color: #09090b; 
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --primary: #10b981;
-      --primary-glow: rgba(16, 185, 129, 0.4);
-      --text-light: #f8fafc;
-      --text-muted: #94a3b8;
+      --blue: #1047A9;
+      --light: #F2F7FF;
+      --text: #173B70;
+      --white: #ffffff;
+      --gray: #70819A;
+      --green: #10b981;
+      --red: #ef4444;
+      --orange: #f59e0b;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-color); color: var(--text-light); min-height: 100vh; overflow-x: hidden; position: relative; padding-bottom: 20px; }
     
-    .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at 50% 0%, #1e1e24 0%, #09090b 100%); }
-    .bubble { position: absolute; background: var(--primary-glow); border-radius: 50%; animation: float 20s infinite linear; filter: blur(40px); }
-    @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
-
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
-    .screen { display: none; padding: 20px 16px; animation: slideUp 0.4s ease; }
-    .screen.active { display: block; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-    #loginScreen, #applyScreen { text-align: center; margin-top: 5vh; }
-    .logo-icon { font-size: 70px; margin-bottom: 15px; text-shadow: 0 0 20px var(--primary-glow); }
-    .title { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
-    .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
-    .input-group { margin-bottom: 15px; text-align: left; }
-    .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; margin-left: 5px; font-weight: 600; }
-    .glass-input { width: 100%; padding: 14px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; font-size: 15px; outline: none; transition: 0.3s; }
-    .glass-input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
-    .glass-input option { color: black; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--light); color: var(--text); padding-bottom: 20px; min-height: 100vh; }
     
-    .btn { width: 100%; padding: 15px; border-radius: 16px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px var(--primary-glow); }
-    .btn:active { transform: scale(0.97); background: #059669; }
-    .btn-outline { background: transparent; border: 1px solid var(--glass-border); box-shadow: none; }
-    .btn-outline:active { background: var(--glass-bg); }
-
-    .profile-section { text-align: center; margin-bottom: 20px; }
-    .profile-img { width: 90px; height: 120px; object-fit: cover; border-radius: 12px; border: 2px solid var(--primary); box-shadow: 0 0 15px var(--primary-glow); margin-bottom: 10px; }
-    .profile-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-    .profile-username { color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-    .profile-stats { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
-    .stat-badge { background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 12px; border: 1px solid var(--glass-border); font-size: 14px; font-weight: 600; }
-
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .user-info h2 { font-size: 18px; }
-    .user-info p { color: var(--primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--glass-border); }
+    /* Header */
+    .header { background: var(--blue); color: white; padding: 20px; border-radius: 0 0 24px 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+    .brand { font-weight: 800; font-size: 20px; }
+    .subtitle { font-size: 11px; opacity: 0.8; margin-top: 4px; }
+    
+    /* Lang Toggle */
+    .lang-toggle { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); color: white; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; cursor: pointer; }
+    
+    main { padding: 18px 16px; max-width: 500px; margin: auto; }
+    
+    /* Glass / Card style */
+    .card { background: var(--white); border-radius: 18px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(23, 59, 112, 0.05); border: 1px solid #e6ebf3; }
+    
+    .input-group { margin-bottom: 12px; text-align: left; }
+    .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--gray); margin-bottom: 6px; margin-left: 4px; }
+    .input-control { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #d1d9e6; background: var(--light); color: var(--text); font-size: 15px; outline: none; transition: 0.2s; }
+    .input-control:focus { border-color: var(--blue); background: white; }
+    select.input-control { appearance: none; }
+    
+    .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--blue); color: white; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 10px; display: flex; justify-content: center; align-items: center; }
+    .btn:active { transform: scale(0.98); opacity: 0.9; }
+    .btn-outline { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); }
+    
+    /* Profile Section */
+    .profile-img { width: 100px; height: 130px; object-fit: cover; border-radius: 12px; border: 2px solid var(--blue); display: block; margin: 0 auto 15px; box-shadow: 0 4px 10px rgba(16, 71, 169, 0.2); }
+    .profile-name { text-align: center; font-size: 20px; font-weight: 800; margin-bottom: 5px; }
+    .profile-username { text-align: center; color: var(--blue); font-size: 14px; font-weight: 600; margin-bottom: 15px; }
+    
+    .stats-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+    .stat-badge { background: var(--light); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--blue); border: 1px solid #d1d9e6; }
+    
+    /* List Items */
+    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f4fa; font-size: 14px; }
     .list-item:last-child { border-bottom: none; }
-    .badge { padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; }
-    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-
-    .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-    .tab { padding: 10px 16px; border-radius: 20px; background: var(--glass-bg); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
-    .tab.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
-
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: #18181b; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 101; max-height: 90vh; overflow-y: auto; border-top: 1px solid var(--glass-border); }
-    .modal-content.active { transform: translateY(0); }
-    .hidden { display: none !important; }
+    .badge { padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+    .bg-success { background: #d1fae5; color: #065f46; }
+    .bg-danger { background: #fee2e2; color: #991b1b; }
+    .bg-warning { background: #fef3c7; color: #92400e; }
     
-    .coach-info p { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4; }
-    .coach-info strong { color: var(--text-light); }
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+    .tab { padding: 10px 16px; border-radius: 12px; background: var(--white); border: 1px solid #e6ebf3; font-size: 13px; font-weight: 600; color: var(--gray); white-space: nowrap; cursor: pointer; }
+    .tab.active { background: var(--blue); color: white; border-color: var(--blue); }
+    
+    .hidden { display: none !important; }
+    .screen { display: none; animation: fadeIn 0.3s ease; }
+    .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(23, 59, 112, 0.5); backdrop-filter: blur(3px); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 101; max-height: 90vh; overflow-y: auto; }
+    .modal-content.active { transform: translateY(0); }
+    
+    .coach-info p { font-size: 13px; color: var(--gray); margin-bottom: 6px; line-height: 1.4; }
+    .coach-info strong { color: var(--text); }
   </style>
 </head>
 <body>
 
-  <div class="background-animation" id="bgAnim"></div>
-
-  <!-- 1. LOGIN EKRANI -->
-  <div class="screen active" id="loginScreen">
-    <div class="logo-icon">⚽</div>
-    <h1 class="title">81-Maktab FK</h1>
-    <p class="subtitle">Tizimga kirish</p>
-
-    <div class="glass-panel">
-      <div class="input-group">
-        <label>Login (Telefon raqam yoki Admin)</label>
-        <input type="text" id="loginUser" class="glass-input" placeholder="Loginni kiriting">
-      </div>
-      <div class="input-group">
-        <label>Parol</label>
-        <input type="password" id="loginPass" class="glass-input" placeholder="••••">
-      </div>
-      <button class="btn" onclick="login()">Kirish</button>
-      <button class="btn btn-outline" style="margin-top: 15px;" onclick="showScreen('applyScreen')">Yangi ariza topshirish</button>
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="brand" data-uz="🏆 81 FOOTBALL" data-ru="🏆 81 ФУТБОЛ">🏆 81 FOOTBALL</div>
+      <div class="subtitle" data-uz="MAKTAB FUTBOL AKADEMIYASI" data-ru="ШКОЛЬНАЯ ФУТБОЛЬНАЯ АКАДЕМИЯ">MAKTAB FUTBOL AKADEMIYASI</div>
     </div>
+    <button class="lang-toggle" onclick="toggleLang()" id="langBtn">RU</button>
   </div>
 
-  <!-- 2. ARIZA TOPSHIRISH EKRANI -->
-  <div class="screen" id="applyScreen">
-    <header style="justify-content: flex-start; gap: 15px; margin-bottom: 10px;">
-      <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="showScreen('loginScreen')">← Orqaga</button>
-    </header>
-    <div class="glass-panel">
-      <h2 style="margin-bottom: 20px; text-align: center; font-size:20px;">To'garakka yozilish</h2>
-      <div class="input-group">
-        <label>Ota-onaning Ismi va Familiyasi</label>
-        <input type="text" id="appParentName" class="glass-input" placeholder="Masalan: Valiyev Ali">
-      </div>
-      <div class="input-group">
-        <label>Bolaning Ismi va Familiyasi</label>
-        <input type="text" id="appChildName" class="glass-input" placeholder="Masalan: Valiyev Sardor">
-      </div>
-      <div class="input-group">
-        <label>Telefon raqam (Login bo'ladi)</label>
-        <input type="text" id="appPhone" class="glass-input" placeholder="+998901234567">
-      </div>
-      <div class="input-group">
-        <label>Bolaning yoshi</label>
-        <input type="number" id="appAge" class="glass-input" placeholder="Masalan: 10">
-      </div>
-      <div class="input-group">
-        <label>Jismoniy holati</label>
-        <select id="appPhysical" class="glass-input">
-          <option value="A'lo">A'lo</option>
-          <option value="Yaxshi">Yaxshi</option>
-          <option value="O'rtacha">O'rtacha</option>
-          <option value="Nimjon">Nimjon</option>
-        </select>
-      </div>
-      <button class="btn" onclick="submitApplication()">Arizani yuborish</button>
-    </div>
-  </div>
-
-  <!-- 3. OTA-ONA EKRANI -->
-  <div class="screen" id="parentScreen">
-    <header>
-      <div class="user-info">
-        <h2 id="pName">Yuklanmoqda...</h2>
-        <p>Ota-ona paneli</p>
-      </div>
-      <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="logout()">Chiqish</button>
-    </header>
-
-    <div class="profile-section">
-      <img id="pPhoto" class="profile-img" src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150" alt="Rasm">
-      <h2 class="profile-name" id="pFullName">Ism</h2>
-      <p class="profile-username" id="pUsername">@username</p>
-      
-      <div class="profile-stats">
-        <div class="stat-badge">👕 #<span id="pJersey">-</span></div>
-        <div class="stat-badge">📈 <span id="pProgress">0</span>%</div>
-      </div>
-    </div>
-
-    <div class="glass-panel" style="padding: 15px;">
-      <div class="list-item" style="padding: 8px 0; border:none;">
-        <span style="font-size:14px; color:var(--text-muted)">To'lov holati:</span>
-        <span id="pPayStatus" class="badge badge-danger">To'lanmagan</span>
-      </div>
-      <div class="list-item" style="padding: 8px 0; border:none;">
-        <span style="font-size:14px; color:var(--text-muted)">Oylik to'lov:</span>
-        <span id="pPayAmount" style="font-weight:bold; font-size: 15px;">350 000 so'm</span>
-      </div>
-      <button id="btnPay" class="btn" style="margin-top: 10px; padding: 12px; font-size: 14px;" onclick="openPaymentModal()">To'lash / Chek yuborish</button>
-    </div>
-
-    <div class="glass-panel">
-      <h3 style="margin-bottom: 10px; font-size: 15px; color:var(--primary)">Mashg'ulot jadvali</h3>
-      <p id="pSchedule" style="font-size: 13px; color: var(--text-light); line-height: 1.5; white-space: pre-line;"></p>
-    </div>
-
-    <div class="glass-panel coach-info">
-      <h3 style="margin-bottom: 10px; font-size: 15px; color:var(--primary)">Murabbiy haqida</h3>
-      <p><strong>Arıf Arazadəı / Abbosov Shohruh Elimxanovich</strong></p>
-      <p><strong>Yosh:</strong> 23 yoshda</p>
-      <p><strong>Ta'lim va tajriba:</strong> Sport unversitetini bitirgan. Futbol sohasida yillar davomida shug'ullangan. Hozirda 81-IDUM maktabida jismoniy tarbiya fanidan dars beradi.</p>
-      <p><strong>O'ynagan klublari:</strong> Bunyodkor (O'zbekiston), Qarabağ, Tovuz, Gəncə (Ozarbayjon).</p>
-    </div>
-  </div>
-
-  <!-- 4. ADMIN EKRANI -->
-  <div class="screen" id="adminScreen">
-    <header>
-      <div class="user-info">
-        <h2>Murabbiy Paneli</h2>
-        <p>Administrator</p>
-      </div>
-      <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="logout()">Chiqish</button>
-    </header>
-
-    <div class="tabs">
-      <div class="tab active" onclick="switchAdminTab('players')">O'quvchilar</div>
-      <div class="tab" onclick="switchAdminTab('apps')">Arizalar <span id="appBadge" style="display:none; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px; margin-left:5px;">0</span></div>
-      <div class="tab" onclick="switchAdminTab('settings')">Sozlamalar</div>
-    </div>
-
-    <div id="adminTabPlayers">
-      <button class="btn" onclick="openAddPlayerModal()">+ Yangi o'quvchi qo'shish</button>
-      <div class="glass-panel" id="adminPlayerList" style="margin-top: 15px;">
-        <p style="color:gray; text-align:center;">Yuklanmoqda...</p>
-      </div>
-    </div>
-
-    <div id="adminTabApps" class="hidden">
-      <div class="glass-panel" id="adminAppList">
-        <p style="color:gray; text-align:center;">Arizalar yuklanmoqda...</p>
-      </div>
-    </div>
-
-    <div id="adminTabSettings" class="hidden">
-      <div class="glass-panel">
+  <main>
+    <!-- 1. LOGIN -->
+    <div class="screen active" id="loginScreen">
+      <div class="card">
+        <h2 style="margin-bottom: 20px; text-align: center;" data-uz="Tizimga kirish" data-ru="Вход в систему">Tizimga kirish</h2>
         <div class="input-group">
-          <label>Mashg'ulot jadvali</label>
-          <textarea id="setSchedule" class="glass-input" rows="3"></textarea>
+          <label data-uz="Login (Telefon yoki Admin)" data-ru="Логин (Телефон или Админ)">Login (Telefon yoki Admin)</label>
+          <input type="text" id="loginUser" class="input-control" placeholder="Login">
         </div>
         <div class="input-group">
-          <label>Karta raqami</label>
-          <input type="text" id="setCard" class="glass-input">
+          <label data-uz="Parol" data-ru="Пароль">Parol</label>
+          <input type="password" id="loginPass" class="input-control" placeholder="••••">
         </div>
-        <div class="input-group">
-          <label>Oylik to'lov summasi</label>
-          <input type="text" id="setAmount" class="glass-input">
-        </div>
-        <button class="btn" onclick="saveSettings()">Sozlamalarni Saqlash</button>
+        <button class="btn" onclick="login()" data-uz="Kirish" data-ru="Войти">Kirish</button>
+        <button class="btn btn-outline" onclick="showScreen('applyScreen')" data-uz="Yangi ariza topshirish" data-ru="Подать заявку">Yangi ariza topshirish</button>
       </div>
     </div>
-  </div>
+
+    <!-- 2. ARIZA TOPSHIRISH -->
+    <div class="screen" id="applyScreen">
+      <button class="btn btn-outline" style="margin-bottom: 15px;" onclick="showScreen('loginScreen')" data-uz="← Orqaga" data-ru="← Назад">← Orqaga</button>
+      <div class="card">
+        <h2 style="margin-bottom: 20px; text-align: center;" data-uz="To'garakka yozilish" data-ru="Запись в секцию">To'garakka yozilish</h2>
+        <div class="input-group">
+          <label data-uz="Ota-onaning Ismi" data-ru="Имя родителя">Ota-onaning Ismi</label>
+          <input type="text" id="appParentName" class="input-control">
+        </div>
+        <div class="input-group">
+          <label data-uz="Bolaning Ismi" data-ru="Имя ребенка">Bolaning Ismi</label>
+          <input type="text" id="appChildName" class="input-control">
+        </div>
+        <div class="input-group">
+          <label data-uz="Telefon raqam (Login)" data-ru="Номер телефона (Логин)">Telefon raqam (Login)</label>
+          <input type="text" id="appPhone" class="input-control" placeholder="+998...">
+        </div>
+        <div class="input-group">
+          <label data-uz="Bolaning yoshi" data-ru="Возраст ребенка">Bolaning yoshi</label>
+          <input type="number" id="appAge" class="input-control">
+        </div>
+        <div class="input-group">
+          <label data-uz="Jismoniy holati" data-ru="Физическое состояние">Jismoniy holati</label>
+          <select id="appPhysical" class="input-control">
+            <option value="A'lo" data-uz="A'lo" data-ru="Отличное">A'lo</option>
+            <option value="Yaxshi" data-uz="Yaxshi" data-ru="Хорошее">Yaxshi</option>
+            <option value="O'rtacha" data-uz="O'rtacha" data-ru="Среднее">O'rtacha</option>
+            <option value="Nimjon" data-uz="Nimjon" data-ru="Слабое">Nimjon</option>
+          </select>
+        </div>
+        <button class="btn" onclick="submitApplication()" data-uz="Yuborish" data-ru="Отправить">Yuborish</button>
+      </div>
+    </div>
+
+    <!-- 3. OTA-ONA PANELI -->
+    <div class="screen" id="parentScreen">
+      <button class="btn btn-outline" style="margin-bottom: 15px; width: auto; float: right; padding: 8px 15px;" onclick="logout()" data-uz="Chiqish" data-ru="Выйти">Chiqish</button>
+      <div style="clear: both;"></div>
+
+      <div class="card" style="text-align: center;">
+        <img id="pPhoto" class="profile-img" src="https://ui-avatars.com/api/?name=U&background=1047A9&color=fff&size=150">
+        <div class="profile-name" id="pFullName">Ism</div>
+        <div class="profile-username" id="pUsername">@username</div>
+        <div class="stats-row">
+          <div class="stat-badge" data-uz="👕 Futbolka:" data-ru="👕 Футболка:">👕 Futbolka: <span id="pJersey">-</span></div>
+          <div class="stat-badge" data-uz="📈 O'zlashtirish:" data-ru="📈 Успеваемость:">📈 O'zlashtirish: <span id="pProgress">0</span>%</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="list-item">
+          <span data-uz="To'lov holati:" data-ru="Статус оплаты:">To'lov holati:</span>
+          <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
+        </div>
+        <div class="list-item">
+          <span data-uz="Oylik to'lov:" data-ru="Ежемесячная оплата:">Oylik to'lov:</span>
+          <span style="font-weight: bold;" id="pPayAmount">350 000 so'm</span>
+        </div>
+        <button id="btnPay" class="btn" style="margin-top: 10px;" onclick="openPaymentModal()" data-uz="To'lash / Chek yuborish" data-ru="Оплатить / Отправить чек">To'lash / Chek yuborish</button>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 10px; color: var(--blue);" data-uz="Mashg'ulot jadvali" data-ru="Расписание тренировок">Mashg'ulot jadvali</h3>
+        <p id="pSchedule" style="font-size: 13px; color: var(--gray); white-space: pre-line; line-height: 1.5;"></p>
+      </div>
+
+      <div class="card coach-info">
+        <h3 style="margin-bottom: 10px; color: var(--blue);" data-uz="Murabbiy haqida" data-ru="О тренере">Murabbiy haqida</h3>
+        <p><strong>Arıf Arazadəı / Abbosov Shohruh Elimxanovich</strong></p>
+        <p data-uz="Yosh: 23 yoshda" data-ru="Возраст: 23 года">Yosh: 23 yoshda</p>
+        <p data-uz="Sport unversitetini bitirgan. Futbol sohasida yillar davomida shug'ullangan. Hozirda 81-IDUM maktabida jismoniy tarbiya fanidan dars beradi." data-ru="Окончил спортивный университет. Занимается футболом много лет. В настоящее время преподает физическую культуру в школе 81-IDUM.">Sport unversitetini bitirgan. Futbol sohasida yillar davomida shug'ullangan.</p>
+        <p data-uz="O'ynagan klublari: Bunyodkor, Qarabağ, Tovuz, Gəncə" data-ru="Игровые клубы: Бунёдкор, Карабах, Товуз, Гянджа">O'ynagan klublari: Bunyodkor, Qarabağ, Tovuz, Gəncə</p>
+      </div>
+    </div>
+
+    <!-- 4. ADMIN PANELI -->
+    <div class="screen" id="adminScreen">
+      <button class="btn btn-outline" style="margin-bottom: 15px; width: auto; float: right; padding: 8px 15px;" onclick="logout()" data-uz="Chiqish" data-ru="Выйти">Chiqish</button>
+      <div style="clear: both;"></div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchAdminTab('players')" data-uz="O'quvchilar" data-ru="Ученики">O'quvchilar</div>
+        <div class="tab" onclick="switchAdminTab('apps')" data-uz="Arizalar" data-ru="Заявки">Arizalar <span id="appBadge" style="display:none; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px; margin-left:5px;">0</span></div>
+        <div class="tab" onclick="switchAdminTab('settings')" data-uz="Sozlamalar" data-ru="Настройки">Sozlamalar</div>
+      </div>
+
+      <div id="adminTabPlayers">
+        <button class="btn" onclick="openAddPlayerModal()" data-uz="+ Yangi o'quvchi" data-ru="+ Новый ученик">+ Yangi o'quvchi</button>
+        <div class="card" id="adminPlayerList" style="margin-top: 15px;">
+          <p style="text-align: center; color: var(--gray);">Yuklanmoqda...</p>
+        </div>
+      </div>
+
+      <div id="adminTabApps" class="hidden">
+        <div class="card" id="adminAppList">
+          <p style="text-align: center; color: var(--gray);">Yuklanmoqda...</p>
+        </div>
+      </div>
+
+      <div id="adminTabSettings" class="hidden">
+        <div class="card">
+          <div class="input-group">
+            <label data-uz="Mashg'ulot jadvali" data-ru="Расписание тренировок">Mashg'ulot jadvali</label>
+            <textarea id="setSchedule" class="input-control" rows="3"></textarea>
+          </div>
+          <div class="input-group">
+            <label data-uz="Karta raqami" data-ru="Номер карты">Karta raqami</label>
+            <input type="text" id="setCard" class="input-control">
+          </div>
+          <div class="input-group">
+            <label data-uz="Oylik to'lov summasi" data-ru="Сумма оплаты">Oylik to'lov summasi</label>
+            <input type="text" id="setAmount" class="input-control">
+          </div>
+          <button class="btn" onclick="saveSettings()" data-uz="Sozlamalarni Saqlash" data-ru="Сохранить настройки">Sozlamalarni Saqlash</button>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <!-- Modallar -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
   
   <div class="modal-content" id="paymentModal">
-    <h3 style="margin-bottom: 15px; text-align:center;">To'lov qilish</h3>
-    <p style="font-size: 14px; margin-bottom: 10px; text-align:center;">Karta: <b id="payCard" style="color:var(--primary)">8600...</b></p>
-    <p style="font-size: 14px; margin-bottom: 20px; text-align:center;">Summa: <b id="payAmount" style="color:var(--primary)">350 000 so'm</b></p>
+    <h3 style="margin-bottom: 15px; text-align:center;" data-uz="To'lov qilish" data-ru="Оплата">To'lov qilish</h3>
+    <p style="font-size: 14px; margin-bottom: 10px; text-align:center;" data-uz="Karta:" data-ru="Карта:">Karta: <b id="payCard" style="color:var(--blue)">8600...</b></p>
+    <p style="font-size: 14px; margin-bottom: 20px; text-align:center;" data-uz="Summa:" data-ru="Сумма:">Summa: <b id="payAmount" style="color:var(--blue)">350 000 so'm</b></p>
     
-    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; margin-bottom:20px;">
-      <p style="font-size: 12px; color: var(--text-muted); line-height:1.5;">1. Kartaga pul o'tkazing.<br>2. Pastdagi tugma orqali botga chekni yuboring.<br>3. So'ngra "To'lov qildim" tugmasini bosing.</p>
+    <div style="background:var(--light); padding:15px; border-radius:12px; margin-bottom:20px;">
+      <p style="font-size: 12px; color: var(--gray); line-height:1.5;" data-uz="1. Kartaga pul o'tkazing. 2. Botga chekni yuboring. 3. 'To'lov qildim'ni bosing." data-ru="1. Переведите на карту. 2. Отправьте чек боту. 3. Нажмите 'Я оплатил'.">1. Kartaga pul o'tkazing. 2. Botga chekni yuboring. 3. 'To'lov qildim'ni bosing.</p>
     </div>
 
-    <button onclick="openBot()" class="btn" style="background:#2AABEE; box-shadow:none; border:none;">📸 Botga o'tib chek yuborish</button>
-    <button class="btn" style="background:#f59e0b; color:black; box-shadow:none;" onclick="markAsPending()">Men to'lov qildim (Kutish)</button>
-    <button class="btn btn-outline" onclick="closeModal()">Yopish</button>
+    <button onclick="openBot()" class="btn" style="background:#2AABEE;" data-uz="📸 Botga o'tib chek yuborish" data-ru="📸 Перейти в бот и отправить чек">📸 Botga o'tib chek yuborish</button>
+    <button class="btn" style="background:var(--orange); color:white;" onclick="markAsPending()" data-uz="Men to'lov qildim (Kutish)" data-ru="Я оплатил (Ожидание)">Men to'lov qildim (Kutish)</button>
+    <button class="btn btn-outline" onclick="closeModal()" data-uz="Yopish" data-ru="Закрыть">Yopish</button>
   </div>
 
   <div class="modal-content" id="playerModal">
-    <h3 style="margin-bottom: 15px;" id="playerModalTitle">O'quvchi</h3>
+    <h3 style="margin-bottom: 15px;" id="playerModalTitle" data-uz="O'quvchi" data-ru="Ученик">O'quvchi</h3>
     <input type="hidden" id="editPlayerId">
-    <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pEditName" class="glass-input"></div>
-    <div class="input-group"><label>Login (Telefon raqam)</label><input type="text" id="pLogin" class="glass-input"></:div>
-    <div class="input-group"><label> "Parol</httpslabel><input type="://text" id="idumpPass" class="glass-input"></div>
-    <div class="input-group"><label>Rasm URL (3x4)</label><input type="text" id="pPhotoUrl" class="glass-input" placeholder="https://..."></div>
-    <div class="input-group"><label>Futbolka raqami</label><input type="number" id="pJerseyNum" class="glass-input"></div>
-    <div class="input-group"><label>O'zlashtirish (%)</label><input type="number" id="pProgressVal" class="glass-input"></div>
+    <div class="input-group"><label data-uz="Ism va Familiya" data-ru="Имя и Фамилия">Ism va Familiya</label><input type="text" id="pEditName" class="input-control"></div>
+    <div class="input-group"><label data-uz="Login (Telefon)" data-ru="Логин (Телефон)">Login (Telefon)</label><input type="text" id="pLogin" class="input-control"></div>
+    <div class="input-group"><label data-uz="Parol" data-ru="Пароль">Parol</label><input type="text" id="pPass" class="input-control"></div>
+    <div class="input-group"><label data-uz="Rasm URL (3x4)" data-ru="URL фото (3x4)">Rasm URL (3x4)</label><input type="text" id="pPhotoUrl" class="input-control" placeholder="https://..."></div>
+    <div class="input-group"><label data-uz="Futbolka raqami" data-ru="Номер футболки">Futbolka raqami</label><input type="number" id="pJerseyNum" class="input-control"></div>
+    <div class="input-group"><label data-uz="O'zlashtirish (%)" data-ru="Успеваемость (%)">O'zlashtirish (%)</label><input type="number" id="pProgressVal" class="input-control"></div>
     <div class="input-group">
-      <label>To'lov holati</label>
-      <select id="pPay" class="glass-input">
-        <option value="unpaid">To'lanmagan</option>
-        <option value="pending">Kutilmoqda (Chek tekshirilmoqda)</option>
-        <option value="paid">To'langan</option>
+      <label data-uz="To'lov holati" data-ru="Статус оплаты">To'lov holati</label>
+      <select id="pPay" class="input-control">
+        <option value="unpaid" data-uz="To'lanmagan" data-ru="Не оплачено">To'lanmagan</option>
+        <option value="pending" data-uz="Kutilmoqda" data-ru="В ожидании">Kutilmoqda</option>
+        <option value="paid" data-uz="To'langan" data-ru="Оплачено">To'langan</option>
       </select>
     </div>
-    <button class="btn" onclick="savePlayer()">Saqlash</button>
-    <button class="btn btn-outline" onclick="closeModal()">Bekor qilish</button>
+    <button class="btn" onclick="savePlayer()" data-uz="Saqlash" data-ru="Сохранить">Saqlash</button>
+    <button class="btn btn-outline" onclick="closeModal()" data-uz="Bekor qilish" data-ru="Отмена">Bekor qilish</button>
   </div>
 
   <script>
-    const firebaseConfig = { databaseURL-futbol-default-rtdb.firebaseio.com/" };
+    // Firebase sozlamalari
+    const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -278,16 +278,15 @@
     const ADMIN_PASS = "0717"; 
     const BOT_LINK = "https://t.me/todo_plus_bot";
 
-    const bg = document.getElementById('bgAnim');
-    for(let i=0; i<10; i++) {
-      let bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      let size = Math.random() * 150 + 50;
-      bubble.style.width = size + 'px'; bubble.style.height = size + 'px';
-      bubble.style.left = Math.random() * 100 + 'vw';
-      bubble.style.animationDuration = (Math.random() * 10 + 15) + 's';
-      bubble.style.animationDelay = Math.random() * 5 + 's';
-      bg.appendChild(bubble);
+    // Tilni almashtirish tizimi
+    let currentLang = 'uz';
+    function toggleLang() {
+      currentLang = currentLang === 'uz' ? 'ru' : 'uz';
+      document.getElementById('langBtn').innerText = currentLang === 'uz' ? 'RU' : 'UZ';
+      
+      document.querySelectorAll('[data-' + currentLang + ']').forEach(el => {
+        el.innerText = el.getAttribute('data-' + currentLang);
+      });
     }
 
     let currentUser = null;
@@ -318,19 +317,12 @@
       const physical = document.getElementById('appPhysical').value;
 
       if (!parentName || !childName || !phone) {
-        alert("Barcha majburiy joylarni to'ldiring!");
+        alert(currentLang === 'uz' ? "Hamma joyni to'ldiring!" : "Заполните все поля!");
         return;
       }
 
-      db.ref('applications').push({
-        parentName, childName, phone, age, physical,
-        date: new Date().toLocaleDateString()
-      }).then(() => {
-        alert("Arizangiz muvaffaqiyatli yuborildi! Murabbiy tez orada siz bilan bog'lanadi.");
-        document.getElementById('appParentName').value = '';
-        document.getElementById('appChildName').value = '';
-        document.getElementById('appPhone').value = '';
-        document.getElementById('appAge').value = '';
+      db.ref('applications').push({ parentName, childName, phone, age, physical, date: new Date().toLocaleDateString() }).then(() => {
+        alert(currentLang === 'uz' ? "Arizangiz yuborildi!" : "Ваша заявка отправлена!");
         showScreen('loginScreen');
       }).catch(e => alert("Xatolik: " + e.message));
     }
@@ -339,7 +331,7 @@
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
 
-      if (!user || !pass) { alert("Login va parolni kiriting!"); return; }
+      if (!user || !pass) { alert("Login/Parol?"); return; }
 
       if (user === ADMIN_LOGIN) {
         if (pass === ADMIN_PASS) {
@@ -355,16 +347,11 @@
           if (pData.password === pass) {
             currentUser = pData;
             currentUser.id = user;
-            try {
-                loadParentData();
-                showScreen('parentScreen');
-            } catch (err) {
-                alert("Ma'lumotlarni yuklashda xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
-                console.error(err);
-            }
+            loadParentData();
+            showScreen('parentScreen');
           } else { alert("Parol xato!"); }
-        } else { alert("Bunday login topilmadi! Ariza topshirganmisiz?"); }
-      }).catch(e => alert("Bazaga ulanishda xato: " + e.message));
+        } else { alert("Bunday login yo'q!"); }
+      }).catch(e => alert("Xato: " + e.message));
     }
 
     function logout() {
@@ -374,45 +361,20 @@
       showScreen('loginScreen');
     }
 
+    // OTA-ONA PANELI
     function loadParentData() {
-      if(!currentUser) return;
+      document.getElementById('pFullName').innerText = currentUser.name;
+      let uname = currentUser.name.toLowerCase().replace(/\s+/g, '_');
+      document.getElementById('pUsername').innerText = "@" + uname;
       
-      const pNameEl = document.getElementById('pName');
-      if(pNameEl) pNameEl.innerText = currentUser.name || 'Ism kiritilmagan';
+      document.getElementById('pPhoto').src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name}&background=1047A9&color=fff&size=150`;
+      document.getElementById('pJersey').innerText = currentUser.jersey || '-';
+      document.getElementById('pProgress').innerText = currentUser.progress || '0';
       
-      const pFullNameEl = document.getElementById('pFullName');
-      if(pFullNameEl) pFullNameEl.innerText = currentUser.name || 'Ism kiritilmagan';
-
-      let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
-      const pUsernameEl = document.getElementById('pUsername');
-      if(pUsernameEl) pUsernameEl.innerText = "@" + uname;
-      
-      const pPhotoEl = document.getElementById('pPhoto');
-      if(pPhotoEl) {
-          if (currentUser.photoUrl) {
-            pPhotoEl.src = currentUser.photoUrl;
-          } else {
-            pPhotoEl.src = `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=10b981&color=fff&size=150`;
-          }
-      }
-
-      const pJerseyEl = document.getElementById('pJersey');
-      if(pJerseyEl) pJerseyEl.innerText = currentUser.jersey || '-';
-      
-      const pProgressEl = document.getElementById('pProgress');
-      if(pProgressEl) pProgressEl.innerText = currentUser.progress || '0';
-      
-      const pScheduleEl = document.getElementById('pSchedule');
-      if(pScheduleEl) pScheduleEl.innerText = appSettings.schedule || "Kiritilmagan";
-      
-      const payCardEl = document.getElementById('payCard');
-      if(payCardEl) payCardEl.innerText = appSettings.card || "Kiritilmagan";
-      
-      const payAmountEl = document.getElementById('payAmount');
-      if(payAmountEl) payAmountEl.innerText = appSettings.amount || "350 000 so'm";
-      
-      const pPayAmountEl = document.getElementById('pPayAmount');
-      if(pPayAmountEl) pPayAmountEl.innerText = appSettings.amount || "350 000 so'm";
+      document.getElementById('pSchedule').innerText = appSettings.schedule;
+      document.getElementById('payCard').innerText = appSettings.card;
+      document.getElementById('payAmount').innerText = appSettings.amount;
+      document.getElementById('pPayAmount').innerText = appSettings.amount;
       
       updateParentPayStatus();
     }
@@ -420,19 +382,18 @@
     function updateParentPayStatus() {
       const statusBadge = document.getElementById('pPayStatus');
       const btnPay = document.getElementById('btnPay');
-      if(!statusBadge || !btnPay) return;
       
       if (currentUser.paid === true || currentUser.paid === "paid") {
-        statusBadge.innerText = "To'langan ✅";
-        statusBadge.className = "badge badge-success";
+        statusBadge.innerText = currentLang === 'uz' ? "To'langan ✅" : "Оплачено ✅";
+        statusBadge.className = "badge bg-success";
         btnPay.style.display = 'none';
       } else if (currentUser.paid === "pending") {
-        statusBadge.innerText = "Kutilmoqda ⏳";
-        statusBadge.className = "badge badge-warning";
+        statusBadge.innerText = currentLang === 'uz' ? "Kutilmoqda ⏳" : "В ожидании ⏳";
+        statusBadge.className = "badge bg-warning";
         btnPay.style.display = 'none';
       } else {
-        statusBadge.innerText = "To'lanmagan ❌";
-        statusBadge.className = "badge badge-danger";
+        statusBadge.innerText = currentLang === 'uz' ? "To'lanmagan ❌" : "Не оплачено ❌";
+        statusBadge.className = "badge bg-danger";
         btnPay.style.display = 'flex';
       }
     }
@@ -448,48 +409,47 @@
           currentUser.paid = "pending";
           updateParentPayStatus();
           closeModal();
-          alert("Holat o'zgardi: Kutilmoqda. Murabbiy chekni tekshirib tasdiqlaydi.");
         });
       }
     }
 
+    // ADMIN PANELI
     function loadAdminData() {
-      document.getElementById('setSchedule').value = appSettings.schedule || "";
-      document.getElementById('setCard').value = appSettings.card || "";
-      document.getElementById('setAmount').value = appSettings.amount || "";
+      document.getElementById('setSchedule').value = appSettings.schedule;
+      document.getElementById('setCard').value = appSettings.card;
+      document.getElementById('setAmount').value = appSettings.amount;
 
       db.ref('players').on('value', (snapshot) => {
         const list = document.getElementById('adminPlayerList');
-        if(!list) return;
         list.innerHTML = '';
         if (snapshot.exists()) {
           const players = snapshot.val();
           for (let id in players) {
             const p = players[id];
-            let badgeClass = p.paid === true ? 'badge-success' : (p.paid === "pending" ? 'badge-warning' : 'badge-danger');
+            let badgeClass = p.paid === true ? 'bg-success' : (p.paid === "pending" ? 'bg-warning' : 'bg-danger');
             let badgeText = p.paid === true ? 'To\'langan' : (p.paid === "pending" ? 'Kutilmoqda' : 'Qarzdor');
+            if(currentLang === 'ru') badgeText = p.paid === true ? 'Оплачено' : (p.paid === "pending" ? 'В ожидании' : 'Долг');
             
             list.innerHTML += `
               <div class="list-item">
                 <div>
                   <b>#${p.jersey || '-'} ${p.name}</b><br>
-                  <small style="color:var(--text-muted)">Login: <b>${id}</b> | Parol: <b>${p.password}</b></small>
+                  <small style="color:var(--gray)">Login: <b>${id}</b> | Parol: <b>${p.password}</b></small>
                 </div>
                 <div style="text-align:right">
                   <span class="badge ${badgeClass}">${badgeText}</span>
                   <br>
-                  <button class="btn btn-outline" style="padding: 6px 10px; font-size: 12px; margin-top: 8px; width:auto;" onclick="editPlayer('${id}')">Tahrirlash</button>
+                  <button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px; margin-top: 5px; width:auto;" onclick="editPlayer('${id}')">✏️</button>
                 </div>
               </div>
             `;
           }
-        } else { list.innerHTML = "<p style='color:gray; text-align:center;'>O'quvchilar yo'q</p>"; }
+        } else { list.innerHTML = "<p style='text-align:center; color:gray;'>Bo'sh</p>"; }
       });
 
       db.ref('applications').on('value', (snapshot) => {
         const appList = document.getElementById('adminAppList');
         const appBadge = document.getElementById('appBadge');
-        if(!appList || !appBadge) return;
         appList.innerHTML = '';
         
         if (snapshot.exists()) {
@@ -501,12 +461,12 @@
             appList.innerHTML += `
               <div class="list-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
                 <div>
-                  <b>Bola: ${app.childName}</b> (${app.age} yosh, ${app.physical})<br>
-                  <small style="color:var(--text-muted)">Ota-ona: ${app.parentName} | Tel: ${app.phone}</small>
+                  <b>${app.childName}</b> (${app.age} yosh, ${app.physical})<br>
+                  <small style="color:var(--gray)">Ota-ona: ${app.parentName} | Tel: ${app.phone}</small>
                 </div>
                 <div style="display:flex; gap:10px; width:100%;">
-                  <button class="btn" style="padding: 8px; font-size:13px; background:#10b981; margin:0;" onclick="acceptApplication('${key}', '${app.phone}', '${app.childName}')">Qabul qilish</button>
-                  <button class="btn" style="padding: 8px; font-size:13px; background:#ef4444; margin:0;" onclick="rejectApplication('${key}')">Rad etish</button>
+                  <button class="btn" style="padding: 8px; font-size:12px; background:var(--green); margin:0;" onclick="acceptApplication('${key}', '${app.phone}', '${app.childName}')">Qabul</button>
+                  <button class="btn" style="padding: 8px; font-size:12px; background:var(--red); margin:0;" onclick="rejectApplication('${key}')">Rad etish</button>
                 </div>
               </div>
             `;
@@ -514,7 +474,7 @@
           appBadge.innerText = count;
           appBadge.style.display = 'inline-block';
         } else {
-          appList.innerHTML = "<p style='color:gray; text-align:center;'>Yangi arizalar yo'q</p>";
+          appList.innerHTML = "<p style='text-align:center; color:gray;'>Bo'sh</p>";
           appBadge.style.display = 'none';
         }
       });
@@ -526,14 +486,12 @@
 
       db.ref('players/' + phone).set(newPlayer).then(() => {
         db.ref('applications/' + appId).remove();
-        alert(`Ariza qabul qilindi!\n\nOta-onaga yuboring:\nLogin: ${phone}\nParol: ${randomPass}`);
-      }).catch(e => alert("Xatolik: " + e.message));
+        alert(`Qabul qilindi!\nLogin: ${phone}\nParol: ${randomPass}`);
+      });
     }
 
     function rejectApplication(appId) {
-      if(confirm("Haqiqatan ham bu arizani rad etmoqchimisiz?")) {
-        db.ref('applications/' + appId).remove();
-      }
+      if(confirm("O'chirilsinmi?")) db.ref('applications/' + appId).remove();
     }
 
     function switchAdminTab(tab) {
@@ -542,7 +500,6 @@
       document.getElementById('adminTabPlayers').classList.add('hidden');
       document.getElementById('adminTabApps').classList.add('hidden');
       document.getElementById('adminTabSettings').classList.add('hidden');
-      
       if(tab === 'players') document.getElementById('adminTabPlayers').classList.remove('hidden');
       if(tab === 'apps') document.getElementById('adminTabApps').classList.remove('hidden');
       if(tab === 'settings') document.getElementById('adminTabSettings').classList.remove('hidden');
@@ -556,8 +513,8 @@
       };
       db.ref('settings').set(newSettings).then(() => {
         appSettings = newSettings;
-        alert("Sozlamalar saqlandi!");
-      }).catch(e => alert("Xato: " + e.message));
+        alert("Saqlandi!");
+      });
     }
 
     function openAddPlayerModal() {
@@ -596,7 +553,6 @@
     function savePlayer() {
       const newLogin = document.getElementById('pLogin').value.trim(); 
       const oldLogin = document.getElementById('editPlayerId').value;
-      
       if(!newLogin) return alert("Login kiriting!");
       
       const payValue = document.getElementById('pPay').value;
@@ -609,14 +565,8 @@
         paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false)
       };
 
-      if (oldLogin && oldLogin !== newLogin) {
-        db.ref('players/' + oldLogin).remove(); 
-      }
-
-      db.ref('players/' + newLogin).set(data).then(() => {
-        alert("Saqlandi!");
-        closeModal();
-      }).catch(e => alert("Xatolik: " + e.message));
+      if (oldLogin && oldLogin !== newLogin) db.ref('players/' + oldLogin).remove(); 
+      db.ref('players/' + newLogin).set(data).then(() => { closeModal(); });
     }
 
     function closeModal() {
