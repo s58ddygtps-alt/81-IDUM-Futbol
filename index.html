@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>81 Football Pro Stats</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -34,56 +32,43 @@
       background-image: radial-gradient(circle at 50% 0%, #172A45 0%, var(--bg-dark) 70%);
     }
 
-    /* Animatsiyalar */
     @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 var(--primary-glow); } 70% { box-shadow: 0 0 0 10px rgba(0, 180, 216, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 180, 216, 0); } }
-
     .screen { display: none; padding: 20px 16px; animation: slideUp 0.4s ease; }
     .screen.active { display: block; }
 
-    /* Header */
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .brand { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #fff; display: flex; align-items: center; gap: 8px; }
     .brand span { color: var(--primary); }
     
-    /* Tugmalar */
     .btn { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--primary); color: var(--bg-dark); font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 12px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px var(--primary-glow); }
     .btn:active { transform: scale(0.96); }
     .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); box-shadow: none; }
-    .btn-outline:active { background: rgba(0, 180, 216, 0.1); }
 
-    /* Kartalar (Pro Stats uslubi) */
     .card { background: var(--card-bg); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
     
     .input-group { margin-bottom: 16px; }
-    .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
     .input-control { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #233554; background: #0A192F; color: var(--text-light); font-size: 15px; outline: none; transition: 0.3s; }
     .input-control:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 180, 216, 0.2); }
-    select.input-control { appearance: none; }
 
-    /* O'yinchi Profili */
-    .player-hero { text-align: center; position: relative; padding-top: 10px; }
-    .player-photo { width: 110px; height: 140px; object-fit: cover; border-radius: 12px; border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary-glow); margin: 0 auto 15px; display: block; }
+    /* O'yinchi Profil Eskizi (Siz chizgandek) */
+    .player-hero { text-align: center; padding-top: 10px; }
+    .player-photo { width: 120px; height: 150px; object-fit: cover; border-radius: 12px; border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary-glow); margin: 0 auto 15px; display: block; }
     .player-name { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-    .player-username { color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 15px; }
-    
-    /* Statistika Paneli */
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 15px; }
-    .stat-box { background: #0A192F; padding: 12px 8px; border-radius: 10px; text-align: center; border: 1px solid #233554; }
-    .stat-val { font-size: 20px; font-weight: 800; color: var(--primary); }
-    .stat-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; font-weight: 600; }
+    .player-username { color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 20px; }
+
+    /* Statistikalar ro'yxati */
+    .stat-list { display: flex; flex-direction: column; gap: 10px; }
+    .stat-row { background: #0A192F; border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #233554; }
+    .stat-label { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+    .stat-value { font-size: 16px; font-weight: 800; color: var(--primary); }
 
     /* To'lov qismi */
-    .badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
-    .bg-success { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
-    .bg-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
-    .bg-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
-
-    /* Bottom Nav (iPhone uchun) */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 25, 47, 0.95); backdrop-filter: blur(10px); border-top: 1px solid #233554; display: flex; justify-content: space-around; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); z-index: 90; }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; border: none; background: none; }
-    .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; fill: currentColor; }
-    .nav-item.active { color: var(--primary); }
+    .payment-box { margin-top: 20px; border: 1px solid var(--primary); background: rgba(0, 180, 216, 0.05); padding: 20px; border-radius: 16px; text-align: center; }
+    .badge { padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 800; display: inline-block; margin-bottom: 10px; }
+    .bg-success { background: rgba(16, 185, 129, 0.2); color: var(--success); border: 1px solid var(--success); }
+    .bg-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+    .bg-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
 
     /* Tabs */
     .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
@@ -103,52 +88,36 @@
 </head>
 <body>
 
-  <!-- 1. LOGIN EKRANI -->
+  <!-- LOGIN -->
   <div class="screen active" id="loginScreen">
-    <div class="header">
-      <div class="brand">81 <span>PRO STATS</span></div>
-    </div>
+    <div class="header"><div class="brand">81 <span>PRO STATS</span></div></div>
     <div class="card" style="margin-top: 10vh;">
-      <h2 style="text-align: center; margin-bottom: 25px; font-size: 22px;">Tizimga kirish</h2>
-      <div class="input-group">
-        <label>Login (Telefon yoki Admin)</label>
-        <input type="text" id="loginUser" class="input-control" placeholder="Loginni kiriting">
-      </div>
-      <div class="input-group">
-        <label>Parol</label>
-        <input type="password" id="loginPass" class="input-control" placeholder="••••">
-      </div>
+      <h2 style="text-align: center; margin-bottom: 25px;">Tizimga kirish</h2>
+      <div class="input-group"><label>Login</label><input type="text" id="loginUser" class="input-control" placeholder="Telefon yoki Admin"></div>
+      <div class="input-group"><label>Parol</label><input type="password" id="loginPass" class="input-control" placeholder="••••"></div>
       <button class="btn" onclick="login()">KIRISH</button>
       <button class="btn btn-outline" onclick="showScreen('applyScreen')">ARIZA TOPSHIRISH</button>
     </div>
   </div>
 
-  <!-- 2. ARIZA EKRANI -->
+  <!-- ARIZA -->
   <div class="screen" id="applyScreen">
-    <div class="header">
-      <div class="brand">81 <span>PRO STATS</span></div>
-    </div>
+    <div class="header"><div class="brand">81 <span>PRO STATS</span></div></div>
     <button class="btn btn-outline" style="width: auto; margin-bottom: 15px; padding: 10px 15px;" onclick="showScreen('loginScreen')">← Orqaga</button>
     <div class="card">
       <h2 style="text-align: center; margin-bottom: 20px;">Yangi Ariza</h2>
       <div class="input-group"><label>Ota-onaning Ismi</label><input type="text" id="appParentName" class="input-control"></div>
       <div class="input-group"><label>Bolaning Ismi</label><input type="text" id="appChildName" class="input-control"></div>
-      <div class="input-group"><label>Telefon (Login bo'ladi)</label><input type="text" id="appPhone" class="input-control" placeholder="+998..."></div>
+      <div class="input-group"><label>Telefon (Login)</label><input type="text" id="appPhone" class="input-control"></div>
       <div class="input-group"><label>Yoshi</label><input type="number" id="appAge" class="input-control"></div>
-      <div class="input-group">
-        <label>Jismoniy holati</label>
-        <select id="appPhysical" class="input-control">
-          <option value="A'lo">A'lo</option><option value="Yaxshi">Yaxshi</option><option value="O'rtacha">O'rtacha</option><option value="Nimjon">Nimjon</option>
-        </select>
-      </div>
       <button class="btn" onclick="submitApplication()">YUBORISH</button>
     </div>
   </div>
 
-  <!-- 3. O'YINCHI (OTA-ONA) PANELI -->
+  <!-- O'YINCHI PROFILI (Eskiz bo'yicha) -->
   <div class="screen" id="parentScreen">
     <div class="header">
-      <div class="brand">81 <span>PRO STATS</span></div>
+      <div class="brand">81 <span>STATS</span></div>
       <button class="btn btn-outline" style="width: auto; padding: 8px 12px; margin: 0;" onclick="logout()">Chiqish</button>
     </div>
 
@@ -156,42 +125,43 @@
       <img id="pPhoto" class="player-photo" src="https://ui-avatars.com/api/?name=U&background=112240&color=00B4D8&size=150">
       <h2 class="player-name" id="pFullName">Ism</h2>
       <p class="player-username" id="pUsername">@username</p>
+
+      <div class="stat-list">
+        <div class="stat-row">
+          <span class="stat-label">Statistika (O'zlashtirish)</span>
+          <span class="stat-value"><span id="pProgress">0</span>%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Asistlar</span>
+          <span class="stat-value"><span id="pAssists">0</span> ta</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Gollar</span>
+          <span class="stat-value"><span id="pGoals">0</span> ta</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Tezligi</span>
+          <span class="stat-value"><span id="pSpeed">0</span>%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Mashg'ulotlar</span>
+          <span class="stat-value"><span id="pTrainings">0</span> marta</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TO'LOV QISMI -->
+    <div class="payment-box">
+      <h3 style="margin-bottom: 15px;">To'lov holati</h3>
+      <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
+      <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">Oylik: <b id="pPayAmount" style="color:#fff;">350 000 so'm</b></p>
       
-      <div class="stats-grid">
-        <div class="stat-box"><div class="stat-val">#<span id="pJersey">-</span></div><div class="stat-lbl">Futbolka</div></div>
-        <div class="stat-box"><div class="stat-val"><span id="pProgress">0</span>%</div><div class="stat-lbl">O'zlashtirish</div></div>
-        <div class="stat-box"><div class="stat-val" id="pAttendance">0</div><div class="stat-lbl">Davomat</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="list-item">
-        <span>To'lov holati:</span>
-        <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
-      </div>
-      <div class="list-item">
-        <span>Oylik to'lov:</span>
-        <span style="font-weight: 800; color: var(--primary);" id="pPayAmount">350 000 so'm</span>
-      </div>
-      <button id="btnPay" class="btn" style="margin-top: 15px;" onclick="openPaymentModal()">TO'LOV QILISH</button>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom: 10px; color: var(--primary); font-size: 15px;">Mashg'ulot jadvali</h3>
-      <p id="pSchedule" style="font-size: 13px; color: var(--text-muted); white-space: pre-line; line-height: 1.6;"></p>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom: 10px; color: var(--primary); font-size: 15px;">Murabbiy haqida</h3>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4;">
-        <strong>Abbosov Shohruh (Arıf Arazadəı)</strong><br>
-        23 yoshda, Sport unversitetini bitirgan. Hozirda 81-IDUM maktabida jismoniy tarbiya fanidan dars beradi.<br><br>
-        <b>O'ynagan klublari:</b> Bunyodkor, Qarabağ, Tovuz, Gəncə.
-      </p>
+      <!-- Tugma faqat to'lanmagan bo'lsa ko'rinadi -->
+      <button id="btnPay" class="btn" style="margin-top: 15px;" onclick="openPaymentModal()">TO'LOV QILISH / CHEK YUBORISH</button>
     </div>
   </div>
 
-  <!-- 4. ADMIN PANELI -->
+  <!-- ADMIN PANELI -->
   <div class="screen" id="adminScreen">
     <div class="header">
       <div class="brand">81 <span>ADMIN</span></div>
@@ -219,24 +189,11 @@
 
     <div id="adminTabSettings" class="hidden">
       <div class="card">
-        <div class="input-group"><label>Mashg'ulot jadvali</label><textarea id="setSchedule" class="input-control" rows="3"></textarea></div>
         <div class="input-group"><label>Karta raqami</label><input type="text" id="setCard" class="input-control"></div>
         <div class="input-group"><label>Oylik to'lov summasi</label><input type="text" id="setAmount" class="input-control"></div>
         <button class="btn" onclick="saveSettings()">SAQLASH</button>
       </div>
     </div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div class="bottom-nav hidden" id="bottomNav">
-    <button class="nav-item active" id="navHome" onclick="navTo('home')">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      Asosiy
-    </button>
-    <button class="nav-item" id="navStats" onclick="navTo('stats')">
-      <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
-      Statistika
-    </button>
   </div>
 
   <!-- Modallar -->
@@ -247,8 +204,13 @@
     <h3 style="margin-bottom: 15px; text-align:center; color:var(--primary);">To'lov qilish</h3>
     <p style="font-size: 14px; margin-bottom: 10px; text-align:center;">Karta: <b id="payCard" style="color:var(--text-light)">8600...</b></p>
     <p style="font-size: 14px; margin-bottom: 20px; text-align:center;">Summa: <b id="payAmount" style="color:var(--text-light)">350 000 so'm</b></p>
+    
     <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; margin-bottom:20px;">
-      <p style="font-size: 12px; color: var(--text-muted); line-height:1.6;">1. Kartaga pul o'tkazing.<br>2. Pastdagi tugma orqali botga chekni yuboring.<br>3. So'ngra "To'lov qildim" tugmasini bosing.</p>
+      <p style="font-size: 12px; color: var(--text-muted); line-height:1.6;">
+        1. Kartaga pul o'tkazing.<br>
+        2. Pastdagi tugma orqali botga chek skrinshotini yuboring.<br>
+        3. So'ngra "Men to'lov qildim" tugmasini bosing. Murabbiy tasdiqlaydi.
+      </p>
     </div>
     <button onclick="openBot()" class="btn" style="background:#2AABEE; box-shadow:none; border:none;">📸 BOTGA CHEK YUBORISH</button>
     <button class="btn" style="background:var(--warning); color:#fff; box-shadow:none;" onclick="markAsPending()">MEN TO'LOV QILDIM (KUTISH)</button>
@@ -262,13 +224,24 @@
     <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pEditName" class="input-control"></div>
     <div class="input-group"><label>Login (Telefon)</label><input type="text" id="pLogin" class="input-control"></div>
     <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="input-control"></div>
-    <div class="input-group"><label>Rasm URL</label><input type="text" id="pPhotoUrl" class="input-control" placeholder="https://..."></div>
-    <div class="input-group"><label>Futbolka raqami</label><input type="number" id="pJerseyNum" class="input-control"></div>
-    <div class="input-group"><label>O'zlashtirish (%)</label><input type="number" id="pProgressVal" class="input-control"></div>
+    
+    <!-- Yangi statistikalar (Admin kiritadi) -->
+    <div style="display:flex; gap:10px;">
+      <div class="input-group" style="flex:1;"><label>Gollar</label><input type="number" id="pGoalsInput" class="input-control" value="0"></div>
+      <div class="input-group" style="flex:1;"><label>Asistlar</label><input type="number" id="pAssistsInput" class="input-control" value="0"></div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <div class="input-group" style="flex:1;"><label>Tezlik (%)</label><input type="number" id="pSpeedInput" class="input-control" value="0"></div>
+      <div class="input-group" style="flex:1;"><label>O'zlashtirish (%)</label><input type="number" id="pProgressInput" class="input-control" value="0"></div>
+    </div>
+    <div class="input-group"><label>Mashg'ulotlar soni</label><input type="number" id="pTrainingsInput" class="input-control" value="0"></div>
+
     <div class="input-group">
       <label>To'lov holati</label>
       <select id="pPay" class="input-control">
-        <option value="unpaid">To'lanmagan</option><option value="pending">Kutilmoqda</option><option value="paid">To'langan</option>
+        <option value="unpaid">To'lanmagan</option>
+        <option value="pending">Kutilmoqda (Chek tekshirilmoqda)</option>
+        <option value="paid">To'langan</option>
       </select>
     </div>
     <button class="btn" onclick="savePlayer()">SAQLASH</button>
@@ -276,24 +249,16 @@
   </div>
 
   <script>
-    // === SOZLAMALAR ===
-    // 1. Firebase
     const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. Admin va Bot
     const ADMIN_LOGIN = "Arif";
     const ADMIN_PASS = "0717"; 
     const BOT_LINK = "https://t.me/todo_plus_bot";
     
-    // 3. Telegram Bot API (Arizalarni to'g'ridan-to'g'ri botga yuborish uchun)
-    // DIQQAT: Tokenni bu yerga qo'yish xavfsiz emas, lekin tizim ishlashi uchun shart.
-    const BOT_TOKEN = "8536839353:AAEh8dRookQLdHl2hH49fWeh1q71Hv3j5rE"; 
-    const CHAT_ID = "6807333001"; // Sizning Telegram ID ingiz
-
     let currentUser = null;
-    let appSettings = { schedule: "Dushanba, Chorshanba, Juma (16:00)", card: "8600 0000 0000 0000", amount: "350 000 so'm" };
+    let appSettings = { card: "8600 0000 0000 0000", amount: "350 000 so'm" };
 
     db.ref('settings').on('value', (snapshot) => {
       if (snapshot.exists()) appSettings = snapshot.val();
@@ -302,11 +267,6 @@
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      if(id === 'parentScreen' || id === 'adminScreen') {
-        document.getElementById('bottomNav').classList.remove('hidden');
-      } else {
-        document.getElementById('bottomNav').classList.add('hidden');
-      }
     }
 
     function openBot() {
@@ -317,46 +277,29 @@
       }
     }
 
-    // --- ARIZA TOPSHIRISH VA BOTGA YUBORISH ---
     function submitApplication() {
       const parentName = document.getElementById('appParentName').value.trim();
       const childName = document.getElementById('appChildName').value.trim();
       const phone = document.getElementById('appPhone').value.trim();
       const age = document.getElementById('appAge').value.trim();
-      const physical = document.getElementById('appPhysical').value;
 
-      if (!parentName || !childName || !phone) {
-        alert("Hamma joyni to'ldiring!"); return;
-      }
+      if (!parentName || !childName || !phone) { alert("Hamma joyni to'ldiring!"); return; }
 
-      // 1. Firebase'ga saqlash
-      db.ref('applications').push({ parentName, childName, phone, age, physical, date: new Date().toLocaleDateString() }).then(() => {
-        
-        // 2. Telegram Botga xabar yuborish
-        const message = `🔔 YANGI ARIZA!\n\nOta-ona: ${parentName}\nBola: ${childName}\nTel: ${phone}\nYosh: ${age}\nHolat: ${physical}`;
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-        }).catch(e => console.log("Botga yuborishda xato:", e));
-
-        alert("Arizangiz muvaffaqiyatli yuborildi!");
+      db.ref('applications').push({ parentName, childName, phone, age, date: new Date().toLocaleDateString() }).then(() => {
+        alert("Arizangiz yuborildi!");
         showScreen('loginScreen');
-      }).catch(e => alert("Xatolik: " + e.message));
+      });
     }
 
-    // --- LOGIN ---
     function login() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
 
       if (!user || !pass) { alert("Login/Parol kiriting!"); return; }
 
-      if (user === ADMIN_LOGIN) {
-        if (pass === ADMIN_PASS) {
-          showScreen('adminScreen');
-          loadAdminData();
-        } else { alert("Admin paroli xato!"); }
+      if (user === ADMIN_LOGIN && pass === ADMIN_PASS) {
+        showScreen('adminScreen');
+        loadAdminData();
         return;
       }
 
@@ -368,10 +311,9 @@
             currentUser.id = user;
             loadParentData();
             showScreen('parentScreen');
-            navTo('home'); // Standart holatga qaytarish
           } else { alert("Parol xato!"); }
         } else { alert("Bunday login yo'q!"); }
-      }).catch(e => alert("Bazaga ulanishda xato: " + e.message));
+      });
     }
 
     function logout() {
@@ -381,38 +323,24 @@
       showScreen('loginScreen');
     }
 
-    // --- NAVIGATSIYA ---
-    function navTo(tab) {
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('nav' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-      
-      const parentScreen = document.getElementById('parentScreen');
-      const cards = parentScreen.querySelectorAll('.card');
-      
-      if (tab === 'home') {
-        cards.forEach((c, index) => { c.style.display = 'block'; });
-      } else if (tab === 'stats') {
-        cards.forEach((c, index) => { c.style.display = 'none'; });
-        cards[0].style.display = 'block'; // Faqat profil va statistika
-        cards[1].style.display = 'block'; // To'lov
-      }
-    }
-
-    // --- OTA-ONA PANELI ---
+    // OTA-ONA PANELI (Eskiz bo'yicha ma'lumotlarni chiqarish)
     function loadParentData() {
       document.getElementById('pFullName').innerText = currentUser.name || 'Ism kiritilmagan';
       let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
       document.getElementById('pUsername').innerText = "@" + uname;
       
       document.getElementById('pPhoto').src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=112240&color=00B4D8&size=150`;
-      document.getElementById('pJersey').innerText = currentUser.jersey || '-';
-      document.getElementById('pProgress').innerText = currentUser.progress || '0';
       
-      // Haqiqiy statistika
-      document.getElementById('pSchedule').innerText = appSettings.schedule || "Kiritilmagan";
-      document.getElementById('payCard').innerText = appSettings.card || "Kiritilmagan";
-      document.getElementById('payAmount').innerText = appSettings.amount || "350 000 so'm";
-      document.getElementById('pPayAmount').innerText = appSettings.amount || "350 000 so'm";
+      // Eskizdagi statistikalar
+      document.getElementById('pProgress').innerText = currentUser.progress || '0';
+      document.getElementById('pAssists').innerText = currentUser.assists || '0';
+      document.getElementById('pGoals').innerText = currentUser.goals || '0';
+      document.getElementById('pSpeed').innerText = currentUser.speed || '0';
+      document.getElementById('pTrainings').innerText = currentUser.trainings || '0';
+      
+      document.getElementById('payCard').innerText = appSettings.card;
+      document.getElementById('payAmount').innerText = appSettings.amount;
+      document.getElementById('pPayAmount').innerText = appSettings.amount;
       
       updateParentPayStatus();
     }
@@ -447,13 +375,13 @@
           currentUser.paid = "pending";
           updateParentPayStatus();
           closeModal();
+          alert("Holat o'zgardi. Murabbiy tez orada tasdiqlaydi.");
         });
       }
     }
 
-    // --- ADMIN PANELI ---
+    // ADMIN PANELI
     function loadAdminData() {
-      document.getElementById('setSchedule').value = appSettings.schedule || "";
       document.getElementById('setCard').value = appSettings.card || "";
       document.getElementById('setAmount').value = appSettings.amount || "";
 
@@ -470,8 +398,8 @@
             list.innerHTML += `
               <div class="list-item">
                 <div>
-                  <b>#${p.jersey || '-'} ${p.name}</b><br>
-                  <small style="color:var(--text-muted)">Login: <b>${id}</b> | Parol: <b>${p.password}</b></small>
+                  <b>${p.name}</b><br>
+                  <small style="color:var(--text-muted)">Login: <b>${id}</b></small>
                 </div>
                 <div style="text-align:right">
                   <span class="badge ${badgeClass}">${badgeText}</span>
@@ -498,7 +426,7 @@
             appList.innerHTML += `
               <div class="list-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
                 <div>
-                  <b>${app.childName}</b> (${app.age} yosh, ${app.physical})<br>
+                  <b>${app.childName}</b> (${app.age} yosh)<br>
                   <small style="color:var(--text-muted)">Ota-ona: ${app.parentName} | Tel: ${app.phone}</small>
                 </div>
                 <div style="display:flex; gap:10px; width:100%;">
@@ -519,11 +447,14 @@
 
     function acceptApplication(appId, phone, name) {
       const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
-      const newPlayer = { name: name, password: randomPass, jersey: "", progress: 0, paid: false, photoUrl: "" };
+      const newPlayer = { 
+        name: name, password: randomPass, paid: false, 
+        goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0 
+      };
 
       db.ref('players/' + phone).set(newPlayer).then(() => {
         db.ref('applications/' + appId).remove();
-        alert(`Ariza qabul qilindi!\n\nLogin: ${phone}\nParol: ${randomPass}`);
+        alert(`Qabul qilindi!\nLogin: ${phone}\nParol: ${randomPass}`);
       });
     }
 
@@ -543,15 +474,8 @@
     }
 
     function saveSettings() {
-      const newSettings = {
-        schedule: document.getElementById('setSchedule').value,
-        card: document.getElementById('setCard').value,
-        amount: document.getElementById('setAmount').value
-      };
-      db.ref('settings').set(newSettings).then(() => {
-        appSettings = newSettings;
-        alert("Sozlamalar saqlandi!");
-      });
+      const newSettings = { card: document.getElementById('setCard').value, amount: document.getElementById('setAmount').value };
+      db.ref('settings').set(newSettings).then(() => { appSettings = newSettings; alert("Saqlandi!"); });
     }
 
     function openAddPlayerModal() {
@@ -560,9 +484,11 @@
       document.getElementById('pEditName').value = "";
       document.getElementById('pLogin').value = "";
       document.getElementById('pPass').value = "";
-      document.getElementById('pPhotoUrl').value = "";
-      document.getElementById('pJerseyNum').value = "";
-      document.getElementById('pProgressVal').value = "0";
+      document.getElementById('pGoalsInput').value = "0";
+      document.getElementById('pAssistsInput').value = "0";
+      document.getElementById('pSpeedInput').value = "0";
+      document.getElementById('pProgressInput').value = "0";
+      document.getElementById('pTrainingsInput').value = "0";
       document.getElementById('pPay').value = "unpaid";
       document.getElementById('modalOverlay').classList.add('active');
       document.getElementById('playerModal').classList.add('active');
@@ -577,9 +503,11 @@
           document.getElementById('pEditName').value = p.name;
           document.getElementById('pLogin').value = id;
           document.getElementById('pPass').value = p.password;
-          document.getElementById('pPhotoUrl').value = p.photoUrl || "";
-          document.getElementById('pJerseyNum').value = p.jersey || "";
-          document.getElementById('pProgressVal').value = p.progress || "0";
+          document.getElementById('pGoalsInput').value = p.goals || 0;
+          document.getElementById('pAssistsInput').value = p.assists || 0;
+          document.getElementById('pSpeedInput').value = p.speed || 0;
+          document.getElementById('pProgressInput').value = p.progress || 0;
+          document.getElementById('pTrainingsInput').value = p.trainings || 0;
           document.getElementById('pPay').value = p.paid === true ? "paid" : (p.paid === "pending" ? "pending" : "unpaid");
           document.getElementById('modalOverlay').classList.add('active');
           document.getElementById('playerModal').classList.add('active');
@@ -596,9 +524,11 @@
       const data = {
         name: document.getElementById('pEditName').value,
         password: document.getElementById('pPass').value,
-        photoUrl: document.getElementById('pPhotoUrl').value.trim(),
-        jersey: document.getElementById('pJerseyNum').value,
-        progress: document.getElementById('pProgressVal').value,
+        goals: document.getElementById('pGoalsInput').value,
+        assists: document.getElementById('pAssistsInput').value,
+        speed: document.getElementById('pSpeedInput').value,
+        progress: document.getElementById('pProgressInput').value,
+        trainings: document.getElementById('pTrainingsInput').value,
         paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false)
       };
 
