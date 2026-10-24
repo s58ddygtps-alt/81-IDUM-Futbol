@@ -5,61 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>81-Maktab FK</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
-  <!-- Firebase (Telefonlar uchun barqaror versiya) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
     :root {
-      --bg-color: #0f172a; --glass-bg: rgba(255, 255, 255, 0.1);
-      --glass-border: rgba(255, 255, 255, 0.2); --primary: #10b981;
-      --text-light: #f8fafc; --text-muted: #94a3b8;
+      --bg-color: #09090b; 
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.4);
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg-color); color: var(--text-light); min-height: 100vh; overflow-x: hidden; position: relative; }
     
-    .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%); }
-    .bubble { position: absolute; background: rgba(16, 185, 129, 0.15); border-radius: 50%; animation: float 15s infinite linear; backdrop-filter: blur(10px); }
-    @keyframes float { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+    /* Orqa fon */
+    .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at 50% 0%, #1e1e24 0%, #09090b 100%); }
+    .bubble { position: absolute; background: var(--primary-glow); border-radius: 50%; animation: float 20s infinite linear; filter: blur(40px); }
+    @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
-    .screen { display: none; padding: 20px 16px; animation: fadeIn 0.4s ease; }
+    /* Umumiy */
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 24px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
+    .screen { display: none; padding: 20px 16px; animation: slideUp 0.4s ease; }
     .screen.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    #loginScreen { text-align: center; margin-top: 15vh; }
-    .logo-icon { font-size: 60px; margin-bottom: 10px; }
-    .title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    /* Login & Ariza */
+    #loginScreen, #applyScreen { text-align: center; margin-top: 10vh; }
+    .logo-icon { font-size: 70px; margin-bottom: 15px; text-shadow: 0 0 20px var(--primary-glow); }
+    .title { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
     .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
     .input-group { margin-bottom: 15px; text-align: left; }
-    .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; margin-left: 5px; }
-    .glass-input { width: 100%; padding: 15px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white; font-size: 16px; outline: none; }
-    .glass-input:focus { border-color: var(--primary); }
-    .btn { width: 100%; padding: 15px; border-radius: 16px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-    .btn:active { transform: scale(0.98); background: #059669; }
-    .btn-outline { background: transparent; border: 1px solid var(--glass-border); }
+    .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; margin-left: 5px; font-weight: 600; }
+    .glass-input { width: 100%; padding: 16px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; font-size: 16px; outline: none; transition: 0.3s; }
+    .glass-input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    
+    .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px var(--primary-glow); }
+    .btn:active { transform: scale(0.97); background: #059669; }
+    .btn-outline { background: transparent; border: 1px solid var(--glass-border); box-shadow: none; }
+    .btn-outline:active { background: var(--glass-bg); }
 
+    /* Dashboard */
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .user-info h2 { font-size: 20px; }
-    .user-info p { color: var(--primary); font-size: 12px; font-weight: 600; text-transform: uppercase; }
+    .user-info p { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .stat-card { text-align: center; }
-    .stat-value { font-size: 24px; font-weight: 800; color: var(--primary); margin-top: 5px; }
-    .stat-label { font-size: 12px; color: var(--text-muted); }
-    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .stat-card { text-align: center; background: rgba(0,0,0,0.2); border-radius: 16px; padding: 15px; }
+    .stat-value { font-size: 28px; font-weight: 800; color: var(--primary); margin-top: 5px; text-shadow: 0 0 10px var(--primary-glow); }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--glass-border); }
     .list-item:last-child { border-bottom: none; }
-    .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
-    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-    .badge-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .badge { padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
 
-    .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 5px; }
-    .tab { padding: 10px 16px; border-radius: 20px; background: var(--glass-bg); font-size: 13px; white-space: nowrap; cursor: pointer; border: 1px solid transparent; }
-    .tab.active { background: var(--primary); border-color: var(--primary); font-weight: bold; }
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+    .tab { padding: 12px 20px; border-radius: 20px; background: var(--glass-bg); font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
+    .tab.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s; z-index: 101; max-height: 90vh; overflow-y: auto; }
+    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: #18181b; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 101; max-height: 90vh; overflow-y: auto; border-top: 1px solid var(--glass-border); }
     .modal-content.active { transform: translateY(0); }
     .hidden { display: none !important; }
   </style>
@@ -76,7 +87,7 @@
 
     <div class="glass-panel">
       <div class="input-group">
-        <label>Login (Admin: Arif)</label>
+        <label>Login (Telefon raqam yoki Admin)</label>
         <input type="text" id="loginUser" class="glass-input" placeholder="Loginni kiriting">
       </div>
       <div class="input-group">
@@ -84,10 +95,34 @@
         <input type="password" id="loginPass" class="glass-input" placeholder="••••">
       </div>
       <button class="btn" onclick="login()">Kirish</button>
+      <button class="btn btn-outline" style="margin-top: 15px;" onclick="showScreen('applyScreen')">Yangi ariza topshirish</button>
     </div>
   </div>
 
-  <!-- 2. OTA-ONA EKRANI -->
+  <!-- 2. ARIZA TOPSHIRISH EKRANI -->
+  <div class="screen" id="applyScreen">
+    <header style="justify-content: flex-start; gap: 15px;">
+      <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="showScreen('loginScreen')">← Orqaga</button>
+    </header>
+    <div class="glass-panel">
+      <h2 style="margin-bottom: 20px; text-align: center;">To'garakka yozilish</h2>
+      <div class="input-group">
+        <label>Bolaning Ismi va Familiyasi</label>
+        <input type="text" id="appChildName" class="glass-input" placeholder="Masalan: Ali Valiyev">
+      </div>
+      <div class="input-group">
+        <label>Ota-onaning telefon raqami (Login bo'ladi)</label>
+        <input type="text" id="appPhone" class="glass-input" placeholder="+998901234567">
+      </div>
+      <div class="input-group">
+        <label>Bolaning yoshi</label>
+        <input type="number" id="appAge" class="glass-input" placeholder="Masalan: 10">
+      </div>
+      <button class="btn" onclick="submitApplication()">Arizani yuborish</button>
+    </div>
+  </div>
+
+  <!-- 3. OTA-ONA EKRANI -->
   <div class="screen" id="parentScreen">
     <header>
       <div class="user-info">
@@ -113,25 +148,25 @@
     </div>
 
     <div class="glass-panel">
-      <h3 style="margin-bottom: 10px; font-size: 16px;">To'lov holati</h3>
+      <h3 style="margin-bottom: 15px; font-size: 16px;">To'lov holati</h3>
       <div class="list-item">
-        <span>Joriy oy:</span>
+        <span style="color:var(--text-muted)">Joriy oy:</span>
         <span id="pPayStatus" class="badge badge-danger">To'lanmagan</span>
       </div>
       <div class="list-item">
-        <span>Oylik:</span>
-        <span id="pPayAmount">300 000 so'm</span>
+        <span style="color:var(--text-muted)">Oylik to'lov:</span>
+        <span id="pPayAmount" style="font-weight:bold;">300 000 so'm</span>
       </div>
-      <button class="btn" style="margin-top: 15px;" onclick="openPaymentModal()">Chek yuborish / To'lash</button>
+      <button id="btnPay" class="btn" style="margin-top: 15px;" onclick="openPaymentModal()">To'lov qilish / Chek yuborish</button>
     </div>
 
     <div class="glass-panel">
-      <h3 style="margin-bottom: 10px; font-size: 16px;">Jadval</h3>
-      <p id="pSchedule" style="font-size: 14px; color: var(--text-muted); line-height: 1.5;"></p>
+      <h3 style="margin-bottom: 10px; font-size: 16px;">Mashg'ulot jadvali</h3>
+      <p id="pSchedule" style="font-size: 14px; color: var(--text-muted); line-height: 1.6;"></p>
     </div>
   </div>
 
-  <!-- 3. ADMIN EKRANI -->
+  <!-- 4. ADMIN EKRANI -->
   <div class="screen" id="adminScreen">
     <header>
       <div class="user-info">
@@ -143,16 +178,26 @@
 
     <div class="tabs">
       <div class="tab active" onclick="switchAdminTab('players')">O'quvchilar</div>
+      <div class="tab" onclick="switchAdminTab('apps')">Arizalar <span id="appBadge" style="display:none; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px; margin-left:5px;">0</span></div>
       <div class="tab" onclick="switchAdminTab('settings')">Sozlamalar</div>
     </div>
 
+    <!-- O'quvchilar Tab -->
     <div id="adminTabPlayers">
-      <button class="btn" onclick="openAddPlayerModal()">+ Yangi o'quvchi</button>
+      <button class="btn" onclick="openAddPlayerModal()">+ Yangi o'quvchi qo'shish</button>
       <div class="glass-panel" id="adminPlayerList" style="margin-top: 15px;">
         <p style="color:gray; text-align:center;">Yuklanmoqda...</p>
       </div>
     </div>
 
+    <!-- Arizalar Tab -->
+    <div id="adminTabApps" class="hidden">
+      <div class="glass-panel" id="adminAppList">
+        <p style="color:gray; text-align:center;">Arizalar yuklanmoqda...</p>
+      </div>
+    </div>
+
+    <!-- Sozlamalar Tab -->
     <div id="adminTabSettings" class="hidden">
       <div class="glass-panel">
         <div class="input-group">
@@ -164,10 +209,10 @@
           <input type="text" id="setCard" class="glass-input">
         </div>
         <div class="input-group">
-          <label>Oylik to'lov</label>
+          <label>Oylik to'lov summasi</label>
           <input type="text" id="setAmount" class="glass-input">
         </div>
-        <button class="btn" onclick="saveSettings()">Saqlash</button>
+        <button class="btn" onclick="saveSettings()">Sozlamalarni Saqlash</button>
       </div>
     </div>
   </div>
@@ -175,91 +220,117 @@
   <!-- Modallar -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
   
+  <!-- To'lov Modali -->
   <div class="modal-content" id="paymentModal">
-    <h3 style="margin-bottom: 15px;">To'lov</h3>
-    <p style="font-size: 14px; margin-bottom: 10px;">Karta: <b id="payCard">8600...</b></p>
-    <p style="font-size: 14px; margin-bottom: 20px;">Summa: <b id="payAmount">300 000 so'm</b></p>
-    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">To'lov qilib, chekni botga yuboring.</p>
-    <a href="https://t.me/todo_plus_bot" class="btn" style="text-decoration: none;">📸 Botga chek yuborish</a>
+    <h3 style="margin-bottom: 15px; text-align:center;">To'lov qilish</h3>
+    <p style="font-size: 14px; margin-bottom: 10px; text-align:center;">Karta: <b id="payCard" style="color:var(--primary)">8600...</b></p>
+    <p style="font-size: 14px; margin-bottom: 20px; text-align:center;">Summa: <b id="payAmount" style="color:var(--primary)">300 000 so'm</b></p>
+    
+    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; margin-bottom:20px;">
+      <p style="font-size: 12px; color: var(--text-muted); line-height:1.5;">1. Kartaga pul o'tkazing.<br>2. Pastdagi tugma orqali botga chekni yuboring.<br>3. So'ngra "To'lov qildim" tugmasini bosing.</p>
+    </div>
+
+    <a href="https://t.me/todo_plus_bot" class="btn" style="text-decoration: none; background:#2AABEE; box-shadow:none;">📸 Botga o'tib chek yuborish</a>
+    <button class="btn" style="background:#f59e0b; color:black; box-shadow:none;" onclick="markAsPending()">Men to'lov qildim (Kutish)</button>
     <button class="btn btn-outline" onclick="closeModal()">Yopish</button>
   </div>
 
+  <!-- O'quvchi qo'shish Modali -->
   <div class="modal-content" id="playerModal">
     <h3 style="margin-bottom: 15px;" id="playerModalTitle">O'quvchi</h3>
     <input type="hidden" id="editPlayerId">
-    <div class="input-group"><label>Ism</label><input type="text" id="pName" class="glass-input"></div>
-    <div class="input-group"><label>Login</label><input type="text" id="pLogin" class="glass-input"></div>
+    <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pName" class="glass-input"></div>
+    <div class="input-group"><label>Login (Telefon raqam)</label><input type="text" id="pLogin" class="glass-input"></div>
     <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="glass-input"></div>
     <div class="input-group"><label>Futbolka raqami</label><input type="number" id="pJerseyNum" class="glass-input"></div>
     <div class="input-group"><label>O'zlashtirish (%)</label><input type="number" id="pProgressVal" class="glass-input"></div>
     <div class="input-group">
-      <label>To'lov</label>
+      <label>To'lov holati</label>
       <select id="pPay" class="glass-input" style="color: black;">
         <option value="unpaid">To'lanmagan</option>
+        <option value="pending">Kutilmoqda (Chek tekshirilmoqda)</option>
         <option value="paid">To'langan</option>
       </select>
     </div>
     <button class="btn" onclick="savePlayer()">Saqlash</button>
-    <button class="btn btn-outline" onclick="closeModal()">Yopish</button>
+    <button class="btn btn-outline" onclick="closeModal()">Bekor qilish</button>
   </div>
 
   <script>
-    // Firebase'ni sozlash
-    const firebaseConfig = {
-      databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" 
-    };
-    // Firebase'ni ishga tushirish
+    // === FIREBASE SOZLAMALARI ===
+    const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
     const ADMIN_LOGIN = "Arif";
     const ADMIN_PASS = "0717"; 
 
-    // Animatsiya
+    // Orqa fon animatsiyasi
     const bg = document.getElementById('bgAnim');
-    for(let i=0; i<15; i++) {
+    for(let i=0; i<10; i++) {
       let bubble = document.createElement('div');
       bubble.className = 'bubble';
-      let size = Math.random() * 100 + 30;
+      let size = Math.random() * 150 + 50;
       bubble.style.width = size + 'px'; bubble.style.height = size + 'px';
       bubble.style.left = Math.random() * 100 + 'vw';
-      bubble.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      bubble.style.animationDuration = (Math.random() * 10 + 15) + 's';
       bubble.style.animationDelay = Math.random() * 5 + 's';
       bg.appendChild(bubble);
     }
 
     let currentUser = null;
-    let appSettings = { schedule: "Dushanba, Chorshanba, Juma (16:00)", card: "8600 0000 0000 0000", amount: "300 000 so'm" };
+    let appSettings = { schedule: "Yuklanmoqda...", card: "...", amount: "..." };
 
-    // Sozlamalarni yuklash
-    db.ref('settings').once('value').then((snapshot) => {
-      if (snapshot.exists()) {
-        appSettings = snapshot.val();
+    db.ref('settings').on('value', (snapshot) => {
+      if (snapshot.exists()) appSettings = snapshot.val();
+    });
+
+    // EKRANLARNI ALMASHTIRISH
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // ARIZA TOPSHIRISH
+    function submitApplication() {
+      const childName = document.getElementById('appChildName').value.trim();
+      const phone = document.getElementById('appPhone').value.trim();
+      const age = document.getElementById('appAge').value.trim();
+
+      if (!childName || !phone) {
+        alert("Ism va telefon raqamini kiriting!");
+        return;
       }
-    }).catch(e => console.log("Sozlama xatosi:", e));
+
+      db.ref('applications').push({
+        childName: childName,
+        phone: phone,
+        age: age,
+        date: new Date().toLocaleDateString()
+      }).then(() => {
+        alert("Arizangiz muvaffaqiyatli yuborildi! Murabbiy ko'rib chiqib, sizga login va parol beradi.");
+        document.getElementById('appChildName').value = '';
+        document.getElementById('appPhone').value = '';
+        document.getElementById('appAge').value = '';
+        showScreen('loginScreen');
+      }).catch(e => alert("Xatolik: " + e.message));
+    }
 
     // LOGIN
     function login() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
 
-      if (!user || !pass) {
-        alert("Login va parolni kiriting!");
-        return;
-      }
+      if (!user || !pass) { alert("Login va parolni kiriting!"); return; }
 
-      // Admin
       if (user === ADMIN_LOGIN) {
         if (pass === ADMIN_PASS) {
           showScreen('adminScreen');
           loadAdminData();
-        } else {
-          alert("Admin paroli xato!");
-        }
+        } else { alert("Admin paroli xato!"); }
         return;
       }
 
-      // O'quvchi
       db.ref('players/' + user).once('value').then((snapshot) => {
         if (snapshot.exists()) {
           const pData = snapshot.val();
@@ -268,15 +339,9 @@
             currentUser.id = user;
             loadParentData();
             showScreen('parentScreen');
-          } else {
-            alert("Parol xato!");
-          }
-        } else {
-          alert("Bunday login topilmadi!");
-        }
-      }).catch(e => {
-        alert("Xatolik: " + e.message);
-      });
+          } else { alert("Parol xato!"); }
+        } else { alert("Bunday login topilmadi! Ariza topshirganmisiz?"); }
+      }).catch(e => alert("Bazaga ulanishda xato: " + e.message));
     }
 
     function logout() {
@@ -286,12 +351,7 @@
       showScreen('loginScreen');
     }
 
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    // OTA-ONA
+    // --- OTA-ONA QISMI ---
     function loadParentData() {
       document.getElementById('parentName').innerText = currentUser.name;
       document.getElementById('pJersey').innerText = '#' + currentUser.jersey;
@@ -299,14 +359,25 @@
       document.getElementById('pSchedule').innerText = appSettings.schedule;
       document.getElementById('payCard').innerText = appSettings.card;
       document.getElementById('payAmount').innerText = appSettings.amount;
-      
+      updateParentPayStatus();
+    }
+
+    function updateParentPayStatus() {
       const statusBadge = document.getElementById('pPayStatus');
-      if (currentUser.paid) {
+      const btnPay = document.getElementById('btnPay');
+      
+      if (currentUser.paid === true || currentUser.paid === "paid") {
         statusBadge.innerText = "To'langan ✅";
         statusBadge.className = "badge badge-success";
+        btnPay.style.display = 'none';
+      } else if (currentUser.paid === "pending") {
+        statusBadge.innerText = "Kutilmoqda ⏳";
+        statusBadge.className = "badge badge-warning";
+        btnPay.style.display = 'none';
       } else {
         statusBadge.innerText = "To'lanmagan ❌";
         statusBadge.className = "badge badge-danger";
+        btnPay.style.display = 'flex';
       }
     }
 
@@ -315,12 +386,24 @@
       document.getElementById('paymentModal').classList.add('active');
     }
 
-    // ADMIN
+    function markAsPending() {
+      if(currentUser) {
+        db.ref('players/' + currentUser.id + '/paid').set("pending").then(() => {
+          currentUser.paid = "pending";
+          updateParentPayStatus();
+          closeModal();
+          alert("Holat o'zgardi: Kutilmoqda. Murabbiy chekni tekshirib tasdiqlaydi.");
+        });
+      }
+    }
+
+    // --- ADMIN QISMI ---
     function loadAdminData() {
       document.getElementById('setSchedule').value = appSettings.schedule;
       document.getElementById('setCard').value = appSettings.card;
       document.getElementById('setAmount').value = appSettings.amount;
 
+      // O'quvchilar
       db.ref('players').on('value', (snapshot) => {
         const list = document.getElementById('adminPlayerList');
         list.innerHTML = '';
@@ -328,32 +411,97 @@
           const players = snapshot.val();
           for (let id in players) {
             const p = players[id];
+            let badgeClass = p.paid === true ? 'badge-success' : (p.paid === "pending" ? 'badge-warning' : 'badge-danger');
+            let badgeText = p.paid === true ? 'To\'langan' : (p.paid === "pending" ? 'Kutilmoqda' : 'Qarzdor');
+            
             list.innerHTML += `
               <div class="list-item">
                 <div>
                   <b>#${p.jersey} ${p.name}</b><br>
-                  <small style="color:gray">Login: <b>${id}</b> | Parol: <b>${p.password}</b></small>
+                  <small style="color:var(--text-muted)">Login: <b>${id}</b> | Parol: <b>${p.password}</b></small>
                 </div>
                 <div style="text-align:right">
-                  <span class="badge ${p.paid ? 'badge-success' : 'badge-danger'}">${p.paid ? 'To\'langan' : 'Qarzdor'}</span>
+                  <span class="badge ${badgeClass}">${badgeText}</span>
                   <br>
-                  <button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px; margin-top: 5px; width:auto;" onclick="editPlayer('${id}')">Tahrirlash</button>
+                  <button class="btn btn-outline" style="padding: 6px 10px; font-size: 12px; margin-top: 8px; width:auto;" onclick="editPlayer('${id}')">Tahrirlash</button>
                 </div>
               </div>
             `;
           }
+        } else { list.innerHTML = "<p style='color:gray; text-align:center;'>O'quvchilar yo'q</p>"; }
+      });
+
+      // Arizalar
+      db.ref('applications').on('value', (snapshot) => {
+        const appList = document.getElementById('adminAppList');
+        const appBadge = document.getElementById('appBadge');
+        appList.innerHTML = '';
+        
+        if (snapshot.exists()) {
+          const apps = snapshot.val();
+          let count = 0;
+          for (let key in apps) {
+            const app = apps[key];
+            count++;
+            appList.innerHTML += `
+              <div class="list-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <div>
+                  <b>${app.childName}</b> (${app.age} yosh)<br>
+                  <small style="color:var(--text-muted)">Ota-ona tel: ${app.phone}</small>
+                </div>
+                <div style="display:flex; gap:10px; width:100%;">
+                  <button class="btn" style="padding: 8px; font-size:13px; background:#10b981; margin:0;" onclick="acceptApplication('${key}', '${app.phone}', '${app.childName}')">Qabul qilish</button>
+                  <button class="btn" style="padding: 8px; font-size:13px; background:#ef4444; margin:0;" onclick="rejectApplication('${key}')">Rad etish</button>
+                </div>
+              </div>
+            `;
+          }
+          appBadge.innerText = count;
+          appBadge.style.display = 'inline-block';
         } else {
-          list.innerHTML = "<p style='color:gray; text-align:center;'>O'quvchilar yo'q. Yangi qo'shing!</p>";
+          appList.innerHTML = "<p style='color:gray; text-align:center;'>Yangi arizalar yo'q</p>";
+          appBadge.style.display = 'none';
         }
       });
+    }
+
+    function acceptApplication(appId, phone, name) {
+      // 4 xonali random parol yaratish
+      const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
+      
+      const newPlayer = {
+        name: name,
+        password: randomPass,
+        jersey: "", // Keyin tahrirlaydi
+        progress: 0,
+        paid: false
+      };
+
+      // O'quvchilar bazasiga qo'shish
+      db.ref('players/' + phone).set(newPlayer).then(() => {
+        // Arizani o'chirish
+        db.ref('applications/' + appId).remove();
+        
+        // Adminga login-parolni ko'rsatish
+        alert(`Ariza qabul qilindi!\n\nOta-onaga quyidagi ma'lumotlarni yuboring:\nLogin: ${phone}\nParol: ${randomPass}`);
+      }).catch(e => alert("Xatolik: " + e.message));
+    }
+
+    function rejectApplication(appId) {
+      if(confirm("Haqiqatan ham bu arizani rad etmoqchimisiz?")) {
+        db.ref('applications/' + appId).remove();
+      }
     }
 
     function switchAdminTab(tab) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       event.target.classList.add('active');
       document.getElementById('adminTabPlayers').classList.add('hidden');
+      document.getElementById('adminTabApps').classList.add('hidden');
       document.getElementById('adminTabSettings').classList.add('hidden');
+      
       if(tab === 'players') document.getElementById('adminTabPlayers').classList.remove('hidden');
+      if(tab === 'apps') document.getElementById('adminTabApps').classList.remove('hidden');
       if(tab === 'settings') document.getElementById('adminTabSettings').classList.remove('hidden');
     }
 
@@ -369,6 +517,7 @@
       }).catch(e => alert("Xato: " + e.message));
     }
 
+    // --- O'QUVCHI QO'SHISH / TAHRIRLASH ---
     function openAddPlayerModal() {
       document.getElementById('playerModalTitle').innerText = "Yangi o'quvchi";
       document.getElementById('editPlayerId').value = "";
@@ -393,7 +542,7 @@
           document.getElementById('pPass').value = p.password;
           document.getElementById('pJerseyNum').value = p.jersey;
           document.getElementById('pProgressVal').value = p.progress;
-          document.getElementById('pPay').value = p.paid ? "paid" : "unpaid";
+          document.getElementById('pPay').value = p.paid === true ? "paid" : (p.paid === "pending" ? "pending" : "unpaid");
           document.getElementById('modalOverlay').classList.add('active');
           document.getElementById('playerModal').classList.add('active');
         }
@@ -406,12 +555,13 @@
       
       if(!newLogin) return alert("Login kiriting!");
       
+      const payValue = document.getElementById('pPay').value;
       const data = {
         name: document.getElementById('pName').value,
         password: document.getElementById('pPass').value,
         jersey: document.getElementById('pJerseyNum').value,
         progress: document.getElementById('pProgressVal').value,
-        paid: document.getElementById('pPay').value === "paid"
+        paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false)
       };
 
       if (oldLogin && oldLogin !== newLogin) {
