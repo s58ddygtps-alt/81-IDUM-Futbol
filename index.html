@@ -3,39 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>81-Maktab Futbol Akademiyasi</title>
+  <title>81-Maktab FK</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-    // === SOZLAMALAR ===
-    // 1. Firebase'dan olgan havolangizni shu yerga qo'ying
-    const firebaseConfig = {
-      databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" 
-    };
-    
-    // 2. Admin (Sizning) Telegram ID raqamingiz
-    const ADMIN_ID = "6807333001"; 
-    
-    // 3. Bot username (chek yuborish uchun)
-    const BOT_USERNAME = "oooMooo7";
-
-    // Firebase ishga tushirish
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    
-    // Global o'zgaruvchilar
-    window.db = db;
-    window.ref = ref;
-    window.get = get;
-    window.set = set;
-    window.onValue = onValue;
-    window.update = update;
-    window.ADMIN_ID = ADMIN_ID;
-    window.BOT_USERNAME = BOT_USERNAME;
-  </script>
   <style>
     :root {
       --bg-color: #0f172a;
@@ -58,17 +27,13 @@
 
     /* iOS 27 Orqa Fon Animatsiyasi (Uchib yuruvchi sharlar) */
     .background-animation {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: -1;
-      overflow: hidden;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1; overflow: hidden;
       background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
     }
     .bubble {
-      position: absolute;
-      background: rgba(16, 185, 129, 0.15);
-      border-radius: 50%;
-      animation: float 15s infinite linear;
+      position: absolute; background: rgba(16, 185, 129, 0.15);
+      border-radius: 50%; animation: float 15s infinite linear;
       backdrop-filter: blur(10px);
     }
     @keyframes float {
@@ -77,16 +42,11 @@
       100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
 
-    /* Glassmorphism (Shaffof oyna) uslubi */
+    /* Glassmorphism uslubi */
     .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
     /* Ekranlar */
@@ -94,8 +54,8 @@
     .screen.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Login Ekrani */
-    #loginScreen { text-align: center; margin-top: 20vh; }
+    /* Login */
+    #loginScreen { text-align: center; margin-top: 15vh; }
     .logo-icon { font-size: 60px; margin-bottom: 10px; }
     .title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
     .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
@@ -117,8 +77,8 @@
     }
     .btn:active { transform: scale(0.98); background: #059669; }
     .btn-outline { background: transparent; border: 1px solid var(--glass-border); }
-    
-    /* Bosh sahifa (Dashboard) */
+
+    /* Dashboard */
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .user-info h2 { font-size: 20px; }
     .user-info p { color: var(--primary); font-size: 12px; font-weight: 600; text-transform: uppercase; }
@@ -128,11 +88,7 @@
     .stat-value { font-size: 24px; font-weight: 800; color: var(--primary); margin-top: 5px; }
     .stat-label { font-size: 12px; color: var(--text-muted); }
 
-    /* Ro'yxatlar */
-    .list-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
+    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .list-item:last-child { border-bottom: none; }
     
     .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
@@ -150,13 +106,11 @@
     .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s; z-index: 101; max-height: 90vh; overflow-y: auto; }
     .modal-content.active { transform: translateY(0); }
 
-    /* Yashirin elementlar */
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Orqa fon animatsiyasi -->
   <div class="background-animation" id="bgAnim"></div>
 
   <!-- 1. LOGIN EKRANI -->
@@ -167,23 +121,23 @@
 
     <div class="glass-panel">
       <div class="input-group">
-        <label>Telefon raqam yoki ID</label>
+        <label>Telefon raqam (Ota-ona) yoki "admin"</label>
         <input type="text" id="loginUser" class="glass-input" placeholder="+998 90 123 45 67">
       </div>
       <div class="input-group">
-        <label>Parol (Admin uchun parol: 1234)</label>
+        <label>Parol (Admin uchun: 1234)</label>
         <input type="password" id="loginPass" class="glass-input" placeholder="••••">
       </div>
       <button class="btn" onclick="login()">Kirish</button>
     </div>
   </div>
 
-  <!-- 2. OTA-ONA / O'QUVCHI EKRANI -->
+  <!-- 2. OTA-ONA EKRANI -->
   <div class="screen" id="parentScreen">
     <header>
       <div class="user-info">
         <h2 id="parentName">Yuklanmoqda...</h2>
-        <p>O'quvchi paneli</p>
+        <p>Ota-ona paneli</p>
       </div>
       <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="logout()">Chiqish</button>
     </header>
@@ -232,10 +186,8 @@
       <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="logout()">Chiqish</button>
     </header>
 
-    <!-- Tablar -->
     <div class="tabs">
       <div class="tab active" onclick="switchAdminTab('players')">O'quvchilar</div>
-      <div class="tab" onclick="switchAdminTab('apps')">Arizalar</div>
       <div class="tab" onclick="switchAdminTab('settings')">Sozlamalar</div>
     </div>
 
@@ -244,13 +196,7 @@
       <button class="btn" onclick="openAddPlayerModal()">+ Yangi o'quvchi qo'shish</button>
       <div class="glass-panel" id="adminPlayerList" style="margin-top: 15px;">
         <!-- O'quvchilar ro'yxati JS orqali chiqadi -->
-      </div>
-    </div>
-
-    <!-- Arizalar -->
-    <div id="adminTabApps" class="hidden">
-      <div class="glass-panel" id="adminAppList">
-        <!-- Arizalar JS orqali chiqadi -->
+        <p style="color:gray; text-align:center;">Ma'lumotlar yuklanmoqda...</p>
       </div>
     </div>
 
@@ -269,7 +215,7 @@
           <label>Oylik to'lov summasi</label>
           <input type="text" id="setAmount" class="glass-input">
         </div>
-        <button class="btn" onclick="saveSettings()">Saqlash</button>
+        <button class="btn" onclick="saveSettings()">Sozlamalarni Saqlash</button>
       </div>
     </div>
   </div>
@@ -283,16 +229,16 @@
     <p style="font-size: 14px; margin-bottom: 10px;">Karta raqami: <b id="payCard">8600...</b></p>
     <p style="font-size: 14px; margin-bottom: 20px;">Summa: <b id="payAmount">300 000 so'm</b></p>
     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">To'lovni amalga oshirib, chek skrinshotini botimizga yuboring. Murabbiy tekshirib tasdiqlaydi.</p>
-    <a href="" id="botLink" class="btn" style="text-decoration: none;">📸 Botga o'tib chek yuborish</a>
+    <a href="https://t.me/todo_plus_bot" class="btn" style="text-decoration: none;">📸 Botga o'tib chek yuborish</a>
     <button class="btn btn-outline" onclick="closeModal()">Yopish</button>
   </div>
 
-  <!-- O'quvchi qo'shish/yangilash Modali (Admin uchun) -->
+  <!-- O'quvchi qo'shish Modali -->
   <div class="modal-content" id="playerModal">
     <h3 style="margin-bottom: 15px;" id="playerModalTitle">Yangi o'quvchi</h3>
     <input type="hidden" id="editPlayerId">
     <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pName" class="glass-input"></div>
-    <div class="input-group"><label>Telefon raqami (Login)</label><input type="text" id="pPhone" class="glass-input"></div>
+    <div class="input-group"><label>Telefon raqami (Login uchun)</label><input type="text" id="pPhone" class="glass-input"></div>
     <div class="input-group"><label>Futbolka raqami</label><input type="number" id="pJerseyNum" class="glass-input"></div>
     <div class="input-group"><label>O'zlashtirish foizi (0-100)</label><input type="number" id="pProgressVal" class="glass-input"></div>
     <div class="input-group">
@@ -306,8 +252,23 @@
     <button class="btn btn-outline" onclick="closeModal()">Bekor qilish</button>
   </div>
 
-  <script>
-    // --- ANIMATSIYA GENERATSIYASI ---
+  <!-- JS MODUL -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // === SIZNING SOZLAMALARINGIZ ===
+    const firebaseConfig = {
+      databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" 
+    };
+    const ADMIN_ID = "6807333001"; 
+    const BOT_USERNAME = "todo_plus_bot";
+
+    // Firebase ishga tushirish
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Animatsiya
     const bg = document.getElementById('bgAnim');
     for(let i=0; i<15; i++) {
       let bubble = document.createElement('div');
@@ -321,30 +282,26 @@
       bg.appendChild(bubble);
     }
 
-    // --- TIZIMGA KIRISH LOGIKASI ---
     let currentUser = null;
     let appSettings = { schedule: "Dushanba, Chorshanba, Juma (16:00)", card: "8600 0000 0000 0000", amount: "300 000 so'm" };
 
-    // Firebase'dan sozlamalarni yuklash
+    // Bazadan sozlamalarni yuklash (xatolik bersa ham dastur qotmaydi)
     get(ref(db, 'settings')).then((snapshot) => {
       if (snapshot.exists()) appSettings = snapshot.val();
-    });
+    }).catch(e => console.log("Baza xatosi:", e));
 
-    function login() {
+    window.login = function() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
-      const tg = window.Telegram?.WebApp;
-      const tgUser = tg?.initDataUnsafe?.user;
 
-      // ADMIN TEKSHIRUVI
-      if (user === "admin" && pass === "07177") {
-        // Agar Telegram ID to'g'ri kelsa yoki test rejimi bo'lsa
+      // ADMIN LOGIN
+      if (user === "admin" && pass === "1234") {
         showScreen('adminScreen');
         loadAdminData();
         return;
       }
 
-      // O'QUVCHI TEKSHIRUVI (Telefon raqami orqali)
+      // O'QUVCHI LOGIN
       if (user.length > 5) {
         get(ref(db, 'players/' + user)).then((snapshot) => {
           if (snapshot.exists()) {
@@ -353,15 +310,15 @@
             loadParentData();
             showScreen('parentScreen');
           } else {
-            alert("Bunday foydalanuvchi topilmadi yoki parol xato!");
+            alert("Bunday foydalanuvchi topilmadi! Admin panelda telefon raqamni to'g'ri kiritganingizni tekshiring.");
           }
-        });
+        }).catch(e => alert("Bazaga ulanishda xato! Firebase qoidalarini tekshiring."));
       } else {
-        alert("Iltimos, telefon raqamingizni kiriting!");
+        alert("Telefon raqamni to'liq kiriting!");
       }
     }
 
-    function logout() {
+    window.logout = function() {
       currentUser = null;
       document.getElementById('loginUser').value = '';
       document.getElementById('loginPass').value = '';
@@ -373,7 +330,7 @@
       document.getElementById(id).classList.add('active');
     }
 
-    // --- OTA-ONA PANELI ---
+    // --- OTA-ONA QISMI ---
     function loadParentData() {
       document.getElementById('parentName').innerText = currentUser.name;
       document.getElementById('pJersey').innerText = '#' + currentUser.jersey;
@@ -392,20 +349,17 @@
       }
     }
 
-    function openPaymentModal() {
-      document.getElementById('botLink').href = `https://t.me/${BOT_USERNAME}`;
+    window.openPaymentModal = function() {
       document.getElementById('modalOverlay').classList.add('active');
       document.getElementById('paymentModal').classList.add('active');
     }
 
-    // --- ADMIN PANELI ---
+    // --- ADMIN QISMI ---
     function loadAdminData() {
-      // Sozlamalarni to'ldirish
       document.getElementById('setSchedule').value = appSettings.schedule;
       document.getElementById('setCard').value = appSettings.card;
       document.getElementById('setAmount').value = appSettings.amount;
 
-      // O'quvchilar ro'yxatini yuklash
       onValue(ref(db, 'players'), (snapshot) => {
         const list = document.getElementById('adminPlayerList');
         list.innerHTML = '';
@@ -428,37 +382,21 @@
             `;
           }
         } else {
-          list.innerHTML = "<p style='color:gray; text-align:center;'>O'quvchilar yo'q</p>";
+          list.innerHTML = "<p style='color:gray; text-align:center;'>O'quvchilar yo'q. Yangi qo'shing!</p>";
         }
       });
-
-      // Arizalarni yuklash (bu qismga botdan kelgan arizalarni saqlash logikasi qo'shiladi)
-      // Hozircha namuna:
-      document.getElementById('adminAppList').innerHTML = `
-        <div class="list-item">
-          <div>
-            <b>Ali Valiyev</b><br>
-            <small>+998 90 123 45 67</small>
-          </div>
-          <button class="btn" style="width:auto; padding: 5px 10px; font-size:12px;" onclick="alert('Qabul qilindi!')">Qabul</button>
-        </div>
-      `;
     }
 
-    function switchAdminTab(tab) {
+    window.switchAdminTab = function(tab) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       event.target.classList.add('active');
-      
       document.getElementById('adminTabPlayers').classList.add('hidden');
-      document.getElementById('adminTabApps').classList.add('hidden');
       document.getElementById('adminTabSettings').classList.add('hidden');
-
       if(tab === 'players') document.getElementById('adminTabPlayers').classList.remove('hidden');
-      if(tab === 'apps') document.getElementById('adminTabApps').classList.remove('hidden');
       if(tab === 'settings') document.getElementById('adminTabSettings').classList.remove('hidden');
     }
 
-    function saveSettings() {
+    window.saveSettings = function() {
       const newSettings = {
         schedule: document.getElementById('setSchedule').value,
         card: document.getElementById('setCard').value,
@@ -466,12 +404,11 @@
       };
       set(ref(db, 'settings'), newSettings).then(() => {
         appSettings = newSettings;
-        alert("Sozlamalar saqlandi! Ota-onalar buni ko'radi.");
-      });
+        alert("Sozlamalar saqlandi!");
+      }).catch(e => alert("Saqlashda xato: " + e.message));
     }
 
-    // O'quvchi qo'shish va tahrirlash
-    function openAddPlayerModal() {
+    window.openAddPlayerModal = function() {
       document.getElementById('playerModalTitle').innerText = "Yangi o'quvchi";
       document.getElementById('editPlayerId').value = "";
       document.getElementById('pName').value = "";
@@ -479,12 +416,11 @@
       document.getElementById('pJerseyNum').value = "";
       document.getElementById('pProgressVal').value = "0";
       document.getElementById('pPay').value = "unpaid";
-      
       document.getElementById('modalOverlay').classList.add('active');
       document.getElementById('playerModal').classList.add('active');
     }
 
-    function editPlayer(id) {
+    window.editPlayer = function(id) {
       get(ref(db, 'players/' + id)).then((snapshot) => {
         if(snapshot.exists()){
           const p = snapshot.val();
@@ -495,15 +431,14 @@
           document.getElementById('pJerseyNum').value = p.jersey;
           document.getElementById('pProgressVal').value = p.progress;
           document.getElementById('pPay').value = p.paid ? "paid" : "unpaid";
-          
           document.getElementById('modalOverlay').classList.add('active');
           document.getElementById('playerModal').classList.add('active');
         }
       });
     }
 
-    function savePlayer() {
-      const id = document.getElementById('pPhone').value.trim(); // Telefon raqamini ID qilib olamiz
+    window.savePlayer = function() {
+      const id = document.getElementById('pPhone').value.trim(); 
       if(!id) return alert("Telefon raqamini kiriting!");
       
       const data = {
@@ -516,10 +451,10 @@
       set(ref(db, 'players/' + id), data).then(() => {
         alert("Saqlandi!");
         closeModal();
-      });
+      }).catch(e => alert("Xatolik: " + e.message));
     }
 
-    function closeModal() {
+    window.closeModal = function() {
       document.getElementById('modalOverlay').classList.remove('active');
       document.querySelectorAll('.modal-content').forEach(m => m.classList.remove('active'));
     }
