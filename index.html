@@ -13,41 +13,58 @@
 
   <style>
     :root {
-      /* Yorqin rejim (Light Mode) */
-      --bg: #F4F7FB;
-      --card: #FFFFFF;
+      /* Yorqin rejim (Light Mode) - Shaffof Glass */
+      --bg-image: url('https://images.unsplash.com/photo-1518605368461-1e1e38ce81cb?q=80&w=1000&auto=format&fit=crop');
+      --card: rgba(255, 255, 255, 0.85);
       --primary: #2563EB;
       --primary-light: #EFF6FF;
-      --secondary: #10B981;
-      --text-dark: #1E293B;
-      --text-muted: #64748B;
-      --danger: #EF4444;
+      --secondary": #10B981;
+ data      --text-dark: #1E293B;
+      --text-m-ruuted=": #64748B;
+      --dangerИ: #EF4444;
       --warning: #F59E0B;
-      --border: #E2E8F0;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --border: rgba(255, 255, 255, 0.5);
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.6);
     }
 
     body.dark-mode {
-      /* Qorong'u rejim (Dark Mode) */
-      --bg: #0F172A;
-      --card: #1E293B;
+      /* Qorong'u rejim (Dark Mode) - Shaffof Glass */
+      --bg-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1000&auto=format&fit=crop');
+      --card: rgba(15, 23, 42, 0.85);
       --primary: #3B82F6;
-      --primary-light: #1E3A8A;
+      --primary-light: rgba(59, 130, 246, 0.2);
       --text-dark: #F8FAFC;
       --text-muted: #94A3B8;
-      --border: #334155;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --border: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      --input-bg: rgba(0, 0, 0, 0.3);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s, color 0.3s; }
     
     body { 
-      background-color: var(--bg); 
       color: var(--text-dark); 
       font-family: 'Inter', sans-serif;
       min-height: 100vh; 
       padding-bottom: 30px;
+      background-image: var(--bg-image);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
     }
+
+    /* Orqa fonga qoraytiruvchi parda (rasm yozuvlarga xalal bermasligi uchun) */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.3);
+      z-index: -1;
+      transition: 0.3s;
+    }
+    body.dark-mode::before { background: rgba(0,0,0,0.6); }
 
     h1, h2, h3, .brand, .btn { font-family: 'Montserrat', sans-serif; }
 
@@ -57,43 +74,42 @@
 
     /* Header */
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .brand { font-size: 20px; font-weight: 800; color: var(--primary); }
+    .brand { font-size: 20px; font-weight: 800; color: var(--primary); text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+    .dark-mode .brand { text-shadow: none; }
     .brand span { color: var(--text-dark); }
     
     .top-controls { display: flex; gap: 8px; }
-    .icon-btn { background: var(--card); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; color: var(--text-dark); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow); }
+    .icon-btn { background: var(--card); backdrop-filter: blur(10px); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; color: var(--text-dark); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow); }
     
-    /* Cards */
-    .card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    /* Shaffof Kartalar (Glassmorphism) */
+    .card { background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
     
     .input-group { margin-bottom: 12px; }
     .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .input-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text-dark); font-size: 14px; outline: none; }
+    .input-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-dark); font-size: 14px; outline: none; backdrop-filter: blur(5px); }
     .input-control:focus { border-color: var(--primary); }
 
-    .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); }
     .btn:active { transform: scale(0.97); }
-    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); box-shadow: none; }
     .btn-sm { padding: 8px 12px; font-size: 11px; width: auto; border-radius: 8px; }
-    .btn-danger { background: var(--danger); color: white; border: none; }
+    .btn-danger { background: var(--danger); color: white; border: none; box-shadow: none; }
     
     /* FIFA Style Card */
-    .fifa-card { background: linear-gradient(135deg, #1E293B, #0F172A); color: white; border-radius: 20px; padding: 20px; text-align: center; position: relative; overflow: hidden; border: 1px solid #334155; margin-bottom: 16px; }
-    .fifa-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); transform: rotate(30deg); animation: shine 3s infinite; }
-    @keyframes shine { 0% { transform: translateX(-100%) rotate(30deg); } 100% { transform: translateX(100%) rotate(30deg); } }
+    .fifa-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); backdrop-filter: blur(10px); color: white; border-radius: 20px; padding: 20px; text-align: center; position: relative; overflow: hidden; border: 1px solid #334155; margin-bottom: 16px; box-shadow: var(--shadow); }
     
     .player-photo { width: 100px; height: 130px; object-fit: cover; border-radius: 12px; border: 2px solid #3B82F6; margin: 0 auto 10px; display: block; background: #1E293B; }
     .player-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; color: white; }
     .player-username { color: #93C5FD; font-size: 13px; font-weight: 600; margin-bottom: 15px; }
 
     /* Stats & Info */
-    .timer-box { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 16px; margin-bottom: 16px; font-weight: bold; }
+    .timer-box { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 16px; margin-bottom: 16px; font-weight: bold; box-shadow: var(--shadow); }
     .timer-text { font-size: 24px; font-family: 'Montserrat'; margin-top: 5px; }
     
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .stat-box { background: var(--bg); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
-    .stat-val { font-size: 18px; font-weight: 800; color: var(--primary); }
-    .stat-lbl { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
+    .stat-box { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+    .stat-val { font-size: 18px; font-weight: 800; color: #3B82F6; }
+    .stat-lbl { font-size: 11px; color: #94A3B8; font-weight: 600; margin-top: 4px; }
 
     .badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; display: inline-block; }
     .bg-success { background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid #10B981; }
@@ -103,19 +119,20 @@
     /* Tabs */
     .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 5px; }
     .tabs::-webkit-scrollbar { display: none; }
-    .tab { padding: 10px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow); }
+    .tab { padding: 10px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
     .tab.active { background: var(--primary); color: #FFF; border-color: var(--primary); }
 
     /* Modals */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s ease; z-index: 101; max-height: 90vh; overflow-y: auto; color: var(--text-dark); }
+    .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); backdrop-filter: blur(20px); border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s ease; z-index: 101; max-height: 90vh; overflow-y: auto; color: var(--text-dark); border-top: 1px solid var(--border); }
     .modal-content.active { transform: translateY(0); }
 
     .hidden { display: none !important; }
-    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border); }
+    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--input-bg); border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border); }
     
-    .announcement { background: #FEF3C7; color: #92400E; padding: 12px; border-radius: 12px; font-size: 13px; margin-bottom: 16px; border: 1px solid #F59E0B; display: none; }
+    .announcement { background: rgba(245, 158, 11, 0.2); color: #92400E; padding: 12px; border-radius: 12px; font-size: 13px; margin-bottom: 16px; border: 1px solid #F59E0B; display: none; backdrop-filter: blur(5px); }
+    .dark-mode .announcement { color: #FCD34D; }
   </style>
 </head>
 <body>
@@ -144,7 +161,7 @@
     <button class="btn btn-outline btn-sm" style="margin-bottom: 15px;" onclick="showScreen('loginScreen')">← Orqaga</button>
     <div class="card">
       <h2 style="text-align: center; margin-bottom: 20px;" data-uz="Yangi Ariza" data-ru="Новая Заявка">Yangi Ariza</h2>
-      <div class="input-group"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input type="text" id="appParentName" class="input-control"></div>
+      <div class="input-group"><label data-uz="Ota-onaning ismiмя родителя">Ota-onaning ismi</label><input type="text" id="appParentName" class="input-control"></div>
       <div class="input-group"><label data-uz="Bolaning ismi" data-ru="Имя ребенка">Bolaning ismi</label><input type="text" id="appChildName" class="input-control"></div>
       <div class="input-group"><label data-uz="Telefon (Login)" data-ru="Телефон (Логин)">Telefon (Login)</label><input type="text" id="appPhone" class="input-control"></div>
       <div class="input-group"><label data-uz="Yoshi" data-ru="Возраст">Yoshi</label><input type="number" id="appAge" class="input-control"></div>
@@ -162,29 +179,25 @@
       </div>
     </div>
 
-    <!-- E'lonlar -->
     <div class="announcement" id="parentAnnouncement"></div>
 
-    <!-- Taymer -->
     <div class="timer-box">
       <div style="font-size: 12px; opacity: 0.9;" data-uz="Keyingi mashg'ulotga:" data-ru="До следующей тренировки:">Keyingi mashg'ulotga:</div>
       <div class="timer-text" id="countdownTimer">Yuklanmoqda...</div>
     </div>
 
-    <!-- FIFA Card -->
     <div class="fifa-card">
       <img id="pPhoto" class="player-photo" src="https://ui-avatars.com/api/?name=U&background=1E293B&color=3B82F6&size=150">
       <h2 class="player-name" id="pFullName">Ism</h2>
       <p class="player-username" id="pUsername">@username</p>
 
       <div class="stats-grid">
-        <div class="stat-box" style="background: rgba(255,255,255,0.1); border:none;"><div class="stat-val" style="color:#3B82F6"><span id="pProgress">0</span>%</div><div class="stat-lbl" style="color:#94A3B8" data-uz="O'zlashtirish" data-ru="Успеваемость">O'zlashtirish</div></div>
-        <div class="stat-box" style="background: rgba(255,255,255,0.1); border:none;"><div class="stat-val" style="color:#3B82F6"><span id="pGoals">0</span></div><div class="stat-lbl" style="color:#94A3B8" data-uz="Gollar" data-ru="Голы">Gollar</div></div>
-        <div class="stat-box" style="background: rgba(255,255,255,0.1); border:none;"><div class="stat-val" style="color:#3B82F6"><span id="pAssists">0</span></div><div class="stat-lbl" style="color:#94A3B8" data-uz="Asistlar" data-ru="Ассисты">Asistlar</div></div>
+        <div class="stat-box"><div class="stat-val"><span id="pProgress">0</span>%</div><div class="stat-lbl" data-uz="O'zlashtirish" data-ru="Успеваемость">O'zlashtirish</div></div>
+        <div class="stat-box"><div class="stat-val"><span id="pGoals">0</span></div><div class="stat-lbl" data-uz="Gollar" data-ru="Голы">Gollar</div></div>
+        <div class="stat-box"><div class="stat-val"><span id="pAssists">0</span></div><div class="stat-lbl" data-uz="Asistlar" data-ru="Ассисты">Asistlar</div></div>
       </div>
     </div>
 
-    <!-- To'lov -->
     <div class="card" style="text-align: center;">
       <h3 style="margin-bottom: 10px;" data-uz="To'lov holati" data-ru="Статус оплаты">To'lov holati</h3>
       <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
@@ -193,7 +206,6 @@
       <button class="btn btn-outline" style="margin-top: 8px;" onclick="openHistoryModal()" data-uz="TO'LOVLAR TARIXI" data-ru="ИСТОРИЯ ПЛАТЕЖЕЙ">TO'LOVLAR TARIXI</button>
     </div>
 
-    <!-- Reyting -->
     <div class="card">
       <h3 style="margin-bottom: 10px; color: var(--primary);" data-uz="Akademiya reytingi (Top 5)" data-ru="Рейтинг академии (Топ 5)">Akademiya reytingi (Top 5)</h3>
       <div id="leaderboardList"></div>
@@ -255,7 +267,6 @@
   <!-- Modallar -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
   
-  <!-- To'lov Modali -->
   <div class="modal-content" id="paymentModal">
     <h3 style="margin-bottom: 15px; text-align:center;">To'lov qilish</h3>
     <p style="font-size: 14px; margin-bottom: 10px; text-align:center;">Karta: <b id="payCard" style="color:var(--primary)">8600...</b></p>
@@ -265,14 +276,12 @@
     <button class="btn btn-outline" onclick="closeModal()">YOPISH</button>
   </div>
 
-  <!-- Tarix Modali -->
   <div class="modal-content" id="historyModal">
     <h3 style="margin-bottom: 15px;">To'lovlar Tarixi</h3>
     <div id="historyList" style="max-height: 300px; overflow-y: auto;"></div>
     <button class="btn btn-outline" style="margin-top: 15px;" onclick="closeModal()">YOPISH</button>
   </div>
 
-  <!-- Tahrirlash Modali -->
   <div class="modal-content" id="playerModal">
     <h3 style="margin-bottom: 15px;" id="playerModalTitle">Tahrirlash</h3>
     <input type="hidden" id="editPlayerId">
@@ -280,7 +289,6 @@
     <div class="input-group"><label>Ism</label><input type="text" id="pEditName" class="input-control"></div>
     <div class="input-group"><label>Login</label><input type="text" id="pLogin" class="input-control"></div>
     <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="input-control"></div>
-    <!-- RASM URL QAYTARILDI -->
     <div class="input-group"><label>Rasm URL (3x4)</label><input type="text" id="pPhotoUrl" class="input-control" placeholder="https://..."></div>
     <div class="input-group"><label>Guruh (Masalan: 2012)</label><input type="text" id="pGroup" class="input-control"></div>
     
@@ -319,12 +327,10 @@
     let appSettings = { card: "8600", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00", announcement: "" };
     let timerInterval;
 
-    // Rejim (Dark/Light)
     function toggleTheme() {
       document.body.classList.toggle('dark-mode');
     }
 
-    // Tilni almashtirish
     let currentLang = 'uz';
     function toggleLang() {
       currentLang = currentLang === 'uz' ? 'ru' : 'uz';
@@ -333,15 +339,13 @@
       });
     }
 
-    // Firebase'dan sozlamalarni yuklash
     db.ref('settings').on('value', (snapshot) => {
       if (snapshot.exists()) {
         appSettings = { ...appSettings, ...snapshot.val() };
         startCountdown();
         
-        // E'lonni ko'rsatish
         const annEl = document.getElementById('parentAnnouncement');
-        if(appSettings.announcement) {
+        if(appSettings.announcement && document.getElementById('parentScreen').classList.contains('active')) {
           annEl.innerText = appSettings.announcement;
           annEl.style.display = 'block';
         } else {
@@ -355,7 +359,6 @@
       document.getElementById(id).classList.add('active');
     }
 
-    // TAYMER
     function startCountdown() {
       if(timerInterval) clearInterval(timerInterval);
       const targetDay = parseInt(appSettings.scheduleDay);
@@ -381,7 +384,6 @@
       }, 1000);
     }
 
-    // CHEK YUBORISH
     function sendReceiptToAdmin() {
       const text = `To'lov cheki.\nO'quvchi: ${currentUser.name}\nLogini: ${currentUser.id}`;
       const tgLink = `https://t.me/${ADMIN_BOT_USERNAME}?text=${encodeURIComponent(text)}`;
@@ -389,7 +391,6 @@
       else window.open(tgLink, '_blank');
     }
 
-    // LOGIN
     function login() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
@@ -415,13 +416,11 @@
       showScreen('loginScreen');
     }
 
-    // OTA-ONA PANELI
     function loadParentData() {
       document.getElementById('pFullName').innerText = currentUser.name || 'Ism kiritilmagan';
       let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
       document.getElementById('pUsername').innerText = "@" + uname;
       
-      // Rasm (URL bo'lsa o'sha, bo'lmasa default)
       document.getElementById('pPhoto').src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=1E293B&color=3B82F6&size=150`;
       
       document.getElementById('pProgress').innerText = currentUser.progress || '0';
@@ -448,7 +447,6 @@
       }
     }
 
-    // REYTING JADVALI
     function loadLeaderboard() {
       db.ref('players').once('value').then((snapshot) => {
         if(snapshot.exists()){
@@ -472,7 +470,6 @@
       });
     }
 
-    // TO'LOV TARIXI
     function openHistoryModal() {
       document.getElementById('modalOverlay').classList.add('active');
       document.getElementById('historyModal').classList.add('active');
@@ -500,7 +497,6 @@
       }
     }
 
-    // ADMIN PANEL LOGIKASI
     function loadAdminData() {
       document.getElementById('setCard').value = appSettings.card || "";
       document.getElementById('setAmount').value = appSettings.amount || "";
@@ -508,7 +504,6 @@
       document.getElementById('setScheduleTime').value = appSettings.scheduleTime || "16:00";
       document.getElementById('setAnnouncement').value = appSettings.announcement || "";
 
-      // ARIZALAR
       db.ref('applications').on('value', (snapshot) => {
         const appList = document.getElementById('adminTabApps');
         const appBadge = document.getElementById('appBadge');
@@ -523,7 +518,7 @@
               <div class="list-item" style="flex-direction: column; align-items: flex-start;">
                 <div><b>${app.childName}</b> (${app.age} yosh)<br><small>Ota-ona: ${app.parentName} | Tel: ${app.phone}</small></div>
                 <div style="display:flex; gap:10px; width:100%; margin-top:10px;">
-                  <button class="btn btn-sm" style="background:var(--success);" onclick="acceptApplication('${key}', '${app.phone}', '${app.childName}')">QABUL</button>
+                  <button class="btn btn-sm" style="background:var(--secondary);" onclick="acceptApplication('${key}', '${app.phone}', '${app.childName}')">QABUL</button>
                   <button class="btn btn-sm btn-danger" onclick="rejectApplication('${key}')">RAD ETISH</button>
                 </div>
               </div>`;
@@ -534,7 +529,6 @@
         }
       });
 
-      // O'QUVCHILAR
       db.ref('players').on('value', (snapshot) => {
         const studentList = document.getElementById('adminStudentList');
         const statsList = document.getElementById('adminStatsList');
@@ -571,7 +565,6 @@
       });
     }
 
-    // DAVOMAT
     function markAttendance(id) {
       db.ref('players/' + id).once('value').then(snap => {
         let p = snap.val();
@@ -581,12 +574,10 @@
       });
     }
 
-    // ARXIVLASH
     function archivePlayer(id) {
       if(confirm("O'quvchini arxivga o'tkazasizmi?")) db.ref('players/' + id + '/isArchived').set(true);
     }
 
-    // CSV (EXCEL) EXPORT
     function exportToCSV() {
       db.ref('players').once('value').then(snap => {
         let csv = "Ism,Login,Guruh,Gollar,Asistlar,Tezlik,O'zlashtirish,To'lov\n";
@@ -604,7 +595,6 @@
       });
     }
 
-    // SOZLAMALARNI SAQLASH
     function saveSettings() {
       const newSettings = { 
         card: document.getElementById('setCard').value, 
@@ -619,7 +609,6 @@
       });
     }
 
-    // O'QUVCHINI TAHRIRLASH
     function editPlayer(id) {
       db.ref('players/' + id).once('value').then((snapshot) => {
         if(snapshot.exists()){
@@ -668,7 +657,6 @@
       });
     }
 
-    // ARIZANI QABUL QILISH
     function acceptApplication(appId, phone, name) {
       const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
       const newPlayer = { name: name, password: randomPass, paid: false, goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0 };
