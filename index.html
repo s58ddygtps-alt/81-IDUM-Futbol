@@ -19,7 +19,7 @@
       --text-muted: #94a3b8;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-color); color: var(--text-light); min-height: 100vh; overflow-x: hidden; position: relative; }
+    body { background-color: var(--bg-color); color: var(--text-light); min-height: 100vh; overflow-x: hidden; position: relative; padding-bottom: 20px; }
     
     /* Orqa fon */
     .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at 50% 0%, #1e1e24 0%, #09090b 100%); }
@@ -27,44 +27,49 @@
     @keyframes float { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
     /* Umumiy */
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 24px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
     .screen { display: none; padding: 20px 16px; animation: slideUp 0.4s ease; }
     .screen.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Login & Ariza */
-    #loginScreen, #applyScreen { text-align: center; margin-top: 10vh; }
+    /* Kirish va Ariza */
+    #loginScreen, #applyScreen { text-align: center; margin-top: 5vh; }
     .logo-icon { font-size: 70px; margin-bottom: 15px; text-shadow: 0 0 20px var(--primary-glow); }
     .title { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
     .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
     .input-group { margin-bottom: 15px; text-align: left; }
     .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; margin-left: 5px; font-weight: 600; }
-    .glass-input { width: 100%; padding: 16px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; font-size: 16px; outline: none; transition: 0.3s; }
+    .glass-input { width: 100%; padding: 14px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; font-size: 15px; outline: none; transition: 0.3s; }
     .glass-input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+    .glass-input option { color: black; }
     
-    .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px var(--primary-glow); }
+    .btn { width: 100%; padding: 15px; border-radius: 16px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px var(--primary-glow); }
     .btn:active { transform: scale(0.97); background: #059669; }
     .btn-outline { background: transparent; border: 1px solid var(--glass-border); box-shadow: none; }
     .btn-outline:active { background: var(--glass-bg); }
 
+    /* Ota-ona Profil */
+    .profile-section { text-align: center; margin-bottom: 20px; }
+    .profile-img { width: 90px; height: 120px; object-fit: cover; border-radius: 12px; border: 2px solid var(--primary); box-shadow: 0 0 15px var(--primary-glow); margin-bottom: 10px; }
+    .profile-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .profile-username { color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+    .profile-stats { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
+    .stat-badge { background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 12px; border: 1px solid var(--glass-border); font-size: 14px; font-weight: 600; }
+
     /* Dashboard */
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .user-info h2 { font-size: 20px; }
-    .user-info p { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .stat-card { text-align: center; background: rgba(0,0,0,0.2); border-radius: 16px; padding: 15px; }
-    .stat-value { font-size: 28px; font-weight: 800; color: var(--primary); margin-top: 5px; text-shadow: 0 0 10px var(--primary-glow); }
-    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--glass-border); }
+    .user-info h2 { font-size: 18px; }
+    .user-info p { color: var(--primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--glass-border); }
     .list-item:last-child { border-bottom: none; }
-    .badge { padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .badge { padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; }
     .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
     .badge-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
     .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
 
     /* Tabs */
     .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-    .tab { padding: 12px 20px; border-radius: 20px; background: var(--glass-bg); font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
+    .tab { padding: 10px 16px; border-radius: 20px; background: var(--glass-bg); font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
     .tab.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 
     /* Modal */
@@ -73,6 +78,9 @@
     .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: #18181b; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 101; max-height: 90vh; overflow-y: auto; border-top: 1px solid var(--glass-border); }
     .modal-content.active { transform: translateY(0); }
     .hidden { display: none !important; }
+    
+    .coach-info p { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.4; }
+    .coach-info strong { color: var(--text-light); }
   </style>
 </head>
 <body>
@@ -101,22 +109,35 @@
 
   <!-- 2. ARIZA TOPSHIRISH EKRANI -->
   <div class="screen" id="applyScreen">
-    <header style="justify-content: flex-start; gap: 15px;">
+    <header style="justify-content: flex-start; gap: 15px; margin-bottom: 10px;">
       <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="showScreen('loginScreen')">← Orqaga</button>
     </header>
     <div class="glass-panel">
-      <h2 style="margin-bottom: 20px; text-align: center;">To'garakka yozilish</h2>
+      <h2 style="margin-bottom: 20px; text-align: center; font-size:20px;">To'garakka yozilish</h2>
       <div class="input-group">
-        <label>Bolaning Ismi va Familiyasi</label>
-        <input type="text" id="appChildName" class="glass-input" placeholder="Masalan: Ali Valiyev">
+        <label>Ota-onaning Ismi va Familiyasi</label>
+        <input type="text" id="appParentName" class="glass-input" placeholder="Masalan: Valiyev Ali">
       </div>
       <div class="input-group">
-        <label>Ota-onaning telefon raqami (Login bo'ladi)</label>
+        <label>Bolaning Ismi va Familiyasi</label>
+        <input type="text" id="appChildName" class="glass-input" placeholder="Masalan: Valiyev Sardor">
+      </div>
+      <div class="input-group">
+        <label>Telefon raqam (Login bo'ladi)</label>
         <input type="text" id="appPhone" class="glass-input" placeholder="+998901234567">
       </div>
       <div class="input-group">
         <label>Bolaning yoshi</label>
         <input type="number" id="appAge" class="glass-input" placeholder="Masalan: 10">
+      </div>
+      <div class="input-group">
+        <label>Jismoniy holati</label>
+        <select id="appPhysical" class="glass-input">
+          <option value="A'lo">A'lo</option>
+          <option value="Yaxshi">Yaxshi</option>
+          <option value="O'rtacha">O'rtacha</option>
+          <option value="Nimjon">Nimjon</option>
+        </select>
       </div>
       <button class="btn" onclick="submitApplication()">Arizani yuborish</button>
     </div>
@@ -126,43 +147,50 @@
   <div class="screen" id="parentScreen">
     <header>
       <div class="user-info">
-        <h2 id="parentName">Yuklanmoqda...</h2>
+        <h2 id="pName">Yuklanmoqda...</h2>
         <p>Ota-ona paneli</p>
       </div>
       <button class="btn btn-outline" style="width:auto; padding: 8px 12px; margin:0;" onclick="logout()">Chiqish</button>
     </header>
 
-    <div class="glass-panel">
-      <div class="card-grid">
-        <div class="stat-card">
-          <div style="font-size: 30px;">👕</div>
-          <div class="stat-value" id="pJersey">-</div>
-          <div class="stat-label">Futbolka</div>
-        </div>
-        <div class="stat-card">
-          <div style="font-size: 30px;">📈</div>
-          <div class="stat-value" id="pProgress">-</div>
-          <div class="stat-label">O'zlashtirish</div>
-        </div>
+    <!-- Profil qismi -->
+    <div class="profile-section">
+      <img id="pPhoto" class="profile-img" src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150" alt="Rasm">
+      <h2 class="profile-name" id="pFullName">Ism</h2>
+      <p class="profile-username" id="pUsername">@username</p>
+      
+      <div class="profile-stats">
+        <div class="stat-badge">👕 #<span id="pJersey">-</span></div>
+        <div class="stat-badge">📈 <span id="pProgress">0</span>%</div>
       </div>
     </div>
 
-    <div class="glass-panel">
-      <h3 style="margin-bottom: 15px; font-size: 16px;">To'lov holati</h3>
-      <div class="list-item">
-        <span style="color:var(--text-muted)">Joriy oy:</span>
+    <!-- To'lov qismi (Ixcham) -->
+    <div class="glass-panel" style="padding: 15px;">
+      <div class="list-item" style="padding: 8px 0; border:none;">
+        <span style="font-size:14px; color:var(--text-muted)">To'lov holati:</span>
         <span id="pPayStatus" class="badge badge-danger">To'lanmagan</span>
+     Amount </div>
+      <div class="list-item"" style="padding: 8px 0; border:n styleone;">
+       =" <span style="font-size:14px;font color:var(--text-muted)">Oylik to'lov:</span>
+        <span id="pPay-weight:bold; font-size: 15px;">350 000 so'm</span>
       </div>
-      <div class="list-item">
-        <span style="color:var(--text-muted)">Oylik to'lov:</span>
-        <span id="pPayAmount" style="font-weight:bold;">300 000 so'm</span>
-      </div>
-      <button id="btnPay" class="btn" style="margin-top: 15px;" onclick="openPaymentModal()">To'lov qilish / Chek yuborish</button>
+      <button id="btnPay" class="btn" style="margin-top: 10px; padding: 12px; font-size: 14px;" onclick="openPaymentModal()">To'lash / Chek yuborish</button>
     </div>
 
+    <!-- Jadval -->
     <div class="glass-panel">
-      <h3 style="margin-bottom: 10px; font-size: 16px;">Mashg'ulot jadvali</h3>
-      <p id="pSchedule" style="font-size: 14px; color: var(--text-muted); line-height: 1.6;"></p>
+      <h3 style="margin-bottom: 10px; font-size: 15px; color:var(--primary)">Mashg'ulot jadvali</h3>
+      <p id="pSchedule" style="font-size: 13px; color: var(--text-light); line-height: 1.5; white-space: pre-line;"></p>
+    </div>
+
+    <!-- Murabbiy haqida -->
+    <div class="glass-panel coach-info">
+      <h3 style="margin-bottom: 10px; font-size: 15px; color:var(--primary)">Murabbiy haqida</h3>
+      <p><strong>Arıf Arazadəı / Abbosov Shohruh Elimxanovich</strong></p>
+      <p><strong>Yosh:</strong> 23 yoshda</p>
+      <p><strong>Ta'lim va tajriba:</strong> Sport unversitetini bitirgan. Futbol sohasida yillar davomida shug'ullangan. Hozirda 81-IDUM maktabida jismoniy tarbiya fanidan dars beradi.</p>
+      <p><strong>O'ynagan klublari:</strong> Bunyodkor (O'zbekiston), Qarabağ, Tovuz, Gəncə (Ozarbayjon).</p>
     </div>
   </div>
 
@@ -182,7 +210,6 @@
       <div class="tab" onclick="switchAdminTab('settings')">Sozlamalar</div>
     </div>
 
-    <!-- O'quvchilar Tab -->
     <div id="adminTabPlayers">
       <button class="btn" onclick="openAddPlayerModal()">+ Yangi o'quvchi qo'shish</button>
       <div class="glass-panel" id="adminPlayerList" style="margin-top: 15px;">
@@ -190,14 +217,12 @@
       </div>
     </div>
 
-    <!-- Arizalar Tab -->
     <div id="adminTabApps" class="hidden">
       <div class="glass-panel" id="adminAppList">
         <p style="color:gray; text-align:center;">Arizalar yuklanmoqda...</p>
       </div>
     </div>
 
-    <!-- Sozlamalar Tab -->
     <div id="adminTabSettings" class="hidden">
       <div class="glass-panel">
         <div class="input-group">
@@ -224,13 +249,13 @@
   <div class="modal-content" id="paymentModal">
     <h3 style="margin-bottom: 15px; text-align:center;">To'lov qilish</h3>
     <p style="font-size: 14px; margin-bottom: 10px; text-align:center;">Karta: <b id="payCard" style="color:var(--primary)">8600...</b></p>
-    <p style="font-size: 14px; margin-bottom: 20px; text-align:center;">Summa: <b id="payAmount" style="color:var(--primary)">300 000 so'm</b></p>
+    <p style="font-size: 14px; margin-bottom: 20px; text-align:center;">Summa: <b id="payAmount" style="color:var(--primary)">350 000 so'm</b></p>
     
     <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; margin-bottom:20px;">
       <p style="font-size: 12px; color: var(--text-muted); line-height:1.5;">1. Kartaga pul o'tkazing.<br>2. Pastdagi tugma orqali botga chekni yuboring.<br>3. So'ngra "To'lov qildim" tugmasini bosing.</p>
     </div>
 
-    <a href="https://t.me/todo_plus_bot" class="btn" style="text-decoration: none; background:#2AABEE; box-shadow:none;">📸 Botga o'tib chek yuborish</a>
+    <button onclick="openBot()" class="btn" style="background:#2AABEE; box-shadow:none; border:none;">📸 Botga o'tib chek yuborish</button>
     <button class="btn" style="background:#f59e0b; color:black; box-shadow:none;" onclick="markAsPending()">Men to'lov qildim (Kutish)</button>
     <button class="btn btn-outline" onclick="closeModal()">Yopish</button>
   </div>
@@ -239,14 +264,15 @@
   <div class="modal-content" id="playerModal">
     <h3 style="margin-bottom: 15px;" id="playerModalTitle">O'quvchi</h3>
     <input type="hidden" id="editPlayerId">
-    <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pName" class="glass-input"></div>
+    <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pEditName" class="glass-input"></div>
     <div class="input-group"><label>Login (Telefon raqam)</label><input type="text" id="pLogin" class="glass-input"></div>
     <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="glass-input"></div>
+    <div class="input-group"><label>Rasm URL (3x4)</label><input type="text" id="pPhotoUrl" class="glass-input" placeholder="https://..."></div>
     <div class="input-group"><label>Futbolka raqami</label><input type="number" id="pJerseyNum" class="glass-input"></div>
     <div class="input-group"><label>O'zlashtirish (%)</label><input type="number" id="pProgressVal" class="glass-input"></div>
     <div class="input-group">
       <label>To'lov holati</label>
-      <select id="pPay" class="glass-input" style="color: black;">
+      <select id="pPay" class="glass-input">
         <option value="unpaid">To'lanmagan</option>
         <option value="pending">Kutilmoqda (Chek tekshirilmoqda)</option>
         <option value="paid">To'langan</option>
@@ -264,6 +290,7 @@
 
     const ADMIN_LOGIN = "Arif";
     const ADMIN_PASS = "0717"; 
+    const BOT_LINK = "https://t.me/todo_plus_bot";
 
     // Orqa fon animatsiyasi
     const bg = document.getElementById('bgAnim');
@@ -279,36 +306,45 @@
     }
 
     let currentUser = null;
-    let appSettings = { schedule: "Yuklanmoqda...", card: "...", amount: "..." };
+    let appSettings = { schedule: "Dushanba, Chorshanba, Juma (16:00)", card: "8600 0000 0000 0000", amount: "350 000 so'm" };
 
     db.ref('settings').on('value', (snapshot) => {
       if (snapshot.exists()) appSettings = snapshot.val();
     });
 
-    // EKRANLARNI ALMASHTIRISH
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
 
-    // ARIZA TOPSHIRISH
+    // --- BOTGA O'TISH (Muvaffaqiyatli usul) ---
+    function openBot() {
+      if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.openTelegramLink(BOT_LINK);
+      } else {
+        window.open(BOT_LINK, '_blank');
+      }
+    }
+
+    // --- ARIZA TOPSHIRISH ---
     function submitApplication() {
+      const parentName = document.getElementById('appParentName').value.trim();
       const childName = document.getElementById('appChildName').value.trim();
       const phone = document.getElementById('appPhone').value.trim();
       const age = document.getElementById('appAge').value.trim();
+      const physical = document.getElementById('appPhysical').value;
 
-      if (!childName || !phone) {
-        alert("Ism va telefon raqamini kiriting!");
+      if (!parentName || !childName || !phone) {
+        alert("Barcha majburiy joylarni to'ldiring!");
         return;
       }
 
       db.ref('applications').push({
-        childName: childName,
-        phone: phone,
-        age: age,
+        parentName, childName, phone, age, physical,
         date: new Date().toLocaleDateString()
       }).then(() => {
-        alert("Arizangiz muvaffaqiyatli yuborildi! Murabbiy ko'rib chiqib, sizga login va parol beradi.");
+        alert("Arizangiz muvaffaqiyatli yuborildi! Murabbiy tez orada siz bilan bog'lanadi.");
+        document.getElementById('appParentName').value = '';
         document.getElementById('appChildName').value = '';
         document.getElementById('appPhone').value = '';
         document.getElementById('appAge').value = '';
@@ -316,7 +352,7 @@
       }).catch(e => alert("Xatolik: " + e.message));
     }
 
-    // LOGIN
+    // --- LOGIN ---
     function login() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
@@ -353,12 +389,26 @@
 
     // --- OTA-ONA QISMI ---
     function loadParentData() {
-      document.getElementById('parentName').innerText = currentUser.name;
-      document.getElementById('pJersey').innerText = '#' + currentUser.jersey;
-      document.getElementById('pProgress').innerText = currentUser.progress + '%';
+      document.getElementById('pFullName').innerText = currentUser.name;
+      
+      // Username yaratish (ismdan @ belgisi bilan)
+      let uname = currentUser.name.toLowerCase().replace(/\s+/g, '_');
+      document.getElementById('pUsername').innerText = "@" + uname;
+      
+      // Rasm yuklash (agar URL bo'lsa o'shani, bo'lmasa harflar bilan avatar)
+      if (currentUser.photoUrl) {
+        document.getElementById('pPhoto').src = currentUser.photoUrl;
+      } else {
+        document.getElementById('pPhoto').src = `https://ui-avatars.com/api/?name=${currentUser.name}&background=10b981&color=fff&size=150`;
+      }
+
+      document.getElementById('pJersey').innerText = currentUser.jersey || '-';
+      document.getElementById('pProgress').innerText = currentUser.progress || '0';
       document.getElementById('pSchedule').innerText = appSettings.schedule;
       document.getElementById('payCard').innerText = appSettings.card;
       document.getElementById('payAmount').innerText = appSettings.amount;
+      document.getElementById('pPayAmount').innerText = appSettings.amount;
+      
       updateParentPayStatus();
     }
 
@@ -403,7 +453,6 @@
       document.getElementById('setCard').value = appSettings.card;
       document.getElementById('setAmount').value = appSettings.amount;
 
-      // O'quvchilar
       db.ref('players').on('value', (snapshot) => {
         const list = document.getElementById('adminPlayerList');
         list.innerHTML = '';
@@ -417,7 +466,7 @@
             list.innerHTML += `
               <div class="list-item">
                 <div>
-                  <b>#${p.jersey} ${p.name}</b><br>
+                  <b>#${p.jersey || '-'} ${p.name}</b><br>
                   <small style="color:var(--text-muted)">Login: <b>${id}</b> | Parol: <b>${p.password}</b></small>
                 </div>
                 <div style="text-align:right">
@@ -431,7 +480,6 @@
         } else { list.innerHTML = "<p style='color:gray; text-align:center;'>O'quvchilar yo'q</p>"; }
       });
 
-      // Arizalar
       db.ref('applications').on('value', (snapshot) => {
         const appList = document.getElementById('adminAppList');
         const appBadge = document.getElementById('appBadge');
@@ -446,8 +494,8 @@
             appList.innerHTML += `
               <div class="list-item" style="flex-direction: column; align-items: flex-start; gap: 10px;">
                 <div>
-                  <b>${app.childName}</b> (${app.age} yosh)<br>
-                  <small style="color:var(--text-muted)">Ota-ona tel: ${app.phone}</small>
+                  <b>Bola: ${app.childName}</b> (${app.age} yosh, ${app.physical})<br>
+                  <small style="color:var(--text-muted)">Ota-ona: ${app.parentName} | Tel: ${app.phone}</small>
                 </div>
                 <div style="display:flex; gap:10px; width:100%;">
                   <button class="btn" style="padding: 8px; font-size:13px; background:#10b981; margin:0;" onclick="acceptApplication('${key}', '${app.phone}', '${app.childName}')">Qabul qilish</button>
@@ -466,23 +514,19 @@
     }
 
     function acceptApplication(appId, phone, name) {
-      // 4 xonali random parol yaratish
       const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
       
       const newPlayer = {
         name: name,
         password: randomPass,
-        jersey: "", // Keyin tahrirlaydi
+        jersey: "", 
         progress: 0,
-        paid: false
+        paid: false,
+        photoUrl: "" // Admin keyin qo'shadi
       };
 
-      // O'quvchilar bazasiga qo'shish
       db.ref('players/' + phone).set(newPlayer).then(() => {
-        // Arizani o'chirish
         db.ref('applications/' + appId).remove();
-        
-        // Adminga login-parolni ko'rsatish
         alert(`Ariza qabul qilindi!\n\nOta-onaga quyidagi ma'lumotlarni yuboring:\nLogin: ${phone}\nParol: ${randomPass}`);
       }).catch(e => alert("Xatolik: " + e.message));
     }
@@ -521,9 +565,10 @@
     function openAddPlayerModal() {
       document.getElementById('playerModalTitle').innerText = "Yangi o'quvchi";
       document.getElementById('editPlayerId').value = "";
-      document.getElementById('pName').value = "";
+      document.getElementById('pEditName').value = "";
       document.getElementById('pLogin').value = "";
       document.getElementById('pPass').value = "";
+      document.getElementById('pPhotoUrl').value = "";
       document.getElementById('pJerseyNum').value = "";
       document.getElementById('pProgressVal').value = "0";
       document.getElementById('pPay').value = "unpaid";
@@ -537,11 +582,12 @@
           const p = snapshot.val();
           document.getElementById('playerModalTitle').innerText = "Tahrirlash";
           document.getElementById('editPlayerId').value = id;
-          document.getElementById('pName').value = p.name;
+          document.getElementById('pEditName').value = p.name;
           document.getElementById('pLogin').value = id;
           document.getElementById('pPass').value = p.password;
-          document.getElementById('pJerseyNum').value = p.jersey;
-          document.getElementById('pProgressVal').value = p.progress;
+          document.getElementById('pPhotoUrl').value = p.photoUrl || "";
+          document.getElementById('pJerseyNum').value = p.jersey || "";
+          document.getElementById('pProgressVal').value = p.progress || "0";
           document.getElementById('pPay').value = p.paid === true ? "paid" : (p.paid === "pending" ? "pending" : "unpaid");
           document.getElementById('modalOverlay').classList.add('active');
           document.getElementById('playerModal').classList.add('active');
@@ -557,8 +603,9 @@
       
       const payValue = document.getElementById('pPay').value;
       const data = {
-        name: document.getElementById('pName').value,
+        name: document.getElementById('pEditName').value,
         password: document.getElementById('pPass').value,
+        photoUrl: document.getElementById('pPhotoUrl').value.trim(),
         jersey: document.getElementById('pJerseyNum').value,
         progress: document.getElementById('pProgressVal').value,
         paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false)
