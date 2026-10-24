@@ -33,7 +33,7 @@
     
     main { padding: 18px 16px; max-width: 500px; margin: auto; }
     
-    /* Glass / Card style */
+    /* Card style */
     .card { background: var(--white); border-radius: 18px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(23, 59, 112, 0.05); border: 1px solid #e6ebf3; }
     
     .input-group { margin-bottom: 12px; text-align: left; }
@@ -52,7 +52,7 @@
     .profile-username { text-align: center; color: var(--blue); font-size: 14px; font-weight: 600; margin-bottom: 15px; }
     
     .stats-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-    .stat-badge { background: var(--light); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--blue); border: 1px solid #d1d9e6; }
+    .stat-badge { background: var(--light); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--blue); border: 1px solid #d1d9e6; display: flex; align-items: center; gap: 5px; }
     
     /* List Items */
     .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f4fa; font-size: 14px; }
@@ -154,9 +154,17 @@
         <img id="pPhoto" class="profile-img" src="https://ui-avatars.com/api/?name=U&background=1047A9&color=fff&size=150">
         <div class="profile-name" id="pFullName">Ism</div>
         <div class="profile-username" id="pUsername">@username</div>
+        
+        <!-- XATO TO'G'RILANGAN JOYI SHU YERDA -->
         <div class="stats-row">
-          <div class="stat-badge" data-uz="👕 Futbolka:" data-ru="👕 Футболка:">👕 Futbolka: <span id="pJersey">-</span></div>
-          <div class="stat-badge" data-uz="📈 O'zlashtirish:" data-ru="📈 Успеваемость:">📈 O'zlashtirish: <span id="pProgress">0</span>%</div>
+          <div class="stat-badge">
+            <span data-uz="👕 Futbolka:" data-ru="👕 Футболка:">👕 Futbolka:</span>
+            <span id="pJersey">-</span>
+          </div>
+          <div class="stat-badge">
+            <span data-uz="📈 Foiz:" data-ru="📈 Процент:">📈 Foiz:</span>
+            <span id="pProgress">0</span>%
+          </div>
         </div>
       </div>
 
@@ -278,7 +286,7 @@
     const ADMIN_PASS = "0717"; 
     const BOT_LINK = "https://t.me/todo_plus_bot";
 
-    // Tilni almashtirish tizimi
+    // Tilni almashtirish tizimi (Xatosiz)
     let currentLang = 'uz';
     function toggleLang() {
       currentLang = currentLang === 'uz' ? 'ru' : 'uz';
@@ -363,20 +371,25 @@
 
     // OTA-ONA PANELI
     function loadParentData() {
-      document.getElementById('pFullName').innerText = currentUser.name;
-      let uname = currentUser.name.toLowerCase().replace(/\s+/g, '_');
-      document.getElementById('pUsername').innerText = "@" + uname;
-      
-      document.getElementById('pPhoto').src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name}&background=1047A9&color=fff&size=150`;
-      document.getElementById('pJersey').innerText = currentUser.jersey || '-';
-      document.getElementById('pProgress').innerText = currentUser.progress || '0';
-      
-      document.getElementById('pSchedule').innerText = appSettings.schedule;
-      document.getElementById('payCard').innerText = appSettings.card;
-      document.getElementById('payAmount').innerText = appSettings.amount;
-      document.getElementById('pPayAmount').innerText = appSettings.amount;
-      
-      updateParentPayStatus();
+      try {
+        document.getElementById('pFullName').innerText = currentUser.name || 'Ism kiritilmagan';
+        let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
+        document.getElementById('pUsername').innerText = "@" + uname;
+        
+        document.getElementById('pPhoto').src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=1047A9&color=fff&size=150`;
+        document.getElementById('pJersey').innerText = currentUser.jersey || '-';
+        document.getElementById('pProgress').innerText = currentUser.progress || '0';
+        
+        document.getElementById('pSchedule').innerText = appSettings.schedule || "Kiritilmagan";
+        document.getElementById('payCard').innerText = appSettings.card || "Kiritilmagan";
+        document.getElementById('payAmount').innerText = appSettings.amount || "350 000 so'm";
+        document.getElementById('pPayAmount').innerText = appSettings.amount || "350 000 so'm";
+        
+        updateParentPayStatus();
+      } catch (err) {
+        console.error("Profil yuklashda xato:", err);
+        alert("Ma'lumotlarni yuklashda xatolik yuz berdi. Qayta urinib ko'ring.");
+      }
     }
 
     function updateParentPayStatus() {
@@ -415,9 +428,9 @@
 
     // ADMIN PANELI
     function loadAdminData() {
-      document.getElementById('setSchedule').value = appSettings.schedule;
-      document.getElementById('setCard').value = appSettings.card;
-      document.getElementById('setAmount').value = appSettings.amount;
+      document.getElementById('setSchedule').value = appSettings.schedule || "";
+      document.getElementById('setCard').value = appSettings.card || "";
+      document.getElementById('setAmount').value = appSettings.amount || "";
 
       db.ref('players').on('value', (snapshot) => {
         const list = document.getElementById('adminPlayerList');
