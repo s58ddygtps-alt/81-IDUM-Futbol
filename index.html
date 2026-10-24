@@ -3,404 +3,239 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Football Mini App</title>
-  <!-- Telegram WebApp SDK -->
+  <title>81-Maktab Futbol To'garagi</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
-      --primary: #16a34a;        /* Maysazor yashili */
-      --primary-hover: #15803d;
-      --primary-soft: #f0fdf4;   /* Och yashil foni */
-      --bg: #ffffff;
-      --card-bg: #f8fafc;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 16px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --primary: #16a34a; --primary-hover: #15803d; --primary-soft: #f0fdf4;
+      --bg: #ffffff; --card-bg: #f8fafc; --text-main: #0f172a; --text-muted: #64748b;
+      --border: #e2e8f0; --radius: 16px;
     }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text-main); min-height: 100vh; padding: 20px 18px; }
+    
+    /* Header */
+    header { text-align: center; margin-bottom: 24px; position: relative; }
+    .badge { display: inline-block; background: var(--primary-soft); color: var(--primary); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; margin-bottom: 12px; border: 1px solid rgba(22, 163, 74, 0.15); }
+    header h1 { font-size: 22px; font-weight: 700; }
+    header p { color: var(--text-muted); font-size: 14px; margin-top: 6px; }
+    .admin-btn { position: absolute; top: 0; right: 0; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    /* Menu */
+    .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 420px; margin: 0 auto; }
+    .menu-card { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px 16px; text-align: center; cursor: pointer; transition: 0.2s; }
+    .menu-card:active { transform: scale(0.96); border-color: var(--primary); background: var(--primary-soft); }
+    .menu-card span { display: block; font-size: 15px; font-weight: 600; margin-top: 10px; }
+    .icon { font-size: 28px; }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 24px 18px;
-      user-select: none;
-    }
-
-    /* Sarlavha qismi */
-    header {
-      text-align: center;
-      margin-bottom: 28px;
-      margin-top: 10px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-      border: 1px solid rgba(22, 163, 74, 0.15);
-    }
-
-    header h1 {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    header p {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-top: 6px;
-    }
-
-    /* 4 ta tugma paneli (Grid) */
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-    }
-
-    .menu-card {
-      background: var(--card-bg);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-
-    .menu-card:active {
-      transform: scale(0.96);
-      border-color: var(--primary);
-      background: var(--primary-soft);
-    }
-
-    .icon-wrapper {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      color: var(--primary);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-      border: 1px solid var(--border);
-    }
-
-    .menu-card span {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    /* Pastdan chiquvchi oyna (Bottom Sheet) */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(3px);
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      z-index: 100;
-    }
-
-    .overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .bottom-sheet {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #ffffff;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      padding: 20px 24px 34px;
-      transform: translateY(100%);
-      transition: var(--transition);
-      z-index: 101;
-      max-width: 480px;
-      margin: 0 auto;
-      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .bottom-sheet.active {
-      transform: translateY(0);
-    }
-
-    .sheet-pill {
-      width: 40px;
-      height: 4px;
-      background: #cbd5e1;
-      border-radius: 4px;
-      margin: 0 auto 18px;
-    }
-
-    .sheet-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .sheet-title {
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .close-btn {
-      background: #f1f5f9;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-weight: bold;
-    }
-
-    .sheet-body {
-      font-size: 14.5px;
-      line-height: 1.6;
-      color: var(--text-muted);
-    }
-
-    /* Oyna ichidagi futbolga xos kichik elementlar */
-    .info-list {
-      list-style: none;
-      margin-top: 10px;
-    }
-
-    .info-list li {
-      padding: 10px 0;
-      border-bottom: 1px solid #f1f5f9;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .info-list li:last-child {
-      border-bottom: none;
-    }
-
-    .action-btn {
-      width: 100%;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      margin-top: 18px;
-      cursor: pointer;
-    }
-
-    .action-btn:active {
-      background: var(--primary-hover);
-    }
+    /* Modal (Bottom Sheet) */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 100; }
+    .overlay.active { opacity: 1; visibility: visible; }
+    .bottom-sheet { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 24px 24px 0 0; padding: 20px 20px 30px; transform: translateY(100%); transition: 0.3s; z-index: 101; max-height: 85vh; overflow-y: auto; }
+    .bottom-sheet.active { transform: translateY(0); }
+    .sheet-title { font-size: 18px; font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; }
+    .close-btn { background: #f1f5f9; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+    
+    /* Content Styles */
+    .list-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+    .btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; margin-top: 15px; cursor: pointer; }
+    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+    input, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; font-size: 14px; font-family: inherit; }
+    
+    /* Admin Panel */
+    #adminPanel { display: none; padding: 10px 0; }
+    .admin-section { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border); }
+    .admin-section h4 { margin-bottom: 10px; font-size: 15px; }
   </style>
 </head>
 <body>
 
   <!-- Asosiy ekran -->
   <header>
+    <button class="admin-btn" onclick="loginAdmin()">⚙️</button>
     <div class="badge">⚽ Futbol Klubi</div>
-    <h1>Xush kelibsiz!</h1>
+    <h1 id="mainTitle">Xush kelibsiz!</h1>
     <p>O'zingizga kerakli bo'limni tanlang</p>
   </header>
 
-  <!-- 4 ta asosiy tugma -->
-  <main class="menu-grid">
-    <!-- 1. Jadval -->
-    <div class="menu-card" onclick="openModal('jadval')">
-      <div class="icon-wrapper">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg>
-      </div>
-      <span>Jadval</span>
-    </div>
-
-    <!-- 2. To'lov -->
-    <div class="menu-card" onclick="openModal('tolov')">
-      <div class="icon-wrapper">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <rect x="2" y="5" width="20" height="14" rx="2"></rect>
-          <line x1="2" y1="10" x2="22" y2="10"></line>
-        </svg>
-      </div>
-      <span>To'lov</span>
-    </div>
-
-    <!-- 3. Jamoa -->
-    <div class="menu-card" onclick="openModal('jamoa')">
-      <div class="icon-wrapper">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-      </div>
-      <span>Jamoa</span>
-    </div>
-
-    <!-- 4. Yozilish -->
-    <div class="menu-card" onclick="openModal('yozilish')">
-      <div class="icon-wrapper">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-          <path d="M9 14l2 2 4-4"></path>
-        </svg>
-      </div>
-      <span>Yozilish</span>
-    </div>
+  <main class="menu-grid" id="mainMenu">
+    <div class="menu-card" onclick="openModal('jadval')"><div class="icon">📅</div><span>Jadval</span></div>
+    <div class="menu-card" onclick="openModal('tolov')"><div class="icon">💳</div><span>To'lov</span></div>
+    <div class="menu-card" onclick="openModal('jamoa')"><div class="icon">👥</div><span>Jamoa</span></div>
+    <div class="menu-card" onclick="openModal('yozilish')"><div class="icon">📝</div><span>Ariza topshirish</span></div>
   </main>
 
-  <!-- Pastdan chiquvchi modal oyna (Bottom Sheet) -->
+  <!-- Admin Panel (Yashirin) -->
+  <div id="adminPanel">
+    <h2 style="margin-bottom: 15px; font-size: 18px;">Murabbiy Paneli (Admin)</h2>
+    
+    <div class="admin-section">
+      <h4>📅 Mashg'ulot kunlari va vaqti</h4>
+      <textarea id="adminJadval" rows="3"></textarea>
+    </div>
+
+    <div class="admin-section">
+      <h4>💳 To'lov ma'lumotlari</h4>
+      <input type="text" id="adminTolovSumma" placeholder="Oylik to'lov summasi">
+      <input type="text" id="adminTolovKarta" placeholder="Karta raqami">
+    </div>
+
+    <div class="admin-section">
+      <h4>👥 O'yinchilar va Foizlar (Har birini yangi qatordan yozing)</h4>
+      <textarea id="adminJamoa" rows="4" placeholder="Ism Foiz% (masalan: Ali Valiyev 85%)"></textarea>
+    </div>
+
+    <div class="admin-section">
+      <h4>📩 Kelgan Arizalar (Ota-onalar)</h4>
+      <div id="adminArizalarList" style="font-size: 13px; color: var(--text-muted);">Hozircha ariza yo'q</div>
+    </div>
+
+    <button class="btn" onclick="saveAdminData()">Barcha o'zgarishlarni saqlash</button>
+    <button class="btn btn-outline" onclick="logoutAdmin()">Chiqish</button>
+  </div>
+
+  <!-- Modal Oyna -->
   <div class="overlay" id="overlay" onclick="closeModal()"></div>
   <div class="bottom-sheet" id="bottomSheet">
-    <div class="sheet-pill"></div>
-    <div class="sheet-header">
-      <h3 class="sheet-title" id="sheetTitle">Sarlavha</h3>
+    <div class="sheet-title">
+      <span id="sheetTitle">Sarlavha</span>
       <button class="close-btn" onclick="closeModal()">✕</button>
     </div>
-    <div class="sheet-body" id="sheetBody">
-      <!-- Dinamik ma'lumot shu yerga chiqadi -->
-    </div>
+    <div id="sheetBody"></div>
   </div>
 
   <script>
-    // Telegram Web App sozlamalari
     const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand(); // To'liq ekranga yoyish
-    }
+    if (tg) { tg.ready(); tg.expand(); }
 
-    // Modal oynalar uchun ma'lumotlar
-    const dataContent = {
-      jadval: {
-        title: "📅 O'yinlar va Mashg'ulotlar",
-        body: `
-          <p>Yaqinlashib kelayotgan mashg'ulot kunlari:</p>
-          <ul class="info-list">
-            <li><span>Dushanba (18:00)</span> <strong>Taktika</strong></li>
-            <li><span>Chorshanba (18:00)</span> <strong>Jismoniy</strong></li>
-            <li><span>Shanba (19:30)</span> <strong>O'rtoqlik o'yini</strong></li>
-          </ul>
-        `
-      },
-      tolov: {
-        title: "💳 To'lov Ma'lumotlari",
-        body: `
-          <p>Oylik to'lov yoki o'yin uchun to'lovni amalga oshiring.</p>
-          <ul class="info-list">
-            <li><span>Oylik a'zolik:</span> <strong>350 000 so'm</strong></li>
-            <li><span>Karta:</span> <strong>8600 1234 5678 9012</strong></li>
-          </ul>
-          <button class="action-btn" onclick="alert('To‘lov tizimi ochilmoqda...')">To'lashga o'tish</button>
-        `
-      },
-      jamoa: {
-        title: "👥 Jamoa Tarkibi",
-        body: `
-          <p>Bizning tarkib va murabbiylar ro'yxati:</p>
-          <ul class="info-list">
-            <li><span>Bosh murabbiy:</span> <strong>Jasur Qodirov</strong></li>
-            <li><span>Kapitan:</span> <strong>Alisher Aliyev</strong></li>
-            <li><span>O'yinchilar:</span> <strong>18 nafar</strong></li>
-          </ul>
-        `
-      },
-      yozilish: {
-        title: "✍️ Mashg'ulotga yozilish",
-        body: `
-          <p>Yangi qabul ochildi! Birinchi mashg'ulotga bepul ro'yxatdan o'tishingiz mumkin.</p>
-          <button class="action-btn" onclick="submitBooking()">Ro'yxatdan o'tish</button>
-        `
-      }
+    // Dastlabki ma'lumotlar
+    const defaultData = {
+      jadval: "Dushanba (16:00-17:30)\nShanba (15:00-16:30)\nYakshanba (11:00-12:30)",
+      tolov: { summa: "300 000 so'm", karta: "8600 0000 0000 0000" },
+      jamoa: "Abbosov Shohruh (Murabbiy)\nAli Valiyev 85%\nSardor Karimov 70%",
+      arizalar: []
     };
 
-    const overlay = document.getElementById('overlay');
-    const bottomSheet = document.getElementById('bottomSheet');
-    const sheetTitle = document.getElementById('sheetTitle');
-    const sheetBody = document.getElementById('sheetBody');
+    // Xotirani yuklash
+    let appData = JSON.parse(localStorage.getItem('futbolData81')) || defaultData;
 
-    // Oynani ochish
+    function saveToStorage() {
+      localStorage.setItem('futbolData81', JSON.stringify(appData));
+    }
+
+    // Modal oynalarni ochish
     function openModal(type) {
-      // Telegram orqali xiyol tebranish (vibratsiya) berish
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('medium');
+      if (tg) tg.HapticFeedback.impactOccurred('light');
+      const sheet = document.getElementById('bottomSheet');
+      const title = document.getElementById('sheetTitle');
+      const body = document.getElementById('sheetBody');
+
+      if (type === 'jadval') {
+        title.innerText = "📅 Mashg'ulotlar jadvali";
+        body.innerHTML = appData.jadval.split('\n').map(l => `<div class="list-item"><span>${l}</span></div>`).join('');
+      } 
+      else if (type === 'tolov') {
+        title.innerText = "💳 To'lov";
+        body.innerHTML = `
+          <div class="list-item"><span>Oylik to'lov:</span> <strong>${appData.tolov.summa}</strong></div>
+          <div class="list-item"><span>Karta raqami:</span> <strong>${appData.tolov.karta}</strong></div>
+          <p style="font-size: 12px; color: gray; margin-top: 10px;">To'lovni amalga oshirib, chekni murabbiyga yuboring.</p>
+        `;
+      }
+      else if (type === 'jamoa') {
+        title.innerText = "👥 Jamoa a'zolari va Natijalar";
+        body.innerHTML = appData.jamoa.split('\n').map(l => `<div class="list-item"><span>${l}</span></div>`).join('');
+      }
+      else if (type === 'yozilish') {
+        title.innerText = "📝 Ariza topshirish";
+        body.innerHTML = `
+          <input type="text" id="appName" placeholder="Bolaning Ismi va Familiyasi">
+          <input type="text" id="appAge" placeholder="Yoshi">
+          <input type="tel" id="appPhone" placeholder="Ota-onaning tel raqami">
+          <textarea id="appInfo" placeholder="Sog'lig'i haqida (agar cheklov bo'lsa)"></textarea>
+          <button class="btn" onclick="submitApplication()">Arizani yuborish</button>
+        `;
       }
 
-      const content = dataContent[type];
-      if (content) {
-        sheetTitle.innerHTML = content.title;
-        sheetBody.innerHTML = content.body;
-
-        overlay.classList.add('active');
-        bottomSheet.classList.add('active');
-      }
+      document.getElementById('overlay').classList.add('active');
+      sheet.classList.add('active');
     }
 
-    // Oynani yopish
     function closeModal() {
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.selectionChanged();
-      }
-      overlay.classList.remove('active');
-      bottomSheet.classList.remove('active');
+      if (tg) tg.HapticFeedback.selectionChanged();
+      document.getElementById('overlay').classList.remove('active');
+      document.getElementById('bottomSheet').classList.remove('active');
     }
 
-    function submitBooking() {
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.notificationOccurred('success');
-      }
-      alert("Arizangiz qabul qilindi!");
+    // Ariza qabul qilish
+    function submitApplication() {
+      const name = document.getElementById('appName').value;
+      const age = document.getElementById('appAge').value;
+      const phone = document.getElementById('appPhone').value;
+      const info = document.getElementById('appInfo').value;
+
+      if(!name || !phone) { alert("Iltimos, ism va telefon raqamini kiriting!"); return; }
+
+      appData.arizalar.push({ name, age, phone, info, date: new Date().toLocaleDateString() });
+      saveToStorage();
+      
+      if (tg) tg.HapticFeedback.notificationOccurred('success');
+      alert("Arizangiz muvaffaqiyatli qabul qilindi! Murabbiy tez orada bog'lanadi.");
       closeModal();
+    }
+
+    // --- ADMIN LOGIKASI ---
+
+    function loginAdmin() {
+      const pass = prompt("Admin parolini kiriting:");
+      if (pass === "1234") {
+        document.getElementById('mainMenu').style.display = 'none';
+        document.querySelector('header p').style.display = 'none';
+        document.getElementById('mainTitle').innerText = "Boshqaruv Paneli";
+        document.getElementById('adminPanel').style.display = 'block';
+        loadAdminData();
+      } else if (pass !== null) {
+        alert("Parol noto'g'ri!");
+      }
+    }
+
+    function loadAdminData() {
+      document.getElementById('adminJadval').value = appData.jadval;
+      document.getElementById('adminTolovSumma').value = appData.tolov.summa;
+      document.getElementById('adminTolovKarta').value = appData.tolov.karta;
+      document.getElementById('adminJamoa').value = appData.jamoa;
+
+      const list = document.getElementById('adminArizalarList');
+      if(appData.arizalar.length === 0) {
+        list.innerHTML = "Hozircha ariza yo'q";
+      } else {
+        list.innerHTML = appData.arizalar.map(a => `
+          <div style="border-bottom: 1px solid #ddd; padding: 5px 0;">
+            <b>${a.name}</b> (${a.age} yosh)<br>
+            Tel: ${a.phone}<br>
+            <i>${a.info || 'Cheklov yo\'q'}</i> <br>
+            <small style="color: #999;">${a.date}</small>
+          </div>
+        `).join('');
+      }
+    }
+
+    function saveAdminData() {
+      appData.jadval = document.getElementById('adminJadval').value;
+      appData.tolov.summa = document.getElementById('adminTolovSumma').value;
+      appData.tolov.karta = document.getElementById('adminTolovKarta').value;
+      appData.jamoa = document.getElementById('adminJamoa').value;
+      
+      saveToStorage();
+      if (tg) tg.HapticFeedback.notificationOccurred('success');
+      alert("Barcha ma'lumotlar saqlandi!");
+    }
+
+    function logoutAdmin() {
+      document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('mainMenu').style.display = 'grid';
+      document.querySelector('header p').style.display = 'block';
+      document.getElementById('mainTitle').innerText = "Xush kelibsiz!";
     }
   </script>
 </body>
