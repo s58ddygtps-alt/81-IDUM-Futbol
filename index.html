@@ -18,11 +18,11 @@
       --card: #FFFFFF;
       --primary: #2563EB;
       --primary-light: #EFF6FF;
-      --secondary: #10B981;
+      --secondary: #10B981; /* Yashil */
+      --danger: #EF4444; /* Qizil */
+      --warning: #F59E0B;
       --text-dark: #1E293B;
       --text-muted: #64748B;
-      --danger: #EF4444;
-      --warning: #F59E0B;
       --border: #E2E8F0;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       --input-bg: #F8FAFC;
@@ -78,19 +78,26 @@
     .btn-sm { padding: 8px 12px; font-size: 11px; width: auto; border-radius: 8px; }
     .btn-danger { background: var(--danger); color: white; border: none; }
     
-    .fifa-card { background: linear-gradient(135deg, #1E293B, #0F172A); color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px; border: 1px solid #334155; box-shadow: var(--shadow); }
-    
-    .player-photo { width: 100px; height: 130px; object-fit: cover; border-radius: 10px; border: 2px solid #3B82F6; margin: 0 auto 10px; display: block; background: #1E293B; }
-    .player-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; color: white; }
-    .player-username { color: #93C5FD; font-size: 13px; font-weight: 600; margin-bottom: 15px; }
+    /* O'quvchi profili (Eskiz bo'yicha) */
+    .player-hero { text-align: center; margin-bottom: 16px; }
+    .player-photo { width: 120px; height: 150px; object-fit: cover; border-radius: 12px; border: 3px solid var(--primary); margin: 0 auto 15px; display: block; background: #1E293B; box-shadow: var(--shadow); }
+    .player-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .player-username { color: var(--primary); font-size: 13px; font-weight: 600; margin-bottom: 15px; }
 
+    /* Ustunlar (Progress Barlar) */
+    .stat-bar-container { margin-bottom: 15px; }
+    .stat-bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .stat-bar-bg { width: 100%; height: 14px; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+    .stat-bar-fill { height: 100%; border-radius: 10px; transition: width 0.8s ease-in-out; }
+    .fill-green { background-color: var(--secondary); }
+    .fill-red { background-color: var(--danger); }
+    
+    /* Taymer va Motivatsiya */
     .timer-box { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; box-shadow: var(--shadow); }
     .timer-text { font-size: 22px; font-family: 'Montserrat'; margin-top: 5px; }
-    
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .stat-box { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
-    .stat-val { font-size: 18px; font-weight: 800; color: #3B82F6; }
-    .stat-lbl { font-size: 11px; color: #94A3B8; font-weight: 600; margin-top: 4px; }
+    .motivation-card { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: none; }
+    .motivation-title { font-size: 14px; font-weight: 700; opacity: 0.9; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .motivation-text { font-size: 16px; font-weight: 600; font-style: italic; line-height: 1.4; }
 
     .badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; display: inline-block; }
     .bg-success { background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid #10B981; }
@@ -112,10 +119,6 @@
     
     .announcement { background: rgba(245, 158, 11, 0.15); color: #B45309; padding: 12px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; border: 1px solid #F59E0B; display: none; }
     .dark-mode .announcement { color: #FCD34D; }
-
-    .motivation-card { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: none; }
-    .motivation-title { font-size: 14px; font-weight: 700; opacity: 0.9; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-    .motivation-text { font-size: 16px; font-weight: 600; font-style: italic; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -172,18 +175,43 @@
     <!-- MOTIVATSIYA -->
     <div class="motivation-card">
       <div class="motivation-title" data-uz="Murabbiy nasihati" data-ru="Совет тренера">Murabbiy nasihati</div>
-      <div class="motivation-text" id="motivationText">"Mehnat qilgan yutadi, dangasa yig'laydi!"</div>
+      <div class="motivation-text" id="motivationText">"Mehnat qilgan yutadi!"</div>
     </div>
 
-    <div class="fifa-card">
+    <!-- O'QUVCHI PROFILI VA STATISTIKASI (Siz chizgandek) -->
+    <div class="card player-hero">
       <img id="pPhoto" class="player-photo" src="https://ui-avatars.com/api/?name=U&background=1E293B&color=3B82F6&size=150">
       <h2 class="player-name" id="pFullName">Ism</h2>
       <p class="player-username" id="pUsername">@username</p>
 
-      <div class="stats-grid">
-        <div class="stat-box"><div class="stat-val"><span id="pProgress">0</span>%</div><div class="stat-lbl" data-uz="O'zlashtirish" data-ru="Успеваемость">O'zlashtirish</div></div>
-        <div class="stat-box"><div class="stat-val"><span id="pGoals">0</span></div><div class="stat-lbl" data-uz="Gollar" data-ru="Голы">Gollar</div></div>
-        <div class="stat-box"><div class="stat-val"><span id="pAssists">0</span></div><div class="stat-lbl" data-uz="Asistlar" data-ru="Ассисты">Asistlar</div></div>
+      <!-- Ustunlar (Progress Barlar) -->
+      <div style="text-align: left; margin-top: 20px;">
+        
+        <div class="stat-bar-container">
+          <div class="stat-bar-header"><span>O'zlashtirish</span> <span id="pProgressTxt">0%</span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barProgress" style="width: 0%;"></div></div>
+        </div>
+
+        <div class="stat-bar-container">
+          <div class="stat-bar-header"><span>Gollar</span> <span id="pGoalsTxt">0 ta</span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barGoals" style="width: 0%;"></div></div>
+        </div>
+
+        <div class="stat-bar-container">
+          <div class="stat-bar-header"><span>Asistlar</span> <span id="pAssistsTxt">0 ta</span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barAssists" style="width: 0%;"></div></div>
+        </div>
+
+        <div class="stat-bar-container">
+          <div class="stat-bar-header"><span>Tezlik</span> <span id="pSpeedTxt">0%</span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barSpeed" style="width: 0%;"></div></div>
+        </div>
+
+        <div class="stat-bar-container">
+          <div class="stat-bar-header"><span>Mashg'ulotlar</span> <span id="pTrainingsTxt">0 marta</span></div>
+          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barTrainings" style="width: 0%;"></div></div>
+        </div>
+
       </div>
     </div>
 
@@ -225,6 +253,7 @@
       <div class="card" id="adminStudentList"></div>
     </div>
 
+    <!-- ADMIN NATIJALAR (Ustunlar bilan) -->
     <div id="adminTabStats" class="hidden">
       <div class="card" id="adminStatsList"></div>
     </div>
@@ -232,8 +261,8 @@
     <div id="adminTabSettings" class="hidden">
       <div class="card">
         <h3 style="margin-bottom: 10px; color: var(--primary);">E'lon va Motivatsiya</h3>
-        <div class="input-group"><label>E'lon (Ota-onalarga)</label><textarea id="setAnnouncement" class="input-control" rows="2" placeholder="Masalan: Ertaga mashg'ulot yo'q..."></textarea></div>
-        <div class="input-group"><label>Motivatsiya (O'quvchilarga)</label><textarea id="setMotivation" class="input-control" rows="2" placeholder="Masalan: Sen bugun eng zo'rsan!"></textarea></div>
+        <div class="input-group"><label>E'lon (Ota-onalarga)</label><textarea id="setAnnouncement" class="input-control" rows="2"></textarea></div>
+        <div class="input-group"><label>Motivatsiya (O'quvchilarga)</label><textarea id="setMotivation" class="input-control" rows="2"></textarea></div>
         
         <h3 style="margin: 15px 0 10px; color: var(--primary);">To'lov</h3>
         <div class="input-group"><label>Karta raqami</label><input type="text" id="setCard" class="input-control"></div>
@@ -379,6 +408,28 @@
       }, 1000);
     }
 
+    // USTUNLARNI TO'LDIRISH FUNKSIYASI
+    function updateStatBar(barId, txtId, value, maxValue, suffix = "") {
+      let percent = (value / maxValue) * 100;
+      if (percent > 100) percent = 100;
+      if (percent < 0) percent = 0;
+
+      const bar = document.getElementById(barId);
+      const txt = document.getElementById(txtId);
+
+      if (bar && txt) {
+        bar.style.width = percent + '%';
+        txt.innerText = value + suffix;
+        
+        // Agar 50% dan past bo'lsa qizil, yuqori bo'lsa yashil
+        if (percent < 50) {
+          bar.className = 'stat-bar-fill fill-red';
+        } else {
+          bar.className = 'stat-bar-fill fill-green';
+        }
+      }
+    }
+
     function sendReceiptToAdmin() {
       const text = `To'lov cheki.\nO'quvchi: ${currentUser.name}\nLogini: ${currentUser.id}`;
       const tgLink = `https://t.me/${ADMIN_BOT_USERNAME}?text=${encodeURIComponent(text)}`;
@@ -443,7 +494,7 @@
       showScreen('loginScreen');
     }
 
-    // XATOLIK TO'G'RILANGAN JOY (Hamma elementlar tekshiriladi)
+    // O'QUVCHI PANELINI YUKLASH
     function loadParentData() {
       try {
         const elFullName = document.getElementById('pFullName');
@@ -456,15 +507,13 @@
         const elPhoto = document.getElementById('pPhoto');
         if(elPhoto) elPhoto.src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=1E293B&color=3B82F6&size=150`;
         
-        const elProgress = document.getElementById('pProgress');
-        if(elProgress) elProgress.innerText = currentUser.progress || '0';
-        
-        const elAssists = document.getElementById('pAssists');
-        if(elAssists) elAssists.innerText = currentUser.assists || '0';
-        
-        const elGoals = document.getElementById('pGoals');
-        if(elGoals) elGoals.innerText = currentUser.goals || '0';
-        
+        // Ustunlarni yangilash (Maksimal qiymatlar: O'zlashtirish 100, Gollar 20, Asistlar 20, Tezlik 100, Mashg'ulot 30)
+        updateStatBar('barProgress', 'pProgressTxt', parseInt(currentUser.progress) || 0, 100, "%");
+        updateStatBar('barGoals', 'pGoalsTxt', parseInt(currentUser.goals) || 0, 20, " ta");
+        updateStatBar('barAssists', 'pAssistsTxt', parseInt(currentUser.assists) || 0, 20, " ta");
+        updateStatBar('barSpeed', 'pSpeedTxt', parseInt(currentUser.speed) || 0, 100, "%");
+        updateStatBar('barTrainings', 'pTrainingsTxt', parseInt(currentUser.trainings) || 0, 30, " marta");
+
         const elPayAmount = document.getElementById('pPayAmount');
         if(elPayAmount) elPayAmount.innerText = appSettings.amount || '350 000';
         
@@ -546,6 +595,7 @@
       }
     }
 
+    // ADMIN PANELINI YUKLASH
     function loadAdminData() {
       document.getElementById('setCard').value = appSettings.card || "";
       document.getElementById('setAmount').value = appSettings.amount || "";
@@ -590,6 +640,7 @@
             const p = players[id];
             if(p.isArchived) continue;
 
+            // O'quvchilar ro'yxati (Tugmalar bilan)
             let badgeClass = p.paid === true ? 'bg-success' : (p.paid === "pending" ? 'bg-warning' : 'bg-danger');
             let badgeText = p.paid === true ? 'To\'langan' : (p.paid === "pending" ? 'Kutilmoqda' : 'Qarzdor');
             
@@ -604,11 +655,33 @@
                 </div>
               </div>`;
 
+            // NATIJALAR BO'LIMI (Ustunlar bilan)
+            let pProgress = parseInt(p.progress) || 0;
+            let pGoals = parseInt(p.goals) || 0;
+            let pAssists = parseInt(p.assists) || 0;
+            
             statsList.innerHTML += `
-              <div class="list-item">
-                <div><b>${p.name}</b><br><small>Gol: ${p.goals||0} | Asist: ${p.assists||0} | Tezlik: ${p.speed||0}%</small></div>
-                <div><button class="btn btn-sm btn-outline" onclick="editPlayer('${id}')">TAHRIRLASH</button></div>
-              </div>`;
+              <div style="border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <b>${p.name}</b>
+                  <button class="btn btn-sm btn-outline" onclick="editPlayer('${id}')">TAHRIRLASH</button>
+                </div>
+                
+                <!-- Admin uchun ham ustunlar -->
+                <div class="stat-bar-container" style="margin-bottom: 8px;">
+                  <div class="stat-bar-header"><span style="font-size:11px;">O'zlashtirish</span> <span style="font-size:11px;">${pProgress}%</span></div>
+                  <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pProgress < 50 ? 'fill-red' : 'fill-green'}" style="width: ${pProgress}%;"></div></div>
+                </div>
+                <div class="stat-bar-container" style="margin-bottom: 8px;">
+                  <div class="stat-bar-header"><span style="font-size:11px;">Gollar</span> <span style="font-size:11px;">${pGoals} ta</span></div>
+                  <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pGoals < 5 ? 'fill-red' : 'fill-green'}" style="width: ${Math.min((pGoals/20)*100, 100)}%;"></div></div>
+                </div>
+                <div class="stat-bar-container" style="margin-bottom: 8px;">
+                  <div class="stat-bar-header"><span style="font-size:11px;">Asistlar</span> <span style="font-size:11px;">${pAssists} ta</span></div>
+                  <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pAssists < 5 ? 'fill-red' : 'fill-green'}" style="width: ${Math.min((pAssists/20)*100, 100)}%;"></div></div>
+                </div>
+              </div>
+            `;
           }
         } 
         if(studentList.innerHTML === '') { studentList.innerHTML = "<p style='text-align:center;'>O'quvchilar yo'q</p>"; statsList.innerHTML = studentList.innerHTML; }
