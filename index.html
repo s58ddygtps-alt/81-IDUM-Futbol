@@ -14,42 +14,16 @@
       --text-light: #f8fafc;
       --text-muted: #94a3b8;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-color); color: var(--text-light); min-height: 100vh; overflow-x: hidden; position: relative; }
     
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-light);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
+    /* Orqa fon animatsiyasi */
+    .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%); }
+    .bubble { position: absolute; background: rgba(16, 185, 129, 0.15); border-radius: 50%; animation: float 15s infinite linear; backdrop-filter: blur(10px); }
+    @keyframes float { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 
-    /* iOS 27 Orqa Fon Animatsiyasi (Uchib yuruvchi sharlar) */
-    .background-animation {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: -1; overflow: hidden;
-      background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
-    }
-    .bubble {
-      position: absolute; background: rgba(16, 185, 129, 0.15);
-      border-radius: 50%; animation: float 15s infinite linear;
-      backdrop-filter: blur(10px);
-    }
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(0); opacity: 0; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-    }
-
-    /* Glassmorphism uslubi */
-    .glass-panel {
-      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border); border-radius: 24px;
-      padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    }
-
-    /* Ekranlar */
+    /* Glassmorphism */
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px; margin-bottom: 16px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
     .screen { display: none; padding: 20px 16px; animation: fadeIn 0.4s ease; }
     .screen.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -59,22 +33,11 @@
     .logo-icon { font-size: 60px; margin-bottom: 10px; }
     .title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
     .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
-
     .input-group { margin-bottom: 15px; text-align: left; }
     .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; margin-left: 5px; }
-    .glass-input {
-      width: 100%; padding: 15px; border-radius: 16px;
-      background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);
-      color: white; font-size: 16px; outline: none;
-    }
+    .glass-input { width: 100%; padding: 15px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white; font-size: 16px; outline: none; }
     .glass-input:focus { border-color: var(--primary); }
-
-    .btn {
-      width: 100%; padding: 15px; border-radius: 16px; border: none;
-      background: var(--primary); color: white; font-size: 16px; font-weight: 600;
-      cursor: pointer; transition: 0.2s; margin-top: 10px;
-      display: flex; justify-content: center; align-items: center; gap: 8px;
-    }
+    .btn { width: 100%; padding: 15px; border-radius: 16px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
     .btn:active { transform: scale(0.98); background: #059669; }
     .btn-outline { background: transparent; border: 1px solid var(--glass-border); }
 
@@ -82,15 +45,12 @@
     header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .user-info h2 { font-size: 20px; }
     .user-info p { color: var(--primary); font-size: 12px; font-weight: 600; text-transform: uppercase; }
-
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .stat-card { text-align: center; }
     .stat-value { font-size: 24px; font-weight: 800; color: var(--primary); margin-top: 5px; }
     .stat-label { font-size: 12px; color: var(--text-muted); }
-
     .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .list-item:last-child { border-bottom: none; }
-    
     .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
     .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; }
     .badge-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; }
@@ -105,7 +65,6 @@
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-content { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: 0.3s; z-index: 101; max-height: 90vh; overflow-y: auto; }
     .modal-content.active { transform: translateY(0); }
-
     .hidden { display: none !important; }
   </style>
 </head>
@@ -121,11 +80,11 @@
 
     <div class="glass-panel">
       <div class="input-group">
-        <label>Telefon raqam (Ota-ona) yoki "admin"</label>
-        <input type="text" id="loginUser" class="glass-input" placeholder="+998 90 123 45 67">
+        <label>Login (Admin: Arif yoki o'quvchi logini)</label>
+        <input type="text" id="loginUser" class="glass-input" placeholder="Loginni kiriting">
       </div>
       <div class="input-group">
-        <label>Parol (Admin uchun: 1234)</label>
+        <label>Parol</label>
         <input type="password" id="loginPass" class="glass-input" placeholder="••••">
       </div>
       <button class="btn" onclick="login()">Kirish</button>
@@ -195,7 +154,6 @@
     <div id="adminTabPlayers">
       <button class="btn" onclick="openAddPlayerModal()">+ Yangi o'quvchi qo'shish</button>
       <div class="glass-panel" id="adminPlayerList" style="margin-top: 15px;">
-        <!-- O'quvchilar ro'yxati JS orqali chiqadi -->
         <p style="color:gray; text-align:center;">Ma'lumotlar yuklanmoqda...</p>
       </div>
     </div>
@@ -238,7 +196,8 @@
     <h3 style="margin-bottom: 15px;" id="playerModalTitle">Yangi o'quvchi</h3>
     <input type="hidden" id="editPlayerId">
     <div class="input-group"><label>Ism va Familiya</label><input type="text" id="pName" class="glass-input"></div>
-    <div class="input-group"><label>Telefon raqami (Login uchun)</label><input type="text" id="pPhone" class="glass-input"></div>
+    <div class="input-group"><label>Login (Foydalanuvchi nomi)</label><input type="text" id="pLogin" class="glass-input"></div>
+    <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="glass-input"></div>
     <div class="input-group"><label>Futbolka raqami</label><input type="number" id="pJerseyNum" class="glass-input"></div>
     <div class="input-group"><label>O'zlashtirish foizi (0-100)</label><input type="number" id="pProgressVal" class="glass-input"></div>
     <div class="input-group">
@@ -257,14 +216,13 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // === SIZNING SOZLAMALARINGIZ ===
+    // === SOZLAMALAR ===
     const firebaseConfig = {
       databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" 
     };
-    const ADMIN_ID = "6807333001"; 
-    const BOT_USERNAME = "todo_plus_bot";
+    const ADMIN_LOGIN = "Arif";
+    const ADMIN_PASS = "0717"; 
 
-    // Firebase ishga tushirish
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
@@ -274,8 +232,7 @@
       let bubble = document.createElement('div');
       bubble.className = 'bubble';
       let size = Math.random() * 100 + 30;
-      bubble.style.width = size + 'px';
-      bubble.style.height = size + 'px';
+      bubble.style.width = size + 'px'; bubble.style.height = size + 'px';
       bubble.style.left = Math.random() * 100 + 'vw';
       bubble.style.animationDuration = (Math.random() * 10 + 10) + 's';
       bubble.style.animationDelay = Math.random() * 5 + 's';
@@ -285,36 +242,41 @@
     let currentUser = null;
     let appSettings = { schedule: "Dushanba, Chorshanba, Juma (16:00)", card: "8600 0000 0000 0000", amount: "300 000 so'm" };
 
-    // Bazadan sozlamalarni yuklash (xatolik bersa ham dastur qotmaydi)
     get(ref(db, 'settings')).then((snapshot) => {
       if (snapshot.exists()) appSettings = snapshot.val();
-    }).catch(e => console.log("Baza xatosi:", e));
+    });
 
+    // LOGIN LOGIKASI
     window.login = function() {
       const user = document.getElementById('loginUser').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
 
-      // ADMIN LOGIN
-      if (user === "admin" && pass === "1234") {
+      // 1. ADMIN TEKSHIRUVI
+      if (user === ADMIN_LOGIN && pass === ADMIN_PASS) {
         showScreen('adminScreen');
         loadAdminData();
         return;
       }
 
-      // O'QUVCHI LOGIN
-      if (user.length > 5) {
+      // 2. O'QUVCHI TEKSHIRUVI
+      if (user && pass) {
         get(ref(db, 'players/' + user)).then((snapshot) => {
           if (snapshot.exists()) {
-            currentUser = snapshot.val();
-            currentUser.id = user;
-            loadParentData();
-            showScreen('parentScreen');
+            const pData = snapshot.val();
+            if (pData.password === pass) {
+              currentUser = pData;
+              currentUser.id = user;
+              loadParentData();
+              showScreen('parentScreen');
+            } else {
+              alert("Parol xato!");
+            }
           } else {
-            alert("Bunday foydalanuvchi topilmadi! Admin panelda telefon raqamni to'g'ri kiritganingizni tekshiring.");
+            alert("Bunday login topilmadi!");
           }
-        }).catch(e => alert("Bazaga ulanishda xato! Firebase qoidalarini tekshiring."));
+        }).catch(e => alert("Bazaga ulanishda xato! Internetni tekshiring."));
       } else {
-        alert("Telefon raqamni to'liq kiriting!");
+        alert("Login va parolni kiriting!");
       }
     }
 
@@ -371,7 +333,7 @@
               <div class="list-item">
                 <div>
                   <b>#${p.jersey} ${p.name}</b><br>
-                  <small style="color:gray">${id}</small>
+                  <small style="color:gray">Login: <b>${id}</b()> | Parol: <b>${p.password}</b></small>
                 </div>
                 <div style="text-align:right">
                   <span class="badge ${p.paid ? 'badge-success' : 'badge-danger'}">${p.paid ? 'To\'langan' : 'Qarzdor'}</span>
@@ -412,7 +374,8 @@
       document.getElementById('playerModalTitle').innerText = "Yangi o'quvchi";
       document.getElementById('editPlayerId').value = "";
       document.getElementById('pName').value = "";
-      document.getElementById('pPhone').value = "";
+      document.getElementById('pLogin').value = "";
+      document.getElementById('pPass').value = "";
       document.getElementById('pJerseyNum').value = "";
       document.getElementById('pProgressVal').value = "0";
       document.getElementById('pPay').value = "unpaid";
@@ -427,7 +390,8 @@
           document.getElementById('playerModalTitle').innerText = "Tahrirlash";
           document.getElementById('editPlayerId').value = id;
           document.getElementById('pName').value = p.name;
-          document.getElementById('pPhone').value = id;
+          document.getElementById('pLogin').value = id;
+          document.getElementById('pPass').value = p.password;
           document.getElementById('pJerseyNum').value = p.jersey;
           document.getElementById('pProgressVal').value = p.progress;
           document.getElementById('pPay').value = p.paid ? "paid" : "unpaid";
@@ -437,18 +401,26 @@
       });
     }
 
-    window.savePlayer = function() {
-      const id = document.getElementById('pPhone').value.trim(); 
-      if(!id) return alert("Telefon raqamini kiriting!");
+    window.savePlayer = function {
+      const newLogin = document.getElementById('pLogin').value.trim(); 
+      const oldLogin = document.getElementById('editPlayerId').value;
+      
+      if(!newLogin) return alert("Login kiriting!");
       
       const data = {
         name: document.getElementById('pName').value,
+        password: document.getElementById('pPass').value,
         jersey: document.getElementById('pJerseyNum').value,
         progress: document.getElementById('pProgressVal').value,
         paid: document.getElementById('pPay').value === "paid"
       };
 
-      set(ref(db, 'players/' + id), data).then(() => {
+      // Agar login o'zgartirilgan bo'lsa, eskisini o'chirish
+      if (oldLogin && oldLogin !== newLogin) {
+        set(ref(db, 'players/' + oldLogin), null); 
+      }
+
+      set(ref(db, 'players/' + newLogin), data).then(() => {
         alert("Saqlandi!");
         closeModal();
       }).catch(e => alert("Xatolik: " + e.message));
