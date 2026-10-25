@@ -69,7 +69,7 @@
     
     .input-group { margin-bottom: 12px; }
     .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .input-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-dark); font-size: 14px; outline: none; }
+    .input-control data-ru { width: ="100%; padding: 12px; border-radius: 10Вpx; border: 1px solid var(--border);ход background: var(--input-bg); color: var(--text-dark); font-size: 14px; outline: none; }
     .input-control:focus { border-color: var(--primary); }
 
     .btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; }
@@ -136,6 +136,8 @@
     .finance-card { background: var(--bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
     .finance-val { font-size: 18px; font-weight: 800; color: var(--primary); }
     .finance-lbl { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    
+    .warning-alert { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; margin-bottom: 15px; text-align: center; display: none; }
   </style>
 </head>
 <body>
@@ -150,7 +152,7 @@
       </div>
     </div>
     <div class="card" style="margin-top: 10vh;">
-      <h2 style="text-align: center; margin-bottom: 20px;" data-uz="Tizimga kirish" data-ru="Вход в систему">Tizimga kirish</h2>
+      <h2 style="text-align: center; margin-bottom: 20px;" data-uz="Tizimga kirish" в систему">Tizimga kirish</h2>
       <div class="input-group"><label data-uz="Login" data-ru="Логин">Login</label><input type="text" id="loginUser" class="input-control" placeholder="Arif / 1111"></div>
       <div class="input-group"><label data-uz="Parol" data-ru="Пароль">Parol</label><input type="password" id="loginPass" class="input-control" placeholder="••••"></div>
       <button class="btn" onclick="login()" data-uz="KIRISH" data-ru="ВОЙТИ">KIRISH</button>
@@ -225,6 +227,18 @@
       </div>
     </div>
 
+    <!-- Davomat Taqvimi (Sanalar) -->
+    <div class="card" id="attendanceCard" style="display: none;">
+      <h3 style="margin-bottom: 10px; color: var(--primary);">📅 Davomat tarixi</h3>
+      <div id="pAttendanceList" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+    </div>
+
+    <!-- O'yinlar Natijalari -->
+    <div class="card" id="matchesCard" style="display: none;">
+      <h3 style="margin-bottom: 10px; color: var(--warning);">🏆 Ichki o'yinlar natijasi</h3>
+      <div id="pMatchesText" style="font-size: 14px; line-height: 1.6;"></div>
+    </div>
+
     <div class="card" id="medicalCard" style="display: none;">
       <h3 style="margin-bottom: 10px; color: var(--danger);">🩺 Tibbiy ma'lumot</h3>
       <p id="pMedicalText" style="font-size: 14px; line-height: 1.5;"></p>
@@ -237,6 +251,7 @@
 
     <div class="card" style="text-align: center;">
       <h3 style="margin-bottom: 10px;">To'lov holati</h3>
+      <div class="warning-alert" id="payWarning">Diqqat! To'lov muddati o'tdi. Iltimos, to'lovni amalga oshiring.</div>
       <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
       <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;">Oylik: <b id="pPayAmount" style="color:var(--text-dark);">350 000</b></p>
       <button id="btnPay" class="btn" onclick="openPaymentModal()">TO'LOV QILISH</button>
@@ -248,9 +263,10 @@
       <div id="leaderboardList"></div>
     </div>
 
+    <!-- Murabbiy bilan bog'lanish -->
     <div class="card" style="text-align: center;">
       <h3 style="margin-bottom: 10px;">Savollaringiz bormi?</h3>
-      <a href="https://t.me/Arif_Arazada" class="btn" style="background:#2AABEE; text-decoration: none;">💬 Murabbiy bilan bog'lanish</a>
+      <a href="tel:+998992677747" class="btn" style="background:#2AABEE; text-decoration: none;">📞 Murabbiy: +998 99 267 77 47</a>
     </div>
   </div>
 
@@ -264,7 +280,6 @@
       </div>
     </div>
 
-    <!-- YANGI ARXIV TABI QO'SHILDI -->
     <div class="tabs">
       <div class="tab active" onclick="switchAdminTab('apps')">Arizalar <span id="appBadge" class="hidden" style="background:var(--danger); color:white; border-radius:50%; padding:2px 6px; font-size:10px;">0</span></div>
       <div class="tab" onclick="switchAdminTab('students')">O'quvchilar</div>
@@ -289,7 +304,6 @@
       <div class="card" id="adminStatsList"></div>
     </div>
 
-    <!-- YANGI ARXIV BO'LIMI -->
     <div id="adminTabArchive" class="hidden">
       <div class="card">
         <h3 style="margin-bottom: 10px; color: var(--danger);">Arxivlangan o'quvchilar</h3>
@@ -300,9 +314,10 @@
 
     <div id="adminTabSettings" class="hidden">
       <div class="card">
-        <h3 style="margin-bottom: 10px; color: var(--primary);">E'lon va Motivatsiya</h3>
+        <h3 style="margin-bottom: 10px; color: var(--primary);">E'lon, Motivatsiya va O'yinlar</h3>
         <div class="input-group"><label>E'lon (Ota-onalarga)</label><textarea id="setAnnouncement" class="input-control" rows="2"></textarea></div>
         <div class="input-group"><label>Motivatsiya (O'quvchilarga)</label><textarea id="setMotivation" class="input-control" rows="2"></textarea></div>
+        <div class="input-group"><label>Ichki o'yinlar natijasi (Ota-onalarga ko'rinadi)</label><textarea id="setMatches" class="input-control" rows="2" placeholder="2012 vs 2014 - 3:2"></textarea></div>
         
         <h3 style="margin: 15px 0 10px; color: var(--primary);">To'lov</h3>
         <div class="input-group"><label>Karta raqami</label><input type="text" id="setCard" class="input-control"></div>
@@ -368,7 +383,7 @@
       <div class="input-group" style="flex:1;"><label>Tezlik (%)</label><input type="number" id="pSpeedInput" class="input-control" value="0"></div>
       <div class="input-group" style="flex:1;"><label>O'zlashtirish (%)</label><input type="number" id="pProgressInput" class="input-control" value="0"></div>
     </div>
-    <div class="input-group"><label>Mashg'ulotlar</label><input type="number" id="pTrainingsInput" class="input-control" value="0"></div>
+    <div class="input-group"><label>Mashg'ulotlar (Soni)</label><input type="number" id="pTrainingsInput" class="input-control" value="0"></div>
 
     <div class="input-group">
       <label>To'lov holati</label>
@@ -398,7 +413,7 @@
     const ADMIN_BOT_USERNAME = "api_bot_coll"; 
     
     let currentUser = null;
-    let appSettings = { card: "8600", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00", announcement: "", motivation: "Mehnat qilgan yutadi!" };
+    let appSettings = { card: "8600", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00", announcement: "", motivation: "Mehnat qilgan yutadi!", matches: "" };
     let timerInterval;
     let base64Image = "";
 
@@ -424,6 +439,15 @@
 
         const motEl = document.getElementById('motivationText');
         if(motEl && appSettings.motivation) motEl.innerText = `"${appSettings.motivation}"`;
+
+        const matchCard = document.getElementById('matchesCard');
+        const matchText = document.getElementById('pMatchesText');
+        if(appSettings.matches && appSettings.matches.trim() !== "") {
+            matchCard.style.display = 'block';
+            matchText.innerText = appSettings.matches;
+        } else {
+            matchCard.style.display = 'none';
+        }
       }
     });
 
@@ -516,7 +540,7 @@
           const pData = snapshot.val();
           
           if (pData.isArchived) {
-            alert("Sizning hisobingiz arxivlangan (o'chirilgan). Iltimos, murabbiy bilan bog'laning.");
+            alert("Sizning hisobingiz arxivlangan. Murabbiy bilan bog'laning.");
             return; 
           }
 
@@ -553,6 +577,16 @@
       if (parseInt(currentUser.progress) >= 80) badgesHtml += `<div class="badge-icon">🧠 Aqlli o'yinchi</div>`;
       document.getElementById('badgesContainer').innerHTML = badgesHtml;
 
+      // DAVOMAT TARIXI (Sanalar)
+      const attCard = document.getElementById('attendanceCard');
+      const attList = document.getElementById('pAttendanceList');
+      if (currentUser.attendanceDates && currentUser.attendanceDates.length > 0) {
+        attCard.style.display = 'block';
+        attList.innerHTML = currentUser.attendanceDates.map(date => `<span style="background:var(--primary-light); padding:5px 10px; border-radius:8px; font-size:12px; font-weight:bold; color:var(--primary); border:1px solid var(--primary);">${date}</span>`).join('');
+      } else {
+        attCard.style.display = 'none';
+      }
+
       if (currentUser.medical) {
         document.getElementById('medicalCard').style.display = 'block';
         document.getElementById('pMedicalText').innerText = currentUser.medical;
@@ -583,10 +617,21 @@
     function updateParentPayStatus() {
       const statusBadge = document.getElementById('pPayStatus');
       const btnPay = document.getElementById('btnPay');
+      const payWarning = document.getElementById('payWarning');
+      
       if(!statusBadge || !btnPay) return;
+      
+      // To'lov eslatmasi (Oyning 5-sanasidan o'tgan bo'lsa)
+      const today = new Date().getDate();
+      if (today > 5 && currentUser.paid === false) {
+        payWarning.style.display = 'block';
+      } else {
+        payWarning.style.display = 'none';
+      }
       
       if (currentUser.paid === true || currentUser.paid === "paid") {
         statusBadge.innerText = "To'langan ✅"; statusBadge.className = "badge bg-success"; btnPay.style.display = 'none';
+        payWarning.style.display = 'none';
       } else if (currentUser.paid === "pending") {
         statusBadge.innerText = "Kutilmoqda ⏳"; statusBadge.className = "badge bg-warning"; btnPay.style.display = 'flex'; btnPay.innerText = "CHEKNI QAYTA YUBORISH";
       } else {
@@ -653,6 +698,7 @@
       document.getElementById('setScheduleTime').value = appSettings.scheduleTime || "16:00";
       document.getElementById('setAnnouncement').value = appSettings.announcement || "";
       document.getElementById('setMotivation').value = appSettings.motivation || "";
+      document.getElementById('setMatches').value = appSettings.matches || "";
 
       db.ref('applications').on('value', (snapshot) => {
         const appList = document.getElementById('adminTabApps');
@@ -694,7 +740,6 @@
           for (let id in players) {
             const p = players[id];
             
-            // ARXIVDAGILARNI KO'RSATISH
             if (p.isArchived) {
               archiveCount++;
               archiveList.innerHTML += `
@@ -702,13 +747,12 @@
                   <div><b>${p.name}</b><br><small>Login: ${id}</small></div>
                   <div>
                     <button class="btn btn-sm" style="background:var(--secondary);" onclick="restorePlayer('${id}')">TIKLASH</button>
-                    <button class="btn btn-sm btn-danger" style="margin-top:5px;" onclick="deletePlayerPermanently('${id}')">BUTUNLAY O'CHIRISH</button>
+                    <button class="btn btn-sm btn-danger" style="margin-top:5px;" onclick="deletePlayerPermanently('${id}')">O'CHIRISH</button>
                   </div>
                 </div>`;
-              continue; // Arxivdagilarni faol ro'yxatga qo'shmaymiz
+              continue;
             }
 
-            // FAOL O'QUVCHILAR
             activeCount++;
             if (p.paid === true || p.paid === "paid") totalPaid += parseInt(appSettings.amount.replace(/\D/g,'')) || 0;
             else totalDebt += parseInt(appSettings.amount.replace(/\D/g,'')) || 0;
@@ -764,27 +808,39 @@
       });
     }
 
-    // ARXIVDAN TIKLASH
     function restorePlayer(id) {
       if(confirm("O'quvchini qayta tiklaysizmi? U yana tizimga kira oladi.")) {
-        db.ref('players/' + id + '/isArchived').set(false); // Yoki remove() qilsa ham bo'ladi
+        db.ref('players/' + id + '/isArchived').set(false);
         alert("O'quvchi tiklandi!");
       }
     }
 
-    // BUTUNLAY O'CHIRISH
     function deletePlayerPermanently(id) {
       if(confirm("DIQQAT! O'quvchi bazadan butunlay o'chib ketadi. Rozimisiz?")) {
         db.ref('players/' + id).remove();
       }
     }
 
+    // YANGILANGAN DAVOMAT (Sana bilan)
     function markAttendance(id) {
       db.ref('players/' + id).once('value').then(snap => {
         let p = snap.val();
-        let currentTrainings = parseInt(p.trainings) || 0;
-        db.ref('players/' + id + '/trainings').set(currentTrainings + 1);
-        alert("Davomat qayd etildi! Mashg'ulotlar soni: " + (currentTrainings + 1));
+        let dates = p.attendanceDates || [];
+        let today = new Date().toLocaleDateString(); // Masalan: 25.10.2026
+        
+        // Agar bugun hali qo'shilmagan bo'lsa qo'shamiz
+        if(!dates.includes(today)) {
+            dates.push(today);
+            db.ref('players/' + id + '/attendanceDates').set(dates);
+            
+            // Trainings sonini ham oshiramiz
+            let currentTrainings = parseInt(p.trainings) || 0;
+            db.ref('players/' + id + '/trainings').set(currentTrainings + 1);
+            
+            alert("Davomat qayd etildi: " + today);
+        } else {
+            alert("Bu o'quvchi bugun uchun allaqachon belgilangan!");
+        }
       });
     }
 
@@ -816,7 +872,8 @@
         scheduleDay: document.getElementById('setScheduleDay').value,
         scheduleTime: document.getElementById('setScheduleTime').value,
         announcement: document.getElementById('setAnnouncement').value,
-        motivation: document.getElementById('setMotivation').value
+        motivation: document.getElementById('setMotivation').value,
+        matches: document.getElementById('setMatches').value
       };
       db.ref('settings').update(newSettings).then(() => { 
         appSettings = { ...appSettings, ...newSettings }; 
@@ -905,7 +962,7 @@
         trainings: document.getElementById('pTrainingsInput').value,
         paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false),
         isStar: document.getElementById('pStar').checked,
-        isArchived: false // Tahrirlanganda arxivdan chiqadi
+        isArchived: false
       };
 
       if (oldLogin && oldLogin !== newLogin) db.ref('players/' + oldLogin).remove(); 
@@ -916,7 +973,7 @@
 
     function acceptApplication(appId, phone, name) {
       const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
-      const newPlayer = { name: name, password: randomPass, paid: false, goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0, isArchived: false };
+      const newPlayer = { name: name, password: randomPass, paid: false, goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0, isArchived: false, attendanceDates: [] };
       db.ref('players/' + phone).set(newPlayer).then(() => {
         db.ref('applications/' + appId).remove();
         alert(`Qabul qilindi!\nLogin: ${phone}\nParol: ${randomPass}`);
@@ -930,13 +987,13 @@
       document.getElementById('adminTabApps').classList.add('hidden');
       document.getElementById('adminTabStudents').classList.add('hidden');
       document.getElementById('adminTabStats').classList.add('hidden');
-      document.getElementById('adminTabArchive').classList.add('hidden'); // Yangi
+      document.getElementById('adminTabArchive').classList.add('hidden'); 
       document.getElementById('adminTabSettings').classList.add('hidden');
       
       if(tab === 'apps') document.getElementById('adminTabApps').classList.remove('hidden');
       if(tab === 'students') document.getElementById('adminTabStudents').classList.remove('hidden');
       if(tab === 'stats') document.getElementById('adminTabStats').classList.remove('hidden');
-      if(tab === 'archive') document.getElementById('adminTabArchive').classList.remove('hidden'); // Yangi
+      if(tab === 'archive') document.getElementById('adminTabArchive').classList.remove('hidden');
       if(tab === 'settings') document.getElementById('adminTabSettings').classList.remove('hidden');
     }
 
