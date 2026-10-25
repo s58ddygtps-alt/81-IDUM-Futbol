@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{--bg:#070b1f;--card:rgba(255,255,255,.07);--cb:rgba(255,255,255,.14);--blue:#3d7bff;--coral:#ff4d6d;--gold:#ffc83d;--ok:#2ee6a6;--text:#f1f4ff;--muted:#9aa4c7;--input:rgba(5,8,26,.55);--glow:0 0 28px rgba(61,123,255,.35)}
@@ -216,7 +215,7 @@ select.inp option{color:#111}
 </div>
 <div class="modal" id="histModal"><h3 style="margin-bottom:15px">To'lovlar tarixi</h3><div id="histList" style="max-height:300px;overflow-y:auto"></div><button class="btn bo" style="margin-top:15px" onclick="closeModal()">YOPISH</button></div>
 <div class="modal" id="plModal">
-  <h3 style="margin-bottom:6px" id="plTitle">Tahrirlash</h3><p class="note" style="margin:0 0 14px" id="plLogin"></p>
+  <h3 style="margin-bottom:6px" id="plTitle">Tahrirlash</h3><div class="ig"><label>Login</label><input id="eLogin" class="inp"></div><div class="ig"><label>Parol</label><input id="ePass" class="inp"></div>
   <input type="hidden" id="eId">
   <div class="ig"><label>Ism</label><input id="eName" class="inp"></div>
   <div class="ig"><label>Rasm URL</label><input id="ePhoto" class="inp" placeholder="https://rasm.jpg"></div>
@@ -232,12 +231,10 @@ select.inp option{color:#111}
 </div>
 
 <script>
-/* ====== SOZLAMA: Firebase konsolidan o'z qiymatlaringizni qo'ying (Project settings > Web app) ====== */
-const firebaseConfig={apiKey:"YOUR_API_KEY",authDomain:"idum-futbol.firebaseapp.com",databaseURL:"https://idum-futbol-default-rtdb.firebaseio.com/",projectId:"idum-futbol",appId:"YOUR_APP_ID"};
-const BOT="api_bot_coll",DOM="@81idum.uz";
+const firebaseConfig={databaseURL:"https://idum-futbol-default-rtdb.firebaseio.com/"};
+const ADMIN_LOGIN="Arif",ADMIN_PASS="0717",BOT="api_bot_coll";
 firebase.initializeApp(firebaseConfig);
-const sec=firebase.initializeApp(firebaseConfig,'sec'); // ikkinchi ulanish: admin hisobidan chiqib ketmasdan yangi hisob ochish uchun
-const auth=firebase.auth(),db=firebase.database();
+const db=firebase.database();
 const $=id=>document.getElementById(id),v=id=>$(id).value.trim();
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const digits=s=>String(s).replace(/\D/g,''),ym=()=>new Date().toISOString().slice(0,7),today=()=>new Date().toLocaleDateString();
@@ -289,26 +286,21 @@ function submitStudent(){
   db.ref('applications').push({type:'student',childName,phone,password,age,year,parentName:'-',date:today()}).then(()=>done(b,L,['stName','stPhone','stPass','stAge','stYear'])).catch(e=>fail(b,L,e));
 }
 
-/* ====== Kirish (Firebase Authentication) ====== */
-function login(){
-  const u=v('loginUser'),p=$('loginPass').value;if(!u||!p)return alert("Login va parolni kiriting!");
-  auth.signInWithEmailAndPassword(u.includes('@')?u:digits(u)+DOM,p).catch(()=>alert("Login yoki parol xato!"));
+/* ====== Kirish ====== */
+db.ref('settings').on('value',onSettings);
+async function login(){
+  const u=v('loginUser'),p=v('loginPass');if(!u||!p)return alert("Login va parolni kiriting!");
+  if(u===ADMIN_LOGIN&&p===ADMIN_PASS){showScreen('adminScreen');startAdmin();return}
+  try{
+    let id,s;for(id of [u,digits(u)].filter((x,i,a)=>x&&a.indexOf(x)===i)){s=await db.ref('players/'+id).once('value');if(s.exists())break}
+    if(!s||!s.exists())return alert("Bunday login yo'q!");
+    const d=s.val();
+    if(d.isArchived)return alert("Hisobingiz arxivlangan. Murabbiy bilan bog'laning.");
+    if(String(d.password)!==p)return alert("Parol xato!");
+    sub(db.ref('players/'+id),x=>{if(!x.exists()){logout();return}me=x.val();me.id=id;showParent()});
+  }catch(e){alert("Bazaga ulanishda xato: "+e.message)}
 }
-function logout(){auth.signOut()}
-auth.onAuthStateChanged(async user=>{
-  subs.forEach(r=>r.off());subs=[];me=null;PL={};
-  if(!user){showScreen('loginScreen');return}
-  const a=await db.ref('admins/'+user.uid).once('value');
-  if(a.exists()){showScreen('adminScreen');startAdmin();return}
-  const id=user.email.split('@')[0];
-  sub(db.ref('settings'),onSettings);
-  sub(db.ref('players/'+id),s=>{
-    if(!s.exists()){alert("Hisob topilmadi. Murabbiy bilan bog'laning.");auth.signOut();return}
-    me=s.val();me.id=id;
-    if(me.isArchived){alert("Hisobingiz arxivlangan. Murabbiy bilan bog'laning.");auth.signOut();return}
-    showParent();
-  });
-});
+function logout(){subs.forEach(r=>r.off());subs=[];me=null;PL={};$('loginUser').value='';$('loginPass').value='';showScreen('loginScreen')}
 
 /* ====== Ota-ona / o'yinchi ekrani ====== */
 function showParent(){
@@ -321,7 +313,7 @@ function showParent(){
   const at=u.attendanceDates||[];$('attCard').style.display=at.length?'block':'none';$('pAtt').innerHTML=at.map(d=>`<span class="badge bs">${esc(d)}</span>`).join('');
   const im=(u.gallery||'').split(',').map(s=>s.trim()).filter(Boolean);$('galCard').style.display=im.length?'block':'none';$('pGal').innerHTML=im.map(s=>`<img src="${esc(s)}" alt="">`).join('');
   drawChart(u.history);payStatus();
-  db.ref('leaderboard').once('value').then(s=>{const l=s.val()||[];$('board').innerHTML=l.map((p,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ball</b></div>`).join('')||"Reyting hali shakllanmagan"});
+  db.ref('players').once('value').then(s=>{const l=[];s.forEach(c=>{const p=c.val();if(!p.isArchived)l.push({name:p.name||'',score:(+p.goals||0)*3+(+p.assists||0)*2+(+p.progress||0)})});l.sort((a,b)=>b.score-a.score);$('board').innerHTML=l.slice(0,5).map((p,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ball</b></div>`).join('')||"Ma'lumot yo'q"});
 }
 function drawChart(h){
   const ks=Object.keys(h||{}).sort().slice(-6);$('chartCard').style.display=ks.length>1?'block':'none';if(ks.length<2)return;
@@ -352,16 +344,11 @@ function startAdmin(){
       h+=`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(a.childName)}</b> (${esc(a.age||'?')} yosh)<span class="tag ${st?'ts':'tp'}">${st?"O'QUVCHI":'OTA-ONA'}</span><br><small style="color:var(--muted)">${st?'':'Ota-ona: '+esc(a.parentName)+' | '}Tel: ${esc(a.phone)}${a.year?' | '+esc(a.year)+'-yil':''}</small></div>
       <div style="display:flex;gap:10px;width:100%;margin-top:10px"><button class="btn sm bok" onclick="acceptApp('${c.key}')">QABUL</button><button class="btn sm bd" onclick="rejectApp('${c.key}')">RAD ETISH</button></div></div>`});
     box.innerHTML=h;bd.innerText=n;bd.classList.remove('hidden')});
-  sub(db.ref('players'),s=>{PL=s.val()||{};monthlyReset();updateBoard();renderAdmin()});
+  sub(db.ref('players'),s=>{PL=s.val()||{};monthlyReset();renderAdmin()});
 }
 function monthlyReset(){ // Oy almashganda to'langanlar avtomatik "to'lanmagan"ga qaytadi
   const u={};Object.entries(PL).forEach(([id,p])=>{if(!p.isArchived&&p.paid===true&&p.payMonth&&p.payMonth!==ym())u['players/'+id+'/paid']=false});
   if(Object.keys(u).length)db.ref().update(u);
-}
-let lastBoard='';
-function updateBoard(){
-  const l=Object.values(PL).filter(p=>!p.isArchived).map(p=>({name:p.name||'',score:(+p.goals||0)*3+(+p.assists||0)*2+(+p.progress||0)})).sort((a,b)=>b.score-a.score).slice(0,5);
-  const j=JSON.stringify(l);if(j!==lastBoard){lastBoard=j;db.ref('leaderboard').set(l)}
 }
 function renderAdmin(){
   const q=v('fQ').toLowerCase(),g=$('fGroup').value,groups=new Set();let paid=0,debt=0,sh='',at='',st='',ar='';
@@ -408,27 +395,32 @@ function saveSettings(){
     .then(()=>alert("Sozlamalar saqlandi!")).catch(e=>alert(e.message));
 }
 function editPlayer(id){
-  const p=PL[id];if(!p)return;$('plTitle').innerText="Tahrirlash: "+p.name;$('plLogin').innerText="Login: "+id;$('eId').value=id;
+  const p=PL[id];if(!p)return;$('plTitle').innerText="Tahrirlash: "+p.name;$('eLogin').value=id;$('ePass').value=p.password||'';$('eId').value=id;
   $('eName').value=p.name||'';$('ePhoto').value=p.photoUrl||'';$('eGroup').value=p.group||'';$('eGal').value=p.gallery||'';
   $('eGoals').value=p.goals||0;$('eAssists').value=p.assists||0;$('eSpeed').value=p.speed||0;$('eProg').value=p.progress||0;$('eTr').value=p.trainings||0;
   $('ePay').value=p.paid===true?"paid":p.paid==="pending"?"pending":"unpaid";$('eNote').value=p.note||'';$('eStar').checked=!!p.isStar;openModal('plModal');
 }
-function savePlayer(){
-  const id=$('eId').value,old=PL[id]||{},pv=$('ePay').value,paidNow=pv==="paid",u={},P='players/'+id+'/';
+async function savePlayer(){
+  const oldId=$('eId').value,nl=v('eLogin');if(!nl)return alert("Login kiriting!");
+  if(nl!==oldId&&PL[nl])return alert("Bu login band!");
+  const old=PL[oldId]||{},pv=$('ePay').value,paidNow=pv==="paid";
   const f={name:v('eName'),photoUrl:v('ePhoto'),group:v('eGroup'),gallery:v('eGal'),goals:+$('eGoals').value||0,assists:+$('eAssists').value||0,speed:+$('eSpeed').value||0,progress:+$('eProg').value||0,trainings:+$('eTr').value||0,note:$('eNote').value.trim(),isStar:$('eStar').checked,paid:paidNow?true:pv==="pending"?"pending":false};
-  Object.entries(f).forEach(([k,x])=>u[P+k]=x);
-  u[P+'history/'+ym()]={goals:f.goals,speed:f.speed,progress:f.progress}; // oylik o'sish grafigi uchun
-  if(paidNow){u[P+'payMonth']=ym();if(old.paid!==true){u[`payments/${id}/${db.ref('payments/'+id).push().key}`]={date:today(),amount:amt()}}}
+  const rec={...old,...f,password:v('ePass')||old.password||'',isArchived:false};
+  rec.history={...(old.history||{}),[ym()]:{goals:f.goals,speed:f.speed,progress:f.progress}}; // oylik o'sish grafigi uchun
+  if(paidNow)rec.payMonth=ym();
+  const u={};u['players/'+nl]=rec;let pay=null;
+  if(nl!==oldId){u['players/'+oldId]=null;pay=(await db.ref('payments/'+oldId).once('value')).val()||null;u['payments/'+oldId]=null}
+  if(paidNow&&old.paid!==true){const pk=db.ref('payments/'+nl).push().key,pr={date:today(),amount:amt()};if(nl!==oldId){pay=pay||{};pay[pk]=pr}else u[`payments/${nl}/${pk}`]=pr}
+  if(nl!==oldId&&pay)u['payments/'+nl]=pay;
   db.ref().update(u).then(()=>{alert("Saqlandi!");closeModal()}).catch(e=>alert(e.message));
 }
 async function acceptApp(k){
   const a=(await db.ref('applications/'+k).once('value')).val();if(!a)return;
-  const pass=a.password||String(100000+Math.floor(Math.random()*900000));
-  try{await sec.auth().createUserWithEmailAndPassword(a.phone+DOM,pass);await sec.auth().signOut()}
-  catch(e){if(e.code!=='auth/email-already-in-use')return alert("Xatolik: "+e.message)}
-  const pl={name:a.childName,paid:false,goals:0,assists:0,speed:0,progress:0,trainings:0,isArchived:false,attendanceDates:[]};if(a.year)pl.group=a.year;
+  if((await db.ref('players/'+a.phone).once('value')).exists())return alert("Bu telefon bilan o'quvchi allaqachon bor!");
+  const pass=a.password||String(1000+Math.floor(Math.random()*9000));
+  const pl={name:a.childName,password:pass,paid:false,goals:0,assists:0,speed:0,progress:0,trainings:0,isArchived:false,attendanceDates:[]};if(a.year)pl.group=a.year;
   await db.ref('players/'+a.phone).set(pl);await db.ref('applications/'+k).remove();confetti();
-  alert(a.password?`Qabul qilindi!\nLogin: ${a.phone}\n(O'quvchi o'z parolini ishlatadi)`:`Qabul qilindi!\nLogin: ${a.phone}\nParol: ${pass}\nParolni ota-onaga yetkazing.`);
+  alert(`Qabul qilindi!\nLogin: ${a.phone}\nParol: ${pass}`+(a.password?"\n(O'quvchi o'zi tanlagan parol)":"\nParolni ota-onaga yetkazing."));
 }
 const rejectApp=k=>confirm("O'chirilsinmi?")&&db.ref('applications/'+k).remove();
 function adminTab(t,el){
@@ -440,7 +432,7 @@ function adminTab(t,el){
 /* ====== PWA: telefonga ilova sifatida o'rnatish ====== */
 try{const ic="data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#070b1f'/><text x='50' y='64' font-size='42' font-weight='900' text-anchor='middle' fill='#3d7bff' font-family='sans-serif'>81</text></svg>");
 const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify({name:"81 IDUM Pro Stats",short_name:"81 IDUM",start_url:location.pathname,display:"standalone",background_color:"#070b1f",theme_color:"#070b1f",icons:[{src:ic,sizes:"512x512",type:"image/svg+xml"}]})],{type:'application/manifest+json'}));document.head.appendChild(l);
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+}catch(e){}
 closeModal();
 </script>
 </body>
