@@ -1,950 +1,541 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>81 IDUM Pro Stats</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-  <style>
-    :root {
-      --bg: #F4F7FB;
-      --bg-gradient: linear-gradient(135deg, #F4F7FB 0%, #E2E8F0 100%);
-      --card: #FFFFFF;
-      --primary: #2563EB;
-      --primary-light: #EFF6FF;
-      --secondary: #10B981;
-      --danger: #EF4444;
-      --warning: #F59E0B;
-      --text-dark: #1E293B;
-      --text-muted: #64748B;
-      --border: #E2E8F0;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      --input-bg: #F8FAFC;
-    }
-
-    body.dark-mode {
-      --bg: #0F172A;
-      --bg-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-      --card: #1E293B;
-      --primary: #3B82F6;
-      --primary-light: #1E3A8A;
-      --text-dark: #F8FAFC;
-      --text-muted: #94A3B8;
-      --border: #334155;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-      --input-bg: #0F172A;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s, color 0.3s; }
-    
-    body { 
-      background: var(--bg-gradient);
-      color: var(--text-dark); 
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh; 
-      padding-bottom: 30px;
-      background-attachment: fixed;
-    }
-
-    h1, h2, h3, .brand, .btn { font-family: 'Montserrat', sans-serif; }
-
-    .screen { display: none; padding: 20px 16px; animation: fadeIn 0.3s ease; }
-    .screen.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .brand { font-size: 20px; font-weight: 800; color: var(--primary); }
-    .brand span { color: var(--text-dark); }
-    
-    .top-controls { display: flex; gap: 8px; }
-    .icon-btn { background: var(--card); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; color: var(--text-dark); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow); }
-    
-    .card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    
-    .input-group { margin-bottom: 12px; }
-    .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .input-control { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-dark); font-size: 14px; outline: none; }
-    .input-control:focus { border-color: var(--primary); }
-
-    .btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary); color: #FFF; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; }
-    .btn:active { transform: scale(0.97); }
-    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
-    .btn-sm { padding: 8px 12px; font-size: 11px; width: auto; border-radius: 8px; }
-    .btn-danger { background: var(--danger); color: white; border: none; }
-    
-    /* O'quvchi Profili */
-    .player-hero { text-align: center; margin-bottom: 16px; position: relative; }
-    .player-photo { width: 110px; height: 140px; object-fit: cover; border-radius: 12px; border: 3px solid var(--primary); margin: 0 auto 15px; display: block; background: #1E293B; box-shadow: var(--shadow); }
-    .player-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-    .player-username { color: var(--primary); font-size: 13px; font-weight: 600; margin-bottom: 10px; }
-    
-    /* Nishonlar */
-    .badges-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 15px; }
-    .badge-icon { font-size: 20px; background: var(--primary-light); padding: 5px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: bold; color: var(--primary); border: 1px solid var(--primary); }
-    .star-badge { background: #FEF3C7; color: #D97706; border-color: #F59E0B; }
-
-    /* Ustunlar */
-    .stat-bar-container { margin-bottom: 12px; }
-    .stat-bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
-    .stat-bar-bg { width: 100%; height: 12px; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
-    .stat-bar-fill { height: 100%; border-radius: 10px; transition: width 0.8s ease-in-out; }
-    .fill-green { background-color: var(--secondary); }
-    .fill-red { background-color: var(--danger); }
-    
-    /* Galereya */
-    .gallery-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
-    .gallery-scroll::-webkit-scrollbar { display: none; }
-    .gallery-img { width: 100px; height: 100px; border-radius: 10px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; }
-
-    /* Taymer va Motivatsiya */
-    .timer-box { background: var(--primary); color: white; text-align: center; padding: 15px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; box-shadow: var(--shadow); }
-    .timer-text { font-size: 22px; font-family: 'Montserrat'; margin-top: 5px; }
-    .motivation-card { background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: none; }
-    .motivation-title { font-size: 14px; font-weight: 700; opacity: 0.9; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-    .motivation-text { font-size: 16px; font-weight: 600; font-style: italic; line-height: 1.4; }
-
-    /* To'lov */
-    .badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; display: inline-block; }
-    .bg-success { background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid #10B981; }
-    .bg-danger { background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid #EF4444; }
-    .bg-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid #F59E0B; }
-
-    /* Tabs */
-    .tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 5px; }
-    .tabs::-webkit-scrollbar { display: none; }
-    .tab { padding: 10px 16px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: var(--shadow); }
-    .tab.active { background: var(--primary); color: #FFF; border-color: var(--primary); }
-
-    /* Modallar */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s; }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { position: fixed; bottom: -100%; left: 0; right: 0; background: var(--card); border-radius: 20px 20px 0 0; padding: 24px; transition: 0.3s ease-in-out; z-index: 101; max-height: 90vh; overflow-y: auto; color: var(--text-dark); border-top: 1px solid var(--border); }
-    .modal-content.active { bottom: 0; }
-
-    .hidden { display: none !important; }
-    .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--input-bg); border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border); font-size: 13px; }
-    .announcement { background: rgba(245, 158, 11, 0.15); color: #B45309; padding: 12px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; border: 1px solid #F59E0B; display: none; }
-    .dark-mode .announcement { color: #FCD34D; }
-    
-    .finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-    .finance-card { background: var(--bg); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
-    .finance-val { font-size: 18px; font-weight: 800; color: var(--primary); }
-    .finance-lbl { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-    
-    .warning-alert { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 10px; border-radius: 10px; font-size: 13px; font-weight: bold; margin-bottom: 15px; text-align: center; display: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>81 IDUM Pro Stats</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{--bg:#070b1f;--card:rgba(255,255,255,.07);--card-b:rgba(255,255,255,.14);--blue:#3d7bff;--coral:#ff4d6d;--gold:#ffc83d;--ok:#2ee6a6;--text:#f1f4ff;--muted:#9aa4c7;--input:rgba(5,8,26,.55);--glow:0 0 28px rgba(61,123,255,.35)}
+body.light{--bg:#eef2ff;--card:rgba(255,255,255,.75);--card-b:rgba(61,123,255,.2);--text:#12183a;--muted:#5b6592;--input:rgba(255,255,255,.9);--glow:0 8px 30px rgba(61,123,255,.18)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;min-height:100vh;padding-bottom:40px;overflow-x:hidden;transition:background .4s,color .4s}
+h1,h2,h3,.brand,.btn,.tab{font-family:'Unbounded',sans-serif}
+/* Aurora fon */
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.aurora i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:drift 18s ease-in-out infinite alternate}
+.aurora i:nth-child(1){width:60vw;height:60vw;background:var(--blue);top:-15vw;left:-15vw}
+.aurora i:nth-child(2){width:50vw;height:50vw;background:var(--coral);bottom:-12vw;right:-14vw;animation-duration:22s}
+.aurora i:nth-child(3){width:35vw;height:35vw;background:var(--gold);top:40%;left:45%;opacity:.25;animation-duration:26s}
+body.light .aurora i{opacity:.28}
+@keyframes drift{to{transform:translate(12vw,9vh) scale(1.2)}}
+.pitch{position:fixed;inset:0;z-index:-1;opacity:.05;background:repeating-linear-gradient(90deg,transparent 0 60px,#fff 60px 61px)}
+.screen{display:none;padding:20px 16px;max-width:520px;margin:0 auto}
+.screen.active{display:block;animation:rise .5s cubic-bezier(.2,.9,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.brand{font-size:20px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(90deg,var(--blue),var(--coral),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;animation:shift 6s linear infinite}
+@keyframes shift{to{background-position:200% 0}}
+.top-controls{display:flex;gap:8px}
+.icon-btn{background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--card-b);width:38px;height:38px;border-radius:12px;font-size:16px;cursor:pointer;color:var(--text)}
+.card{background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--card-b);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:var(--glow);position:relative;overflow:hidden}
+.input-group{margin-bottom:12px}
+.input-group label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.input-control{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--card-b);background:var(--input);color:var(--text);font:600 14px 'Manrope',sans-serif;outline:none;transition:.25s}
+.input-control:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(61,123,255,.22)}
+select.input-control option{color:#111}
+.btn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(120deg,var(--blue),#7a5cff);color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px;display:flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(61,123,255,.4);transition:transform .15s}
+.btn::after{content:"";position:absolute;top:0;left:-70%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);transition:left .6s}
+.btn:hover::after{left:130%}
+.btn:active{transform:scale(.96)}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--card-b);box-shadow:none}
+.btn-sm{padding:8px 12px;font-size:10px;width:auto;border-radius:10px;margin-top:0}
+.btn-danger{background:linear-gradient(120deg,var(--coral),#ff8a5c);box-shadow:0 6px 18px rgba(255,77,109,.4)}
+.btn-ok{background:linear-gradient(120deg,#12b886,var(--ok));color:#032;box-shadow:0 6px 18px rgba(46,230,166,.35)}
+/* Kirish rejimlari */
+.hero-title{font-family:'Unbounded';font-size:30px;font-weight:900;line-height:1.05;margin:6vh 0 8px;letter-spacing:-1px}
+.hero-sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--input);padding:5px;border-radius:16px;margin-bottom:16px;border:1px solid var(--card-b)}
+.mode{padding:11px 4px;text-align:center;border-radius:12px;font:700 10px 'Unbounded';color:var(--muted);cursor:pointer;transition:.3s}
+.mode.on{background:linear-gradient(120deg,var(--blue),#7a5cff);color:#fff;box-shadow:0 6px 16px rgba(61,123,255,.45)}
+.pane{display:none}.pane.on{display:block;animation:rise .4s}
+.note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+/* Futbolchi kartasi */
+.player-hero{text-align:center;transform-style:preserve-3d;transition:transform .15s;border:1px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(from var(--a,0deg),var(--blue),var(--coral),var(--gold),var(--blue)) border-box;animation:spin 6s linear infinite}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes spin{to{--a:360deg}}
+.player-hero::before{content:"";position:absolute;inset:0;background:var(--card);z-index:0}
+.player-hero>*{position:relative;z-index:1}
+.player-photo{width:116px;height:146px;object-fit:cover;border-radius:16px;margin:0 auto 14px;display:block;background:#1E293B;box-shadow:0 14px 34px rgba(0,0,0,.45),0 0 0 3px rgba(255,255,255,.18)}
+.player-name{font-size:20px;font-weight:900;margin-bottom:4px}
+.player-username{color:var(--blue);font-size:13px;font-weight:700;margin-bottom:12px}
+.badges-container{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:16px}
+.badge-icon{background:rgba(61,123,255,.18);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:700;border:1px solid var(--blue)}
+.star-badge{background:rgba(255,200,61,.2);border-color:var(--gold);color:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 18px rgba(255,200,61,.7)}}
+.stat-bar-container{margin-bottom:13px;text-align:left}
+.stat-bar-header{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px}
+.stat-bar-bg{height:12px;background:var(--input);border-radius:10px;overflow:hidden;border:1px solid var(--card-b)}
+.stat-bar-fill{height:100%;border-radius:10px;transition:width 1.2s cubic-bezier(.2,.9,.3,1)}
+.fill-green{background:linear-gradient(90deg,#12b886,var(--ok));box-shadow:0 0 14px var(--ok)}
+.fill-red{background:linear-gradient(90deg,var(--coral),#ff8a5c);box-shadow:0 0 14px var(--coral)}
+.gallery-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:5px;scroll-snap-type:x mandatory}
+.gallery-scroll::-webkit-scrollbar{display:none}
+.gallery-img{width:110px;height:110px;border-radius:14px;object-fit:cover;flex-shrink:0;scroll-snap-align:start;border:1px solid var(--card-b)}
+.timer-box{text-align:center;padding:18px;border-radius:20px;margin-bottom:16px;color:#fff;background:linear-gradient(120deg,var(--blue),#7a5cff,var(--coral));background-size:200%;animation:shift 8s linear infinite;box-shadow:0 12px 34px rgba(122,92,255,.45)}
+.timer-text{font:900 19px 'Unbounded';margin-top:6px}
+.motivation-card{border-radius:20px;padding:20px;margin-bottom:16px;color:#032;background:linear-gradient(135deg,var(--ok),#12b886);box-shadow:0 12px 30px rgba(46,230,166,.3)}
+.motivation-title{font:700 11px 'Unbounded';opacity:.75;margin-bottom:8px}
+.motivation-text{font-size:16px;font-weight:700;font-style:italic;line-height:1.4}
+.badge{padding:6px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-block}
+.bg-success{background:rgba(46,230,166,.15);color:var(--ok);border:1px solid var(--ok)}
+.bg-danger{background:rgba(255,77,109,.15);color:var(--coral);border:1px solid var(--coral)}
+.bg-warning{background:rgba(255,200,61,.15);color:var(--gold);border:1px solid var(--gold)}
+.tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:5px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:11px 16px;border-radius:999px;background:var(--card);border:1px solid var(--card-b);color:var(--muted);font-size:10px;font-weight:700;white-space:nowrap;cursor:pointer;transition:.3s}
+.tab.active{background:linear-gradient(120deg,var(--blue),#7a5cff);color:#fff;box-shadow:0 6px 18px rgba(61,123,255,.5)}
+.modal-overlay{position:fixed;inset:0;background:rgba(2,4,16,.7);backdrop-filter:blur(6px);z-index:100;opacity:0;visibility:hidden;transition:.3s}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-content{position:fixed;bottom:-100%;left:0;right:0;max-width:520px;margin:0 auto;background:var(--bg);border-radius:26px 26px 0 0;padding:24px;transition:.45s cubic-bezier(.2,.9,.3,1);z-index:101;max-height:90vh;overflow-y:auto;border:1px solid var(--card-b)}
+.modal-content.active{bottom:0}
+.hidden{display:none!important}
+.list-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px;background:var(--input);border-radius:14px;margin-bottom:8px;border:1px solid var(--card-b);font-size:13px}
+.announcement{background:rgba(255,200,61,.14);color:var(--gold);padding:13px;border-radius:14px;font-size:13px;font-weight:600;margin-bottom:16px;border:1px solid var(--gold);display:none}
+.finance-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+.finance-card{background:var(--card);padding:16px;border-radius:18px;text-align:center;border:1px solid var(--card-b)}
+.finance-val{font:900 16px 'Unbounded';color:var(--ok)}
+.finance-lbl{font-size:11px;color:var(--muted);margin-top:5px}
+.warning-alert{background:rgba(255,77,109,.12);border:1px solid var(--coral);color:var(--coral);padding:10px;border-radius:12px;font-size:13px;font-weight:700;margin-bottom:15px;display:none}
+.tag{font:700 9px 'Unbounded';padding:3px 8px;border-radius:999px;margin-left:6px;vertical-align:middle}
+.tag-s{background:rgba(46,230,166,.18);color:var(--ok)}.tag-p{background:rgba(255,200,61,.18);color:var(--gold)}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:300}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
+<div class="aurora"><i></i><i></i><i></i></div><div class="pitch"></div><canvas id="fx"></canvas>
 
-  <!-- LOGIN -->
-  <div class="screen active" id="loginScreen">
-    <div class="header">
-      <div class="brand">81 <span>IDUM</span></div>
-      <div class="top-controls">
-        <button class="icon-btn" onclick="toggleTheme()">🌙</button>
-        <button class="icon-btn" onclick="toggleLang()">RU</button>
-      </div>
-    </div>
-    <div class="card" style="margin-top: 10vh;">
-      <h2 style="text-align: center; margin-bottom: 20px;" data-uz="Tizimga kirish" data-ru="Вход в систему">Tizimga kirish</h2>
-      <div class="input-group"><label data-uz="Login" data-ru="Логин">Login</label><input type="text" id="loginUser" class="input-control" placeholder="Arif / 1111"></div>
-      <div class="input-group"><label data-uz="Parol" data-ru="Пароль">Parol</label><input type="password" id="loginPass" class="input-control" placeholder="••••"></div>
-      <button class="btn" onclick="login()" data-uz="KIRISH" data-ru="ВОЙТИ">KIRISH</button>
-      <button class="btn btn-outline" onclick="showScreen('applyScreen')" data-uz="ARIZA TOPSHIRISH" data-ru="ПОДАТЬ ЗАЯВКУ">ARIZA TOPSHIRISH</button>
-    </div>
+<!-- KIRISH + RO'YXATDAN O'TISH -->
+<div class="screen active" id="loginScreen">
+  <div class="header"><div class="brand">81 IDUM</div>
+    <div class="top-controls"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="icon-btn" style="font-size:11px;font-weight:800" onclick="toggleLang()">RU</button></div></div>
+  <h1 class="hero-title" data-uz="Maydonga chiq." data-ru="Выходи на поле.">Maydonga chiq.</h1>
+  <p class="hero-sub" data-uz="81-maktab futbol akademiyasi" data-ru="Футбольная академия школы 81">81-maktab futbol akademiyasi</p>
+
+  <div class="modes">
+    <div class="mode on" onclick="setMode(0,this)" data-uz="KIRISH" data-ru="ВХОД">KIRISH</div>
+    <div class="mode" onclick="setMode(1,this)" data-uz="O'QUVCHI" data-ru="УЧЕНИК">O'QUVCHI</div>
+    <div class="mode" onclick="setMode(2,this)" data-uz="OTA-ONA" data-ru="РОДИТЕЛЬ">OTA-ONA</div>
   </div>
 
-  <!-- ARIZA -->
-  <div class="screen" id="applyScreen">
-    <div class="header"><div class="brand">81 <span>IDUM</span></div></div>
-    <button class="btn btn-outline btn-sm" style="margin-bottom: 15px;" onclick="showScreen('loginScreen')">← Orqaga</button>
-    <div class="card">
-      <h2 style="text-align: center; margin-bottom: 20px;" data-uz="Yangi Ariza" data-ru="Новая Заявка">Yangi Ariza</h2>
+  <div class="card">
+    <div class="pane on" id="pane0">
+      <div class="input-group"><label data-uz="Login" data-ru="Логин">Login</label><input type="text" id="loginUser" class="input-control" placeholder="Telefon raqam"></div>
+      <div class="input-group"><label data-uz="Parol" data-ru="Пароль">Parol</label><input type="password" id="loginPass" class="input-control" placeholder="••••"></div>
+      <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ">TIZIMGA KIRISH</button>
+    </div>
+
+    <!-- O'quvchilar uchun alohida ro'yxatdan o'tish paneli -->
+    <div class="pane" id="pane1">
+      <h3 style="margin-bottom:14px;font-size:15px">O'quvchi ro'yxatdan o'tishi</h3>
+      <div class="input-group"><label>Ism familiya</label><input type="text" id="stName" class="input-control"></div>
+      <div style="display:flex;gap:10px">
+        <div class="input-group" style="flex:1"><label>Yoshi</label><input type="number" id="stAge" class="input-control"></div>
+        <div class="input-group" style="flex:1"><label>Tug'ilgan yil</label><input type="number" id="stYear" class="input-control" placeholder="2013"></div>
+      </div>
+      <div class="input-group"><label>Telefon (login bo'ladi)</label><input type="tel" id="stPhone" class="input-control" placeholder="998901234567"></div>
+      <div class="input-group"><label>Parol o'ylab toping</label><input type="password" id="stPass" class="input-control"></div>
+      <button id="btnStudent" class="btn btn-ok" onclick="submitStudent()">RO'YXATDAN O'TISH</button>
+      <p class="note">Murabbiy arizangizni tasdiqlagach, shu login va parol bilan kira olasiz.</p>
+    </div>
+
+    <!-- Ota-onalar paneli -->
+    <div class="pane" id="pane2">
+      <h3 style="margin-bottom:14px;font-size:15px">Ota-ona arizasi</h3>
       <div class="input-group"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input type="text" id="appParentName" class="input-control"></div>
       <div class="input-group"><label data-uz="Bolaning ismi" data-ru="Имя ребенка">Bolaning ismi</label><input type="text" id="appChildName" class="input-control"></div>
-      <div class="input-group"><label data-uz="Telefon (Login)" data-ru="Телефон (Логин)">Telefon (Login)</label><input type="text" id="appPhone" class="input-control"></div>
+      <div class="input-group"><label data-uz="Telefon (Login)" data-ru="Телефон (Логин)">Telefon (Login)</label><input type="tel" id="appPhone" class="input-control"></div>
       <div class="input-group"><label data-uz="Yoshi" data-ru="Возраст">Yoshi</label><input type="number" id="appAge" class="input-control"></div>
-      <button id="btnSubmitApp" class="btn" onclick="submitApplication()" data-uz="YUBORISH" data-ru="ОТПРАВИТЬ">YUBORISH</button>
+      <button id="btnSubmitApp" class="btn" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ">ARIZA YUBORISH</button>
+      <p class="note">Parolni murabbiy tasdiqlaganda beradi.</p>
     </div>
   </div>
+</div>
 
-  <!-- O'YINCHI PROFILI -->
-  <div class="screen" id="parentScreen">
-    <div class="header">
-      <div class="brand">81 <span>IDUM</span></div>
-      <div class="top-controls">
-        <button class="icon-btn" onclick="toggleTheme()">🌙</button>
-        <button class="btn btn-outline btn-sm" onclick="logout()">Chiqish</button>
-      </div>
-    </div>
+<!-- OTA-ONA / O'YINCHI PROFILI -->
+<div class="screen" id="parentScreen">
+  <div class="header"><div class="brand">81 IDUM</div>
+    <div class="top-controls"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn btn-outline btn-sm" onclick="logout()">Chiqish</button></div></div>
+  <div class="announcement" id="parentAnnouncement"></div>
+  <div class="timer-box"><div style="font-size:12px;opacity:.9" data-uz="Keyingi mashg'ulotga:" data-ru="До следующей тренировки:">Keyingi mashg'ulotga:</div><div class="timer-text" id="countdownTimer">Yuklanmoqda...</div></div>
+  <div class="motivation-card"><div class="motivation-title" data-uz="Murabbiy nasihati" data-ru="Совет тренера">Murabbiy nasihati</div><div class="motivation-text" id="motivationText">"Mehnat qilgan yutadi!"</div></div>
 
-    <div class="announcement" id="parentAnnouncement"></div>
-
-    <div class="timer-box">
-      <div style="font-size: 12px; opacity: 0.9;" data-uz="Keyingi mashg'ulotga:" data-ru="До следующей тренировки:">Keyingi mashg'ulotga:</div>
-      <div class="timer-text" id="countdownTimer">Yuklanmoqda...</div>
-    </div>
-
-    <div class="motivation-card">
-      <div class="motivation-title" data-uz="Murabbiy nasihati" data-ru="Совет тренера">Murabbiy nasihati</div>
-      <div class="motivation-text" id="motivationText">"Mehnat qilgan yutadi!"</div>
-    </div>
-
-    <div class="card player-hero">
-      <img id="pPhoto" class="player-photo" src="https://ui-avatars.com/api/?name=U&background=1E293B&color=3B82F6&size=150">
-      <h2 class="player-name" id="pFullName">Ism</h2>
-      <p class="player-username" id="pUsername">@username</p>
-
-      <div class="badges-container" id="badgesContainer"></div>
-
-      <div style="text-align: left;">
-        <div class="stat-bar-container">
-          <div class="stat-bar-header"><span>O'zlashtirish</span> <span id="pProgressTxt">0%</span></div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barProgress" style="width: 0%;"></div></div>
-        </div>
-        <div class="stat-bar-container">
-          <div class="stat-bar-header"><span>Gollar</span> <span id="pGoalsTxt">0 ta</span></div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barGoals" style="width: 0%;"></div></div>
-        </div>
-        <div class="stat-bar-container">
-          <div class="stat-bar-header"><span>Asistlar</span> <span id="pAssistsTxt">0 ta</span></div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barAssists" style="width: 0%;"></div></div>
-        </div>
-        <div class="stat-bar-container">
-          <div class="stat-bar-header"><span>Tezlik</span> <span id="pSpeedTxt">0%</span></div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barSpeed" style="width: 0%;"></div></div>
-        </div>
-        <div class="stat-bar-container">
-          <div class="stat-bar-header"><span>Mashg'ulotlar</span> <span id="pTrainingsTxt">0 marta</span></div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barTrainings" style="width: 0%;"></div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="attendanceCard" style="display: none;">
-      <h3 style="margin-bottom: 10px; color: var(--primary);">📅 Davomat tarixi</h3>
-      <div id="pAttendanceList" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
-    </div>
-
-    <div class="card" id="matchesCard" style="display: none;">
-      <h3 style="margin-bottom: 10px; color: var(--warning);">🏆 Ichki o'yinlar natijasi</h3>
-      <div id="pMatchesText" style="font-size: 14px; line-height: 1.6;"></div>
-    </div>
-
-    <div class="card" id="galleryCard" style="display: none;">
-      <h3 style="margin-bottom: 10px; color: var(--primary);">📸 Foto Galereya</h3>
-      <div class="gallery-scroll" id="pGallery"></div>
-    </div>
-
-    <div class="card" style="text-align: center;">
-      <h3 style="margin-bottom: 10px;">To'lov holati</h3>
-      <div class="warning-alert" id="payWarning">Diqqat! To'lov muddati o'tdi. Iltimos, to'lovni amalga oshiring.</div>
-      <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
-      <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px;">Oylik: <b id="pPayAmount" style="color:var(--text-dark);">350 000</b></p>
-      <button id="btnPay" class="btn" onclick="openModal('paymentModal')">TO'LOV QILISH</button>
-      <button class="btn btn-outline" style="margin-top: 8px;" onclick="openModal('historyModal')">TO'LOVLAR TARIXI</button>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom: 10px; color: var(--primary);">Akademiya reytingi (Top 5)</h3>
-      <div id="leaderboardList"></div>
-    </div>
-
-    <div class="card" style="text-align: center;">
-      <h3 style="margin-bottom: 10px;">Savollaringiz bormi?</h3>
-      <a href="tel:+998992677747" class="btn" style="background:#2AABEE; text-decoration: none;">📞 Murabbiy: +998 99 267 77 47</a>
-    </div>
+  <div class="card player-hero" id="tiltCard">
+    <img id="pPhoto" class="player-photo" src="https://ui-avatars.com/api/?name=U&background=1E293B&color=3B82F6&size=150">
+    <h2 class="player-name" id="pFullName">Ism</h2>
+    <p class="player-username" id="pUsername">@username</p>
+    <div class="badges-container" id="badgesContainer"></div>
+    <div class="stat-bar-container"><div class="stat-bar-header"><span>O'zlashtirish</span><span id="pProgressTxt">0%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barProgress" style="width:0"></div></div></div>
+    <div class="stat-bar-container"><div class="stat-bar-header"><span>Gollar</span><span id="pGoalsTxt">0 ta</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barGoals" style="width:0"></div></div></div>
+    <div class="stat-bar-container"><div class="stat-bar-header"><span>Asistlar</span><span id="pAssistsTxt">0 ta</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barAssists" style="width:0"></div></div></div>
+    <div class="stat-bar-container"><div class="stat-bar-header"><span>Tezlik</span><span id="pSpeedTxt">0%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barSpeed" style="width:0"></div></div></div>
+    <div class="stat-bar-container"><div class="stat-bar-header"><span>Mashg'ulotlar</span><span id="pTrainingsTxt">0 marta</span></div><div class="stat-bar-bg"><div class="stat-bar-fill fill-red" id="barTrainings" style="width:0"></div></div></div>
   </div>
 
-  <!-- ADMIN PANELI -->
-  <div class="screen" id="adminScreen">
-    <div class="header">
-      <div class="brand">81 <span>ADMIN</span></div>
-      <div class="top-controls">
-        <button class="icon-btn" onclick="toggleTheme()">🌙</button>
-        <button class="btn btn-outline btn-sm" onclick="logout()">Chiqish</button>
-      </div>
-    </div>
+  <div class="card" id="attendanceCard" style="display:none"><h3 style="margin-bottom:10px;font-size:14px">📅 Davomat tarixi</h3><div id="pAttendanceList" style="display:flex;flex-wrap:wrap;gap:8px"></div></div>
+  <div class="card" id="matchesCard" style="display:none"><h3 style="margin-bottom:10px;font-size:14px;color:var(--gold)">🏆 Ichki o'yinlar natijasi</h3><div id="pMatchesText" style="font-size:14px;line-height:1.6"></div></div>
+  <div class="card" id="galleryCard" style="display:none"><h3 style="margin-bottom:10px;font-size:14px">📸 Foto galereya</h3><div class="gallery-scroll" id="pGallery"></div></div>
 
-    <div class="tabs">
-      <div class="tab active" onclick="switchAdminTab('apps')">Arizalar <span id="appBadge" class="hidden" style="background:var(--danger); color:white; border-radius:50%; padding:2px 6px; font-size:10px;">0</span></div>
-      <div class="tab" onclick="switchAdminTab('students')">O'quvchilar</div>
-      <div class="tab" onclick="switchAdminTab('stats')">Natijalar</div>
-      <div class="tab" onclick="switchAdminTab('archive')" style="color:var(--danger); border-color:var(--danger);">Arxiv</div>
-      <div class="tab" onclick="switchAdminTab('settings')">Sozlamalar</div>
-    </div>
-
-    <div id="adminTabApps" class="card"><p style="text-align:center; color:var(--text-muted);">Yuklanmoqda...</p></div>
-    
-    <div id="adminTabStudents" class="hidden">
-      <div class="finance-grid">
-        <div class="finance-card"><div class="finance-val" id="finPaid">0</div><div class="finance-lbl">To'langan (so'm)</div></div>
-        <div class="finance-card"><div class="finance-val" style="color:var(--danger);" id="finDebt">0</div><div class="finance-lbl">Qarzdorlik (so'm)</div></div>
-      </div>
-      
-      <button class="btn btn-sm" style="margin-bottom: 10px;" onclick="exportToCSV()">📥 Excelga yuklash (CSV)</button>
-      <div class="card" id="adminStudentList"></div>
-    </div>
-
-    <div id="adminTabStats" class="hidden">
-      <div class="card" id="adminStatsList"></div>
-    </div>
-
-    <div id="adminTabArchive" class="hidden">
-      <div class="card">
-        <h3 style="margin-bottom: 10px; color: var(--danger);">Arxivlangan o'quvchilar</h3>
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Bu yerdagi o'quvchilar tizimga kira olmaydi. Ularni qayta tiklash uchun "TIKLASH" tugmasini bosing.</p>
-        <div id="adminArchiveList"></div>
-      </div>
-    </div>
-
-    <div id="adminTabSettings" class="hidden">
-      <div class="card">
-        <h3 style="margin-bottom: 10px; color: var(--primary);">E'lon, Motivatsiya va O'yinlar</h3>
-        <div class="input-group"><label>E'lon (Ota-onalarga)</label><textarea id="setAnnouncement" class="input-control" rows="2"></textarea></div>
-        <div class="input-group"><label>Motivatsiya (O'quvchilarga)</label><textarea id="setMotivation" class="input-control" rows="2"></textarea></div>
-        <div class="input-group"><label>Ichki o'yinlar natijasi</label><textarea id="setMatches" class="input-control" rows="2" placeholder="2012 vs 2014 - 3:2"></textarea></div>
-        
-        <h3 style="margin: 15px 0 10px; color: var(--primary);">To'lov</h3>
-        <div class="input-group"><label>Karta raqami</label><input type="text" id="setCard" class="input-control"></div>
-        <div class="input-group"><label>Oylik to'lov</label><input type="text" id="setAmount" class="input-control"></div>
-        
-        <h3 style="margin: 15px 0 10px; color: var(--primary);">Jadval</h3>
-        <div class="input-group">
-          <label>Kun</label>
-          <select id="setScheduleDay" class="input-control">
-            <option value="1">Dushanba</option><option value="2">Seshanba</option><option value="3">Chorshanba</option>
-            <option value="4">Payshanba</option><option value="5">Juma</option><option value="6">Shanba</option><option value="0">Yakshanba</option>
-          </select>
-        </div>
-        <div class="input-group"><label>Vaqt</label><input type="time" id="setScheduleTime" class="input-control"></div>
-        
-        <button class="btn" onclick="saveSettings()">SAQLASH</button>
-      </div>
-    </div>
+  <div class="card" style="text-align:center">
+    <h3 style="margin-bottom:12px;font-size:14px">To'lov holati</h3>
+    <div class="warning-alert" id="payWarning">Diqqat! To'lov muddati o'tdi. Iltimos, to'lovni amalga oshiring.</div>
+    <span id="pPayStatus" class="badge bg-danger">To'lanmagan</span>
+    <p style="color:var(--muted);font-size:13px;margin-top:10px">Oylik: <b id="pPayAmount" style="color:var(--text)">350 000</b></p>
+    <button id="btnPay" class="btn" onclick="openModal('paymentModal')">TO'LOV QILISH</button>
+    <button class="btn btn-outline" onclick="openHistoryModal()">TO'LOVLAR TARIXI</button>
   </div>
+  <div class="card"><h3 style="margin-bottom:12px;font-size:14px">Akademiya reytingi (Top 5)</h3><div id="leaderboardList"></div></div>
+  <div class="card" style="text-align:center"><h3 style="margin-bottom:6px;font-size:14px">Savollaringiz bormi?</h3><a href="tel:+998992677747" class="btn" style="background:#2AABEE">📞 Murabbiy: +998 99 267 77 47</a></div>
+</div>
 
-  <!-- Modallar -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
-  
-  <div class="modal-content" id="paymentModal">
-    <h3 style="margin-bottom: 15px; text-align:center;">To'lov qilish</h3>
-    <p style="font-size: 14px; margin-bottom: 10px; text-align:center;">Karta: <b id="payCard" style="color:var(--primary)">8600...</b></p>
-    <p style="font-size: 14px; margin-bottom: 20px; text-align:center;">Summa: <b id="payAmount" style="color:var(--primary)">350 000</b></p>
-    <button onclick="sendReceiptToAdmin()" class="btn" style="background:#2AABEE;">💬 CHEKNI BOTGA YUBORISH</button>
-    <button class="btn" style="background:var(--warning); color:#FFF;" onclick="markAsPending()">MEN TO'LOV QILDIM</button>
-    <button class="btn btn-outline" onclick="closeModal()">YOPISH</button>
+<!-- ADMIN -->
+<div class="screen" id="adminScreen">
+  <div class="header"><div class="brand">81 ADMIN</div>
+    <div class="top-controls"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn btn-outline btn-sm" onclick="logout()">Chiqish</button></div></div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchAdminTab('apps',this)">ARIZALAR <span id="appBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px;font-size:10px">0</span></div>
+    <div class="tab" onclick="switchAdminTab('students',this)">O'QUVCHILAR</div>
+    <div class="tab" onclick="switchAdminTab('stats',this)">NATIJALAR</div>
+    <div class="tab" onclick="switchAdminTab('archive',this)">ARXIV</div>
+    <div class="tab" onclick="switchAdminTab('settings',this)">SOZLAMALAR</div>
   </div>
-
-  <div class="modal-content" id="historyModal">
-    <h3 style="margin-bottom: 15px;">To'lovlar Tarixi</h3>
-    <div id="historyList" style="max-height: 300px; overflow-y: auto;"></div>
-    <button class="btn btn-outline" style="margin-top: 15px;" onclick="closeModal()">YOPISH</button>
+  <div id="adminTabApps" class="card"><p style="text-align:center;color:var(--muted)">Yuklanmoqda...</p></div>
+  <div id="adminTabStudents" class="hidden">
+    <div class="finance-grid"><div class="finance-card"><div class="finance-val" id="finPaid">0</div><div class="finance-lbl">To'langan</div></div><div class="finance-card"><div class="finance-val" style="color:var(--coral)" id="finDebt">0</div><div class="finance-lbl">Qarzdorlik</div></div></div>
+    <button class="btn btn-sm" style="margin-bottom:10px" onclick="exportToCSV()">📥 Excelga yuklash (CSV)</button>
+    <div class="card" id="adminStudentList"></div>
   </div>
+  <div id="adminTabStats" class="hidden"><div class="card" id="adminStatsList"></div></div>
+  <div id="adminTabArchive" class="hidden"><div class="card"><h3 style="margin-bottom:10px;color:var(--coral);font-size:14px">Arxivlangan o'quvchilar</h3><p class="note" style="margin-bottom:14px">Ular tizimga kira olmaydi. Qaytarish uchun "TIKLASH" ni bosing.</p><div id="adminArchiveList"></div></div></div>
+  <div id="adminTabSettings" class="hidden"><div class="card">
+    <h3 style="margin-bottom:12px;font-size:14px">E'lon, motivatsiya va o'yinlar</h3>
+    <div class="input-group"><label>E'lon (ota-onalarga)</label><textarea id="setAnnouncement" class="input-control" rows="2"></textarea></div>
+    <div class="input-group"><label>Motivatsiya (o'quvchilarga)</label><textarea id="setMotivation" class="input-control" rows="2"></textarea></div>
+    <div class="input-group"><label>Ichki o'yinlar natijasi</label><textarea id="setMatches" class="input-control" rows="2" placeholder="2012 vs 2014 - 3:2"></textarea></div>
+    <h3 style="margin:15px 0 10px;font-size:14px">To'lov</h3>
+    <div class="input-group"><label>Karta raqami</label><input type="text" id="setCard" class="input-control"></div>
+    <div class="input-group"><label>Oylik to'lov</label><input type="text" id="setAmount" class="input-control"></div>
+    <h3 style="margin:15px 0 10px;font-size:14px">Jadval</h3>
+    <div class="input-group"><label>Kun</label><select id="setScheduleDay" class="input-control"><option value="1">Dushanba</option><option value="2">Seshanba</option><option value="3">Chorshanba</option><option value="4">Payshanba</option><option value="5">Juma</option><option value="6">Shanba</option><option value="0">Yakshanba</option></select></div>
+    <div class="input-group"><label>Vaqt</label><input type="time" id="setScheduleTime" class="input-control"></div>
+    <button class="btn" onclick="saveSettings()">SAQLASH</button>
+  </div></div>
+</div>
 
-  <!-- Tahrirlash Modali (Tibbiyot olib tashlandi, rasm URL qaytarildi) -->
-  <div class="modal-content" id="playerModal">
-    <h3 style="margin-bottom: 15px;" id="playerModalTitle">Tahrirlash</h3>
-    <input type="hidden" id="editPlayerId">
-    
-    <div class="input-group"><label>Ism</label><input type="text" id="pEditName" class="input-control"></div>
-    <div class="input-group"><label>Login</label><input type="text" id="pLogin" class="input-control"></div>
-    <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="input-control"></div>
-    
-    <div class="input-group">
-      <label>Rasm URL (Havola)</label>
-      <input type="text" id="pPhotoUrl" class="input-control" placeholder="https://rasm.jpg">
-    </div>
+<!-- Modallar -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+<div class="modal-content" id="paymentModal">
+  <h3 style="margin-bottom:15px;text-align:center">To'lov qilish</h3>
+  <p style="font-size:14px;margin-bottom:10px;text-align:center">Karta: <b id="payCard" style="color:var(--blue)">8600...</b></p>
+  <p style="font-size:14px;margin-bottom:20px;text-align:center">Summa: <b id="payAmount" style="color:var(--blue)">350 000</b></p>
+  <button onclick="sendReceiptToAdmin()" class="btn" style="background:#2AABEE">💬 CHEKNI BOTGA YUBORISH</button>
+  <button class="btn" style="background:var(--gold);color:#321" onclick="markAsPending()">MEN TO'LOV QILDIM</button>
+  <button class="btn btn-outline" onclick="closeModal()">YOPISH</button>
+</div>
+<div class="modal-content" id="historyModal">
+  <h3 style="margin-bottom:15px">To'lovlar tarixi</h3>
+  <div id="historyList" style="max-height:300px;overflow-y:auto"></div>
+  <button class="btn btn-outline" style="margin-top:15px" onclick="closeModal()">YOPISH</button>
+</div>
+<div class="modal-content" id="playerModal">
+  <h3 style="margin-bottom:15px" id="playerModalTitle">Tahrirlash</h3>
+  <input type="hidden" id="editPlayerId">
+  <div class="input-group"><label>Ism</label><input type="text" id="pEditName" class="input-control"></div>
+  <div class="input-group"><label>Login</label><input type="text" id="pLogin" class="input-control"></div>
+  <div class="input-group"><label>Parol</label><input type="text" id="pPass" class="input-control"></div>
+  <div class="input-group"><label>Rasm URL (havola)</label><input type="text" id="pPhotoUrl" class="input-control" placeholder="https://rasm.jpg"></div>
+  <div class="input-group"><label>Guruh (masalan: 2012)</label><input type="text" id="pGroup" class="input-control"></div>
+  <div class="input-group"><label>Galereya rasmlari (vergul bilan)</label><textarea id="pGallery" class="input-control" rows="2" placeholder="https://rasm1.jpg, https://rasm2.jpg"></textarea></div>
+  <div style="display:flex;gap:10px"><div class="input-group" style="flex:1"><label>Gollar</label><input type="number" id="pGoalsInput" class="input-control" value="0"></div><div class="input-group" style="flex:1"><label>Asistlar</label><input type="number" id="pAssistsInput" class="input-control" value="0"></div></div>
+  <div style="display:flex;gap:10px"><div class="input-group" style="flex:1"><label>Tezlik (%)</label><input type="number" id="pSpeedInput" class="input-control" value="0"></div><div class="input-group" style="flex:1"><label>O'zlashtirish (%)</label><input type="number" id="pProgressInput" class="input-control" value="0"></div></div>
+  <div class="input-group"><label>Mashg'ulotlar (soni)</label><input type="number" id="pTrainingsInput" class="input-control" value="0"></div>
+  <div class="input-group"><label>To'lov holati</label><select id="pPay" class="input-control"><option value="unpaid">To'lanmagan</option><option value="pending">Kutilmoqda</option><option value="paid">To'langan</option></select></div>
+  <div class="input-group" style="display:flex;align-items:center;gap:10px"><input type="checkbox" id="pStar" style="width:20px;height:20px"><label for="pStar" style="margin:0">Oyning eng yaxshi o'yinchisi ⭐</label></div>
+  <button class="btn" onclick="savePlayer()">SAQLASH</button>
+  <button class="btn btn-outline" onclick="closeModal()">BEKOR QILISH</button>
+</div>
 
-    <div class="input-group"><label>Guruh (Masalan: 2012)</label><input type="text" id="pGroup" class="input-control"></div>
-    <div class="input-group"><label>Galereya rasmlari (vergul bilan)</label><textarea id="pGallery" class="input-control" rows="2" placeholder="https://rasm1.jpg, https://rasm2.jpg"></textarea></div>
-    
-    <div style="display:flex; gap:10px;">
-      <div class="input-group" style="flex:1;"><label>Gollar</label><input type="number" id="pGoalsInput" class="input-control" value="0"></div>
-      <div class="input-group" style="flex:1;"><label>Asistlar</label><input type="number" id="pAssistsInput" class="input-control" value="0"></div>
-    </div>
-    <div style="display:flex; gap:10px;">
-      <div class="input-group" style="flex:1;"><label>Tezlik (%)</label><input type="number" id="pSpeedInput" class="input-control" value="0"></div>
-      <div class="input-group" style="flex:1;"><label>O'zlashtirish (%)</label><input type="number" id="pProgressInput" class="input-control" value="0"></div>
-    </div>
-    <div class="input-group"><label>Mashg'ulotlar (Soni)</label><input type="number" id="pTrainingsInput" class="input-control" value="0"></div>
+<script>
+const firebaseConfig={databaseURL:"https://idum-futbol-default-rtdb.firebaseio.com/"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+const ADMIN_LOGIN="Arif",ADMIN_PASS="0717",ADMIN_BOT_USERNAME="api_bot_coll";
+let currentUser=null,timerInterval;
+let appSettings={card:"8600",amount:"350 000",scheduleDay:1,scheduleTime:"16:00",announcement:"",motivation:"Mehnat qilgan yutadi!",matches:""};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-    <div class="input-group">
-      <label>To'lov holati</label>
-      <select id="pPay" class="input-control">
-        <option value="unpaid">To'lanmagan</option>
-        <option value="pending">Kutilmoqda</option>
-        <option value="paid">To'langan</option>
-      </select>
-    </div>
-    
-    <div class="input-group" style="display:flex; align-items:center; gap:10px;">
-      <input type="checkbox" id="pStar" style="width:20px; height:20px;">
-      <label for="pStar" style="margin:0;">Oyning eng yaxshi o'yinchisi (Yulduzcha)</label>
-    </div>
+/* ---------- Effektlar ---------- */
+function confetti(){
+  const c=$('fx'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#3d7bff','#ff4d6d','#ffc83d','#2ee6a6','#fff'];
+  const ps=Array.from({length:130},()=>({x:innerWidth/2,y:innerHeight*.6,vx:(Math.random()-.5)*16,vy:-Math.random()*17-4,s:Math.random()*7+3,c:cols[Math.random()*5|0],r:Math.random()*6}));
+  let f=0;(function t(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.r+=.2;x.fillStyle=p.c;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);x.restore()});if(++f<110)requestAnimationFrame(t);else x.clearRect(0,0,c.width,c.height)})();
+}
+const tilt=$('tiltCard');
+tilt.addEventListener('pointermove',e=>{const r=tilt.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;tilt.style.transform=`perspective(800px) rotateY(${px*10}deg) rotateX(${-py*10}deg)`});
+tilt.addEventListener('pointerleave',()=>tilt.style.transform='');
+function countUp(el,to,suf){let n=0;const st=Math.max(1,Math.ceil(to/30));const i=setInterval(()=>{n=Math.min(to,n+st);el.innerText=n+suf;if(n>=to)clearInterval(i)},25)}
 
-    <button class="btn" onclick="savePlayer()">SAQLASH</button>
-    <button class="btn btn-outline" onclick="closeModal()">BEKOR QILISH</button>
-  </div>
+/* ---------- Umumiy ---------- */
+function toggleTheme(){document.body.classList.toggle('light')}
+let currentLang='uz';
+function toggleLang(){currentLang=currentLang==='uz'?'ru':'uz';document.querySelectorAll('[data-'+currentLang+']').forEach(el=>el.innerText=el.getAttribute('data-'+currentLang))}
+function setMode(i,el){document.querySelectorAll('.mode').forEach(m=>m.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));$('pane'+i).classList.add('on')}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo(0,0)}
+function openModal(id){document.querySelectorAll('.modal-content').forEach(m=>m.classList.remove('active'));$('modalOverlay').classList.add('active');$(id).classList.add('active')}
+function closeModal(){$('modalOverlay').classList.remove('active');document.querySelectorAll('.modal-content').forEach(m=>m.classList.remove('active'))}
 
-  <script>
-    const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+db.ref('settings').on('value',s=>{
+  if(!s.exists())return;
+  appSettings={...appSettings,...s.val()};startCountdown();
+  const a=$('parentAnnouncement');
+  if(appSettings.announcement&&$('parentScreen').classList.contains('active')){a.innerText=appSettings.announcement;a.style.display='block'}else a.style.display='none';
+  if(appSettings.motivation)$('motivationText').innerText=`"${appSettings.motivation}"`;
+  const has=appSettings.matches&&appSettings.matches.trim()!=="";
+  $('matchesCard').style.display=has?'block':'none';if(has)$('pMatchesText').innerText=appSettings.matches;
+});
 
-    const ADMIN_LOGIN = "Arif";
-    const ADMIN_PASS = "0717"; 
-    const ADMIN_BOT_USERNAME = "api_bot_coll"; 
-    
-    let currentUser = null;
-    let appSettings = { card: "8600", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00", announcement: "", motivation: "Mehnat qilgan yutadi!", matches: "" };
-    let timerInterval;
+function startCountdown(){
+  if(timerInterval)clearInterval(timerInterval);
+  const day=parseInt(appSettings.scheduleDay),[h,m]=(appSettings.scheduleTime||"16:00").split(':').map(Number);
+  timerInterval=setInterval(()=>{
+    const now=new Date(),t=new Date();t.setHours(h,m,0,0);
+    let d=day-now.getDay();if(d<0||(d===0&&t<now))d+=7;t.setDate(t.getDate()+d);
+    const ms=t-now,z=n=>Math.floor(n);
+    $('countdownTimer').innerText=`${z(ms/864e5)}k ${z(ms%864e5/36e5)}s ${z(ms%36e5/6e4)}d ${z(ms%6e4/1e3)}s`;
+  },1000);
+}
 
-    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+function updateStatBar(bar,txt,val,max,suf=""){
+  const p=Math.max(0,Math.min(100,val/max*100)),b=$(bar);
+  b.style.width='0';requestAnimationFrame(()=>{b.style.width=p+'%'});
+  b.className='stat-bar-fill '+(p<50?'fill-red':'fill-green');countUp($(txt),val,suf);
+}
 
-    let currentLang = 'uz';
-    function toggleLang() {
-      currentLang = currentLang === 'uz' ? 'ru' : 'uz';
-      document.querySelectorAll('[data-' + currentLang + ']').forEach(el => {
-        el.innerText = el.getAttribute('data-' + currentLang);
-      });
-    }
+function sendReceiptToAdmin(){
+  const link=`https://t.me/${ADMIN_BOT_USERNAME}?text=${encodeURIComponent(`To'lov cheki.\nO'quvchi: ${currentUser.name}\nLogini: ${currentUser.id}`)}`;
+  if(window.Telegram&&window.Telegram.WebApp&&Telegram.WebApp.initData)Telegram.WebApp.openTelegramLink(link);else window.open(link,'_blank');
+}
 
-    function openModal(modalId) {
-      document.querySelectorAll('.modal-content').forEach(m => m.classList.remove('active'));
-      document.getElementById('modalOverlay').classList.add('active');
-      document.getElementById(modalId).classList.add('active');
-    }
+/* ---------- Ro'yxatdan o'tish ---------- */
+function finishApp(btn,label,fields){
+  confetti();alert("Arizangiz yuborildi! Murabbiy tasdiqlashini kuting.");
+  fields.forEach(f=>$(f).value='');btn.innerText=label;btn.disabled=false;setMode(0,document.querySelector('.mode'));
+}
+function submitApplication(){
+  const parentName=$('appParentName').value.trim(),childName=$('appChildName').value.trim(),phone=$('appPhone').value.trim(),age=$('appAge').value.trim();
+  if(!parentName||!childName||!phone){alert("Iltimos, hamma joyni to'ldiring!");return}
+  const btn=$('btnSubmitApp');btn.innerText="Yuborilmoqda...";btn.disabled=true;
+  db.ref('applications').push({type:'parent',parentName,childName,phone,age,date:new Date().toLocaleDateString()})
+    .then(()=>finishApp(btn,"ARIZA YUBORISH",['appParentName','appChildName','appPhone','appAge']))
+    .catch(e=>{alert("Xatolik: "+e.message);btn.innerText="ARIZA YUBORISH";btn.disabled=false});
+}
+function submitStudent(){
+  const childName=$('stName').value.trim(),phone=$('stPhone').value.trim(),password=$('stPass').value.trim(),age=$('stAge').value.trim(),year=$('stYear').value.trim();
+  if(!childName||!phone||!password){alert("Ism, telefon va parolni kiriting!");return}
+  if(password.length<4){alert("Parol kamida 4 ta belgidan iborat bo'lsin!");return}
+  const btn=$('btnStudent');btn.innerText="Yuborilmoqda...";btn.disabled=true;
+  db.ref('players/'+phone).once('value').then(s=>{
+    if(s.exists())throw new Error("Bu telefon raqam allaqachon ro'yxatdan o'tgan.");
+    return db.ref('applications').push({type:'student',childName,phone,password,age,year,parentName:'-',date:new Date().toLocaleDateString()});
+  }).then(()=>finishApp(btn,"RO'YXATDAN O'TISH",['stName','stPhone','stPass','stAge','stYear']))
+    .catch(e=>{alert(e.message);btn.innerText="RO'YXATDAN O'TISH";btn.disabled=false});
+}
 
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('active');
-      document.querySelectorAll('.modal-content').forEach(m => m.classList.remove('active'));
-    }
+/* ---------- Kirish ---------- */
+function login(){
+  const user=$('loginUser').value.trim(),pass=$('loginPass').value.trim();
+  if(!user||!pass){alert("Login va parolni kiriting!");return}
+  if(user===ADMIN_LOGIN&&pass===ADMIN_PASS){showScreen('adminScreen');loadAdminData();return}
+  db.ref('players/'+user).once('value').then(s=>{
+    if(!s.exists()){alert("Bunday login yo'q!");return}
+    const p=s.val();
+    if(p.isArchived){alert("Hisobingiz arxivlangan. Murabbiy bilan bog'laning.");return}
+    if(p.password!==pass){alert("Parol xato!");return}
+    currentUser=p;currentUser.id=user;loadParentData();showScreen('parentScreen');
+    const a=$('parentAnnouncement');if(appSettings.announcement){a.innerText=appSettings.announcement;a.style.display='block'}
+  }).catch(e=>alert("Bazaga ulanishda xato: "+e.message));
+}
+function logout(){currentUser=null;$('loginUser').value='';$('loginPass').value='';showScreen('loginScreen')}
 
-    db.ref('settings').on('value', (snapshot) => {
-      if (snapshot.exists()) {
-        appSettings = { ...appSettings, ...snapshot.val() };
-        startCountdown();
-        
-        const annEl = document.getElementById('parentAnnouncement');
-        if(appSettings.announcement && document.getElementById('parentScreen').classList.contains('active')) {
-          if(annEl) { annEl.innerText = appSettings.announcement; annEl.style.display = 'block'; }
-        } else if(annEl) { annEl.style.display = 'none'; }
+function loadParentData(){
+  const u=currentUser;
+  $('pFullName').innerText=u.name||'Ism kiritilmagan';
+  $('pUsername').innerText="@"+(u.name||'user').toLowerCase().replace(/\s+/g,'_');
+  $('pPhoto').src=u.photoUrl||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.name||'User')}&background=1E293B&color=3B82F6&size=150`;
+  updateStatBar('barProgress','pProgressTxt',parseInt(u.progress)||0,100,"%");
+  updateStatBar('barGoals','pGoalsTxt',parseInt(u.goals)||0,20," ta");
+  updateStatBar('barAssists','pAssistsTxt',parseInt(u.assists)||0,20," ta");
+  updateStatBar('barSpeed','pSpeedTxt',parseInt(u.speed)||0,100,"%");
+  updateStatBar('barTrainings','pTrainingsTxt',parseInt(u.trainings)||0,30," marta");
+  let b='';
+  if(u.isStar)b+=`<div class="badge-icon star-badge">⭐ Oyning eng yaxshisi</div>`;
+  if(parseInt(u.goals)>=10)b+=`<div class="badge-icon">🥇 Gol hujumchisi</div>`;
+  if(parseInt(u.speed)>=80)b+=`<div class="badge-icon">⚡ Tezkor</div>`;
+  if(parseInt(u.progress)>=80)b+=`<div class="badge-icon">🧠 Aqlli o'yinchi</div>`;
+  $('badgesContainer').innerHTML=b;
+  const att=u.attendanceDates&&u.attendanceDates.length>0;
+  $('attendanceCard').style.display=att?'block':'none';
+  if(att)$('pAttendanceList').innerHTML=u.attendanceDates.map(d=>`<span class="badge bg-success">${esc(d)}</span>`).join('');
+  const imgs=(u.gallery||'').split(',').map(s=>s.trim()).filter(Boolean);
+  $('galleryCard').style.display=imgs.length?'block':'none';
+  $('pGallery').innerHTML=imgs.map(s=>`<img src="${esc(s)}" class="gallery-img">`).join('');
+  $('pPayAmount').innerText=appSettings.amount;$('payCard').innerText=appSettings.card;$('payAmount').innerText=appSettings.amount;
+  updateParentPayStatus();loadLeaderboard();
+}
+function updateParentPayStatus(){
+  const s=$('pPayStatus'),b=$('btnPay'),w=$('payWarning'),p=currentUser.paid;
+  w.style.display=(new Date().getDate()>5&&p===false)?'block':'none';
+  if(p===true||p==="paid"){s.innerText="To'langan ✅";s.className="badge bg-success";b.style.display='none';w.style.display='none'}
+  else if(p==="pending"){s.innerText="Kutilmoqda ⏳";s.className="badge bg-warning";b.style.display='flex';b.innerText="CHEKNI QAYTA YUBORISH"}
+  else{s.innerText="To'lanmagan ❌";s.className="badge bg-danger";b.style.display='flex';b.innerText="TO'LOV QILISH"}
+}
+function loadLeaderboard(){
+  db.ref('players').once('value').then(s=>{
+    if(!s.exists())return;
+    const list=[];
+    s.forEach(c=>{const p=c.val();if(!p.isArchived)list.push({name:p.name,score:(parseInt(p.goals)||0)*3+(parseInt(p.assists)||0)*2+(parseInt(p.progress)||0)})});
+    list.sort((a,b)=>b.score-a.score);
+    $('leaderboardList').innerHTML=list.slice(0,5).map((p,i)=>`<div class="list-item"><span>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ball</b></div>`).join('')||"Ma'lumot yo'q";
+  });
+}
+function openHistoryModal(){
+  openModal('historyModal');
+  db.ref('payments/'+currentUser.id).once('value').then(s=>{
+    const l=$('historyList');l.innerHTML='';
+    if(!s.exists()){l.innerHTML="<p style='text-align:center;color:var(--muted)'>Tarix bo'sh</p>";return}
+    s.forEach(c=>{const p=c.val();l.innerHTML+=`<div class="list-item"><span>${esc(p.date)}</span><b>${esc(p.amount)} so'm</b></div>`});
+  });
+}
+function markAsPending(){
+  if(!currentUser)return;
+  db.ref('players/'+currentUser.id+'/paid').set("pending").then(()=>{currentUser.paid="pending";updateParentPayStatus();closeModal();alert("Murabbiy tez orada tasdiqlaydi.")});
+}
 
-        const motEl = document.getElementById('motivationText');
-        if(motEl && appSettings.motivation) motEl.innerText = `"${appSettings.motivation}"`;
+/* ---------- Admin ---------- */
+function loadAdminData(){
+  $('setCard').value=appSettings.card||"";$('setAmount').value=appSettings.amount||"";
+  $('setScheduleDay').value=appSettings.scheduleDay!==undefined?appSettings.scheduleDay:1;
+  $('setScheduleTime').value=appSettings.scheduleTime||"16:00";
+  $('setAnnouncement').value=appSettings.announcement||"";$('setMotivation').value=appSettings.motivation||"";$('setMatches').value=appSettings.matches||"";
 
-        const matchCard = document.getElementById('matchesCard');
-        const matchText = document.getElementById('pMatchesText');
-        if(appSettings.matches && appSettings.matches.trim() !== "") {
-            matchCard.style.display = 'block';
-            matchText.innerText = appSettings.matches;
-        } else {
-            matchCard.style.display = 'none';
-        }
-      }
+  db.ref('applications').on('value',s=>{
+    const box=$('adminTabApps'),badge=$('appBadge');box.innerHTML='';
+    if(!s.exists()){box.innerHTML="<p style='text-align:center;color:var(--muted)'>Yangi arizalar yo'q</p>";badge.classList.add('hidden');return}
+    let n=0;
+    s.forEach(c=>{
+      const a=c.val(),k=c.key;n++;
+      const isS=a.type==='student';
+      box.innerHTML+=`<div class="list-item" style="flex-direction:column;align-items:flex-start">
+        <div><b>${esc(a.childName)}</b> (${esc(a.age||'?')} yosh)<span class="tag ${isS?'tag-s':'tag-p'}">${isS?"O'QUVCHI":'OTA-ONA'}</span><br><small style="color:var(--muted)">${isS?'':'Ota-ona: '+esc(a.parentName)+' | '}Tel: ${esc(a.phone)}${a.year?' | '+esc(a.year)+'-yil':''}</small></div>
+        <div style="display:flex;gap:10px;width:100%;margin-top:10px">
+          <button class="btn btn-sm btn-ok" onclick="acceptApplication('${k}')">QABUL</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectApplication('${k}')">RAD ETISH</button></div></div>`;
     });
+    badge.innerText=n;badge.classList.remove('hidden');
+  });
 
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const screen = document.getElementById(id);
-      if(screen) screen.classList.add('active');
-    }
-
-    function startCountdown() {
-      if(timerInterval) clearInterval(timerInterval);
-      const targetDay = parseInt(appSettings.scheduleDay);
-      const [targetHour, targetMinute] = (appSettings.scheduleTime || "16:00").split(':').map(Number);
-
-      timerInterval = setInterval(() => {
-        const now = new Date();
-        let targetDate = new Date();
-        targetDate.setHours(targetHour, targetMinute, 0, 0);
-        let daysDiff = targetDay - now.getDay();
-        if (daysDiff < 0 || (daysDiff === 0 && targetDate.getTime() < now.getTime())) daysDiff += 7;
-        targetDate.setDate(targetDate.getDate() + daysDiff);
-
-        const diffMs = targetDate - now;
-        const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-        const timerEl = document.getElementById('countdownTimer');
-        if(timerEl) timerEl.innerText = `${days} kun, ${hours} soat, ${minutes} daq, ${seconds} sek`;
-      }, 1000);
-    }
-
-    function updateStatBar(barId, txtId, value, maxValue, suffix = "") {
-      let percent = (value / maxValue) * 100;
-      if (percent > 100) percent = 100;
-      if (percent < 0) percent = 0;
-
-      const bar = document.getElementById(barId);
-      const txt = document.getElementById(txtId);
-
-      if (bar && txt) {
-        bar.style.width = percent + '%';
-        txt.innerText = value + suffix;
-        if (percent < 50) bar.className = 'stat-bar-fill fill-red';
-        else bar.className = 'stat-bar-fill fill-green';
+  db.ref('players').on('value',s=>{
+    const sl=$('adminStudentList'),st=$('adminStatsList'),ar=$('adminArchiveList');
+    sl.innerHTML='';st.innerHTML='';ar.innerHTML='';
+    let paid=0,debt=0,act=0,arc=0;const amt=parseInt(String(appSettings.amount).replace(/\D/g,''))||0;
+    if(s.exists()){
+      const all=s.val();
+      for(const id in all){
+        const p=all[id];
+        if(p.isArchived){arc++;ar.innerHTML+=`<div class="list-item"><div><b>${esc(p.name)}</b><br><small>Login: ${esc(id)}</small></div><div><button class="btn btn-sm btn-ok" onclick="restorePlayer('${id}')">TIKLASH</button> <button class="btn btn-sm btn-danger" onclick="deletePlayerPermanently('${id}')">O'CHIRISH</button></div></div>`;continue}
+        act++;
+        if(p.paid===true||p.paid==="paid")paid+=amt;else debt+=amt;
+        const bc=p.paid===true?'bg-success':(p.paid==="pending"?'bg-warning':'bg-danger');
+        const bt=p.paid===true?"To'langan":(p.paid==="pending"?'Kutilmoqda':'Qarzdor');
+        sl.innerHTML+=`<div class="list-item"><div>${p.isStar?'⭐ ':''}<b>${esc(p.name)}</b><br><small style="color:var(--muted)">Guruh: ${esc(p.group||'-')} | Login: ${esc(id)}</small></div>
+          <div style="text-align:right"><span class="badge ${bc}">${bt}</span><br>
+          <button class="btn btn-sm" style="margin-top:6px" onclick="markAttendance('${id}')">Davomat +1</button>
+          <button class="btn btn-sm btn-outline" style="margin-top:6px" onclick="editPlayer('${id}')">✏️</button>
+          <button class="btn btn-sm btn-danger" style="margin-top:6px" onclick="archivePlayer('${id}')">🗑</button></div></div>`;
+        const pr=parseInt(p.progress)||0,g=parseInt(p.goals)||0,a=parseInt(p.assists)||0;
+        const bar=(l,v,t,c)=>`<div class="stat-bar-container" style="margin-bottom:8px"><div class="stat-bar-header"><span style="font-size:11px">${l}</span><span style="font-size:11px">${t}</span></div><div class="stat-bar-bg" style="height:8px"><div class="stat-bar-fill ${c?'fill-green':'fill-red'}" style="width:${Math.min(v,100)}%"></div></div></div>`;
+        st.innerHTML+=`<div style="border-bottom:1px solid var(--card-b);padding-bottom:15px;margin-bottom:15px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b>${esc(p.name)}</b><button class="btn btn-sm btn-outline" onclick="editPlayer('${id}')">TAHRIRLASH</button></div>${bar("O'zlashtirish",pr,pr+'%',pr>=50)}${bar('Gollar',g/20*100,g+' ta',g>=5)}${bar('Asistlar',a/20*100,a+' ta',a>=5)}</div>`;
       }
     }
-
-    function sendReceiptToAdmin() {
-      const text = `To'lov cheki.\nO'quvchi: ${currentUser.name}\nLogini: ${currentUser.id}`;
-      const tgLink = `https://t.me/${ADMIN_BOT_USERNAME}?text=${encodeURIComponent(text)}`;
-      if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.openTelegramLink(tgLink);
-      else window.open(tgLink, '_blank');
-    }
-
-    function submitApplication() {
-      const parentName = document.getElementById('appParentName').value.trim();
-      const childName = document.getElementById('appChildName').value.trim();
-      const phone = document.getElementById('appPhone').value.trim();
-      const age = document.getElementById('appAge').value.trim();
-
-      if (!parentName || !childName || !phone) { alert("Iltimos, hamma joyni to'ldiring!"); return; }
-
-      const btn = document.getElementById('btnSubmitApp');
-      btn.innerText = "Yuborilmoqda..."; btn.disabled = true;
-
-      db.ref('applications').push({ parentName, childName, phone, age, date: new Date().toLocaleDateString() }).then(() => {
-        alert("Arizangiz yuborildi!");
-        document.getElementById('appParentName').value = ''; document.getElementById('appChildName').value = '';
-        document.getElementById('appPhone').value = ''; document.getElementById('appAge').value = '';
-        showScreen('loginScreen');
-        btn.innerText = "YUBORISH"; btn.disabled = false;
-      }).catch(error => {
-        alert("Xatolik: " + error.message); btn.innerText = "YUBORISH"; btn.disabled = false;
-      });
-    }
-
-    function login() {
-      const user = document.getElementById('loginUser').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      if (!user || !pass) { alert("Login va parolni kiriting!"); return; }
-
-      if (user === ADMIN_LOGIN && pass === ADMIN_PASS) {
-        showScreen('adminScreen'); loadAdminData(); return;
-      }
-
-      db.ref('players/' + user).once('value').then((snapshot) => {
-        if (snapshot.exists()) {
-          const pData = snapshot.val();
-          
-          if (pData.isArchived) {
-            alert("Sizning hisobingiz arxivlangan. Murabbiy bilan bog'laning.");
-            return; 
-          }
-
-          if (pData.password === pass) {
-            currentUser = pData; currentUser.id = user;
-            loadParentData(); showScreen('parentScreen');
-          } else { alert("Parol xato!"); }
-        } else { alert("Bunday login yo'q!"); }
-      }).catch(e => alert("Bazaga ulanishda xato: " + e.message));
-    }
-
-    function logout() {
-      currentUser = null; document.getElementById('loginUser').value = ''; document.getElementById('loginPass').value = '';
-      showScreen('loginScreen');
-    }
-
-    function loadParentData() {
-      document.getElementById('pFullName').innerText = currentUser.name || 'Ism kiritilmagan';
-      let uname = (currentUser.name || 'user').toLowerCase().replace(/\s+/g, '_');
-      document.getElementById('pUsername').innerText = "@" + uname;
-      
-      document.getElementById('pPhoto').src = currentUser.photoUrl || `https://ui-avatars.com/api/?name=${currentUser.name || 'User'}&background=1E293B&color=3B82F6&size=150`;
-      
-      updateStatBar('barProgress', 'pProgressTxt', parseInt(currentUser.progress) || 0, 100, "%");
-      updateStatBar('barGoals', 'pGoalsTxt', parseInt(currentUser.goals) || 0, 20, " ta");
-      updateStatBar('barAssists', 'pAssistsTxt', parseInt(currentUser.assists) || 0, 20, " ta");
-      updateStatBar('barSpeed', 'pSpeedTxt', parseInt(currentUser.speed) || 0, 100, "%");
-      updateStatBar('barTrainings', 'pTrainingsTxt', parseInt(currentUser.trainings) || 0, 30, " marta");
-
-      let badgesHtml = '';
-      if (currentUser.isStar) badgesHtml += `<div class="badge-icon star-badge">⭐ Oyning eng yaxshisi</div>`;
-      if (parseInt(currentUser.goals) >= 10) badgesHtml += `<div class="badge-icon">🥇 Gol Hujumchisi</div>`;
-      if (parseInt(currentUser.speed) >= 80) badgesHtml += `<div class="badge-icon">⚡ Tezkor</div>`;
-      if (parseInt(currentUser.progress) >= 80) badgesHtml += `<div class="badge-icon">🧠 Aqlli o'yinchi</div>`;
-      document.getElementById('badgesContainer').innerHTML = badgesHtml;
-
-      const attCard = document.getElementById('attendanceCard');
-      const attList = document.getElementById('pAttendanceList');
-      if (currentUser.attendanceDates && currentUser.attendanceDates.length > 0) {
-        attCard.style.display = 'block';
-        attList.innerHTML = currentUser.attendanceDates.map(date => `<span style="background:var(--primary-light); padding:5px 10px; border-radius:8px; font-size:12px; font-weight:bold; color:var(--primary); border:1px solid var(--primary);">${date}</span>`).join('');
-      } else {
-        attCard.style.display = 'none';
-      }
-
-      if (currentUser.gallery) {
-        const imgs = currentUser.gallery.split(',').map(s => s.trim()).filter(s => s);
-        if (imgs.length > 0) {
-          document.getElementById('galleryCard').style.display = 'block';
-          document.getElementById('pGallery').innerHTML = imgs.map(src => `<img src="${src}" class="gallery-img">`).join('');
-        } else {
-          document.getElementById('galleryCard').style.display = 'none';
-        }
-      } else {
-        document.getElementById('galleryCard').style.display = 'none';
-      }
-
-      document.getElementById('pPayAmount').innerText = appSettings.amount;
-      document.getElementById('payCard').innerText = appSettings.card;
-      document.getElementById('payAmount').innerText = appSettings.amount;
-      
-      updateParentPayStatus();
-      loadLeaderboard();
-    }
-
-    function updateParentPayStatus() {
-      const statusBadge = document.getElementById('pPayStatus');
-      const btnPay = document.getElementById('btnPay');
-      const payWarning = document.getElementById('payWarning');
-      
-      if(!statusBadge || !btnPay) return;
-      
-      const today = new Date().getDate();
-      if (today > 5 && currentUser.paid === false) {
-        payWarning.style.display = 'block';
-      } else {
-        payWarning.style.display = 'none';
-      }
-      
-      if (currentUser.paid === true || currentUser.paid === "paid") {
-        statusBadge.innerText = "To'langan ✅"; statusBadge.className = "badge bg-success"; btnPay.style.display = 'none';
-        payWarning.style.display = 'none';
-      } else if (currentUser.paid === "pending") {
-        statusBadge.innerText = "Kutilmoqda ⏳"; statusBadge.className = "badge bg-warning"; btnPay.style.display = 'flex'; btnPay.innerText = "CHEKNI QAYTA YUBORISH";
-      } else {
-        statusBadge.innerText = "To'lanmagan ❌"; statusBadge.className = "badge bg-danger"; btnPay.style.display = 'flex'; btnPay.innerText = "TO'LOV QILISH";
-      }
-    }
-
-    function loadLeaderboard() {
-      db.ref('players').once('value').then((snapshot) => {
-        if(snapshot.exists()){
-          let players = [];
-          snapshot.forEach(child => {
-            let p = child.val();
-            if(!p.isArchived) {
-              let score = (parseInt(p.goals)||0) * 3 + (parseInt(p.assists)||0) * 2 + (parseInt(p.progress)||0);
-              players.push({ name: p.name, score: score });
-            }
-          });
-          players.sort((a,b) => b.score - a.score);
-          
-          let html = '';
-          players.slice(0, 5).forEach((p, index) => {
-            let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index+1}.`;
-            html += `<div class="list-item"><span>${medal} ${p.name}</span> <b style="color:var(--primary)">${p.score} ball</b></div>`;
-          });
-          const elLeaderboard = document.getElementById('leaderboardList');
-          if(elLeaderboard) elLeaderboard.innerHTML = html || "Ma'lumot yo'q";
-        }
-      });
-    }
-
-    function openHistoryModal() {
-      openModal('historyModal');
-      db.ref('payments/' + currentUser.id).once('value').then(snapshot => {
-        const list = document.getElementById('historyList');
-        list.innerHTML = '';
-        if(snapshot.exists()){
-          snapshot.forEach(child => {
-            let p = child.val();
-            list.innerHTML += `<div class="list-item"><span>${p.date}</span> <b>${p.amount} so'm</b></div>`;
-          });
-        } else {
-          list.innerHTML = "<p style='text-align:center'>Tarix bo'sh</p>";
-        }
-      });
-    }
-
-    function markAsPending() {
-      if(currentUser) {
-        db.ref('players/' + currentUser.id + '/paid').set("pending").then(() => {
-          currentUser.paid = "pending"; updateParentPayStatus(); closeModal();
-          alert("Murabbiy tez orada tasdiqlaydi.");
-        });
-      }
-    }
-
-    // ADMIN LOGIKASI
-    function loadAdminData() {
-      document.getElementById('setCard').value = appSettings.card || "";
-      document.getElementById('setAmount').value = appSettings.amount || "";
-      document.getElementById('setScheduleDay').value = appSettings.scheduleDay !== undefined ? appSettings.scheduleDay : 1;
-      document.getElementById('setScheduleTime').value = appSettings.scheduleTime || "16:00";
-      document.getElementById('setAnnouncement').value = appSettings.announcement || "";
-      document.getElementById('setMotivation').value = appSettings.motivation || "";
-      document.getElementById('setMatches').value = appSettings.matches || "";
-
-      db.ref('applications').on('value', (snapshot) => {
-        const appList = document.getElementById('adminTabApps');
-        const appBadge = document.getElementById('appBadge');
-        appList.innerHTML = '';
-        
-        if (snapshot.exists()) {
-          const apps = snapshot.val();
-          let count = 0;
-          for (let key in apps) {
-            const app = apps[key]; count++;
-            appList.innerHTML += `
-              <div class="list-item" style="flex-direction: column; align-items: flex-start;">
-                <div><b>${app.childName}</b> (${app.age} yosh)<br><small>Ota-ona: ${app.parentName} | Tel: ${app.phone}</small></div>
-                <div style="display:flex; gap:10px; width:100%; margin-top:10px;">
-                  <button class="btn btn-sm" style="background:var(--secondary);" onclick="acceptApplication('${key}', '${app.phone}', '${app.childName}')">QABUL</button>
-                  <button class="btn btn-sm btn-danger" onclick="rejectApplication('${key}')">RAD ETISH</button>
-                </div>
-              </div>`;
-          }
-          appBadge.innerText = count; appBadge.classList.remove('hidden');
-        } else {
-          appList.innerHTML = "<p style='text-align:center;'>Yangi arizalar yo'q</p>"; appBadge.classList.add('hidden');
-        }
-      });
-
-      db.ref('players').on('value', (snapshot) => {
-        const studentList = document.getElementById('adminStudentList');
-        const statsList = document.getElementById('adminStatsList');
-        const archiveList = document.getElementById('adminArchiveList');
-        
-        studentList.innerHTML = ''; statsList.innerHTML = ''; archiveList.innerHTML = '';
-        
-        let totalPaid = 0; let totalDebt = 0;
-        let activeCount = 0; let archiveCount = 0;
-
-        if (snapshot.exists()) {
-          const players = snapshot.val();
-          for (let id in players) {
-            const p = players[id];
-            
-            if (p.isArchived) {
-              archiveCount++;
-              archiveList.innerHTML += `
-                <div class="list-item">
-                  <div><b>${p.name}</b><br><small>Login: ${id}</small></div>
-                  <div>
-                    <button class="btn btn-sm" style="background:var(--secondary);" onclick="restorePlayer('${id}')">TIKLASH</button>
-                    <button class="btn btn-sm btn-danger" style="margin-top:5px;" onclick="deletePlayerPermanently('${id}')">O'CHIRISH</button>
-                  </div>
-                </div>`;
-              continue;
-            }
-
-            activeCount++;
-            if (p.paid === true || p.paid === "paid") totalPaid += parseInt(appSettings.amount.replace(/\D/g,'')) || 0;
-            else totalDebt += parseInt(appSettings.amount.replace(/\D/g,'')) || 0;
-
-            let badgeClass = p.paid === true ? 'bg-success' : (p.paid === "pending" ? 'bg-warning' : 'bg-danger');
-            let badgeText = p.paid === true ? 'To\'langan' : (p.paid === "pending" ? 'Kutilmoqda' : 'Qarzdor');
-            
-            studentList.innerHTML += `
-              <div class="list-item">
-                <div>
-                  ${p.isStar ? '⭐ ' : ''}<b>${p.name}</b><br>
-                  <small>Guruh: ${p.group || '-'} | Login: ${id}</small>
-                </div>
-                <div style="text-align:right">
-                  <span class="badge ${badgeClass}">${badgeText}</span><br>
-                  <button class="btn btn-sm" style="margin-top: 5px; background:var(--primary)" onclick="markAttendance('${id}')">Davomat +1</button>
-                  <button class="btn btn-sm btn-outline" style="margin-top: 5px;" onclick="editPlayer('${id}')">✏️</button>
-                  <button class="btn btn-sm btn-danger" style="margin-top: 5px;" onclick="archivePlayer('${id}')">🗑</button>
-                </div>
-              </div>`;
-
-            let pProgress = parseInt(p.progress) || 0;
-            let pGoals = parseInt(p.goals) || 0;
-            let pAssists = parseInt(p.assists) || 0;
-            
-            statsList.innerHTML += `
-              <div style="border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                  <b>${p.name}</b>
-                  <button class="btn btn-sm btn-outline" onclick="editPlayer('${id}')">TAHRIRLASH</button>
-                </div>
-                <div class="stat-bar-container" style="margin-bottom: 8px;">
-                  <div class="stat-bar-header"><span style="font-size:11px;">O'zlashtirish</span> <span style="font-size:11px;">${pProgress}%</span></div>
-                  <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pProgress < 50 ? 'fill-red' : 'fill-green'}" style="width: ${pProgress}%;"></div></div>
-                </div>
-                <div class="stat-bar-container" style="margin-bottom: 8px;">
-                  <div class="stat-bar-header"><span style="font-size:11px;">Gollar</span> <span style="font-size:11px;">${pGoals} ta</span></div>
-                  <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pGoals < 5 ? 'fill-red' : 'fill-green'}" style="width: ${Math.min((pGoals/20)*100, 100)}%;"></div></div>
-                </div>
-                <div class="stat-bar-container" style="margin-bottom: 8px;">
-                  <div class="stat-bar-header"><span style="font-size:11px;">Asistlar</span> <span style="font-size:11px;">${pAssists} ta</span></div>
-                  <div class="stat-bar-bg" style="height:8px;"><div class="stat-bar-fill ${pAssists < 5 ? 'fill-red' : 'fill-green'}" style="width: ${Math.min((pAssists/20)*100, 100)}%;"></div></div>
-                </div>
-              </div>`;
-          }
-        } 
-        
-        document.getElementById('finPaid').innerText = totalPaid.toLocaleString() + " so'm";
-        document.getElementById('finDebt').innerText = totalDebt.toLocaleString() + " so'm";
-        
-        if(activeCount === 0) { studentList.innerHTML = "<p style='text-align:center;'>O'quvchilar yo'q</p>"; statsList.innerHTML = studentList.innerHTML; }
-        if(archiveCount === 0) { archiveList.innerHTML = "<p style='text-align:center;'>Arxiv bo'sh</p>"; }
-      });
-    }
-
-    function restorePlayer(id) {
-      if(confirm("O'quvchini qayta tiklaysizmi? U yana tizimga kira oladi.")) {
-        db.ref('players/' + id + '/isArchived').set(false);
-        alert("O'quvchi tiklandi!");
-      }
-    }
-
-    function deletePlayerPermanently(id) {
-      if(confirm("DIQQAT! O'quvchi bazadan butunlay o'chib ketadi. Rozimisiz?")) {
-        db.ref('players/' + id).remove();
-      }
-    }
-
-    function markAttendance(id) {
-      db.ref('players/' + id).once('value').then(snap => {
-        let p = snap.val();
-        let dates = p.attendanceDates || [];
-        let today = new Date().toLocaleDateString(); 
-        
-        if(!dates.includes(today)) {
-            dates.push(today);
-            db.ref('players/' + id + '/attendanceDates').set(dates);
-            let currentTrainings = parseInt(p.trainings) || 0;
-            db.ref('players/' + id + '/trainings').set(currentTrainings + 1);
-            alert("Davomat qayd etildi: " + today);
-        } else {
-            alert("Bu o'quvchi bugun uchun allaqachon belgilangan!");
-        }
-      });
-    }
-
-    function archivePlayer(id) {
-      if(confirm("O'quvchini arxivga o'tkazasizmi? (U qayta kira olmaydi)")) db.ref('players/' + id + '/isArchived').set(true);
-    }
-
-    function exportToCSV() {
-      db.ref('players').once('value').then(snap => {
-        let csv = "Ism,Login,Guruh,Gollar,Asistlar,Tezlik,O'zlashtirish,To'lov\n";
-        snap.forEach(child => {
-          let p = child.val();
-          if(!p.isArchived) {
-            csv += `"${p.name}","${child.key}","${p.group||''}","${p.goals||0}","${p.assists||0}","${p.speed||0}","${p.progress||0}","${p.paid}"\n`;
-          }
-        });
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "oquvchilar_royxati.csv";
-        link.click();
-      });
-    }
-
-    function saveSettings() {
-      const newSettings = { 
-        card: document.getElementById('setCard').value, 
-        amount: document.getElementById('setAmount').value,
-        scheduleDay: document.getElementById('setScheduleDay').value,
-        scheduleTime: document.getElementById('setScheduleTime').value,
-        announcement: document.getElementById('setAnnouncement').value,
-        motivation: document.getElementById('setMotivation').value,
-        matches: document.getElementById('setMatches').value
-      };
-      db.ref('settings').update(newSettings).then(() => { 
-        appSettings = { ...appSettings, ...newSettings }; 
-        alert("Sozlamalar saqlandi!"); 
-      });
-    }
-
-    function editPlayer(id) {
-      db.ref('players/' + id).once('value').then((snapshot) => {
-        if(snapshot.exists()){
-          const p = snapshot.val();
-          document.getElementById('playerModalTitle').innerText = "Tahrirlash: " + p.name;
-          document.getElementById('editPlayerId').value = id;
-          document.getElementById('pEditName').value = p.name;
-          document.getElementById('pLogin').value = id;
-          document.getElementById('pPass').value = p.password;
-          document.getElementById('pPhotoUrl').value = p.photoUrl || "";
-          document.getElementById('pGroup').value = p.group || "";
-          document.getElementById('pGallery').value = p.gallery || "";
-          document.getElementById('pGoalsInput').value = p.goals || 0;
-          document.getElementById('pAssistsInput').value = p.assists || 0;
-          document.getElementById('pSpeedInput').value = p.speed || 0;
-          document.getElementById('pProgressInput').value = p.progress || 0;
-          document.getElementById('pTrainingsInput').value = p.trainings || 0;
-          document.getElementById('pPay').value = p.paid === true ? "paid" : (p.paid === "pending" ? "pending" : "unpaid");
-          document.getElementById('pStar').checked = p.isStar || false;
-          
-          openModal('playerModal');
-        }
-      });
-    }
-
-    function savePlayer() {
-      const newLogin = document.getElementById('pLogin').value.trim(); 
-      const oldLogin = document.getElementById('editPlayerId').value;
-      if(!newLogin) return alert("Login kiriting!");
-      
-      const payValue = document.getElementById('pPay').value;
-      const data = {
-        name: document.getElementById('pEditName').value,
-        password: document.getElementById('pPass').value,
-        photoUrl: document.getElementById('pPhotoUrl').value.trim(), // Faqat URL qabul qiladi
-        group: document.getElementById('pGroup').value.trim(),
-        gallery: document.getElementById('pGallery').value.trim(),
-        goals: document.getElementById('pGoalsInput').value,
-        assists: document.getElementById('pAssistsInput').value,
-        speed: document.getElementById('pSpeedInput').value,
-        progress: document.getElementById('pProgressInput').value,
-        trainings: document.getElementById('pTrainingsInput').value,
-        paid: payValue === "paid" ? true : (payValue === "pending" ? "pending" : false),
-        isStar: document.getElementById('pStar').checked,
-        isArchived: false
-      };
-
-      if (oldLogin && oldLogin !== newLogin) db.ref('players/' + oldLogin).remove(); 
-      db.ref('players/' + newLogin).update(data).then(() => { 
-        alert("Saqlandi!"); closeModal(); 
-      });
-    }
-
-    function acceptApplication(appId, phone, name) {
-      const randomPass = Math.floor(1000 + Math.random() * 9000).toString();
-      const newPlayer = { name: name, password: randomPass, paid: false, goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0, isArchived: false, attendanceDates: [] };
-      db.ref('players/' + phone).set(newPlayer).then(() => {
-        db.ref('applications/' + appId).remove();
-        alert(`Qabul qilindi!\nLogin: ${phone}\nParol: ${randomPass}`);
-      });
-    }
-    function rejectApplication(appId) { if(confirm("O'chirilsinmi?")) db.ref('applications/' + appId).remove(); }
-
-    function switchAdminTab(tab) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById('adminTabApps').classList.add('hidden');
-      document.getElementById('adminTabStudents').classList.add('hidden');
-      document.getElementById('adminTabStats').classList.add('hidden');
-      document.getElementById('adminTabArchive').classList.add('hidden'); 
-      document.getElementById('adminTabSettings').classList.add('hidden');
-      
-      if(tab === 'apps') document.getElementById('adminTabApps').classList.remove('hidden');
-      if(tab === 'students') document.getElementById('adminTabStudents').classList.remove('hidden');
-      if(tab === 'stats') document.getElementById('adminTabStats').classList.remove('hidden');
-      if(tab === 'archive') document.getElementById('adminTabArchive').classList.remove('hidden');
-      if(tab === 'settings') document.getElementById('adminTabSettings').classList.remove('hidden');
-    }
-
-    closeModal();
-  </script>
+    $('finPaid').innerText=paid.toLocaleString()+" so'm";$('finDebt').innerText=debt.toLocaleString()+" so'm";
+    if(!act){sl.innerHTML="<p style='text-align:center;color:var(--muted)'>O'quvchilar yo'q</p>";st.innerHTML=sl.innerHTML}
+    if(!arc)ar.innerHTML="<p style='text-align:center;color:var(--muted)'>Arxiv bo'sh</p>";
+  });
+}
+function restorePlayer(id){if(confirm("O'quvchini qayta tiklaysizmi?")){db.ref('players/'+id+'/isArchived').set(false)}}
+function deletePlayerPermanently(id){if(confirm("DIQQAT! O'quvchi bazadan butunlay o'chadi. Rozimisiz?"))db.ref('players/'+id).remove()}
+function archivePlayer(id){if(confirm("O'quvchini arxivga o'tkazasizmi? (Qayta kira olmaydi)"))db.ref('players/'+id+'/isArchived').set(true)}
+function markAttendance(id){
+  db.ref('players/'+id).once('value').then(s=>{
+    const p=s.val(),dates=p.attendanceDates||[],today=new Date().toLocaleDateString();
+    if(dates.includes(today)){alert("Bu o'quvchi bugun uchun allaqachon belgilangan!");return}
+    dates.push(today);
+    db.ref('players/'+id+'/attendanceDates').set(dates);
+    db.ref('players/'+id+'/trainings').set((parseInt(p.trainings)||0)+1);
+    alert("Davomat qayd etildi: "+today);
+  });
+}
+function exportToCSV(){
+  db.ref('players').once('value').then(s=>{
+    let csv="Ism,Login,Guruh,Gollar,Asistlar,Tezlik,O'zlashtirish,To'lov\n";
+    s.forEach(c=>{const p=c.val();if(!p.isArchived)csv+=`"${p.name}","${c.key}","${p.group||''}","${p.goals||0}","${p.assists||0}","${p.speed||0}","${p.progress||0}","${p.paid}"\n`});
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download="oquvchilar_royxati.csv";a.click();
+  });
+}
+function saveSettings(){
+  const n={card:$('setCard').value,amount:$('setAmount').value,scheduleDay:$('setScheduleDay').value,scheduleTime:$('setScheduleTime').value,announcement:$('setAnnouncement').value,motivation:$('setMotivation').value,matches:$('setMatches').value};
+  db.ref('settings').update(n).then(()=>{appSettings={...appSettings,...n};alert("Sozlamalar saqlandi!")});
+}
+function editPlayer(id){
+  db.ref('players/'+id).once('value').then(s=>{
+    if(!s.exists())return;const p=s.val();
+    $('playerModalTitle').innerText="Tahrirlash: "+p.name;$('editPlayerId').value=id;
+    $('pEditName').value=p.name;$('pLogin').value=id;$('pPass').value=p.password;$('pPhotoUrl').value=p.photoUrl||"";
+    $('pGroup').value=p.group||"";$('pGallery').value=p.gallery||"";$('pGoalsInput').value=p.goals||0;$('pAssistsInput').value=p.assists||0;
+    $('pSpeedInput').value=p.speed||0;$('pProgressInput').value=p.progress||0;$('pTrainingsInput').value=p.trainings||0;
+    $('pPay').value=p.paid===true?"paid":(p.paid==="pending"?"pending":"unpaid");$('pStar').checked=p.isStar||false;
+    openModal('playerModal');
+  });
+}
+function savePlayer(){
+  const nl=$('pLogin').value.trim(),ol=$('editPlayerId').value;
+  if(!nl)return alert("Login kiriting!");
+  const pv=$('pPay').value;
+  const data={name:$('pEditName').value,password:$('pPass').value,photoUrl:$('pPhotoUrl').value.trim(),group:$('pGroup').value.trim(),gallery:$('pGallery').value.trim(),
+    goals:$('pGoalsInput').value,assists:$('pAssistsInput').value,speed:$('pSpeedInput').value,progress:$('pProgressInput').value,trainings:$('pTrainingsInput').value,
+    paid:pv==="paid"?true:(pv==="pending"?"pending":false),isStar:$('pStar').checked,isArchived:false};
+  if(ol&&ol!==nl){
+    // Login o'zgarsa: davomat va boshqa maydonlar yo'qolmasligi uchun eski yozuvni ko'chiramiz
+    db.ref('players/'+ol).once('value').then(s=>{
+      const old=s.val()||{};
+      return db.ref('players/'+nl).set({...old,...data}).then(()=>db.ref('players/'+ol).remove());
+    }).then(()=>{alert("Saqlandi!");closeModal()});
+  }else db.ref('players/'+nl).update(data).then(()=>{alert("Saqlandi!");closeModal()});
+}
+function acceptApplication(id){
+  db.ref('applications/'+id).once('value').then(s=>{
+    if(!s.exists())return;const a=s.val();
+    const pass=a.password||Math.floor(1000+Math.random()*9000).toString();
+    const pl={name:a.childName,password:pass,paid:false,goals:0,assists:0,speed:0,progress:0,trainings:0,isArchived:false,attendanceDates:[]};
+    if(a.year)pl.group=a.year;
+    return db.ref('players/'+a.phone).set(pl).then(()=>db.ref('applications/'+id).remove()).then(()=>{
+      confetti();alert(a.password?`Qabul qilindi!\nLogin: ${a.phone}\n(O'quvchi o'z parolini ishlatadi)`:`Qabul qilindi!\nLogin: ${a.phone}\nParol: ${pass}`);
+    });
+  });
+}
+function rejectApplication(id){if(confirm("O'chirilsinmi?"))db.ref('applications/'+id).remove()}
+function switchAdminTab(tab,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  ['Apps','Students','Stats','Archive','Settings'].forEach(n=>$('adminTab'+n).classList.add('hidden'));
+  $('adminTab'+tab[0].toUpperCase()+tab.slice(1)).classList.remove('hidden');
+}
+closeModal();
+</script>
 </body>
 </html>
