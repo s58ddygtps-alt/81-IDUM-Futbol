@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{--bg:#070b1f;--card:rgba(255,255,255,.07);--cb:rgba(255,255,255,.14);--blue:#3d7bff;--coral:#ff4d6d;--gold:#ffc83d;--ok:#2ee6a6;--text:#f1f4ff;--muted:#9aa4c7;--input:rgba(5,8,26,.55);--glow:0 0 28px rgba(61,123,255,.35)}
@@ -46,7 +45,7 @@ select.inp option{color:#111}
 .bok{background:linear-gradient(120deg,#12b886,var(--ok));color:#032;box-shadow:0 6px 18px rgba(46,230,166,.35)}
 .hero-title{font:900 30px/1.05 'Unbounded';margin:6vh 0 8px;letter-spacing:-1px}
 .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
-.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--input);padding:5px;border-radius:16px;margin-bottom:16px;border:1px solid var(--cb)}
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;background:var(--input);padding:5px;border-radius:16px;margin-bottom:16px;border:1px solid var(--cb)}
 .mode{padding:11px 4px;text-align:center;border-radius:12px;font-size:10px;font-weight:700;color:var(--muted);cursor:pointer;transition:.3s}
 .mode.on{background:linear-gradient(120deg,var(--blue),#7a5cff);color:#fff;box-shadow:0 6px 16px rgba(61,123,255,.45)}
 .pane{display:none}.pane.on{display:block;animation:rise .4s}
@@ -86,12 +85,21 @@ select.inp option{color:#111}
 .warn{background:rgba(255,77,109,.12);border:1px solid var(--coral);color:var(--coral);padding:10px;border-radius:12px;font-size:13px;font-weight:700;margin-bottom:15px;display:none}
 .tag{font:700 9px 'Unbounded';padding:3px 8px;border-radius:999px;margin-left:6px}.ts{background:rgba(46,230,166,.18);color:var(--ok)}.tp{background:rgba(255,200,61,.18);color:var(--gold)}
 .row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:6px}
+.pay{text-align:center}.pbox{background:var(--card);border:1px solid var(--cb);border-radius:18px;padding:16px;margin:12px 0;text-align:left}
+.pbox small{font:700 10px 'Unbounded';color:var(--muted)}.pbox b{display:block;font:700 22px monospace;margin:6px 0 12px;letter-spacing:1px}
+.spin{width:54px;height:54px;border:4px solid var(--cb);border-top-color:var(--blue);border-radius:50%;margin:0 auto 12px;animation:rot 1s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}
+.fl{position:absolute;bottom:-10vh;opacity:0;animation:flt linear infinite;will-change:transform}
+@keyframes flt{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.25}90%{opacity:.25}100%{transform:translateY(-120vh) rotate(360deg);opacity:0}}
+.beam{position:absolute;top:-10vh;width:40vw;height:130vh;background:linear-gradient(to bottom,rgba(255,255,255,.17),transparent 70%);transform-origin:top center;filter:blur(18px);clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);animation:sway 9s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.ball{position:absolute;bottom:12px;left:-60px;font-size:28px;opacity:.5;animation:roll 20s linear infinite}
+@keyframes roll{to{left:105%;transform:rotate(1800deg)}}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:300}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="aurora"><i></i><i></i><i></i></div><canvas id="fx"></canvas>
+<div class="aurora"><i></i><i></i><i></i><span class="beam" style="left:4vw"></span><span class="beam" style="right:4vw;animation-delay:-4.5s"></span><span class="ball">⚽</span><span id="fls"></span></div><canvas id="fx"></canvas>
 
 <!-- KIRISH / RO'YXATDAN O'TISH -->
 <div class="screen active" id="loginScreen">
@@ -100,39 +108,40 @@ select.inp option{color:#111}
   <p class="sub" data-uz="81-maktab futbol akademiyasi" data-ru="Футбольная академия школы 81">81-maktab futbol akademiyasi</p>
   <div class="modes">
     <div class="mode on" onclick="setMode(0,this)" data-uz="KIRISH" data-ru="ВХОД">KIRISH</div>
-    <div class="mode" onclick="setMode(1,this)" data-uz="O'QUVCHI" data-ru="УЧЕНИК">O'QUVCHI</div>
-    <div class="mode" onclick="setMode(2,this)" data-uz="OTA-ONA" data-ru="РОДИТЕЛЬ">OTA-ONA</div>
+    <div class="mode" onclick="setMode(1,this)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА">ARIZA TOPSHIRISH</div>
   </div>
   <div class="card">
     <div class="pane on" id="pane0">
-      <div class="ig"><label data-uz="Login (telefon)" data-ru="Логин (телефон)">Login (telefon)</label><input id="loginUser" class="inp" placeholder="998901234567" autocomplete="username"></div>
-      <div class="ig"><label data-uz="Parol" data-ru="Пароль">Parol</label><input type="password" id="loginPass" class="inp" autocomplete="current-password"></div>
+      <p class="note" style="margin:0 0 14px">Faqat ota-onalar kira oladi. Login va parolni murabbiy beradi.</p>
+      <div class="ig"><label data-uz="Login (6 ta belgi)" data-ru="Логин (6 символов)">Login (6 ta belgi)</label><input id="loginUser" class="inp" placeholder="A1B2C3" maxlength="12" autocapitalize="characters" autocomplete="username"></div>
+      <div class="ig"><label data-uz="Parol (6 ta belgi)" data-ru="Пароль (6 символов)">Parol (6 ta belgi)</label><input type="password" id="loginPass" class="inp" maxlength="12" autocapitalize="characters" autocomplete="current-password"></div>
       <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ">TIZIMGA KIRISH</button>
     </div>
     <div class="pane" id="pane1">
-      <h3 style="margin-bottom:14px;font-size:15px">O'quvchi ro'yxatdan o'tishi</h3>
-      <div class="ig"><label>Ism familiya</label><input id="stName" class="inp"></div>
-      <div style="display:flex;gap:10px"><div class="ig" style="flex:1"><label>Yoshi</label><input type="number" id="stAge" class="inp"></div><div class="ig" style="flex:1"><label>Tug'ilgan yil</label><input type="number" id="stYear" class="inp" placeholder="2013"></div></div>
-      <div class="ig"><label>Telefon (login bo'ladi)</label><input type="tel" id="stPhone" class="inp" placeholder="998901234567"></div>
-      <div class="ig"><label>Parol (kamida 6 belgi)</label><input type="password" id="stPass" class="inp"></div>
-      <button id="btnSt" class="btn bok" onclick="submitStudent()">RO'YXATDAN O'TISH</button>
-      <p class="note">Murabbiy tasdiqlagach, shu login va parol bilan kira olasiz.</p>
-    </div>
-    <div class="pane" id="pane2">
-      <h3 style="margin-bottom:14px;font-size:15px">Ota-ona arizasi</h3>
+      <h3 style="margin-bottom:14px;font-size:15px">Ariza topshirish</h3>
       <div class="ig"><label>Ota-onaning ismi</label><input id="appParentName" class="inp"></div>
-      <div class="ig"><label>Bolaning ismi</label><input id="appChildName" class="inp"></div>
-      <div class="ig"><label>Telefon (login bo'ladi)</label><input type="tel" id="appPhone" class="inp"></div>
-      <div class="ig"><label>Bolaning yoshi</label><input type="number" id="appAge" class="inp"></div>
+      <div class="ig"><label>Farzand ismi (bir nechta bo'lsa vergul bilan)</label><input id="appChildName" class="inp"></div>
+      <div class="ig"><label>Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
+      <div class="ig"><label>Farzandning yoshi</label><input type="number" id="appAge" class="inp"></div>
       <button id="btnApp" class="btn" onclick="submitApplication()">ARIZA YUBORISH</button>
-      <p class="note">Parolni murabbiy tasdiqlaganda beradi.</p>
+      <p class="note">Ariza tasdiqlangach, murabbiy sizga 6 belgili login va parol beradi. Faqat ota-onalar tizimga kira oladi.</p>
     </div>
   </div>
 </div>
 
 <!-- OTA-ONA / O'YINCHI -->
-<div class="screen" id="parentScreen">
+<div class="screen" id="familyScreen">
   <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()">Chiqish</button></div></div>
+  <div class="card" style="text-align:center"><small style="font:700 10px 'Unbounded';color:var(--muted)">OTA-ONALAR PANELI</small><h2 id="fName" style="margin:8px 0 4px;font-size:20px"></h2><p class="note" style="margin:0" id="fLogin"></p></div>
+  <div class="ann" id="fAnn"></div>
+  <h3 style="margin:4px 0 12px;font-size:14px">Farzandlarim</h3>
+  <div id="kidsList"></div>
+  <div class="card" style="text-align:center"><h3 style="font-size:14px">Savollaringiz bormi?</h3><a href="tel:+998992677747" class="btn" style="background:#2AABEE">📞 Murabbiy: +998 99 267 77 47</a></div>
+</div>
+
+<div class="screen" id="parentScreen">
+  <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="backFamily()">← Orqaga</button></div></div>
+  <p class="note" style="margin:0 0 10px;font-weight:700">⚽ O'QUVCHI PANELI</p>
   <div class="ann" id="pAnn"></div>
   <div class="timer"><div style="font-size:12px;opacity:.9">Keyingi mashg'ulotgacha:</div><b id="cd">...</b></div>
   <div class="mot"><small>Murabbiy nasihati</small><div id="pMot">"Mehnat qilgan yutadi!"</div></div>
@@ -156,7 +165,7 @@ select.inp option{color:#111}
     <div class="warn" id="payWarn">Diqqat! To'lov muddati o'tdi. Iltimos, to'lovni amalga oshiring.</div>
     <span id="pPay" class="badge bx">To'lanmagan</span>
     <p style="color:var(--muted);font-size:13px;margin-top:10px">Oylik: <b id="pAmt" style="color:var(--text)"></b></p>
-    <button id="btnPay" class="btn" onclick="openModal('payModal')">TO'LOV QILISH</button>
+    <button id="btnPay" class="btn" onclick="startPay()">TO'LOV QILISH</button>
     <button class="btn bo" onclick="openHistory()">TO'LOVLAR TARIXI</button>
   </div>
   <div class="card"><h3 style="margin-bottom:12px;font-size:14px">Akademiya reytingi (Top 5)</h3><div id="board"></div></div>
@@ -168,6 +177,8 @@ select.inp option{color:#111}
   <div class="header"><div class="brand">81 ADMIN</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()">Chiqish</button></div></div>
   <div class="tabs">
     <div class="tab active" onclick="adminTab('apps',this)">ARIZALAR <span id="appBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
+    <div class="tab" onclick="adminTab('orders',this)">TO'LOVLAR <span id="ordBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
+    <div class="tab" onclick="adminTab('parents',this)">OTA-ONALAR</div>
     <div class="tab" onclick="adminTab('students',this)">O'QUVCHILAR</div>
     <div class="tab" onclick="adminTab('attend',this)">DAVOMAT</div>
     <div class="tab" onclick="adminTab('stats',this)">NATIJALAR</div>
@@ -176,6 +187,8 @@ select.inp option{color:#111}
   </div>
   <div id="fltBar" class="hidden" style="display:flex;gap:8px;margin-bottom:12px"><input id="fQ" class="inp" placeholder="🔍 Ism yoki telefon" oninput="renderAdmin()"><select id="fGroup" class="inp" style="max-width:130px" onchange="renderAdmin()"></select></div>
   <div class="atab card" id="at_apps"></div>
+  <div class="atab card hidden" id="at_orders"></div>
+  <div class="atab card hidden" id="at_parents"></div>
   <div class="atab hidden" id="at_students">
     <div class="fin"><div class="fc"><b id="finPaid">0</b><div>To'langan</div></div><div class="fc"><b id="finDebt" style="color:var(--coral)">0</b><div>Qarzdorlik</div></div></div>
     <div style="display:flex;gap:8px;margin-bottom:10px"><button class="btn sm" onclick="exportCSV()">📥 CSV</button><button class="btn sm bo" onclick="copyDebtors()">📋 Qarzdorlar matni</button></div>
@@ -206,17 +219,22 @@ select.inp option{color:#111}
 </div>
 
 <div class="ov" id="ov" onclick="closeModal()"></div>
-<div class="modal" id="payModal">
-  <h3 style="margin-bottom:15px;text-align:center">To'lov qilish</h3>
-  <p style="text-align:center;margin-bottom:10px">Karta: <b id="mCard" style="color:var(--blue)"></b></p>
-  <p style="text-align:center;margin-bottom:20px">Summa: <b id="mAmt" style="color:var(--blue)"></b></p>
-  <button onclick="sendReceipt()" class="btn" style="background:#2AABEE">💬 CHEKNI BOTGA YUBORISH</button>
-  <button class="btn" style="background:var(--gold);color:#321" onclick="markPending()">MEN TO'LOV QILDIM</button>
+<div class="modal" id="payModal"><div class="pay">
+  <h3 style="margin-bottom:14px;font-size:15px">HISOBNI TO'LDIRISH</h3>
+  <div class="spin" id="pSpin"></div>
+  <b id="pTitle" style="font-size:17px">To'lovni yakunlang</b>
+  <p class="note">Kartangizdan quyidagi rekvizitlarga o'tkazing</p>
+  <p style="color:var(--coral);font-weight:700;font-size:13px;margin:8px 0">Ko'rsatilgan summadan 1 so'm ham oshiq yoki kam bo'lmasin</p>
+  <div class="pbox"><small>TO'LOV SUMMASI</small><b id="oAmt">...</b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('a')">⧉ Nusxa olish</button></div>
+  <div class="pbox"><small>KARTA RAQAMI</small><b id="oCard"></b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('c')">⧉ Nusxa olish</button></div>
+  <p style="margin-top:6px">⏰ Qolgan vaqt: <b id="oTime">10:00</b></p>
+  <p class="note">To'lov holati avtomatik tekshiriladi</p>
+  <button class="btn bo" onclick="sendReceipt()">💬 CHEKNI BOTGA YUBORISH</button>
   <button class="btn bo" onclick="closeModal()">YOPISH</button>
-</div>
+</div></div>
 <div class="modal" id="histModal"><h3 style="margin-bottom:15px">To'lovlar tarixi</h3><div id="histList" style="max-height:300px;overflow-y:auto"></div><button class="btn bo" style="margin-top:15px" onclick="closeModal()">YOPISH</button></div>
 <div class="modal" id="plModal">
-  <h3 style="margin-bottom:6px" id="plTitle">Tahrirlash</h3><p class="note" style="margin:0 0 14px" id="plLogin"></p>
+  <h3 style="margin-bottom:14px" id="plTitle">Tahrirlash</h3>
   <input type="hidden" id="eId">
   <div class="ig"><label>Ism</label><input id="eName" class="inp"></div>
   <div class="ig"><label>Rasm URL</label><input id="ePhoto" class="inp" placeholder="https://rasm.jpg"></div>
@@ -231,19 +249,35 @@ select.inp option{color:#111}
   <button class="btn" onclick="savePlayer()">SAQLASH</button><button class="btn bo" onclick="closeModal()">BEKOR QILISH</button>
 </div>
 
+<div class="modal" id="parModal"><h3 id="parTitle" style="margin-bottom:14px">Ota-ona</h3>
+  <input type="hidden" id="paOld">
+  <div class="ig"><label>Ism</label><input id="paName" class="inp"></div>
+  <div class="ig"><label>Telefon (bog'lanish uchun)</label><input id="paPhone" class="inp" type="tel"></div>
+  <div class="ig"><label>Login (6 ta belgi)</label><div style="display:flex;gap:8px"><input id="paLogin" class="inp" maxlength="6"><button class="btn sm bo" style="margin:0" onclick="$('paLogin').value=genLogin()">🔄</button></div></div>
+  <div class="ig"><label>Parol (6 ta belgi)</label><div style="display:flex;gap:8px"><input id="paPass" class="inp" maxlength="6"><button class="btn sm bo" style="margin:0" onclick="$('paPass').value=genPass()">🔄</button></div></div>
+  <div class="ig"><label>Farzandlar (mavjud o'quvchilardan belgilang)</label><div id="paKidsBox" style="max-height:170px;overflow-y:auto"></div></div>
+  <div class="ig"><label>Yangi farzand ismi (vergul bilan, ixtiyoriy)</label><input id="paNew" class="inp"></div>
+  <button class="btn" onclick="savePar()">SAQLASH</button><button class="btn bo" onclick="closeModal()">BEKOR QILISH</button></div>
+
 <script>
-/* ====== SOZLAMA: Firebase konsolidan o'z qiymatlaringizni qo'ying (Project settings > Web app) ====== */
-const firebaseConfig={apiKey:"YOUR_API_KEY",authDomain:"idum-futbol.firebaseapp.com",databaseURL:"https://idum-futbol-default-rtdb.firebaseio.com/",projectId:"idum-futbol",appId:"YOUR_APP_ID"};
-const BOT="api_bot_coll",DOM="@81idum.uz";
+const firebaseConfig={databaseURL:"https://idum-futbol-default-rtdb.firebaseio.com/"};
+const ADMIN_LOGIN="Arif",ADMIN_PASS="0717",BOT="api_bot_coll";
 firebase.initializeApp(firebaseConfig);
-const sec=firebase.initializeApp(firebaseConfig,'sec'); // ikkinchi ulanish: admin hisobidan chiqib ketmasdan yangi hisob ochish uchun
-const auth=firebase.auth(),db=firebase.database();
+const db=firebase.database();
 const $=id=>document.getElementById(id),v=id=>$(id).value.trim();
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const digits=s=>String(s).replace(/\D/g,''),ym=()=>new Date().toISOString().slice(0,7),today=()=>new Date().toLocaleDateString();
 let me=null,PL={},CK=new Set(),subs=[],cdT,S={card:"",amount:"350 000",scheduleDay:1,scheduleTime:"16:00",announcement:"",motivation:"Mehnat qilgan yutadi!",matches:"",matchDay:"",lineup:""};
 const amt=()=>parseInt(String(S.amount).replace(/\D/g,''))||0;
 function sub(ref,fn){ref.on('value',fn);subs.push(ref)}
+let ORD=null,ordT=null,curTotal=0,admT=null,OR={};
+let PAR=null,KIDS={},KS=new Set(),PR={};
+const CH='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const gen6=()=>Array.from(crypto.getRandomValues(new Uint8Array(6)),n=>CH[n%CH.length]).join('');
+const genPass=gen6,genLogin=()=>{let l;do{l=gen6()}while(PR[l]);return l},genId=()=>'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const parentOf=id=>Object.entries(PR).find(([,p])=>p.children&&p.children[id])||null;
+const phoneOf=id=>{const p=parentOf(id);return (p&&p[1].phone)||(/^\d{9,}$/.test(id)?id:'')};
+const fmt=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
 
 /* ====== Effektlar ====== */
 function confetti(){const c=$('fx'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const k=['#3d7bff','#ff4d6d','#ffc83d','#2ee6a6','#fff'];
@@ -252,24 +286,27 @@ const ps=Array.from({length:130},()=>({x:innerWidth/2,y:innerHeight*.6,vx:(Math.
 const tl=$('tilt');tl.addEventListener('pointermove',e=>{const r=tl.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;tl.style.transform=`perspective(800px) rotateY(${px*10}deg) rotateX(${-py*10}deg)`});tl.addEventListener('pointerleave',()=>tl.style.transform='');
 function countUp(el,to,suf){let n=0;const st=Math.max(1,Math.ceil(to/30)),i=setInterval(()=>{n=Math.min(to,n+st);el.innerText=n+suf;if(n>=to)clearInterval(i)},25)}
 
+(function(){const E=['⚽','⭐','🏆','👟','🥅','✨','⚽'],b=$('fls');for(let i=0;i<20;i++){const e=document.createElement('span');e.className='fl';e.textContent=E[i%E.length];
+e.style.cssText=`left:${Math.random()*96}vw;font-size:${14+Math.random()*22}px;animation-duration:${14+Math.random()*16}s;animation-delay:${-Math.random()*20}s`;b.appendChild(e)}})();
+
 /* ====== Umumiy ====== */
 function toggleTheme(){document.body.classList.toggle('light')}
 let lang='uz';function toggleLang(){lang=lang==='uz'?'ru':'uz';document.querySelectorAll('[data-'+lang+']').forEach(e=>e.innerText=e.getAttribute('data-'+lang))}
 function setMode(i,el){document.querySelectorAll('.mode').forEach(m=>m.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));$('pane'+i).classList.add('on')}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');scrollTo(0,0)}
 function openModal(id){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));$('ov').classList.add('active');$(id).classList.add('active')}
-function closeModal(){$('ov').classList.remove('active');document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'))}
+function closeModal(){payOff();$('ov').classList.remove('active');document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'))}
 function startCountdown(){clearInterval(cdT);const d=+S.scheduleDay,[h,m]=(S.scheduleTime||"16:00").split(':').map(Number);
 cdT=setInterval(()=>{const n=new Date(),t=new Date();t.setHours(h,m,0,0);let k=d-n.getDay();if(k<0||(k===0&&t<n))k+=7;t.setDate(t.getDate()+k);const ms=t-n,z=Math.floor;
 $('cd').innerText=`${z(ms/864e5)}k ${z(ms%864e5/36e5)}s ${z(ms%36e5/6e4)}d ${z(ms%6e4/1e3)}s`},1000)}
 function bar(i,val,max,suf){const p=Math.max(0,Math.min(100,val/max*100)),b=$('b'+i);b.style.width='0';requestAnimationFrame(()=>b.style.width=p+'%');b.className='sf '+(p<50?'fr':'fg');countUp($('t'+i),val,suf)}
 function onSettings(s){
   if(s.exists())S={...S,...s.val()};startCountdown();
-  const a=$('pAnn');a.innerText=S.announcement||'';a.style.display=S.announcement?'block':'none';
+  ['pAnn','fAnn'].forEach(i=>{const a=$(i);a.innerText=S.announcement||'';a.style.display=S.announcement?'block':'none'});
   if(S.motivation)$('pMot').innerText=`"${S.motivation}"`;
   const m=(S.matches||'').trim();$('matchCard').style.display=m?'block':'none';$('pMatch').innerText=m;
   const l=(S.lineup||'').trim()||(S.matchDay||'').trim();$('lineCard').style.display=l?'block':'none';$('pDay').innerText=S.matchDay||'';$('pLine').innerText=S.lineup||'';
-  $('pAmt').innerText=S.amount;$('mCard').innerText=S.card;$('mAmt').innerText=S.amount;
+  $('pAmt').innerText=S.amount;
 }
 
 /* ====== Ro'yxatdan o'tish ====== */
@@ -281,34 +318,50 @@ function submitApplication(){
   b.innerText="Yuborilmoqda...";b.disabled=true;
   db.ref('applications').push({type:'parent',parentName,childName,phone,age,date:today()}).then(()=>done(b,L,['appParentName','appChildName','appPhone','appAge'])).catch(e=>fail(b,L,e));
 }
-function submitStudent(){
-  const childName=v('stName'),phone=digits(v('stPhone')),password=v('stPass'),age=v('stAge'),year=v('stYear'),b=$('btnSt'),L="RO'YXATDAN O'TISH";
-  if(!childName||phone.length<9)return alert("Ism va to'liq telefon raqamni kiriting!");
-  if(password.length<6)return alert("Parol kamida 6 ta belgi bo'lsin!");
-  b.innerText="Yuborilmoqda...";b.disabled=true;
-  db.ref('applications').push({type:'student',childName,phone,password,age,year,parentName:'-',date:today()}).then(()=>done(b,L,['stName','stPhone','stPass','stAge','stYear'])).catch(e=>fail(b,L,e));
+/* ====== Kirish ====== */
+db.ref('settings').on('value',onSettings);
+async function login(){
+  const u0=v('loginUser'),p=v('loginPass');if(!u0||!p)return alert("Login va parolni kiriting!");
+  if(u0===ADMIN_LOGIN&&p===ADMIN_PASS){showScreen('adminScreen');startAdmin();return}
+  const id=u0.replace(/\s/g,'').toUpperCase();
+  if(/[.#$\[\]\/]/.test(id))return alert("Bunday login yo'q!");
+  try{
+    const s=await db.ref('parents/'+id).once('value');
+    if(!s.exists())return alert("Bunday login yo'q!");
+    if(String(s.val().password).toUpperCase()!==p.replace(/\s/g,'').toUpperCase())return alert("Parol xato!");
+    startParent(id);
+  }catch(e){alert("Bazaga ulanishda xato: "+e.message)}
 }
-
-/* ====== Kirish (Firebase Authentication) ====== */
-function login(){
-  const u=v('loginUser'),p=$('loginPass').value;if(!u||!p)return alert("Login va parolni kiriting!");
-  auth.signInWithEmailAndPassword(u.includes('@')?u:digits(u)+DOM,p).catch(()=>alert("Login yoki parol xato!"));
-}
-function logout(){auth.signOut()}
-auth.onAuthStateChanged(async user=>{
-  subs.forEach(r=>r.off());subs=[];me=null;PL={};
-  if(!user){showScreen('loginScreen');return}
-  const a=await db.ref('admins/'+user.uid).once('value');
-  if(a.exists()){showScreen('adminScreen');startAdmin();return}
-  const id=user.email.split('@')[0];
-  sub(db.ref('settings'),onSettings);
-  sub(db.ref('players/'+id),s=>{
-    if(!s.exists()){alert("Hisob topilmadi. Murabbiy bilan bog'laning.");auth.signOut();return}
-    me=s.val();me.id=id;
-    if(me.isArchived){alert("Hisobingiz arxivlangan. Murabbiy bilan bog'laning.");auth.signOut();return}
-    showParent();
+function startParent(id){
+  PAR={id};KIDS={};KS=new Set();
+  sub(db.ref('parents/'+id),s=>{
+    if(!s.exists()){logout();return}
+    PAR={id,...s.val()};
+    $('fName').innerText=PAR.name||id;$('fLogin').innerText="Login: "+id;
+    Object.keys(PAR.children||{}).forEach(k=>{
+      if(KS.has(k))return;KS.add(k);
+      sub(db.ref('players/'+k),x=>{
+        KIDS[k]=x.exists()?x.val():null;
+        if(me&&me.id===k&&$('parentScreen').classList.contains('active')){if(KIDS[k]&&!KIDS[k].isArchived){me={...KIDS[k],id:k};showParent()}else backFamily()}
+        renderFamily();
+      });
+    });
+    if(!['familyScreen','parentScreen'].some(i=>$(i).classList.contains('active')))showScreen('familyScreen');
+    renderFamily();
   });
-});
+}
+function renderFamily(){
+  if(!PAR)return;
+  const ks=Object.keys(PAR.children||{}).filter(k=>KIDS[k]&&!KIDS[k].isArchived);
+  $('kidsList').innerHTML=ks.map(k=>{
+    const p=KIDS[k],ok=p.paid===true||p.paid==="paid",cls=ok?'bs':p.paid==="pending"?'bw':'bx',tx=ok?"To'langan ✅":p.paid==="pending"?"Kutilmoqda ⏳":"To'lanmagan ❌";
+    const ph=p.photoUrl||'https://ui-avatars.com/api/?name='+encodeURIComponent(p.name||'U')+'&background=1E293B&color=3B82F6&size=150';
+    return `<div class="card" style="cursor:pointer;padding:16px" onclick="openKid('${k}')"><div style="display:flex;gap:14px;align-items:center"><img src="${esc(ph)}" alt="" style="width:58px;height:72px;object-fit:cover;border-radius:14px;background:#1E293B"><div style="flex:1;min-width:0"><b style="font-size:16px">${p.isStar?'⭐ ':''}${esc(p.name)}</b><br><small style="color:var(--muted)">Guruh: ${esc(p.group||'-')} · Gol: ${+p.goals||0} · Mashg'ulot: ${+p.trainings||0}</small><div style="margin-top:8px"><span class="badge ${cls}">${tx}</span></div></div><span style="font-size:26px;color:var(--muted)">›</span></div></div>`}).join('')
+    ||`<div class="card"><p class="note" style="margin:0;text-align:center">Farzand biriktirilmagan. Murabbiy bilan bog'laning.</p></div>`;
+}
+function openKid(id){if(!KIDS[id])return;me={...KIDS[id],id};showParent()}
+function backFamily(){me=null;closeModal();showScreen('familyScreen');renderFamily()}
+function logout(){clearInterval(admT);subs.forEach(r=>r.off());subs=[];me=null;PL={};PAR=null;KIDS={};KS=new Set();PR={};$('loginUser').value='';$('loginPass').value='';showScreen('loginScreen')}
 
 /* ====== Ota-ona / o'yinchi ekrani ====== */
 function showParent(){
@@ -321,7 +374,7 @@ function showParent(){
   const at=u.attendanceDates||[];$('attCard').style.display=at.length?'block':'none';$('pAtt').innerHTML=at.map(d=>`<span class="badge bs">${esc(d)}</span>`).join('');
   const im=(u.gallery||'').split(',').map(s=>s.trim()).filter(Boolean);$('galCard').style.display=im.length?'block':'none';$('pGal').innerHTML=im.map(s=>`<img src="${esc(s)}" alt="">`).join('');
   drawChart(u.history);payStatus();
-  db.ref('leaderboard').once('value').then(s=>{const l=s.val()||[];$('board').innerHTML=l.map((p,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ball</b></div>`).join('')||"Reyting hali shakllanmagan"});
+  db.ref('players').once('value').then(s=>{const l=[];s.forEach(c=>{const p=c.val();if(!p.isArchived)l.push({name:p.name||'',score:(+p.goals||0)*3+(+p.assists||0)*2+(+p.progress||0)})});l.sort((a,b)=>b.score-a.score);$('board').innerHTML=l.slice(0,5).map((p,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ball</b></div>`).join('')||"Ma'lumot yo'q"});
 }
 function drawChart(h){
   const ks=Object.keys(h||{}).sort().slice(-6);$('chartCard').style.display=ks.length>1?'block':'none';if(ks.length<2)return;
@@ -335,11 +388,43 @@ function payStatus(){
   else if(p==="pending"){s.innerText="Kutilmoqda ⏳";s.className="badge bw";b.style.display='flex';b.innerText="CHEKNI QAYTA YUBORISH"}
   else{s.innerText="To'lanmagan ❌";s.className="badge bx";b.style.display='flex';b.innerText="TO'LOV QILISH"}
 }
-function sendReceipt(){const l=`https://t.me/${BOT}?text=${encodeURIComponent(`To'lov cheki.\nO'quvchi: ${me.name}\nLogini: ${me.id}`)}`;
+function sendReceipt(){const l=`https://t.me/${BOT}?text=${encodeURIComponent(`To'lov cheki.\nO'quvchi: ${me.name}\nOta-ona logini: ${PAR?PAR.id:'-'}`)}`;
   if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)Telegram.WebApp.openTelegramLink(l);else open(l,'_blank')}
 function openHistory(){openModal('histModal');db.ref('payments/'+me.id).once('value').then(s=>{const l=$('histList');
   l.innerHTML=s.exists()?Object.values(s.val()).reverse().map(p=>`<div class="li"><span>${esc(p.date)}</span><b>${esc(p.amount)} so'm</b></div>`).join(''):"<p style='text-align:center;color:var(--muted)'>Tarix bo'sh</p>"})}
 function markPending(){db.ref('players/'+me.id+'/paid').set("pending").then(()=>{closeModal();alert("Murabbiy tez orada tasdiqlaydi.")}).catch(e=>alert(e.message))}
+
+/* ====== Avtomatik to'lov (noyob summa) ====== */
+function payOff(){clearInterval(ordT);if(ORD){ORD.off();ORD=null}}
+function cp(k){const t=k==='a'?String(curTotal):digits(S.card||'');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Nusxalandi: "+t)).catch(()=>prompt("Nusxalang:",t))}
+function paidOk(){payOff();closeModal();confetti();alert("To'lov qabul qilindi! ✅")}
+async function startPay(){
+  openModal('payModal');payOff();const base=amt();
+  if(!base){closeModal();return alert("Oylik to'lov summasi belgilanmagan. Murabbiy bilan bog'laning.")}
+  $('pSpin').style.display='block';$('pTitle').innerText="To'lovni yakunlang";$('oAmt').innerText='...';$('oCard').innerText=S.card||'—';$('oTime').innerText='10:00';
+  try{
+    const s=await db.ref('orders').orderByChild('status').equalTo('pending').once('value'),used=new Set();let mine=null;
+    s.forEach(c=>{const o=c.val();if(o.exp<=Date.now()){c.ref.update({status:'expired'});return}used.add(o.total);if(o.player===me.id&&o.base===base)mine={key:c.key,...o}});
+    if(!mine){let t;do{t=base+1+Math.floor(Math.random()*99)}while(used.has(t));
+      const r=db.ref('orders').push(),d={player:me.id,name:me.name||'',base,total:t,status:'pending',created:Date.now(),exp:Date.now()+600000};await r.set(d);mine={key:r.key,...d}}
+    curTotal=mine.total;$('oAmt').innerText=fmt(mine.total)+" UZS";
+    ORD=db.ref('orders/'+mine.key);ORD.on('value',x=>{const o=x.val();if(o&&o.status==='paid')paidOk()});
+    ordT=setInterval(()=>{const l=Math.max(0,Math.round((mine.exp-Date.now())/1000));$('oTime').innerText=String(Math.floor(l/60)).padStart(2,'0')+':'+String(l%60).padStart(2,'0');
+      if(!l){payOff();db.ref('orders/'+mine.key).update({status:'expired'});$('pSpin').style.display='none';$('pTitle').innerText="Vaqt tugadi. Qaytadan urinib ko'ring."}},1000);
+  }catch(e){alert("Xatolik: "+e.message)}
+}
+function renderOrders(){
+  const l=Object.entries(OR).filter(([,o])=>o.status==='pending'&&o.exp>Date.now()).sort((a,b)=>b[1].created-a[1].created),b=$('ordBadge');
+  b.innerText=l.length;b.classList.toggle('hidden',!l.length);
+  $('at_orders').innerHTML=`<p class="note" style="margin:0 0 12px">Bank ilovangizga tushgan summani shu ro'yxatdagi summa bilan solishtirib, tasdiqlang.</p>`+(l.map(([k,o])=>`<div class="li"><div><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(((parentOf(o.player)||[0,{}])[1]).name||'')} · ${Math.ceil((o.exp-Date.now())/60000)} daq qoldi</small></div><div style="text-align:right"><b style="color:var(--ok)">${fmt(o.total)}</b><div class="row"><button class="btn sm bok" onclick="confirmOrder('${k}')">✔ Tasdiqlash</button></div></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">Kutilayotgan to'lov yo'q</p>`);
+}
+function confirmOrder(k){
+  const o=OR[k];if(!o||!confirm(`${o.name}: ${fmt(o.total)} so'm tushdimi?`))return;
+  const pk=db.ref('payments/'+o.player).push().key,u={};
+  u['orders/'+k+'/status']='paid';u['orders/'+k+'/paidAt']=Date.now();
+  u['players/'+o.player+'/paid']=true;u['players/'+o.player+'/payMonth']=ym();u[`payments/${o.player}/${pk}`]={date:today(),amount:o.base};
+  db.ref().update(u).then(confetti).catch(e=>alert(e.message));
+}
 
 /* ====== Admin ====== */
 function startAdmin(){
@@ -352,26 +437,24 @@ function startAdmin(){
       h+=`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(a.childName)}</b> (${esc(a.age||'?')} yosh)<span class="tag ${st?'ts':'tp'}">${st?"O'QUVCHI":'OTA-ONA'}</span><br><small style="color:var(--muted)">${st?'':'Ota-ona: '+esc(a.parentName)+' | '}Tel: ${esc(a.phone)}${a.year?' | '+esc(a.year)+'-yil':''}</small></div>
       <div style="display:flex;gap:10px;width:100%;margin-top:10px"><button class="btn sm bok" onclick="acceptApp('${c.key}')">QABUL</button><button class="btn sm bd" onclick="rejectApp('${c.key}')">RAD ETISH</button></div></div>`});
     box.innerHTML=h;bd.innerText=n;bd.classList.remove('hidden')});
-  sub(db.ref('players'),s=>{PL=s.val()||{};monthlyReset();updateBoard();renderAdmin()});
+  sub(db.ref('orders').orderByChild('created').limitToLast(60),s=>{OR={};s.forEach(c=>{OR[c.key]=c.val()});renderOrders()});
+  clearInterval(admT);admT=setInterval(renderOrders,15000);
+  sub(db.ref('parents'),s=>{PR=s.val()||{};renderParents()});
+  sub(db.ref('players'),s=>{PL=s.val()||{};monthlyReset();renderAdmin();renderParents()});
 }
 function monthlyReset(){ // Oy almashganda to'langanlar avtomatik "to'lanmagan"ga qaytadi
   const u={};Object.entries(PL).forEach(([id,p])=>{if(!p.isArchived&&p.paid===true&&p.payMonth&&p.payMonth!==ym())u['players/'+id+'/paid']=false});
   if(Object.keys(u).length)db.ref().update(u);
 }
-let lastBoard='';
-function updateBoard(){
-  const l=Object.values(PL).filter(p=>!p.isArchived).map(p=>({name:p.name||'',score:(+p.goals||0)*3+(+p.assists||0)*2+(+p.progress||0)})).sort((a,b)=>b.score-a.score).slice(0,5);
-  const j=JSON.stringify(l);if(j!==lastBoard){lastBoard=j;db.ref('leaderboard').set(l)}
-}
 function renderAdmin(){
   const q=v('fQ').toLowerCase(),g=$('fGroup').value,groups=new Set();let paid=0,debt=0,sh='',at='',st='',ar='';
   Object.entries(PL).forEach(([id,p])=>{
-    if(p.isArchived){ar+=`<div class="li"><div><b>${esc(p.name)}</b><br><small>Login: ${id}</small></div><div class="row"><button class="btn sm bok" onclick="restore('${id}')">TIKLASH</button><button class="btn sm bd" onclick="delForever('${id}')">O'CHIRISH</button></div></div>`;return}
+    if(p.isArchived){ar+=`<div class="li"><div><b>${esc(p.name)}</b><br><small>${esc(p.group||'')}</small></div><div class="row"><button class="btn sm bok" onclick="restore('${id}')">TIKLASH</button><button class="btn sm bd" onclick="delForever('${id}')">O'CHIRISH</button></div></div>`;return}
     groups.add(p.group||'');const isPaid=p.paid===true||p.paid==="paid";isPaid?paid+=amt():debt+=amt();
-    if((g&&(p.group||'')!==g)||(q&&!(p.name||'').toLowerCase().includes(q)&&!id.includes(q)))return;
-    const cls=isPaid?'bs':p.paid==="pending"?'bw':'bx',txt=isPaid?"To'langan":p.paid==="pending"?'Kutilmoqda':'Qarzdor';
-    sh+=`<div class="li"><div>${p.isStar?'⭐ ':''}<b>${esc(p.name)}</b><br><small style="color:var(--muted)">Guruh: ${esc(p.group||'-')} | ${id}</small></div><div style="text-align:right"><span class="badge ${cls}">${txt}</span>
-      <div class="row">${isPaid?'':`<button class="btn sm bok" onclick="markPaid('${id}')">✔ To'landi</button><a class="btn sm bo" href="sms:+${id}?body=${encodeURIComponent(remindText(p))}">✉️</a>`}<button class="btn sm bo" onclick="editPlayer('${id}')">✏️</button><button class="btn sm bd" onclick="archive('${id}')">🗑</button></div></div></div>`;
+    {const pa=parentOf(id),hay=((p.name||'')+' '+(pa?pa[1].name+' '+pa[0]+' '+(pa[1].phone||''):'')+' '+id).toLowerCase();if((g&&(p.group||'')!==g)||(q&&!hay.includes(q)))return}
+    const cls=isPaid?'bs':p.paid==="pending"?'bw':'bx',txt=isPaid?"To'langan":p.paid==="pending"?'Kutilmoqda':'Qarzdor';const pr0=parentOf(id),ph=phoneOf(id);
+    sh+=`<div class="li"><div>${p.isStar?'⭐ ':''}<b>${esc(p.name)}</b><br><small style="color:var(--muted)">Guruh: ${esc(p.group||'-')} | Ota-ona: ${esc(pr0?pr0[1].name:'—')}</small></div><div style="text-align:right"><span class="badge ${cls}">${txt}</span>
+      <div class="row">${isPaid?'':`<button class="btn sm bok" onclick="markPaid('${id}')">✔ To'landi</button>${ph?`<a class="btn sm bo" href="sms:+${ph}?body=${encodeURIComponent(remindText(p))}">✉️</a>`:''}`}<button class="btn sm bo" onclick="editPlayer('${id}')">✏️</button><button class="btn sm bd" onclick="archive('${id}')">🗑</button></div></div></div>`;
     const done=(p.attendanceDates||[]).includes(today());
     at+=`<label class="li"><span>${esc(p.name)} <small style="color:var(--muted)">${esc(p.group||'')}</small></span>${done?'<span class="badge bs">✅ belgilangan</span>':`<input type="checkbox" style="width:22px;height:22px" ${CK.has(id)?'checked':''} onchange="this.checked?CK.add('${id}'):CK.delete('${id}')">`}</label>`;
     const pr=+p.progress||0,go=+p.goals||0,as=+p.assists||0,r=(l,n,t,ok)=>`<div class="sb" style="margin-bottom:8px"><div class="sbh" style="font-size:11px"><span>${l}</span><span>${t}</span></div><div class="sbg" style="height:8px"><div class="sf ${ok?'fg':'fr'}" style="width:${Math.min(n,100)}%"></div></div></div>`;
@@ -384,7 +467,7 @@ function renderAdmin(){
   $('finPaid').innerText=paid.toLocaleString()+" so'm";$('finDebt').innerText=debt.toLocaleString()+" so'm";
 }
 const remindText=p=>`Assalomu alaykum! ${p.name} uchun ${S.amount} so'm oylik to'lovni amalga oshirishingizni so'raymiz. Karta: ${S.card}. 81-maktab FK`;
-function copyDebtors(){const l=Object.entries(PL).filter(([,p])=>!p.isArchived&&p.paid!==true&&p.paid!=="paid").map(([id,p])=>`${p.name} (+${id})`);
+function copyDebtors(){const l=Object.entries(PL).filter(([,p])=>!p.isArchived&&p.paid!==true&&p.paid!=="paid").map(([id,p])=>`${p.name} (${phoneOf(id)?'+'+phoneOf(id):'—'})`);
   if(!l.length)return alert("Qarzdorlar yo'q 🎉");const t=`Qarzdorlar (${l.length}):\n`+l.join('\n');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Ro'yxat nusxalandi!")).catch(()=>prompt("Nusxalang:",t))}
 function markPaid(id){
   if(!confirm("To'lov qabul qilindimi?"))return;
@@ -399,36 +482,68 @@ function saveAttendance(){
 }
 const restore=id=>confirm("Qayta tiklaysizmi?")&&db.ref('players/'+id+'/isArchived').set(false);
 const archive=id=>confirm("Arxivga o'tkazasizmi? (Kira olmaydi)")&&db.ref('players/'+id+'/isArchived').set(true);
-const delForever=id=>confirm("DIQQAT! Butunlay o'chadi. Rozimisiz?")&&db.ref('players/'+id).remove();
-function exportCSV(){let c="Ism,Login,Guruh,Gollar,Asistlar,Tezlik,O'zlashtirish,To'lov\n";
-  Object.entries(PL).forEach(([id,p])=>{if(!p.isArchived)c+=`"${p.name}","${id}","${p.group||''}","${p.goals||0}","${p.assists||0}","${p.speed||0}","${p.progress||0}","${p.paid}"\n`});
+const delForever=id=>{if(!confirm("DIQQAT! Butunlay o'chadi. Rozimisiz?"))return;const u={};u['players/'+id]=null;u['payments/'+id]=null;Object.entries(PR).forEach(([pid,p])=>{if(p.children&&p.children[id])u[`parents/${pid}/children/${id}`]=null});db.ref().update(u)};
+function exportCSV(){let c="Ism,Ota-ona logini,Guruh,Gollar,Asistlar,Tezlik,O'zlashtirish,To'lov\n";
+  Object.entries(PL).forEach(([id,p])=>{if(!p.isArchived)c+=`"${p.name}","${(parentOf(id)||[''])[0]}","${p.group||''}","${p.goals||0}","${p.assists||0}","${p.speed||0}","${p.progress||0}","${p.paid}"\n`});
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(["\ufeff"+c],{type:'text/csv;charset=utf-8;'}));a.download="oquvchilar_royxati.csv";a.click()}
 function saveSettings(){
   db.ref('settings').update({card:v('sCard'),amount:v('sAmt'),scheduleDay:v('sDow'),scheduleTime:v('sTime'),announcement:$('sAnn').value,motivation:$('sMot').value,matches:$('sMatch').value,matchDay:v('sDay'),lineup:$('sLine').value})
     .then(()=>alert("Sozlamalar saqlandi!")).catch(e=>alert(e.message));
 }
 function editPlayer(id){
-  const p=PL[id];if(!p)return;$('plTitle').innerText="Tahrirlash: "+p.name;$('plLogin').innerText="Login: "+id;$('eId').value=id;
+  const p=PL[id];if(!p)return;$('plTitle').innerText="Tahrirlash: "+p.name;$('eId').value=id;
   $('eName').value=p.name||'';$('ePhoto').value=p.photoUrl||'';$('eGroup').value=p.group||'';$('eGal').value=p.gallery||'';
   $('eGoals').value=p.goals||0;$('eAssists').value=p.assists||0;$('eSpeed').value=p.speed||0;$('eProg').value=p.progress||0;$('eTr').value=p.trainings||0;
   $('ePay').value=p.paid===true?"paid":p.paid==="pending"?"pending":"unpaid";$('eNote').value=p.note||'';$('eStar').checked=!!p.isStar;openModal('plModal');
 }
 function savePlayer(){
-  const id=$('eId').value,old=PL[id]||{},pv=$('ePay').value,paidNow=pv==="paid",u={},P='players/'+id+'/';
+  const id=$('eId').value,old=PL[id]||{},pv=$('ePay').value,paidNow=pv==="paid";
   const f={name:v('eName'),photoUrl:v('ePhoto'),group:v('eGroup'),gallery:v('eGal'),goals:+$('eGoals').value||0,assists:+$('eAssists').value||0,speed:+$('eSpeed').value||0,progress:+$('eProg').value||0,trainings:+$('eTr').value||0,note:$('eNote').value.trim(),isStar:$('eStar').checked,paid:paidNow?true:pv==="pending"?"pending":false};
-  Object.entries(f).forEach(([k,x])=>u[P+k]=x);
-  u[P+'history/'+ym()]={goals:f.goals,speed:f.speed,progress:f.progress}; // oylik o'sish grafigi uchun
-  if(paidNow){u[P+'payMonth']=ym();if(old.paid!==true){u[`payments/${id}/${db.ref('payments/'+id).push().key}`]={date:today(),amount:amt()}}}
+  const rec={...old,...f,isArchived:false};delete rec.password;
+  rec.history={...(old.history||{}),[ym()]:{goals:f.goals,speed:f.speed,progress:f.progress}}; // oylik o'sish grafigi uchun
+  if(paidNow)rec.payMonth=ym();
+  const u={};u['players/'+id]=rec;
+  if(paidNow&&old.paid!==true)u[`payments/${id}/${db.ref('payments/'+id).push().key}`]={date:today(),amount:amt()};
   db.ref().update(u).then(()=>{alert("Saqlandi!");closeModal()}).catch(e=>alert(e.message));
 }
+const newKid=(name,age)=>({name,age:age||'',paid:false,goals:0,assists:0,speed:0,progress:0,trainings:0,isArchived:false,attendanceDates:[]});
+const credText=id=>`81-maktab FK\nLogin: ${id}\nParol: ${PR[id].password}\nSayt: ${location.href.split(/[?#]/)[0]}`;
+function copyCred(id){const t=credText(id);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Nusxalandi! Ota-onaga yuboring.")).catch(()=>prompt("Nusxalang:",t))}
+function renderParents(){
+  const l=Object.entries(PR);
+  $('at_parents').innerHTML=`<button class="btn sm" style="margin-bottom:12px" onclick="editPar('')">+ Ota-ona qo'shish</button>`+(l.map(([id,p])=>`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(p.name||id)}</b>${p.phone?` <small style="color:var(--muted)">+${esc(p.phone)}</small>`:''}<br><small style="color:var(--ok);font-weight:700">Login: ${esc(id)} · Parol: ${esc(p.password)}</small><br><small style="color:var(--muted)">Farzandlar: ${Object.keys(p.children||{}).map(k=>esc((PL[k]&&PL[k].name)||k)).join(', ')||'—'}</small></div><div class="row" style="width:100%;justify-content:flex-start"><button class="btn sm bo" onclick="editPar('${id}')">✏️</button><button class="btn sm bok" onclick="copyCred('${id}')">📋 Login-parolni nusxalash</button>${p.phone?`<a class="btn sm bo" href="sms:+${esc(p.phone)}?body=${encodeURIComponent(credText(id))}">✉️</a>`:''}<button class="btn sm bd" onclick="delPar('${id}')">🗑</button></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">Ota-onalar yo'q</p>`);
+}
+function editPar(id){
+  const p=PR[id]||{},ch=p.children||{};
+  $('parTitle').innerText=id?"Ota-onani tahrirlash":"Yangi ota-ona";$('paOld').value=id;
+  $('paName').value=p.name||'';$('paPhone').value=p.phone||'';$('paLogin').value=id||genLogin();$('paPass').value=p.password||genPass();$('paNew').value='';
+  $('paKidsBox').innerHTML=Object.entries(PL).filter(([,k])=>!k.isArchived).map(([k,x])=>`<label class="li" style="padding:10px"><span>${esc(x.name)} <small style="color:var(--muted)">${esc(x.group||'')}</small></span><input type="checkbox" value="${k}" ${ch[k]?'checked':''} style="width:20px;height:20px"></label>`).join('')||`<p class="note">Hozircha o'quvchi yo'q. Pastdan yangi ism yozing.</p>`;
+  openModal('parModal');
+}
+function savePar(){
+  const old=$('paOld').value,l=v('paLogin').toUpperCase(),p=v('paPass').toUpperCase(),n=v('paName'),ph=digits(v('paPhone'));
+  if(!n)return alert("Ota-ona ismini kiriting!");
+  if(!/^[A-Z0-9]{6}$/.test(l)||!/^[A-Z0-9]{6}$/.test(p))return alert("Login va parol aynan 6 ta belgi (harf yoki raqam) bo'lsin! 🔄 tugmasi yangisini yaratadi.");
+  if(l!==old&&PR[l])return alert("Bu login band!");
+  const ch={},u={};document.querySelectorAll('#paKidsBox input:checked').forEach(c=>ch[c.value]=true);
+  v('paNew').split(',').map(x=>x.trim()).filter(Boolean).forEach(nm=>{const id=genId();u['players/'+id]=newKid(nm);ch[id]=true});
+  if(old&&old!==l)u['parents/'+old]=null;
+  u['parents/'+l]={name:n,phone:ph,password:p,children:ch};
+  db.ref().update(u).then(()=>{closeModal();confetti()}).catch(e=>alert(e.message));
+}
+const delPar=id=>confirm("Ota-ona hisobi o'chirilsinmi? (Farzandlar ma'lumoti qoladi)")&&db.ref('parents/'+id).remove();
 async function acceptApp(k){
   const a=(await db.ref('applications/'+k).once('value')).val();if(!a)return;
-  const pass=a.password||String(100000+Math.floor(Math.random()*900000));
-  try{await sec.auth().createUserWithEmailAndPassword(a.phone+DOM,pass);await sec.auth().signOut()}
-  catch(e){if(e.code!=='auth/email-already-in-use')return alert("Xatolik: "+e.message)}
-  const pl={name:a.childName,paid:false,goals:0,assists:0,speed:0,progress:0,trainings:0,isArchived:false,attendanceDates:[]};if(a.year)pl.group=a.year;
-  await db.ref('players/'+a.phone).set(pl);await db.ref('applications/'+k).remove();confetti();
-  alert(a.password?`Qabul qilindi!\nLogin: ${a.phone}\n(O'quvchi o'z parolini ishlatadi)`:`Qabul qilindi!\nLogin: ${a.phone}\nParol: ${pass}\nParolni ota-onaga yetkazing.`);
+  const ph=digits(a.phone||''),ex=ph?Object.entries(PR).find(([,p])=>p.phone===ph):null;
+  const names=String(a.childName||'').split(',').map(x=>x.trim()).filter(Boolean);
+  if(!names.length)return alert("Farzand ismi yo'q!");
+  const u={},ch={};names.forEach(nm=>{const id=genId();u['players/'+id]=newKid(nm,a.age);ch[id]=true});
+  let login,pass;
+  if(ex){login=ex[0];pass=ex[1].password;Object.keys(ch).forEach(id=>u[`parents/${login}/children/${id}`]=true)}
+  else{login=genLogin();pass=genPass();u['parents/'+login]={name:(a.parentName&&a.parentName!=='-')?a.parentName:'Ota-ona ('+names[0]+')',phone:ph,password:pass,children:ch}}
+  u['applications/'+k]=null;
+  await db.ref().update(u);confetti();
+  alert(`Qabul qilindi!\n\nOTA-ONA UCHUN\nLogin: ${login}\nParol: ${pass}`+(ex?"\n\n(Mavjud ota-onaga farzand qo'shildi)":"")+"\n\nOTA-ONALAR bo'limidan nusxalab yuborishingiz mumkin.");
 }
 const rejectApp=k=>confirm("O'chirilsinmi?")&&db.ref('applications/'+k).remove();
 function adminTab(t,el){
@@ -440,7 +555,7 @@ function adminTab(t,el){
 /* ====== PWA: telefonga ilova sifatida o'rnatish ====== */
 try{const ic="data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#070b1f'/><text x='50' y='64' font-size='42' font-weight='900' text-anchor='middle' fill='#3d7bff' font-family='sans-serif'>81</text></svg>");
 const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify({name:"81 IDUM Pro Stats",short_name:"81 IDUM",start_url:location.pathname,display:"standalone",background_color:"#070b1f",theme_color:"#070b1f",icons:[{src:ic,sizes:"512x512",type:"image/svg+xml"}]})],{type:'application/manifest+json'}));document.head.appendChild(l);
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+}catch(e){}
 closeModal();
 </script>
 </body>
