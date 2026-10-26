@@ -130,66 +130,96 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
   </div>
   <div class="card">
     <div class="pane on" id="pane0">
-      <p class="note" style="margin:0 0 14px">Faqat ota-onalar kira oladi. Login va parolni murabbiy beradi.</p>
-      <div class="ig"><label data-uz="Login (6 ta belgi)" data-ru="Логин (6 символов)">Login (6 ta belgi)</label><input id="loginUser" class="inp" placeholder="A1B2C3" maxlength="12" autocapitalize="characters" autocomplete="username"></div>
-      <div class="ig"><label data-uz="Parol (6 ta belgi)" data-ru="Пароль (6 символов)">Parol (6 ta belgi)</label><input type="password" id="loginPass" class="inp" maxlength="12" autocapitalize="characters" autocomplete="current-password"></div>
+      <p class="note" style="margin:0 0 14px" data-uz="Faqat ota-onalar kira oladi. Login va parolni murabbiy beradi." data-ru="Доступ только для родителей. Логин и пароль выдает тренер.">Faqat ota-onalar kira oladi. Login va parolni murabbiy beradi.</p>
+      <div class="ig"><label data-uz="Login (6 ta belgi)" data-ru="Логин (6 символов)">Login (6 ta belgi)</label><input id="loginUser" class="inp" placeholder="A1B2C3" maxlength="12" autocapitalize="characters" autocomplete="username" data-ph-uz="A1B2C3" data-ph-ru="A1B2C3"></div>
+      <div class="ig"><label data-uz="Parol (6 ta belgi)" data-ru="Пароль (6 символов)">Parol (6 ta belgi)</label><input type="password" id="loginPass" class="inp" maxlength="12" autocapitalize="characters" autocomplete="current-password" data-ph-uz="••••••" data-ph-ru="••••••"></div>
       <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ">TIZIMGA KIRISH</button>
     </div>
     <div class="pane" id="pane1">
-      <h3 style="margin-bottom:14px;font-size:15px">Ariza topshirish</h3>
-      <div class="ig"><label>Ota-onaning ismi</label><input id="appParentName" class="inp"></div>
-      <div class="ig"><label>Farzand ismi (bir nechta bo'lsa vergul bilan)</label><input id="appChildName" class="inp"></div>
-      <div class="ig"><label>Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
-      <div class="ig"><label>Farzandning yoshi</label><input type="number" id="appAge" class="inp"></div>
-      <button id="btnApp" class="btn" onclick="submitApplication()">ARIZA YUBORISH</button>
-      <p class="note">Ariza tasdiqlangach, murabbiy sizga 6 belgili login va parol beradi.</p>
+      <h3 style="margin-bottom:14px;font-size:15px" data-uz="Ariza topshirish" data-ru="Подать заявку">Ariza topshirish</h3>
+      <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input id="appParentName" class="inp"></div>
+      <div class="ig"><label data-uz="Farzand ismi (bir nechta bo'lsa vergul bilan)" data-ru="Имя ребенка (если несколько, через запятую)">Farzand ismi (bir nechta bo'lsa vergul bilan)</label><input id="appChildName" class="inp"></div>
+      <div class="ig"><label data-uz="Telefon raqamingiz" data-ru="Ваш номер телефона">Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567" data-ph-uz="998901234567" data-ph-ru="998901234567"></div>
+      <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка">Farzandning yoshi</label><input type="number" id="appAge" class="inp"></div>
+      <button id="btnApp" class="btn" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ ЗАЯВКУ">ARIZA YUBORISH</button>
+      <p class="note" data-uz="Ariza tasdiqlangach, murabbiy sizga 6 belgili login va parol beradi." data-ru="После одобрения заявки тренер выдаст вам 6-значный логин и пароль.">Ariza tasdiqlangach, murabbiy sizga 6 belgili login va parol beradi.</p>
     </div>
   </div>
 </div>
 
 <!-- OTA-ONA PANELI -->
 <div class="screen" id="familyScreen">
-  <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()">Chiqish</button></div></div>
-  <div class="card" style="text-align:center"><small style="font:700 10px 'Unbounded';color:var(--muted)">OTA-ONALAR PANELI</small><h2 id="fName" style="margin:8px 0 4px;font-size:20px"></h2><p class="note" style="margin:0" id="fLogin"></p></div>
+  <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()" data-uz="Chiqish" data-ru="Выйти">Chiqish</button></div></div>
+  <div class="card" style="text-align:center"><small style="font:700 10px 'Unbounded';color:var(--muted)" data-uz="OTA-ONALAR PANELI" data-ru="ПАНЕЛЬ РОДИТЕЛЕЙ">OTA-ONALAR PANELI</small><h2 id="fName" style="margin:8px 0 4px;font-size:20px"></h2><p class="note" style="margin:0" id="fLogin"></p></div>
   <div class="ann" id="fAnn"></div>
-  <h3 style="margin:4px 0 12px;font-size:14px">Farzandlarim</h3>
+  <h3 style="margin:4px 0 12px;font-size:14px" data-uz="Farzandlarim" data-ru="Мои дети">Farzandlarim</h3>
   <div id="kidsList"></div>
-  <div class="card" style="text-align:center"><h3 style="font-size:14px">Savollaringiz bormi?</h3><a href="tel:+998992677747" class="btn" style="background:#2AABEE">📞 Murabbiy: +998 99 267 77 47</a></div>
+  <div class="card" style="text-align:center"><h3 style="font-size:14px" data-uz="Savollaringiz bormi?" data-ru="Есть вопросы?">Savollaringiz bormi?</h3><a href="tel:+998992677747" class="btn" style="background:#2AABEE" data-uz="📞 Murabbiy: +998 99 267 77 47" data-ru="📞 Тренер: +998 99 267 77 47">📞 Murabbiy: +998 99 267 77 47</a></div>
 </div>
 
 <!-- O'QUVCHI BOSH SAHIFASI (FAQAT SOAT, MOTIVATSIYA, MURABBIY) -->
 <div class="screen" id="parentScreen">
-  <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="backFamily()">← Orqaga</button></div></div>
-  <p class="note" style="margin:0 0 10px;font-weight:700">⚽ O'QUVCHI PANELI</p>
+  <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="backFamily()" data-uz="← Orqaga" data-ru="← Назад">← Orqaga</button></div></div>
   
-  <div class="timer"><div style="font-size:12px;opacity:.9">Keyingi mashg'ulotgacha:</div><b id="cd">...</b></div>
-  <div class="mot"><small>Murabbiy nasihati</small><div id="pMot">"Mehnat qilgan yutadi!"</div></div>
+  <div class="timer">
+    <div style="font-size:12px;opacity:.9" data-uz="Keyingi mashg'ulotgacha:" data-ru="До следующей тренировки:">Keyingi mashg'ulotgacha:</div>
+    <b id="cd">...</b>
+  </div>
   
-  <div class="card" id="coachInfoCard">
-    <h3 style="margin-bottom:8px;font-size:14px;color:var(--blue)">Murabbiy haqida</h3>
-    <p id="pCoachInfo" style="font-size:14px;line-height:1.6;white-space:pre-line;"></p>
+  <div class="mot">
+    <small data-uz="Murabbiy nasihati" data-ru="Совет тренера">Murabbiy nasihati</small>
+    <div id="pMot">"Mehnat qilgan yutadi!"</div>
+  </div>
+  
+  <!-- MURABBIY HAQIDA TO'LIQ MA'LUMOT -->
+  <div class="card" id="coachInfoCard" style="padding-bottom: 15px;">
+    <h3 style="margin-bottom:15px;font-size:15px;color:var(--blue);display:flex;align-items:center;gap:8px;">
+      <span data-uz="Murabbiy haqida" data-ru="О тренере">Murabbiy haqida</span>
+    </h3>
+    <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px;">
+       <img src="https://ui-avatars.com/api/?name=Abbosov+Shokhrukh&background=3d7bff&color=fff&size=150" alt="Coach" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--blue);box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+       <div>
+          <b style="font-size:16px;display:block;color:var(--text);">Abbosov Shokhrukh Elimxanovich</b>
+          <small style="color:var(--muted);display:block;margin-top:4px;line-height:1.3;" data-uz="81-maktab futbol to'garagi murabbiyi" data-ru="Тренер футбольного клуба школы 81">81-maktab futbol to'garagi murabbiyi</small>
+       </div>
+    </div>
+    
+    <div style="background:var(--input);padding:12px;border-radius:12px;margin-bottom:15px;border:1px solid var(--cb);">
+       <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;border-bottom:1px solid var(--cb);padding-bottom:8px;">
+          <span style="color:var(--muted)" data-uz="Tajriba:" data-ru="Опыт:">Tajriba:</span>
+          <b data-uz="14 yil" data-ru="14 лет">14 yil</b>
+       </div>
+       <div style="font-size:13px;line-height:1.5;">
+          <span style="color:var(--muted);display:block;margin-bottom:4px;" data-uz="Maqsad:" data-ru="Цель:">Maqsad:</span>
+          <span data-uz="Yosh futbolchilarni tarbiyalash va kuchli jamoa shakllantirish" data-ru="Воспитание молодых футболистов и формирование сильной команды">Yosh futbolchilarni tarbiyalash va kuchli jamoa shakllantirish</span>
+       </div>
+    </div>
+    
+    <a href="https://t.me/oooMooo7" target="_blank" class="btn" style="background:#2AABEE;text-decoration:none;margin-top:0;">
+       <span style="font-size:16px;">✈️</span> <span data-uz="Telegram orqali bog'lanish" data-ru="Связаться в Telegram">Telegram orqali bog'lanish</span>
+    </a>
   </div>
 </div>
 
 <!-- STATISTIKA (USTUNLAR VA REYTING) -->
 <div class="screen" id="statScreen">
   <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0">Statistika</h2>
+  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Statistika" data-ru="Статистика">Statistika</h2>
   
   <div class="card ph" id="tilt">
     <img id="sPhoto" class="pphoto" alt="">
     <h2 class="pname" id="sName">Ism</h2>
     <p class="puser" id="sJersey"></p>
     <div class="badges" id="sBadges"></div>
-    <div class="sb"><div class="sbh"><span>O'zlashtirish</span><span id="t1">0%</span></div><div class="sbg"><div class="sf fr" id="b1" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span>Gollar</span><span id="t2">0 ta</span></div><div class="sbg"><div class="sf fr" id="b2" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span>Asistlar</span><span id="t3">0 ta</span></div><div class="sbg"><div class="sf fr" id="b3" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span>Tezlik</span><span id="t4">0%</span></div><div class="sbg"><div class="sf fr" id="b4" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span>Mashg'ulotlar</span><span id="t5">0 marta</span></div><div class="sbg"><div class="sf fr" id="b5" style="width:0"></div></div></div>
+    <div class="sb"><div class="sbh"><span data-uz="O'zlashtirish" data-ru="Успеваемость">O'zlashtirish</span><span id="t1">0%</span></div><div class="sbg"><div class="sf fr" id="b1" style="width:0"></div></div></div>
+    <div class="sb"><div class="sbh"><span data-uz="Gollar" data-ru="Голы">Gollar</span><span id="t2">0 ta</span></div><div class="sbg"><div class="sf fr" id="b2" style="width:0"></div></div></div>
+    <div class="sb"><div class="sbh"><span data-uz="Asistlar" data-ru="Ассисты">Asistlar</span><span id="t3">0 ta</span></div><div class="sbg"><div class="sf fr" id="b3" style="width:0"></div></div></div>
+    <div class="sb"><div class="sbh"><span data-uz="Tezlik" data-ru="Скорость">Tezlik</span><span id="t4">0%</span></div><div class="sbg"><div class="sf fr" id="b4" style="width:0"></div></div></div>
+    <div class="sb"><div class="sbh"><span data-uz="Mashg'ulotlar" data-ru="Тренировки">Mashg'ulotlar</span><span id="t5">0 marta</span></div><div class="sbg"><div class="sf fr" id="b5" style="width:0"></div></div></div>
   </div>
 
   <div class="card">
-    <h3 style="margin-bottom:12px;font-size:14px">Akademiya reytingi (Top 5)</h3>
+    <h3 style="margin-bottom:12px;font-size:14px" data-uz="Akademiya reytingi (Top 5)" data-ru="Рейтинг академии (Топ 5)">Akademiya reytingi (Top 5)</h3>
     <div id="board"></div>
   </div>
 </div>
@@ -197,16 +227,16 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 <!-- HAMYON (TO'LOV FAQAT SHU YERDA) -->
 <div class="screen" id="walletScreen">
   <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0">Hamyon</h2>
+  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Hamyon" data-ru="Кошелек">Hamyon</h2>
   <div id="wList"></div>
 </div>
 
 <!-- TURNIRLAR (FAQAT RAQIB VA VAQT) -->
 <div class="screen" id="tourScreen">
   <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0">Turnirlar</h2>
+  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Turnirlar" data-ru="Турниры">Turnirlar</h2>
   <div class="card">
-    <h3 style="margin-bottom:10px;font-size:14px;color:var(--gold)">⚽ O'yin ma'lumotlari</h3>
+    <h3 style="margin-bottom:10px;font-size:14px;color:var(--gold)" data-uz="⚽ O'yin ma'lumotlari" data-ru="⚽ Информация об игре">⚽ O'yin ma'lumotlari</h3>
     <p id="tOpponent" style="font-weight:700;margin-bottom:6px;font-size:16px"></p>
     <p id="tTime" style="font-size:14px;color:var(--muted)"></p>
   </div>
@@ -215,7 +245,7 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 <!-- MAYDON (MINI FUTBOL 6 KISHI) -->
 <div class="screen" id="pitchScreen">
   <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0">Maydon</h2>
+  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Maydon" data-ru="Поле">Maydon</h2>
   
   <div class="pitch-container">
     <div class="pitch-center-circle"></div>
@@ -235,7 +265,7 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 <!-- PROFIL -->
 <div class="screen" id="profileScreen">
   <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0">Profil</h2>
+  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Profil" data-ru="Профиль">Profil</h2>
   
   <div class="card" style="text-align:center">
     <img id="prPhoto" class="pphoto" alt="" style="margin-bottom:15px">
@@ -245,135 +275,176 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
   </div>
   
   <div class="card">
-    <h3 style="font-size:14px;margin-bottom:6px">O'zim haqimda</h3>
+    <h3 style="font-size:14px;margin-bottom:6px" data-uz="O'zim haqimda" data-ru="Обо мне">O'zim haqimda</h3>
     <p class="note" id="prBio" style="font-size:14px;line-height:1.6;"></p>
   </div>
 
-  <div class="card" style="text-align:center"><h3 style="font-size:14px;margin-bottom:6px">Savollaringiz bormi?</h3><a href="tel:+998992677747" class="btn" style="background:#2AABEE">📞 Murabbiy: +998 99 267 77 47</a></div>
-  <button class="btn bd" onclick="logout()">CHIQISH</button>
+  <div class="card" style="text-align:center"><h3 style="font-size:14px;margin-bottom:6px" data-uz="Savollaringiz bormi?" data-ru="Есть вопросы?">Savollaringiz bormi?</h3><a href="tel:+998992677747" class="btn" style="background:#2AABEE" data-uz="📞 Murabbiy: +998 99 267 77 47" data-ru="📞 Тренер: +998 99 267 77 47">📞 Murabbiy: +998 99 267 77 47</a></div>
+  <button class="btn bd" onclick="logout()" data-uz="CHIQISH" data-ru="ВЫЙТИ">CHIQISH</button>
 </div>
 
 <!-- ADMIN PANELI -->
 <div class="screen" id="adminScreen">
-  <div class="header"><div class="brand">81 ADMIN</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()">Chiqish</button></div></div>
+  <div class="header"><div class="brand">81 ADMIN</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()" data-uz="Chiqish" data-ru="Выйти">Chiqish</button></div></div>
   <div class="tabs">
-    <div class="tab active" onclick="adminTab('apps',this)">ARIZALAR <span id="appBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
-    <div class="tab" onclick="adminTab('orders',this)">TO'LOVLAR <span id="ordBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
-    <div class="tab" onclick="adminTab('parents',this)">OTA-ONALAR</div>
-    <div class="tab" onclick="adminTab('students',this)">O'QUVCHILAR</div>
-    <div class="tab" onclick="adminTab('attend',this)">DAVOMAT</div>
-    <div class="tab" onclick="adminTab('stats',this)">NATIJALAR</div>
-    <div class="tab" onclick="adminTab('archive',this)">ARXIV</div>
-    <div class="tab" onclick="adminTab('settings',this)">SOZLAMALAR</div>
+    <div class="tab active" onclick="adminTab('apps',this)" data-uz="ARIZALAR" data-ru="ЗАЯВКИ">ARIZALAR <span id="appBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
+    <div class="tab" onclick="adminTab('orders',this)" data-uz="TO'LOVLAR" data-ru="ОПЛАТЫ">TO'LOVLAR <span id="ordBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
+    <div class="tab" onclick="adminTab('parents',this)" data-uz="OTA-ONALAR" data-ru="РОДИТЕЛИ">OTA-ONALAR</div>
+    <div class="tab" onclick="adminTab('students',this)" data-uz="O'QUVCHILAR" data-ru="УЧЕНИКИ">O'QUVCHILAR</div>
+    <div class="tab" onclick="adminTab('attend',this)" data-uz="DAVOMAT" data-ru="ПОСЕЩАЕМОСТЬ">DAVOMAT</div>
+    <div class="tab" onclick="adminTab('stats',this)" data-uz="NATIJALAR" data-ru="РЕЗУЛЬТАТЫ">NATIJALAR</div>
+    <div class="tab" onclick="adminTab('archive',this)" data-uz="ARXIV" data-ru="АРХИВ">ARXIV</div>
+    <div class="tab" onclick="adminTab('settings',this)" data-uz="SOZLAMALAR" data-ru="НАСТРОЙКИ">SOZLAMALAR</div>
   </div>
-  <div id="fltBar" class="hidden" style="display:flex;gap:8px;margin-bottom:12px"><input id="fQ" class="inp" placeholder="🔍 Ism yoki telefon" oninput="renderAdmin()"><select id="fGroup" class="inp" style="max-width:130px" onchange="renderAdmin()"></select></div>
+  <div id="fltBar" class="hidden" style="display:flex;gap:8px;margin-bottom:12px">
+    <input id="fQ" class="inp" placeholder="🔍 Ism yoki telefon" oninput="renderAdmin()" data-ph-uz="🔍 Ism yoki telefon" data-ph-ru="🔍 Имя или телефон">
+    <select id="fGroup" class="inp" style="max-width:130px" onchange="renderAdmin()"></select>
+  </div>
   
   <div class="atab card" id="at_apps"></div>
   <div class="atab card hidden" id="at_orders"></div>
   <div class="atab card hidden" id="at_parents"></div>
   
   <div class="atab hidden" id="at_students">
-    <div class="fin"><div class="fc"><b id="finPaid">0</b><div>To'langan</div></div><div class="fc"><b id="finDebt" style="color:var(--coral)">0</b><div>Qarzdorlik</div></div></div>
-    <div style="display:flex;gap:8px;margin-bottom:10px"><button class="btn sm" onclick="exportCSV()">📥 CSV</button><button class="btn sm bo" onclick="copyDebtors()">📋 Qarzdorlar matni</button></div>
+    <div class="fin"><div class="fc"><b id="finPaid">0</b><div data-uz="To'langan" data-ru="Оплачено">To'langan</div></div><div class="fc"><b id="finDebt" style="color:var(--coral)">0</b><div data-uz="Qarzdorlik" data-ru="Долг">Qarzdorlik</div></div></div>
+    <div style="display:flex;gap:8px;margin-bottom:10px"><button class="btn sm" onclick="exportCSV()" data-uz="📥 CSV" data-ru="📥 CSV">📥 CSV</button><button class="btn sm bo" onclick="copyDebtors()" data-uz="📋 Qarzdorlar matni" data-ru="📋 Текст должников">📋 Qarzdorlar matni</button></div>
     <div class="card" id="stList"></div>
   </div>
   
   <div class="atab hidden" id="at_attend"><div class="card">
-    <h3 style="margin-bottom:6px;font-size:14px">Bugungi davomat</h3><p class="note" style="margin:0 0 12px">Kelganlarni belgilab, bir marta saqlang.</p>
+    <h3 style="margin-bottom:6px;font-size:14px" data-uz="Bugungi davomat" data-ru="Посещаемость сегодня">Bugungi davomat</h3>
+    <p class="note" style="margin:0 0 12px" data-uz="Kelganlarni belgilab, bir marta saqlang." data-ru="Отметьте присутствующих и сохраните.">Kelganlarni belgilab, bir marta saqlang.</p>
     <div id="attList"></div>
-    <div style="display:flex;gap:8px"><button class="btn bo sm" style="flex:1;padding:12px" onclick="checkAll()">Hammasini belgilash</button><button class="btn bok sm" style="flex:1;padding:12px" onclick="saveAttendance()">SAQLASH</button></div>
+    <div style="display:flex;gap:8px"><button class="btn bo sm" style="flex:1;padding:12px" onclick="checkAll()" data-uz="Hammasini belgilash" data-ru="Отметить всех">Hammasini belgilash</button><button class="btn bok sm" style="flex:1;padding:12px" onclick="saveAttendance()" data-uz="SAQLASH" data-ru="СОХРАНИТЬ">SAQLASH</button></div>
   </div></div>
   
   <div class="atab hidden" id="at_stats"><div class="card" id="stStats"></div></div>
-  <div class="atab hidden" id="at_archive"><div class="card"><h3 style="margin-bottom:10px;color:var(--coral);font-size:14px">Arxivlangan o'quvchilar</h3><div id="arList"></div></div></div>
+  <div class="atab hidden" id="at_archive"><div class="card"><h3 style="margin-bottom:10px;color:var(--coral);font-size:14px" data-uz="Arxivlangan o'quvchilar" data-ru="Архивированные ученики">Arxivlangan o'quvchilar</h3><div id="arList"></div></div></div>
   
   <div class="atab hidden" id="at_settings"><div class="card">
-    <h3 style="margin-bottom:12px;font-size:14px">Murabbiy va O'yin ma'lumotlari</h3>
-    <div class="ig"><label>Murabbiy haqida (Bosh sahifada chiqadi)</label><textarea id="sCoach" class="inp" rows="3" placeholder="Arıf Arazadəı / Abbosov Shohruh..."></textarea></div>
-    <div class="ig"><label>Raqib jamoa nomi (Turnirlarda chiqadi)</label><input id="sOpponent" class="inp" placeholder="128-maktab"></div>
-    <div class="ig"><label>O'yin vaqti</label><input id="sMatchTime" class="inp" placeholder="Seshanba 15:00"></div>
+    <h3 style="margin-bottom:12px;font-size:14px" data-uz="Murabbiy va O'yin ma'lumotlari" data-ru="Информация о тренере и игре">Murabbiy va O'yin ma'lumotlari</h3>
+    <div class="ig"><label data-uz="Murabbiy haqida (Bosh sahifada chiqadi)" data-ru="О тренере (Отображается на главной)">Murabbiy haqida (Bosh sahifada chiqadi)</label><textarea id="sCoach" class="inp" rows="3" data-ph-uz="Arıf Arazadəı / Abbosov..." data-ph-ru="Ариф Аразадаи / Аббосов..."></textarea></div>
+    <div class="ig"><label data-uz="Raqib jamoa nomi (Turnirlarda chiqadi)" data-ru="Название команды соперника">Raqib jamoa nomi (Turnirlarda chiqadi)</label><input id="sOpponent" class="inp" data-ph-uz="128-maktab" data-ph-ru="128-школа"></div>
+    <div class="ig"><label data-uz="O'yin vaqti" data-ru="Время игры">O'yin vaqti</label><input id="sMatchTime" class="inp" data-ph-uz="Seshanba 15:00" data-ph-ru="Вторник 15:00"></div>
     
-    <h3 style="margin:15px 0 10px;font-size:14px">Asosiy tarkib (Maydon paneli)</h3>
-    <p class="note" style="margin-bottom:10px">Faqat maydonga chiqadigan 6 ta o'yinchini tanlang.</p>
-    <div class="ig"><label>Darvozabon (GK)</label><select id="lineGK" class="inp"></select></div>
-    <div class="ig"><label>Himoyachi 1 (DF)</label><select id="lineDF1" class="inp"></select></div>
-    <div class="ig"><label>Himoyachi 2 (DF)</label><select id="lineDF2" class="inp"></select></div>
-    <div class="ig"><label>Yarim Himoyachi 1 (MF)</label><select id="lineMF1" class="inp"></select></div>
-    <div class="ig"><label>Yarim Himoyachi 2 (MF)</label><select id="lineMF2" class="inp"></select></div>
-    <div class="ig"><label>Hujumchi (FW)</label><select id="lineFW" class="inp"></select></div>
+    <h3 style="margin:15px 0 10px;font-size:14px" data-uz="Asosiy tarkib (Maydon paneli)" data-ru="Основной состав (Панель поля)">Asosiy tarkib (Maydon paneli)</h3>
+    <p class="note" style="margin-bottom:10px" data-uz="Faqat maydonga chiqadigan 6 ta o'yinchini tanlang." data-ru="Выберите только 6 игроков, выходящих на поле.">Faqat maydonga chiqadigan 6 ta o'yinchini tanlang.</p>
+    <div class="ig"><label data-uz="Darvozabon (GK)" data-ru="Вратарь (GK)">Darvozabon (GK)</label><select id="lineGK" class="inp"></select></div>
+    <div class="ig"><label data-uz="Himoyachi 1 (DF)" data-ru="Защитник 1 (DF)">Himoyachi 1 (DF)</label><select id="lineDF1" class="inp"></select></div>
+    <div class="ig"><label data-uz="Himoyachi 2 (DF)" data-ru="Защитник 2 (DF)">Himoyachi 2 (DF)</label><select id="lineDF2" class="inp"></select></div>
+    <div class="ig"><label data-uz="Yarim Himoyachi 1 (MF)" data-ru="Полузащитник 1 (MF)">Yarim Himoyachi 1 (MF)</label><select id="lineMF1" class="inp"></select></div>
+    <div class="ig"><label data-uz="Yarim Himoyachi 2 (MF)" data-ru="Полузащитник 2 (MF)">Yarim Himoyachi 2 (MF)</label><select id="lineMF2" class="inp"></select></div>
+    <div class="ig"><label data-uz="Hujumchi (FW)" data-ru="Нападающий (FW)">Hujumchi (FW)</label><select id="lineFW" class="inp"></select></div>
     
-    <h3 style="margin:15px 0 10px;font-size:14px">Boshqa sozlamalar</h3>
-    <div class="ig"><label>E'lon (ota-onalarga)</label><textarea id="sAnn" class="inp" rows="2"></textarea></div>
-    <div class="ig"><label>Motivatsiya (Bosh sahifada chiqadi)</label><textarea id="sMot" class="inp" rows="2"></textarea></div>
-    <div class="ig"><label>To'lov summasi</label><input id="sAmt" class="inp"></div>
-    <div class="ig"><label>Karta raqami</label><input id="sCard" class="inp"></div>
-    <div class="ig"><label>Mashg'ulot kuni</label><select id="sDow" class="inp"><option value="1">Dushanba</option><option value="2">Seshanba</option><option value="3">Chorshanba</option><option value="4">Payshanba</option><option value="5">Juma</option><option value="6">Shanba</option><option value="0">Yakshanba</option></select></div>
-    <div class="ig"><label>Mashg'ulot vaqti</label><input type="time" id="sTime" class="inp"></div>
-    <button class="btn" onclick="saveSettings()">SAQLASH</button>
+    <h3 style="margin:15px 0 10px;font-size:14px" data-uz="Boshqa sozlamalar" data-ru="Другие настройки">Boshqa sozlamalar</h3>
+    <div class="ig"><label data-uz="E'lon (ota-onalarga)" data-ru="Объявление (для родителей)">E'lon (ota-onalarga)</label><textarea id="sAnn" class="inp" rows="2"></textarea></div>
+    <div class="ig"><label data-uz="Motivatsiya (Bosh sahifada chiqadi)" data-ru="Мотивация (Отображается на главной)">Motivatsiya (Bosh sahifada chiqadi)</label><textarea id="sMot" class="inp" rows="2"></textarea></div>
+    <div class="ig"><label data-uz="To'lov summasi" data-ru="Сумма оплаты">To'lov summasi</label><input id="sAmt" class="inp"></div>
+    <div class="ig"><label data-uz="Karta raqami" data-ru="Номер карты">Karta raqami</label><input id="sCard" class="inp"></div>
+    <div class="ig">
+      <label data-uz="Mashg'ulot kuni" data-ru="День тренировки">Mashg'ulot kuni</label>
+      <select id="sDow" class="inp">
+        <option value="1" data-uz="Dushanba" data-ru="Понедельник">Dushanba</option>
+        <option value="2" data-uz="Seshanba" data-ru="Вторник">Seshanba</option>
+        <option value="3" data-uz="Chorshanba" data-ru="Среда">Chorshanba</option>
+        <option value="4" data-uz="Payshanba" data-ru="Четверг">Payshanba</option>
+        <option value="5" data-uz="Juma" data-ru="Пятница">Juma</option>
+        <option value="6" data-uz="Shanba" data-ru="Суббота">Shanba</option>
+        <option value="0" data-uz="Yakshanba" data-ru="Воскресенье">Yakshanba</option>
+      </select>
+    </div>
+    <div class="ig"><label data-uz="Mashg'ulot vaqti" data-ru="Время тренировки">Mashg'ulot vaqti</label><input type="time" id="sTime" class="inp"></div>
+    <button class="btn" onclick="saveSettings()" data-uz="SAQLASH" data-ru="СОХРАНИТЬ">SAQLASH</button>
   </div></div>
 </div>
 
 <!-- PASTKI NAVIGATSIYA -->
 <nav class="bn" id="bnav" hidden>
-  <button class="bn-i" data-t="home" onclick="goTab('home')"><span class="ic">🏠</span><span>Bosh sahifa</span></button>
-  <button class="bn-i" data-t="tour" onclick="goTab('tour')"><span class="ic">🏆</span><span>Turnirlar</span></button>
-  <button class="bn-i" data-t="stat" onclick="goTab('stat')"><span class="ic">📊</span><span>Statistika</span></button>
-  <button class="bn-i" data-t="pitch" onclick="goTab('pitch')"><span class="ic">⚽</span><span>Maydon</span></button>
-  <button class="bn-i" data-t="wallet" onclick="goTab('wallet')"><span class="ic">💳</span><span>Hamyon</span></button>
-  <button class="bn-i" data-t="profile" onclick="goTab('profile')"><span class="ic">👤</span><span>Profil</span></button>
+  <button class="bn-i" data-t="home" onclick="goTab('home')"><span class="ic">🏠</span><span data-uz="Bosh sahifa" data-ru="Главная">Bosh sahifa</span></button>
+  <button class="bn-i" data-t="tour" onclick="goTab('tour')"><span class="ic">🏆</span><span data-uz="Turnirlar" data-ru="Турниры">Turnirlar</span></button>
+  <button class="bn-i" data-t="stat" onclick="goTab('stat')"><span class="ic">📊</span><span data-uz="Statistika" data-ru="Статистика">Statistika</span></button>
+  <button class="bn-i" data-t="pitch" onclick="goTab('pitch')"><span class="ic">⚽</span><span data-uz="Maydon" data-ru="Поле">Maydon</span></button>
+  <button class="bn-i" data-t="wallet" onclick="goTab('wallet')"><span class="ic">💳</span><span data-uz="Hamyon" data-ru="Кошелек">Hamyon</span></button>
+  <button class="bn-i" data-t="profile" onclick="goTab('profile')"><span class="ic">👤</span><span data-uz="Profil" data-ru="Профиль">Profil</span></button>
 </nav>
 
 <!-- MODALLAR -->
 <div class="ov" id="ov" onclick="closeModal()"></div>
   
 <div class="modal" id="payModal"><div class="pay">
-  <h3 style="margin-bottom:14px;font-size:15px">HISOBNI TO'LDIRISH</h3>
+  <h3 style="margin-bottom:14px;font-size:15px" data-uz="HISOBNI TO'LDIRISH" data-ru="ПОПОЛНЕНИЕ СЧЕТА">HISOBNI TO'LDIRISH</h3>
   <div class="spin" id="pSpin"></div>
-  <b id="pTitle" style="font-size:17px">To'lovni yakunlang</b>
-  <p class="note">Kartangizdan quyidagi rekvizitlarga o'tkazing</p>
-  <p style="color:var(--coral);font-weight:700;font-size:13px;margin:8px 0">Ko'rsatilgan summadan 1 so'm ham oshiq yoki kam bo'lmasin</p>
-  <div class="pbox"><small>TO'LOV SUMMASI</small><b id="oAmt">...</b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('a')">⧉ Nusxa olish</button></div>
-  <div class="pbox"><small>KARTA RAQAMI</small><b id="oCard"></b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('c')">⧉ Nusxa olish</button></div>
-  <p style="margin-top:6px">⏰ Qolgan vaqt: <b id="oTime">10:00</b></p>
-  <button class="btn bo" onclick="sendReceipt()">💬 CHEKNI BOTGA YUBORISH</button>
-  <button class="btn bo" onclick="closeModal()">YOPISH</button>
+  <b id="pTitle" style="font-size:17px" data-uz="To'lovni yakunlang" data-ru="Завершите оплату">To'lovni yakunlang</b>
+  <p class="note" data-uz="Kartangizdan quyidagi rekvizitlarga o'tkazing" data-ru="Переведите на следующие реквизиты">Kartangizdan quyidagi rekvizitlarga o'tkazing</p>
+  <p style="color:var(--coral);font-weight:700;font-size:13px;margin:8px 0" data-uz="Ko'rsatilgan summadan 1 so'm ham oshiq yoki kam bo'lmasin" data-ru="Сумма должна быть точной, без копеек">Ko'rsatilgan summadan 1 so'm ham oshiq yoki kam bo'lmasin</p>
+  <div class="pbox"><small data-uz="TO'LOV SUMMASI" data-ru="СУММА ОПЛАТЫ">TO'LOV SUMMASI</small><b id="oAmt">...</b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('a')" data-uz="⧉ Nusxa olish" data-ru="⧉ Копировать">⧉ Nusxa olish</button></div>
+  <div class="pbox"><small data-uz="KARTA RAQAMI" data-ru="НОМЕР КАРТЫ">KARTA RAQAMI</small><b id="oCard"></b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('c')" data-uz="⧉ Nusxa olish" data-ru="⧉ Копировать">⧉ Nusxa olish</button></div>
+  <p style="margin-top:6px"><span data-uz="⏰ Qolgan vaqt:" data-ru="⏰ Осталось времени:">⏰ Qolgan vaqt:</span> <b id="oTime">10:00</b></p>
+  <button class="btn bo" onclick="sendReceipt()" data-uz="💬 CHEKNI BOTGA YUBORISH" data-ru="💬 ОТПРАВИТЬ ЧЕК БОТУ">💬 CHEKNI BOTGA YUBORISH</button>
+  <button class="btn bo" onclick="closeModal()" data-uz="YOPISH" data-ru="ЗАКРЫТЬ">YOPISH</button>
 </div></div>
 
-<div class="modal" id="histModal"><h3 style="margin-bottom:15px">To'lovlar tarixi</h3><div id="histList" style="max-height:300px;overflow-y:auto"></div><button class="btn bo" style="margin-top:15px" onclick="closeModal()">YOPISH</button></div>
-
-<div class="modal" id="plModal">
-  <h3 style="margin-bottom:14px" id="plTitle">Tahrirlash</h3>
-  <input type="hidden" id="eId">
-  <div class="ig"><label>Ism</label><input id="eName" class="inp"></div>
-  <div class="ig"><label>Rasm URL</label><input id="ePhoto" class="inp" placeholder="https://rasm.jpg"></div>
-  <div class="ig"><label>Guruh (masalan: 2012)</label><input id="eGroup" class="inp"></div>
-  <div class="ig"><label>Futbolka raqami (1-99)</label><input type="number" id="eJersey" class="inp" min="1" max="99"></div>
-  <div class="ig"><label>O'zi haqida (Bio)</label><textarea id="eBio" class="inp" rows="2"></textarea></div>
-  <div style="display:flex;gap:10px">
-    <div class="ig" style="flex:1"><label>Gollar</label><input type="number" id="eGoals" class="inp"></div>
-    <div class="ig" style="flex:1"><label>Asistlar</label><input type="number" id="eAssists" class="inp"></div>
-  </div>
-  <div style="display:flex;gap:10px">
-    <div class="ig" style="flex:1"><label>Tezlik %</label><input type="number" id="eSpeed" class="inp"></div>
-    <div class="ig" style="flex:1"><label>O'zlashtirish %</label><input type="number" id="eProg" class="inp"></div>
-  </div>
-  <div class="ig"><label>Mashg'ulotlar soni</label><input type="number" id="eTr" class="inp"></div>
-  <div class="ig"><label>To'lov holati</label><select id="ePay" class="inp"><option value="unpaid">To'lanmagan</option><option value="pending">Kutilmoqda</option><option value="paid">To'langan</option></select></div>
-  <div class="ig"><label>Murabbiy izohi</label><textarea id="eNote" class="inp" rows="2"></textarea></div>
-  <div class="ig" style="display:flex;align-items:center;gap:10px"><input type="checkbox" id="eStar" style="width:20px;height:20px"><label for="eStar" style="margin:0">Oyning eng yaxshi o'yinchisi ⭐</label></div>
-  <button class="btn" onclick="savePlayer()">SAQLASH</button>
-  <button class="btn bo" onclick="closeModal()">BEKOR QILISH</button>
+<div class="modal" id="histModal">
+  <h3 style="margin-bottom:15px" data-uz="To'lovlar tarixi" data-ru="История платежей">To'lovlar tarixi</h3>
+  <div id="histList" style="max-height:300px;overflow-y:auto"></div>
+  <button class="btn bo" style="margin-top:15px" onclick="closeModal()" data-uz="YOPISH" data-ru="ЗАКРЫТЬ">YOPISH</button>
 </div>
 
-<div class="modal" id="parModal"><h3 id="parTitle" style="margin-bottom:14px">Ota-ona</h3>
+<div class="modal" id="plModal">
+  <h3 style="margin-bottom:14px" id="plTitle" data-uz="Tahrirlash" data-ru="Редактировать">Tahrirlash</h3>
+  <input type="hidden" id="eId">
+  <div class="ig"><label data-uz="Ism" data-ru="Имя">Ism</label><input id="eName" class="inp"></div>
+  <div class="ig"><label data-uz="Rasm URL" data-ru="URL фото">Rasm URL</label><input id="ePhoto" class="inp" placeholder="https://rasm.jpg"></div>
+  <div class="ig"><label data-uz="Guruh (masalan: 2012)" data-ru="Группа (например: 2012)">Guruh (masalan: 2012)</label><input id="eGroup" class="inp"></div>
+  <div class="ig"><label data-uz="Futbolka raqami (1-99)" data-ru="Номер футболки (1-99)">Futbolka raqami (1-99)</label><input type="number" id="eJersey" class="inp" min="1" max="99"></div>
+  <div class="ig"><label data-uz="O'zi haqida (Bio)" data-ru="О себе (Био)">O'zi haqida (Bio)</label><textarea id="eBio" class="inp" rows="2"></textarea></div>
+  <div style="display:flex;gap:10px">
+    <div class="ig" style="flex:1"><label data-uz="Gollar" data-ru="Голы">Gollar</label><input type="number" id="eGoals" class="inp"></div>
+    <div class="ig" style="flex:1"><label data-uz="Asistlar" data-ru="Ассисты">Asistlar</label><input type="number" id="eAssists" class="inp"></div>
+  </div>
+  <div style="display:flex;gap:10px">
+    <div class="ig" style="flex:1"><label data-uz="Tezlik %" data-ru="Скорость %">Tezlik %</label><input type="number" id="eSpeed" class="inp"></div>
+    <div class="ig" style="flex:1"><label data-uz="O'zlashtirish %" data-ru="Успеваемость %">O'zlashtirish %</label><input type="number" id="eProg" class="inp"></div>
+  </div>
+  <div class="ig"><label data-uz="Mashg'ulotlar soni" data-ru="Кол-во тренировок">Mashg'ulotlar soni</label><input type="number" id="eTr" class="inp"></div>
+  <div class="ig">
+    <label data-uz="To'lov holati" data-ru="Статус оплаты">To'lov holati</label>
+    <select id="ePay" class="inp">
+      <option value="unpaid" data-uz="To'lanmagan" data-ru="Не оплачено">To'lanmagan</option>
+      <option value="pending" data-uz="Kutilmoqda" data-ru="В ожидании">Kutilmoqda</option>
+      <option value="paid" data-uz="To'langan" data-ru="Оплачено">To'langan</option>
+    </select>
+  </div>
+  <div class="ig"><label data-uz="Murabbiy izohi" data-ru="Комментарий тренера">Murabbiy izohi</label><textarea id="eNote" class="inp" rows="2"></textarea></div>
+  <div class="ig" style="display:flex;align-items:center;gap:10px"><input type="checkbox" id="eStar" style="width:20px;height:20px"><label for="eStar" style="margin:0" data-uz="Oyning eng yaxshi o'yinchisi ⭐" data-ru="Лучший игрок месяца ⭐">Oyning eng yaxshi o'yinchisi ⭐</label></div>
+  <button class="btn" onclick="savePlayer()" data-uz="SAQLASH" data-ru="СОХРАНИТЬ">SAQLASH</button>
+  <button class="btn bo" onclick="closeModal()" data-uz="BEKOR QILISH" data-ru="ОТМЕНА">BEKOR QILISH</button>
+</div>
+
+<div class="modal" id="parModal">
+  <h3 id="parTitle" style="margin-bottom:14px" data-uz="Ota-ona" data-ru="Родитель">Ota-ona</h3>
   <input type="hidden" id="paOld">
-  <div class="ig"><label>Ism</label><input id="paName" class="inp"></div>
-  <div class="ig"><label>Telefon (bog'lanish uchun)</label><input id="paPhone" class="inp" type="tel"></div>
-  <div class="ig"><label>Login (6 ta belgi)</label><div style="display:flex;gap:8px"><input id="paLogin" class="inp" maxlength="6"><button class="btn sm bo" style="margin:0" onclick="document.getElementById('paLogin').value=genLogin()">🔄</button></div></div>
-  <div class="ig"><label>Parol (6 ta belgi)</label><div style="display:flex;gap:8px"><input id="paPass" class="inp" maxlength="6"><button class="btn sm bo" style="margin:0" onclick="document.getElementById('paPass').value=genPass()">🔄</button></div></div>
-  <div class="ig"><label>Farzandlar (mavjud o'quvchilardan belgilang)</label><div id="paKidsBox" style="max-height:170px;overflow-y:auto"></div></div>
-  <div class="ig"><label>Yangi farzand ismi (vergul bilan, ixtiyoriy)</label><input id="paNew" class="inp"></div>
-  <button class="btn" onclick="savePar()">SAQLASH</button><button class="btn bo" onclick="closeModal()">BEKOR QILISH</button></div>
+  <div class="ig"><label data-uz="Ism" data-ru="Имя">Ism</label><input id="paName" class="inp"></div>
+  <div class="ig"><label data-uz="Telefon (bog'lanish uchun)" data-ru="Телефон (для связи)">Telefon (bog'lanish uchun)</label><input id="paPhone" class="inp" type="tel"></div>
+  <div class="ig">
+    <label data-uz="Login (6 ta belgi)" data-ru="Логин (6 символов)">Login (6 ta belgi)</label>
+    <div style="display:flex;gap:8px">
+      <input id="paLogin" class="inp" maxlength="6">
+      <button class="btn sm bo" style="margin:0" onclick="document.getElementById('paLogin').value=genLogin()">🔄</button>
+    </div>
+  </div>
+  <div class="ig">
+    <label data-uz="Parol (6 ta belgi)" data-ru="Пароль (6 символов)">Parol (6 ta belgi)</label>
+    <div style="display:flex;gap:8px">
+      <input id="paPass" class="inp" maxlength="6">
+      <button class="btn sm bo" style="margin:0" onclick="document.getElementById('paPass').value=genPass()">🔄</button>
+    </div>
+  </div>
+  <div class="ig"><label data-uz="Farzandlar (mavjud o'quvchilardan belgilang)" data-ru="Дети (выберите из существующих)">Farzandlar (mavjud o'quvchilardan belgilang)</label><div id="paKidsBox" style="max-height:170px;overflow-y:auto"></div></div>
+  <div class="ig"><label data-uz="Yangi farzand ismi (vergul bilan, ixtiyoriy)" data-ru="Имя нового ребенка (через запятую, необязательно)">Yangi farzand ismi (vergul bilan, ixtiyoriy)</label><input id="paNew" class="inp"></div>
+  <button class="btn" onclick="savePar()" data-uz="SAQLASH" data-ru="СОХРАНИТЬ">SAQLASH</button>
+  <button class="btn bo" onclick="closeModal()" data-uz="BEKOR QILISH" data-ru="ОТМЕНА">BEKOR QILISH</button>
+</div>
 
 <script>
 const firebaseConfig={databaseURL:"https://idum-futbol-default-rtdb.firebaseio.com/"};
@@ -384,7 +455,7 @@ catch(e){console.error("Firebase init error:",e);document.addEventListener('DOMC
 const $=id=>document.getElementById(id),v=id=>$(id).value.trim();
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const digits=s=>String(s).replace(/\D/g,''),ym=()=>new Date().toISOString().slice(0,7),today=()=>new Date().toLocaleDateString();
-let me=null,PL={},CK=new Set(),subs=[],cdT,S={card:"",amount:"350 000",scheduleDay:1,scheduleTime:"16:00",announcement:"",motivation:"Mehnat qilgan yutadi!",coach:"Arıf Arazadəı / Abbosov Shohruh Elimxanovich",opponent:"",matchTime:"",lineup:{gk:"",df1:"",df2:"",mf1:"",mf2:"",fw:""}};
+let me=null,PL={},CK=new Set(),subs=[],cdT,S={card:"",amount:"350 000",scheduleDay:1,scheduleTime:"16:00",announcement:"",motivation:"Mehnat qilgan yutadi!",coach:"Abbosov Shokhrukh Elimxanovich\n81-maktab futbol to'garagi murabbiyi\nTajriba: 14 yil\nMaqsad: Yosh futbolchilarni tarbiyalash va kuchli jamoa shakllantirish",opponent:"",matchTime:"",lineup:{gk:"",df1:"",df2:"",mf1:"",mf2:"",fw:""}};
 const amt=()=>parseInt(String(S.amount).replace(/\D/g,''))||0;
 function sub(ref,fn){ref.on('value',fn);subs.push(ref)}
 let ORD=null,ordT=null,curTotal=0,admT=null,OR={};
@@ -406,14 +477,33 @@ function countUp(el,to,suf){let n=0;const st=Math.max(1,Math.ceil(to/30)),i=setI
 e.style.cssText=`left:${Math.random()*96}vw;font-size:${14+Math.random()*22}px;animation-duration:${14+Math.random()*16}s;animation-delay:${-Math.random()*20}s`;b.appendChild(e)}}})()
 
 function toggleTheme(){document.body.classList.toggle('light')}
-let lang='uz';function toggleLang(){lang=lang==='uz'?'ru':'uz';document.querySelectorAll('[data-'+lang+']').forEach(e=>e.innerText=e.getAttribute('data-'+lang))}
+
+let lang='uz';
+function toggleLang(){
+    lang=lang==='uz'?'ru':'uz';
+    document.querySelectorAll('[data-'+lang+']').forEach(e=>{
+        if(e.tagName === 'INPUT' || e.tagName === 'TEXTAREA') {
+            // Skip for inputs
+        } else {
+            e.innerHTML=e.getAttribute('data-'+lang);
+        }
+    });
+    document.querySelectorAll('[data-ph-'+lang+']').forEach(e=>{
+        e.placeholder = e.getAttribute('data-ph-'+lang);
+    });
+    // Translate select options
+    document.querySelectorAll('option[data-'+lang+']').forEach(e=>{
+        e.innerText=e.getAttribute('data-'+lang);
+    });
+}
+
 function setMode(i,el){document.querySelectorAll('.mode').forEach(m=>m.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));$('pane'+i).classList.add('on')}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');scrollTo(0,0);syncNav(id)}
 function openModal(id){document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));$('ov').classList.add('active');$(id).classList.add('active')}
 function closeModal(){payOff();$('ov').classList.remove('active');document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'))}
 function startCountdown(){clearInterval(cdT);const d=+S.scheduleDay,[h,m]=(S.scheduleTime||"16:00").split(':').map(Number);
 cdT=setInterval(()=>{const n=new Date(),t=new Date();t.setHours(h,m,0,0);let k=d-n.getDay();if(k<0||(k===0&&t<n))k+=7;t.setDate(t.getDate()+k);const ms=t-n,z=Math.floor;
-$('cd').innerText=`${z(ms/864e5)}k ${z(ms%864e5/36e5)}s ${z(ms%36e5/6e4)}d ${z(ms%6e4/1e3)}s`},1000)}
+const cdEl=$('cd'); if(cdEl) cdEl.innerText=`${z(ms/864e5)}k ${z(ms%864e5/36e5)}s ${z(ms%36e5/6e4)}d ${z(ms%6e4/1e3)}s`},1000)}
 function bar(i,val,max,suf){const p=Math.max(0,Math.min(100,val/max*100)),b=$('b'+i);if(!b)return;b.style.width='0';requestAnimationFrame(()=>b.style.width=p+'%');b.className='sf '+(p<50?'fr':'fg');countUp($('t'+i),val,suf)}
 function onSettings(s){
   if(s.exists())S={...S,...s.val()};startCountdown();
@@ -473,10 +563,10 @@ function renderFamily(){
   if(!PAR||!$('kidsList'))return;
   const ks=Object.keys(PAR.children||{}).filter(k=>KIDS[k]&&!KIDS[k].isArchived);
   $('kidsList').innerHTML=ks.map(k=>{
-    const p=KIDS[k],ok=p.paid===true||p.paid==="paid",cls=ok?'bs':p.paid==="pending"?'bw':'bx',tx=ok?"To'langan ✅":p.paid==="pending"?"Kutilmoqda ⏳":"To'lanmagan ❌";
+    const p=KIDS[k],ok=p.paid===true||p.paid==="paid",cls=ok?'bs':p.paid==="pending"?'bw':'bx',tx=ok? (lang==='uz'?"To'langan ✅":"Оплачено ✅") : p.paid==="pending" ? (lang==='uz'?"Kutilmoqda ⏳":"В ожидании ⏳") : (lang==='uz'?"To'lanmagan ❌":"Не оплачено ❌");
     const ph=p.photoUrl||'https://ui-avatars.com/api/?name='+encodeURIComponent(p.name||'U')+'&background=1E293B&color=3B82F6&size=150';
-    return `<div class="card" style="cursor:pointer;padding:16px" onclick="openKid('${k}')"><div style="display:flex;gap:14px;align-items:center"><img src="${esc(ph)}" alt="" style="width:58px;height:72px;object-fit:cover;border-radius:14px;background:#1E293B"><div style="flex:1;min-width:0"><b style="font-size:16px">${p.isStar?'⭐ ':''}${esc(p.name)}</b><br><small style="color:var(--muted)">Guruh: ${esc(p.group||'-')} · Gol: ${+p.goals||0} · Mashg'ulot: ${+p.trainings||0}</small><div style="margin-top:8px"><span class="badge ${cls}">${tx}</span></div></div><span style="font-size:26px;color:var(--muted)">›</span></div></div>`}).join('')
-    ||`<div class="card"><p class="note" style="margin:0;text-align:center">Farzand biriktirilmagan. Murabbiy bilan bog'laning.</p></div>`;
+    return `<div class="card" style="cursor:pointer;padding:16px" onclick="openKid('${k}')"><div style="display:flex;gap:14px;align-items:center"><img src="${esc(ph)}" alt="" style="width:58px;height:72px;object-fit:cover;border-radius:14px;background:#1E293B"><div style="flex:1;min-width:0"><b style="font-size:16px">${p.isStar?'⭐ ':''}${esc(p.name)}</b><br><small style="color:var(--muted)">${lang==='uz'?'Guruh':'Группа'}: ${esc(p.group||'-')} · ${lang==='uz'?'Gol':'Голы'}: ${+p.goals||0} · ${lang==='uz'?"Mashg'ulot":"Тренировки"}: ${+p.trainings||0}</small><div style="margin-top:8px"><span class="badge ${cls}">${tx}</span></div></div><span style="font-size:26px;color:var(--muted)">›</span></div></div>`}).join('')
+    ||`<div class="card"><p class="note" style="margin:0;text-align:center">${lang==='uz'?'Farzand biriktirilmagan. Murabbiy bilan bog\'laning.':'Ребенок не привязан. Свяжитесь с тренером.'}</p></div>`;
 }
 function openKid(id){if(!KIDS[id])return;me={...KIDS[id],id};showScreen('parentScreen')}
 function backFamily(){me=null;closeModal();showScreen('familyScreen');renderFamily()}
@@ -485,23 +575,23 @@ function logout(){clearInterval(admT);subs.forEach(r=>r.off());subs=[];me=null;P
 function payStatus(){
   if(!$('pPay')||!$('btnPay'))return;
   const s=$('pPay'),b=$('btnPay'),w=$('payWarn'),p=me.paid;if(w)w.style.display=(new Date().getDate()>5&&p===false)?'block':'none';
-  if(p===true||p==="paid"){s.innerText="To'langan ✅";s.className="badge bs";b.style.display='none';if(w)w.style.display='none'}
-  else if(p==="pending"){s.innerText="Kutilmoqda ⏳";s.className="badge bw";b.style.display='flex';b.innerText="CHEKNI QAYTA YUBORISH"}
-  else{s.innerText="To'lanmagan ❌";s.className="badge bx";b.style.display='flex';b.innerText="TO'LOV QILISH"}
+  if(p===true||p==="paid"){s.innerText=lang==='uz'?"To'langan ✅":"Оплачено ✅";s.className="badge bs";b.style.display='none';if(w)w.style.display='none'}
+  else if(p==="pending"){s.innerText=lang==='uz'?"Kutilmoqda ⏳":"В ожидании ⏳";s.className="badge bw";b.style.display='flex';b.innerText=lang==='uz'?"CHEKNI QAYTA YUBORISH":"ОТПРАВИТЬ ЧЕК СНОВА"}
+  else{s.innerText=lang==='uz'?"To'lanmagan ❌":"Не оплачено ❌";s.className="badge bx";b.style.display='flex';b.innerText=lang==='uz'?"TO'LOV QILISH":"ОПЛАТИТЬ"}
 }
 function sendReceipt(){const l=`https://t.me/${BOT}?text=${encodeURIComponent(`To'lov cheki.\nO'quvchi: ${me.name}\nOta-ona logini: ${PAR?PAR.id:'-'}`)}`;
   if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData)Telegram.WebApp.openTelegramLink(l);else open(l,'_blank')}
 function openHistory(){openModal('histModal');if(!db)return;db.ref('payments/'+me.id).once('value').then(s=>{const l=$('histList');
-  l.innerHTML=s.exists()?Object.values(s.val()).reverse().map(p=>`<div class="li"><span>${esc(p.date)}</span><b>${esc(p.amount)} so'm</b></div>`).join(''):"<p style='text-align:center;color:var(--muted)'>Tarix bo'sh</p>"})}
+  l.innerHTML=s.exists()?Object.values(s.val()).reverse().map(p=>`<div class="li"><span>${esc(p.date)}</span><b>${esc(p.amount)} so'm</b></div>`).join(''):`<p style='text-align:center;color:var(--muted)'>${lang==='uz'?"Tarix bo'sh":"История пуста"}</p>`})}
 
 function payOff(){clearInterval(ordT);if(ORD){ORD.off();ORD=null}}
 function cp(k){const t=k==='a'?String(curTotal):digits(S.card||'');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Nusxalandi: "+t)).catch(()=>prompt("Nusxalang:",t))}
-function paidOk(){payOff();closeModal();confetti();alert("To'lov qabul qilindi! ✅")}
+function paidOk(){payOff();closeModal();confetti();alert(lang==='uz'?"To'lov qabul qilindi! ✅":"Оплата принята! ✅")}
 async function startPay(){
   openModal('payModal');payOff();const base=amt();
-  if(!base){closeModal();return alert("Oylik to'lov summasi belgilanmagan. Murabbiy bilan bog'laning.")}
+  if(!base){closeModal();return alert(lang==='uz'?"Oylik to'lov summasi belgilanmagan. Murabbiy bilan bog'laning.":"Сумма оплаты не установлена. Свяжитесь с тренером.")}
   if(!db)return alert("Baza ulanmagan");
-  $('pSpin').style.display='block';$('pTitle').innerText="To'lovni yakunlang";$('oAmt').innerText='...';$('oCard').innerText=S.card||'—';$('oTime').innerText='10:00';
+  $('pSpin').style.display='block';$('pTitle').innerText=lang==='uz'?"To'lovni yakunlang":"Завершите оплату";$('oAmt').innerText='...';$('oCard').innerText=S.card||'—';$('oTime').innerText='10:00';
   try{
     const s=await db.ref('orders').orderByChild('status').equalTo('pending').once('value'),used=new Set();let mine=null;
     s.forEach(c=>{const o=c.val();if(o.exp<=Date.now()){c.ref.update({status:'expired'});return}used.add(o.total);if(o.player===me.id&&o.base===base)mine={key:c.key,...o}});
@@ -510,7 +600,7 @@ async function startPay(){
     curTotal=mine.total;$('oAmt').innerText=fmt(mine.total)+" UZS";
     ORD=db.ref('orders/'+mine.key);ORD.on('value',x=>{const o=x.val();if(o&&o.status==='paid')paidOk()});
     ordT=setInterval(()=>{const l=Math.max(0,Math.round((mine.exp-Date.now())/1000));$('oTime').innerText=String(Math.floor(l/60)).padStart(2,'0')+':'+String(l%60).padStart(2,'0');
-      if(!l){payOff();db.ref('orders/'+mine.key).update({status:'expired'});$('pSpin').style.display='none';$('pTitle').innerText="Vaqt tugadi. Qaytadan urinib ko'ring."}},1000);
+      if(!l){payOff();db.ref('orders/'+mine.key).update({status:'expired'});$('pSpin').style.display='none';$('pTitle').innerText=lang==='uz'?"Vaqt tugadi. Qaytadan urinib ko'ring.":"Время истекло. Попробуйте снова."}},1000);
   }catch(e){alert("Xatolik: "+e.message)}
 }
 
@@ -543,10 +633,10 @@ function startAdmin(){
   });
   
   sub(db.ref('applications'),s=>{const box=$('at_apps'),bd=$('appBadge');if(!box)return;
-    if(!s.exists()){box.innerHTML="<p style='text-align:center;color:var(--muted)'>Yangi arizalar yo'q</p>";if(bd)bd.classList.add('hidden');return}
+    if(!s.exists()){box.innerHTML=`<p style='text-align:center;color:var(--muted)'>${lang==='uz'?"Yangi arizalar yo'q":"Новых заявок нет"}</p>`;if(bd)bd.classList.add('hidden');return}
     let n=0,h='';s.forEach(c=>{const a=c.val(),st=a.type==='student';n++;
-      h+=`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(a.childName)}</b> (${esc(a.age||'?')} yosh)<span class="tag ${st?'ts':'tp'}">${st?"O'QUVCHI":'OTA-ONA'}</span><br><small style="color:var(--muted)">${st?'':'Ota-ona: '+esc(a.parentName)+' | '}Tel: ${esc(a.phone)}</small></div>
-      <div style="display:flex;gap:10px;width:100%;margin-top:10px"><button class="btn sm bok" onclick="acceptApp('${c.key}')">QABUL</button><button class="btn sm bd" onclick="rejectApp('${c.key}')">RAD ETISH</button></div></div>`});
+      h+=`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(a.childName)}</b> (${esc(a.age||'?')} ${lang==='uz'?'yosh':'лет'})<span class="tag ${st?'ts':'tp'}">${st?(lang==='uz'?"O'QUVCHI":'УЧЕНИК'):(lang==='uz'?'OTA-ONA':'РОДИТЕЛЬ')}</span><br><small style="color:var(--muted)">${st?'':(lang==='uz'?'Ota-ona: ':'Родитель: ')+esc(a.parentName)+' | '}${lang==='uz'?'Tel:':'Тел:'} ${esc(a.phone)}</small></div>
+      <div style="display:flex;gap:10px;width:100%;margin-top:10px"><button class="btn sm bok" onclick="acceptApp('${c.key}')" data-uz="QABUL" data-ru="ПРИНЯТЬ">${lang==='uz'?'QABUL':'ПРИНЯТЬ'}</button><button class="btn sm bd" onclick="rejectApp('${c.key}')" data-uz="RAD ETISH" data-ru="ОТКЛОНИТЬ">${lang==='uz'?'RAD ETISH':'ОТКЛОНИТЬ'}</button></div></div>`});
     box.innerHTML=h;if(bd){bd.innerText=n;bd.classList.remove('hidden')}});
   
   sub(db.ref('orders').orderByChild('created').limitToLast(60),s=>{OR={};s.forEach(c=>{OR[c.key]=c.val()});renderOrders()});
@@ -559,7 +649,7 @@ function renderOrders(){
   if(!$('at_orders')||!$('ordBadge'))return;
   const l=Object.entries(OR).filter(([,o])=>o.status==='pending'&&o.exp>Date.now()).sort((a,b)=>b[1].created-a[1].created),b=$('ordBadge');
   b.innerText=l.length;b.classList.toggle('hidden',!l.length);
-  $('at_orders').innerHTML=`<p class="note" style="margin:0 0 12px">Bank ilovangizga tushgan summani shu ro'yxatdagi summa bilan solishtirib, tasdiqlang.</p>`+(l.map(([k,o])=>`<div class="li"><div><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(((parentOf(o.player)||[0,{}])[1]).name||'')} · ${Math.ceil((o.exp-Date.now())/60000)} daq qoldi</small></div><div style="text-align:right"><b style="color:var(--ok)">${fmt(o.total)}</b><div class="row"><button class="btn sm bok" onclick="confirmOrder('${k}')">✔ Tasdiqlash</button></div></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">Kutilayotgan to'lov yo'q</p>`);
+  $('at_orders').innerHTML=`<p class="note" style="margin:0 0 12px">${lang==='uz'?"Bank ilovangizga tushgan summani shu ro'yxatdagi summa bilan solishtirib, tasdiqlang.":"Сравните сумму, поступившую в банковское приложение, с суммой в этом списке и подтвердите."}</p>`+(l.map(([k,o])=>`<div class="li"><div><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(((parentOf(o.player)||[0,{}])[1]).name||'')} · ${Math.ceil((o.exp-Date.now())/60000)} ${lang==='uz'?'daq qoldi':'мин осталось'}</small></div><div style="text-align:right"><b style="color:var(--ok)">${fmt(o.total)}</b><div class="row"><button class="btn sm bok" onclick="confirmOrder('${k}')" data-uz="✔ Tasdiqlash" data-ru="✔ Подтвердить">${lang==='uz'?'✔ Tasdiqlash':'✔ Подтвердить'}</button></div></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">${lang==='uz'?"Kutilayotgan to'lov yo'q":"Нет ожидаемых платежей"}</p>`);
 }
 function confirmOrder(k){
   if(!db)return;
@@ -579,29 +669,29 @@ function renderAdmin(){
   if(!$('stList'))return;
   const q=$('fQ')?v('fQ').toLowerCase():'',g=$('fGroup')?$('fGroup').value:'',groups=new Set();let paid=0,debt=0,sh='',at='',st='',ar='';
   Object.entries(PL).forEach(([id,p])=>{
-    if(p.isArchived){ar+=`<div class="li"><div><b>${esc(p.name)}</b><br><small>${esc(p.group||'')}</small></div><div class="row"><button class="btn sm bok" onclick="restore('${id}')">TIKLASH</button><button class="btn sm bd" onclick="delForever('${id}')">O'CHIRISH</button></div></div>`;return}
+    if(p.isArchived){ar+=`<div class="li"><div><b>${esc(p.name)}</b><br><small>${esc(p.group||'')}</small></div><div class="row"><button class="btn sm bok" onclick="restore('${id}')" data-uz="TIKLASH" data-ru="ВОССТАНОВИТЬ">${lang==='uz'?'TIKLASH':'ВОССТАНОВИТЬ'}</button><button class="btn sm bd" onclick="delForever('${id}')" data-uz="O'CHIRISH" data-ru="УДАЛИТЬ">${lang==='uz'?"O'CHIRISH":"УДАЛИТЬ"}</button></div></div>`;return}
     groups.add(p.group||'');const isPaid=p.paid===true||p.paid==="paid";isPaid?paid+=amt():debt+=amt();
     {const pa=parentOf(id),hay=((p.name||'')+' '+(pa?pa[1].name+' '+pa[0]+' '+(pa[1].phone||''):'')+' '+id).toLowerCase();if((g&&(p.group||'')!==g)||(q&&!hay.includes(q)))return}
-    const cls=isPaid?'bs':p.paid==="pending"?'bw':'bx',txt=isPaid?"To'langan":p.paid==="pending"?'Kutilmoqda':'Qarzdor';const pr0=parentOf(id),ph=phoneOf(id);
-    sh+=`<div class="li"><div>${p.isStar?'⭐ ':''}<b>${esc(p.name)}</b><br><small style="color:var(--muted)">Guruh: ${esc(p.group||'-')} | Ota-ona: ${esc(pr0?pr0[1].name:'—')}</small></div><div style="text-align:right"><span class="badge ${cls}">${txt}</span>
-      <div class="row">${isPaid?'':`<button class="btn sm bok" onclick="markPaid('${id}')">✔ To'landi</button>${ph?`<a class="btn sm bo" href="sms:+${ph}?body=${encodeURIComponent(remindText(p))}">✉️</a>`:''}`}<button class="btn sm bo" onclick="editPlayer('${id}')">✏️</button><button class="btn sm bd" onclick="archive('${id}')">🗑</button></div></div></div>`;
+    const cls=isPaid?'bs':p.paid==="pending"?'bw':'bx',txt=isPaid?(lang==='uz'?"To'langan":"Оплачено"):p.paid==="pending"?(lang==='uz'?'Kutilmoqda':'В ожидании'):(lang==='uz'?'Qarzdor':'Долг');const pr0=parentOf(id),ph=phoneOf(id);
+    sh+=`<div class="li"><div>${p.isStar?'⭐ ':''}<b>${esc(p.name)}</b><br><small style="color:var(--muted)">${lang==='uz'?'Guruh:':'Группа:'} ${esc(p.group||'-')} | ${lang==='uz'?'Ota-ona:':'Родитель:'} ${esc(pr0?pr0[1].name:'—')}</small></div><div style="text-align:right"><span class="badge ${cls}">${txt}</span>
+      <div class="row">${isPaid?'':`<button class="btn sm bok" onclick="markPaid('${id}')" data-uz="✔ To'landi" data-ru="✔ Оплачено">${lang==='uz'?"✔ To'landi":"✔ Оплачено"}</button>${ph?`<a class="btn sm bo" href="sms:+${ph}?body=${encodeURIComponent(remindText(p))}">✉️</a>`:''}`}<button class="btn sm bo" onclick="editPlayer('${id}')">✏️</button><button class="btn sm bd" onclick="archive('${id}')">🗑</button></div></div></div>`;
     const done=(p.attendanceDates||[]).includes(today());
-    at+=`<label class="li"><span>${esc(p.name)} <small style="color:var(--muted)">${esc(p.group||'')}</small></span>${done?'<span class="badge bs">✅ belgilangan</span>':`<input type="checkbox" style="width:22px;height:22px" ${CK.has(id)?'checked':''} onchange="this.checked?CK.add('${id}'):CK.delete('${id}')">`}</label>`;
+    at+=`<label class="li"><span>${esc(p.name)} <small style="color:var(--muted)">${esc(p.group||'')}</small></span>${done?`<span class="badge bs" data-uz="✅ belgilangan" data-ru="✅ отмечен">${lang==='uz'?'✅ belgilangan':'✅ отмечен'}</span>`:`<input type="checkbox" style="width:22px;height:22px" ${CK.has(id)?'checked':''} onchange="this.checked?CK.add('${id}'):CK.delete('${id}')">`}</label>`;
     const pr=+p.progress||0,go=+p.goals||0,as=+p.assists||0,r=(l,n,t,ok)=>`<div class="sb" style="margin-bottom:8px"><div class="sbh" style="font-size:11px"><span>${l}</span><span>${t}</span></div><div class="sbg" style="height:8px"><div class="sf ${ok?'fg':'fr'}" style="width:${Math.min(n,100)}%"></div></div></div>`;
-    st+=`<div style="border-bottom:1px solid var(--cb);padding-bottom:14px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b>${esc(p.name)}</b><button class="btn sm bo" onclick="editPlayer('${id}')">TAHRIRLASH</button></div>${r("O'zlashtirish",pr,pr+'%',pr>=50)}${r('Gollar',go*5,go+' ta',go>=5)}${r('Asistlar',as*5,as+' ta',as>=5)}</div>`;
+    st+=`<div style="border-bottom:1px solid var(--cb);padding-bottom:14px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b>${esc(p.name)}</b><button class="btn sm bo" onclick="editPlayer('${id}')" data-uz="TAHRIRLASH" data-ru="РЕДАКТИРОВАТЬ">${lang==='uz'?'TAHRIRLASH':'РЕДАКТИРОВАТЬ'}</button></div>${r(lang==='uz'?"O'zlashtirish":'Успеваемость',pr,pr+'%',pr>=50)}${r(lang==='uz'?'Gollar':'Голы',go*5,go+(lang==='uz'?' ta':' шт'),go>=5)}${r(lang==='uz'?'Asistlar':'Ассисты',as*5,as+(lang==='uz'?' ta':' шт'),as>=5)}</div>`;
   });
   const gs=$('fGroup');
-  if(gs){const gh='<option value="">Barcha guruh</option>'+[...groups].sort().map(x=>`<option value="${esc(x)}">${esc(x)||'Guruhsiz'}</option>`).join('');
+  if(gs){const gh=`<option value="" data-uz="Barcha guruh" data-ru="Все группы">${lang==='uz'?'Barcha guruh':'Все группы'}</option>`+[...groups].sort().map(x=>`<option value="${esc(x)}">${esc(x)||(lang==='uz'?'Guruhsiz':'Без группы')}</option>`).join('');
   if(gs.dataset.h!==gh){gs.innerHTML=gh;gs.dataset.h=gh;gs.value=g}}
-  const e="<p style='text-align:center;color:var(--muted)'>Hech narsa topilmadi</p>";
-  if($('stList'))$('stList').innerHTML=sh||e;if($('attList'))$('attList').innerHTML=at||e;if($('stStats'))$('stStats').innerHTML=st||e;if($('arList'))$('arList').innerHTML=ar||"<p style='text-align:center;color:var(--muted)'>Arxiv bo'sh</p>";
+  const e=`<p style='text-align:center;color:var(--muted)'>${lang==='uz'?'Hech narsa topilmadi':'Ничего не найдено'}</p>`;
+  if($('stList'))$('stList').innerHTML=sh||e;if($('attList'))$('attList').innerHTML=at||e;if($('stStats'))$('stStats').innerHTML=st||e;if($('arList'))$('arList').innerHTML=ar||`<p style='text-align:center;color:var(--muted)'>${lang==='uz'?"Arxiv bo'sh":"Архив пуст"}</p>`;
   if($('finPaid'))$('finPaid').innerText=paid.toLocaleString()+" so'm";if($('finDebt'))$('finDebt').innerText=debt.toLocaleString()+" so'm";
 }
-const remindText=p=>`Assalomu alaykum! ${p.name} uchun ${S.amount} so'm oylik to'lovni amalga oshirishingizni so'raymiz. Karta: ${S.card}. 81-maktab FK`;
+const remindText=p=>lang==='uz'?`Assalomu alaykum! ${p.name} uchun ${S.amount} so'm oylik to'lovni amalga oshirishingizni so'raymiz. Karta: ${S.card}. 81-maktab FK`:`Здравствуйте! Просим оплатить ежемесячный взнос за ${p.name} в размере ${S.amount} сум. Карта: ${S.card}. Школа 81 ФК`;
 function copyDebtors(){const l=Object.entries(PL).filter(([,p])=>!p.isArchived&&p.paid!==true&&p.paid!=="paid").map(([id,p])=>`${p.name} (${phoneOf(id)?'+'+phoneOf(id):'—'})`);
-  if(!l.length)return alert("Qarzdorlar yo'q 🎉");const t=`Qarzdorlar (${l.length}):\n`+l.join('\n');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Ro'yxat nusxalandi!")).catch(()=>prompt("Nusxalang:",t))}
+  if(!l.length)return alert(lang==='uz'?"Qarzdorlar yo'q 🎉":"Должников нет 🎉");const t=`${lang==='uz'?'Qarzdorlar':'Должники'} (${l.length}):\n`+l.join('\n');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert(lang==='uz'?"Ro'yxat nusxalandi!":"Список скопирован!")).catch(()=>prompt("Nusxalang:",t))}
 function markPaid(id){
-  if(!db||!confirm("To'lov qabul qilindimi?"))return;
+  if(!db||!confirm(lang==='uz'?"To'lov qabul qilindimi?":"Оплата принята?"))return;
   const k=db.ref('payments/'+id).push().key,u={};u['players/'+id+'/paid']=true;u['players/'+id+'/payMonth']=ym();u[`payments/${id}/${k}`]={date:today(),amount:amt()};
   db.ref().update(u).then(confetti);
 }
@@ -609,12 +699,12 @@ function checkAll(){Object.entries(PL).forEach(([id,p])=>{if(!p.isArchived&&!(p.
 function saveAttendance(){
   if(!db)return;
   const u={};CK.forEach(id=>{const p=PL[id];if(!p)return;const d=p.attendanceDates||[];if(d.includes(today()))return;u['players/'+id+'/attendanceDates']=[...d,today()];u['players/'+id+'/trainings']=(+p.trainings||0)+1});
-  if(!Object.keys(u).length)return alert("Hech kim belgilanmadi.");
-  db.ref().update(u).then(()=>{alert(Object.keys(u).length/2+" ta o'quvchi belgilandi!");CK.clear();confetti()});
+  if(!Object.keys(u).length)return alert(lang==='uz'?"Hech kim belgilanmadi.":"Никто не отмечен.");
+  db.ref().update(u).then(()=>{alert(Object.keys(u).length/2+(lang==='uz'?" ta o'quvchi belgilandi!":" учеников отмечено!"));CK.clear();confetti()});
 }
-const restore=id=>confirm("Qayta tiklaysizmi?")&&db.ref('players/'+id+'/isArchived').set(false);
-const archive=id=>confirm("Arxivga o'tkazasizmi? (Kira olmaydi)")&&db.ref('players/'+id+'/isArchived').set(true);
-const delForever=id=>{if(!confirm("DIQQAT! Butunlay o'chadi. Rozimisiz?"))return;const u={};u['players/'+id]=null;u['payments/'+id]=null;Object.entries(PR).forEach(([pid,p])=>{if(p.children&&p.children[id])u[`parents/${pid}/children/${id}`]=null});db.ref().update(u)};
+const restore=id=>confirm(lang==='uz'?"Qayta tiklaysizmi?":"Восстановить?")&&db.ref('players/'+id+'/isArchived').set(false);
+const archive=id=>confirm(lang==='uz'?"Arxivga o'tkazasizmi? (Kira olmaydi)":"В архив? (Не сможет войти)")&&db.ref('players/'+id+'/isArchived').set(true);
+const delForever=id=>{if(!confirm(lang==='uz'?"DIQQAT! Butunlay o'chadi. Rozimisiz?":"ВНИМАНИЕ! Удалится навсегда. Вы уверены?"))return;const u={};u['players/'+id]=null;u['payments/'+id]=null;Object.entries(PR).forEach(([pid,p])=>{if(p.children&&p.children[id])u[`parents/${pid}/children/${id}`]=null});db.ref().update(u)};
 function exportCSV(){let c="Ism,Ota-ona logini,Guruh,Raqam,Gollar,Asistlar,Tezlik,O'zlashtirish,To'lov\n";
   Object.entries(PL).forEach(([id,p])=>{if(!p.isArchived)c+=`"${p.name}","${(parentOf(id)||[''])[0]}","${p.group||''}","${p.jersey||''}","${p.goals||0}","${p.assists||0}","${p.speed||0}","${p.progress||0}","${p.paid}"\n`});
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(["\ufeff"+c],{type:'text/csv;charset=utf-8;'}));a.download="oquvchilar_royxati.csv";a.click()}
@@ -633,10 +723,10 @@ function saveSettings(){
     announcement:$('sAnn').value, motivation:$('sMot').value, 
     coach: $('sCoach').value, opponent: v('sOpponent'), matchTime: v('sMatchTime'),
     lineup: lineup
-  }).then(()=>alert("Sozlamalar saqlandi!")).catch(e=>alert(e.message));
+  }).then(()=>alert(lang==='uz'?"Sozlamalar saqlandi!":"Настройки сохранены!")).catch(e=>alert(e.message));
 }
 function editPlayer(id){
-  const p=PL[id];if(!p)return;$('plTitle').innerText="Tahrirlash: "+p.name;$('eId').value=id;
+  const p=PL[id];if(!p)return;$('plTitle').innerText=(lang==='uz'?"Tahrirlash: ":"Редактировать: ")+p.name;$('eId').value=id;
   $('eName').value=p.name||'';$('ePhoto').value=p.photoUrl||'';$('eGroup').value=p.group||'';$('eJersey').value=p.jersey||'';$('eBio').value=p.bio||'';
   $('eGoals').value=p.goals||0;$('eAssists').value=p.assists||0;$('eSpeed').value=p.speed||0;$('eProg').value=p.progress||0;$('eTr').value=p.trainings||0;
   $('ePay').value=p.paid===true?"paid":p.paid==="pending"?"pending":"unpaid";$('eNote').value=p.note||'';$('eStar').checked=!!p.isStar;openModal('plModal');
@@ -649,53 +739,53 @@ function savePlayer(){
   if(paidNow)rec.payMonth=ym();
   const u={};u['players/'+id]=rec;
   if(paidNow&&old.paid!==true)u[`payments/${id}/${db.ref('payments/'+id).push().key}`]={date:today(),amount:amt()};
-  db.ref().update(u).then(()=>{alert("Saqlandi!");closeModal()}).catch(e=>alert(e.message));
+  db.ref().update(u).then(()=>{alert(lang==='uz'?"Saqlandi!":"Сохранено!");closeModal()}).catch(e=>alert(e.message));
 }
 
 const newKid=(name,age)=>({name,age:age||'',paid:false,goals:0,assists:0,speed:0,progress:0,trainings:0,isArchived:false,attendanceDates:[]});
 const credText=id=>`81-maktab FK\nLogin: ${id}\nParol: ${PR[id].password}\nSayt: ${location.href.split(/[?#]/)[0]}`;
-function copyCred(id){const t=credText(id);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Nusxalandi!")).catch(()=>prompt("Nusxalang:",t))}
+function copyCred(id){const t=credText(id);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert(lang==='uz'?"Nusxalandi!":"Скопировано!")).catch(()=>prompt("Nusxalang:",t))}
 function renderParents(){
   if(!$('at_parents'))return;
   const l=Object.entries(PR);
-  $('at_parents').innerHTML=`<button class="btn sm" style="margin-bottom:12px" onclick="editPar('')">+ Ota-ona qo'shish</button>`+(l.map(([id,p])=>`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(p.name||id)}</b>${p.phone?` <small style="color:var(--muted)">+${esc(p.phone)}</small>`:''}<br><small style="color:var(--ok);font-weight:700">Login: ${esc(id)} · Parol: ${esc(p.password)}</small><br><small style="color:var(--muted)">Farzandlar: ${Object.keys(p.children||{}).map(k=>esc((PL[k]&&PL[k].name)||k)).join(', ')||'—'}</small></div><div class="row" style="width:100%;justify-content:flex-start"><button class="btn sm bo" onclick="editPar('${id}')">✏️</button><button class="btn sm bok" onclick="copyCred('${id}')">📋 Nusxalash</button>${p.phone?`<a class="btn sm bo" href="sms:+${esc(p.phone)}?body=${encodeURIComponent(credText(id))}">✉️</a>`:''}<button class="btn sm bd" onclick="delPar('${id}')">🗑</button></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">Ota-onalar yo'q</p>`);
+  $('at_parents').innerHTML=`<button class="btn sm" style="margin-bottom:12px" onclick="editPar('')" data-uz="+ Ota-ona qo'shish" data-ru="+ Добавить родителя">${lang==='uz'?"+ Ota-ona qo'shish":"+ Добавить родителя"}</button>`+(l.map(([id,p])=>`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(p.name||id)}</b>${p.phone?` <small style="color:var(--muted)">+${esc(p.phone)}</small>`:''}<br><small style="color:var(--ok);font-weight:700">Login: ${esc(id)} · Parol: ${esc(p.password)}</small><br><small style="color:var(--muted)">${lang==='uz'?'Farzandlar:':'Дети:'} ${Object.keys(p.children||{}).map(k=>esc((PL[k]&&PL[k].name)||k)).join(', ')||'—'}</small></div><div class="row" style="width:100%;justify-content:flex-start"><button class="btn sm bo" onclick="editPar('${id}')">✏️</button><button class="btn sm bok" onclick="copyCred('${id}')" data-uz="📋 Nusxalash" data-ru="📋 Копировать">${lang==='uz'?'📋 Nusxalash':'📋 Копировать'}</button>${p.phone?`<a class="btn sm bo" href="sms:+${esc(p.phone)}?body=${encodeURIComponent(credText(id))}">✉️</a>`:''}<button class="btn sm bd" onclick="delPar('${id}')">🗑</button></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">${lang==='uz'?"Ota-onalar yo'q":"Нет родителей"}</p>`);
 }
 function editPar(id){
   if(!$('parTitle'))return;
   const p=PR[id]||{},ch=p.children||{};
-  $('parTitle').innerText=id?"Ota-onani tahrirlash":"Yangi ota-ona";$('paOld').value=id;
+  $('parTitle').innerText=id?(lang==='uz'?"Ota-onani tahrirlash":"Редактировать родителя"):(lang==='uz'?"Yangi ota-ona":"Новый родитель");$('paOld').value=id;
   $('paName').value=p.name||'';$('paPhone').value=p.phone||'';$('paLogin').value=id||genLogin();$('paPass').value=p.password||genPass();$('paNew').value='';
-  $('paKidsBox').innerHTML=Object.entries(PL).filter(([,k])=>!k.isArchived).map(([k,x])=>`<label class="li" style="padding:10px"><span>${esc(x.name)}</span><input type="checkbox" value="${k}" ${ch[k]?'checked':''} style="width:20px;height:20px"></label>`).join('')||`<p class="note">Hozircha o'quvchi yo'q.</p>`;
+  $('paKidsBox').innerHTML=Object.entries(PL).filter(([,k])=>!k.isArchived).map(([k,x])=>`<label class="li" style="padding:10px"><span>${esc(x.name)}</span><input type="checkbox" value="${k}" ${ch[k]?'checked':''} style="width:20px;height:20px"></label>`).join('')||`<p class="note">${lang==='uz'?"Hozircha o'quvchi yo'q.":"Пока нет учеников."}</p>`;
   openModal('parModal');
 }
 function savePar(){
   if(!db)return;
   const old=$('paOld').value,l=v('paLogin').toUpperCase(),p=v('paPass').toUpperCase(),n=v('paName'),ph=digits(v('paPhone'));
-  if(!n)return alert("Ism kiriting!");
-  if(!/^[A-Z0-9]{6}$/.test(l)||!/^[A-Z0-9]{6}$/.test(p))return alert("Login va parol 6 ta belgi bo'lsin!");
-  if(l!==old&&PR[l])return alert("Bu login band!");
+  if(!n)return alert(lang==='uz'?"Ism kiriting!":"Введите имя!");
+  if(!/^[A-Z0-9]{6}$/.test(l)||!/^[A-Z0-9]{6}$/.test(p))return alert(lang==='uz'?"Login va parol 6 ta belgi bo'lsin!":"Логин и пароль должны быть 6 символов!");
+  if(l!==old&&PR[l])return alert(lang==='uz'?"Bu login band!":"Этот логин занят!");
   const ch={},u={};document.querySelectorAll('#paKidsBox input:checked').forEach(c=>ch[c.value]=true);
   v('paNew').split(',').map(x=>x.trim()).filter(Boolean).forEach(nm=>{const id=genId();u['players/'+id]=newKid(nm);ch[id]=true});
   if(old&&old!==l)u['parents/'+old]=null;
   u['parents/'+l]={name:n,phone:ph,password:p,children:ch};
   db.ref().update(u).then(()=>{closeModal();confetti()}).catch(e=>alert(e.message));
 }
-const delPar=id=>confirm("O'chirilsinmi?")&&db.ref('parents/'+id).remove();
+const delPar=id=>confirm(lang==='uz'?"O'chirilsinmi?":"Удалить?")&&db.ref('parents/'+id).remove();
 async function acceptApp(k){
   if(!db)return;
   const a=(await db.ref('applications/'+k).once('value')).val();if(!a)return;
   const ph=digits(a.phone||''),ex=ph?Object.entries(PR).find(([,p])=>p.phone===ph):null;
   const names=String(a.childName||'').split(',').map(x=>x.trim()).filter(Boolean);
-  if(!names.length)return alert("Farzand ismi yo'q!");
+  if(!names.length)return alert(lang==='uz'?"Farzand ismi yo'q!":"Нет имени ребенка!");
   const u={},ch={};names.forEach(nm=>{const id=genId();u['players/'+id]=newKid(nm,a.age);ch[id]=true});
   let login,pass;
   if(ex){login=ex[0];pass=ex[1].password;Object.keys(ch).forEach(id=>u[`parents/${login}/children/${id}`]=true)}
   else{login=genLogin();pass=genPass();u['parents/'+login]={name:a.parentName||'Ota-ona',phone:ph,password:pass,children:ch}}
   u['applications/'+k]=null;
   await db.ref().update(u);confetti();
-  alert(`Qabul qilindi!\nLogin: ${login}\nParol: ${pass}`);
+  alert(`${lang==='uz'?'Qabul qilindi!':'Принято!'}\nLogin: ${login}\nParol: ${pass}`);
 }
-const rejectApp=k=>confirm("O'chirilsinmi?")&&db.ref('applications/'+k).remove();
+const rejectApp=k=>confirm(lang==='uz'?"O'chirilsinmi?":"Удалить?")&&db.ref('applications/'+k).remove();
 function adminTab(t,el){
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');
   document.querySelectorAll('.atab').forEach(x=>x.classList.add('hidden'));if($('at_'+t))$('at_'+t).classList.remove('hidden');
@@ -721,39 +811,38 @@ function goTab(t){
 function kidsOf(){return Object.keys((PAR&&PAR.children)||{}).filter(k=>KIDS[k]&&!KIDS[k].isArchived)}
 
 function renderStats(){
-  if(!$('sList') && !$('sName'))return; // no stat screen elements
+  if(!$('sList') && !$('sName'))return; 
   
-  // If viewing from bottom nav (not specific child), pick first child
   if(!me && kidsOf().length > 0) { openKid(kidsOf()[0]); }
   if(!me) return;
 
   const u = me;
   if($('sName')) $('sName').innerText = u.name || 'Ism';
   if($('sPhoto')) $('sPhoto').src = u.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name||'U')}&background=1E293B&color=3B82F6&size=150`;
-  if($('sJersey')) $('sJersey').innerText = u.jersey ? "#" + u.jersey + " raqam" : "";
+  if($('sJersey')) $('sJersey').innerText = u.jersey ? "#" + u.jersey + (lang==='uz'?" raqam":" номер") : "";
   
-  bar(1,+u.progress||0,100,"%");bar(2,+u.goals||0,20," ta");bar(3,+u.assists||0,20," ta");bar(4,+u.speed||0,100,"%");bar(5,+u.trainings||0,30," marta");
+  bar(1,+u.progress||0,100,"%");bar(2,+u.goals||0,20,(lang==='uz'?" ta":" шт"));bar(3,+u.assists||0,20,(lang==='uz'?" ta":" шт"));bar(4,+u.speed||0,100,"%");bar(5,+u.trainings||0,30,(lang==='uz'?" marta":" раз"));
   
-  let b='';if(u.isStar)b+=`<div class="bi star">⭐ Oyning eng yaxshisi</div>`;if(+u.goals>=10)b+=`<div class="bi">🥇 Gol hujumchisi</div>`;if(+u.speed>=80)b+=`<div class="bi">⚡ Tezkor</div>`;if(+u.progress>=80)b+=`<div class="bi">🧠 Aqlli o'yinchi</div>`;$('sBadges').innerHTML=b;
+  let b='';if(u.isStar)b+=`<div class="bi star">${lang==='uz'?"⭐ Oyning eng yaxshisi":"⭐ Лучший игрок месяца"}</div>`;if(+u.goals>=10)b+=`<div class="bi">${lang==='uz'?"🥇 Gol hujumchisi":"🥇 Бомбардир"}</div>`;if(+u.speed>=80)b+=`<div class="bi">${lang==='uz'?"⚡ Tezkor":"⚡ Быстрый"}</div>`;if(+u.progress>=80)b+=`<div class="bi">${lang==='uz'?"🧠 Aqlli o'yinchi":"🧠 Умный игрок"}</div>`;$('sBadges').innerHTML=b;
   
-  db.ref('players').once('value').then(s=>{const l=[];s.forEach(c=>{const p=c.val();if(!p.isArchived)l.push({name:p.name||'',score:(+p.goals||0)*3+(+p.assists||0)*2+(+p.progress||0)})});l.sort((a,b)=>b.score-a.score);$('board').innerHTML=l.slice(0,5).map((p,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ball</b></div>`).join('')||"Ma'lumot yo'q"});
+  db.ref('players').once('value').then(s=>{const l=[];s.forEach(c=>{const p=c.val();if(!p.isArchived)l.push({name:p.name||'',score:(+p.goals||0)*3+(+p.assists||0)*2+(+p.progress||0)})});l.sort((a,b)=>b.score-a.score);$('board').innerHTML=l.slice(0,5).map((p,i)=>`<div class="li"><span>${['🥇','🥈','🥉'][i]||(i+1)+'.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ${lang==='uz'?'ball':'баллов'}</b></div>`).join('')||(lang==='uz'?"Ma'lumot yo'q":"Нет данных")});
 }
 
 function renderWallet(){
   if(!$('wList'))return;
   $('wList').innerHTML=kidsOf().map(k=>{
-    const p=KIDS[k],ok=p.paid===true||p.paid==="paid",cls=ok?'bs':p.paid==="pending"?'bw':'bx',tx=ok?"To'langan ✅":p.paid==="pending"?"Kutilmoqda ⏳":"To'lanmagan ❌";
+    const p=KIDS[k],ok=p.paid===true||p.paid==="paid",cls=ok?'bs':p.paid==="pending"?'bw':'bx',tx=ok?(lang==='uz'?"To'langan ✅":"Оплачено ✅"):p.paid==="pending"?(lang==='uz'?"Kutilmoqda ⏳":"В ожидании ⏳"):(lang==='uz'?"To'lanmagan ❌":"Не оплачено ❌");
     return `<div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-        <div><b>${esc(p.name)}</b><br><small style="color:var(--muted)">Oylik: ${esc(S.amount)} so'm</small></div>
+        <div><b>${esc(p.name)}</b><br><small style="color:var(--muted)">${lang==='uz'?'Oylik:':'В месяц:'} ${esc(S.amount)} ${lang==='uz'?"so'm":"сум"}</small></div>
         <span class="badge ${cls}">${tx}</span>
       </div>
       <div class="row" style="justify-content:flex-start;margin-top:12px">
-        ${ok?'':`<button class="btn sm" onclick="openKid('${k}');startPay()">💳 To'lov qilish</button>`}
-        <button class="btn sm bo" onclick="openKid('${k}');openHistory()">🧾 Tarix</button>
+        ${ok?'':`<button class="btn sm" onclick="openKid('${k}');startPay()">${lang==='uz'?"💳 To'lov qilish":"💳 Оплатить"}</button>`}
+        <button class="btn sm bo" onclick="openKid('${k}');openHistory()">${lang==='uz'?"🧾 Tarix":"🧾 История"}</button>
       </div>
     </div>`;
-  }).join('')||`<div class="card"><p class="note" style="text-align:center;margin:0">Farzand biriktirilmagan</p></div>`;
+  }).join('')||`<div class="card"><p class="note" style="text-align:center;margin:0">${lang==='uz'?"Farzand biriktirilmagan":"Ребенок не привязан"}</p></div>`;
 }
 
 function renderPitch(){
@@ -788,9 +877,9 @@ function renderProfile(){
   
   $('prName').innerText=me.name||'Ism';
   $('prPhoto').src = me.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(me.name||'U')}&background=1E293B&color=3B82F6&size=150`;
-  $('prJersey').innerText = me.jersey ? "👕 #" + me.jersey : "Raqam kiritilmagan";
-  $('prInfo').innerText=`Login: ${PAR.id}`+(PAR.phone?`\nTelefon: +${PAR.phone}`:'')+`\nFarzandlar: ${kidsOf().length} ta`;
-  $('prBio').innerText = me.bio || "O'zi haqida ma'lumot kiritilmagan.";
+  $('prJersey').innerText = me.jersey ? "👕 #" + me.jersey : (lang==='uz'?"Raqam kiritilmagan":"Номер не указан");
+  $('prInfo').innerText=`Login: ${PAR.id}`+(PAR.phone?`\n${lang==='uz'?'Telefon:':'Телефон:'} +${PAR.phone}`:'')+`\n${lang==='uz'?'Farzandlar:':'Дети:'} ${kidsOf().length} ${lang==='uz'?"ta":"чел."}`;
+  $('prBio').innerText = me.bio || (lang==='uz'?"O'zi haqida ma'lumot kiritilmagan.":"Информация о себе не заполнена.");
 }
 
 try{const ic="data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#070b1f'/><text x='50' y='64' font-size='42' font-weight='900' text-anchor='middle' fill='#3d7bff' font-family='sans-serif'>81</text></svg>");
