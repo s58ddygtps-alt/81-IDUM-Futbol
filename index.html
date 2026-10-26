@@ -140,10 +140,13 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
       <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input id="appParentName" class="inp"></div>
       <div class="ig"><label data-uz="Farzand ismi (bir nechta bo'lsa vergul bilan)" data-ru="Имя ребенка (если несколько, через запятую)">Farzand ismi (bir nechta bo'lsa vergul bilan)</label><input id="appChildName" class="inp"></div>
       <div class="ig"><label data-uz="Telefon raqamingiz (Login bo'ladi)" data-ru="Ваш номер телефона (Будет логином)">Telefon raqamingiz (Login bo'ladi)</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567" data-ph-uz="998901234567" data-ph-ru="998901234567"></div>
-      <div class="ig"><label data-uz="Parol o'ylab toping" data-ru="Придумайте пароль">Parol o'ylab toping</label><input type="password" id="appPass" class="inp" minlength="4" maxlength="20" placeholder="Kamida 4 ta belgi"></div>
+      <div class="ig">
+        <label data-uz="Parol o'ylab toping (Bosh harf va maxsus belgi)" data-ru="Придумайте пароль (Заглавная буква и символ)">Parol o'ylab toping (Bosh harf va maxsus belgi)</label>
+        <input type="text" id="appPass" class="inp" minlength="4" maxlength="20" placeholder="Ali077%%" data-ph-uz="Ali077%%" data-ph-ru="Ali077%%">
+        <p class="note" style="margin-top:4px;font-size:10px;color:var(--gold)" data-uz="Masalan: Ali077%% (Katta harf va belgi qatnashishi shart)" data-ru="Например: Ali077%% (Заглавная буква и символ обязательны)">Masalan: Ali077%% (Katta harf va belgi qatnashishi shart)</p>
+      </div>
       <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка">Farzandning yoshi</label><input type="number" id="appAge" class="inp"></div>
       <button id="btnApp" class="btn" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ ЗАЯВКУ">ARIZA YUBORISH</button>
-      <p class="note" data-uz="Ariza tasdiqlangach, shu telefon raqam va parol bilan kirishingiz mumkin bo'ladi." data-ru="После одобрения заявки вы сможете войти с этим номером и паролем.">Ariza tasdiqlangach, shu telefon raqam va parol bilan kirishingiz mumkin bo'ladi.</p>
     </div>
   </div>
 </div>
@@ -503,21 +506,42 @@ if(db)db.ref('settings').on('value',onSettings);
 
 function done(btn,label,ids){confetti();alert(lang==='uz'?"Arizangiz yuborildi! Murabbiy tasdiqlashini kuting.":"Заявка отправлена! Ожидайте подтверждения тренера.");ids.forEach(i=>$(i).value='');btn.innerText=label;btn.disabled=false;setMode(0,document.querySelector('.mode'))}
 function fail(btn,label,e){alert(e.message||e);btn.innerText=label;btn.disabled=false}
+
 function submitApplication(){
   const parentName=v('appParentName'),childName=v('appChildName'),phone=digits(v('appPhone')),age=v('appAge'),pass=v('appPass'),b=$('btnApp'),L="ARIZA YUBORISH";
+  
+  // Telegram Username olish
+  const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+  const tgUsername = tgUser?.username ? '@'+tgUser.username : (tgUser?.first_name || '');
+
   if(!parentName||!childName||phone.length<9)return alert(lang==='uz'?"Hamma maydonni to'ldiring (telefon to'liq bo'lsin)!":"Заполните все поля (номер полностью)!");
-  if(!pass || pass.length < 4) return alert(lang==='uz'?"Parol kamida 4 ta belgidan iborat bo'lsin!":"Пароль должен быть не менее 4 символов!");
+  
+  // Parol tekshiruvi: Katta harf bilan boshlanishi va maxsus belgi qatnashishi shart
+  const isPassValid = /^[A-Z].*[%_.!@#$^&*()].*$/.test(pass) && pass.length >= 4;
+  if(!isPassValid) {
+      return alert(lang==='uz'?"Parol xato! Katta harf bilan boshlanishi va kamida bitta maxsus belgi (% _ . ! @ # $) qatnashishi kerak. Masalan: Ali077%%":"Неверный пароль! Должен начинаться с заглавной буквы и содержать спецсимвол (% _ . ! @ # $). Пример: Ali077%%");
+  }
   
   b.innerText=lang==='uz'?"Yuborilmoqda...":"Отправка...";b.disabled=true;
   if(!db)return fail(b,L,new Error("Baza ulanmagan"));
-  db.ref('applications').push({type:'parent',parentName,childName,phone,age,password:pass,date:today()}).then(()=>done(b,L,['appParentName','appChildName','appPhone','appAge','appPass'])).catch(e=>fail(b,L,e));
+  
+  db.ref('applications').push({
+      type:'parent', 
+      parentName, 
+      childName, 
+      phone, 
+      age, 
+      password:pass,
+      tgUser: tgUsername, // Telegram username saqlanadi
+      date:today()
+  }).then(()=>done(b,L,['appParentName','appChildName','appPhone','appAge','appPass'])).catch(e=>fail(b,L,e));
 }
 
 async function login(){
   const u0=v('loginUser'),p=v('loginPass');if(!u0||!p)return alert(lang==='uz'?"Login va parolni kiriting!":"Введите логин и пароль!");
   if(!db)return alert("Baza ulanmagan. Sahifani yangilang.");
   if(u0===ADMIN_LOGIN&&p===ADMIN_PASS){showScreen('adminScreen');startAdmin();return}
-  const id=digits(u0); // Parent login is their phone number
+  const id=digits(u0); 
   try{
     const s=await db.ref('parents/'+id).once('value');
     if(!s.exists())return alert(lang==='uz'?"Bunday login yo'q!":"Такого логина нет!");
@@ -623,7 +647,7 @@ function startAdmin(){
   sub(db.ref('applications'),s=>{const box=$('at_apps'),bd=$('appBadge');if(!box)return;
     if(!s.exists()){box.innerHTML=`<p style='text-align:center;color:var(--muted)'>${lang==='uz'?"Yangi arizalar yo'q":"Новых заявок нет"}</p>`;if(bd)bd.classList.add('hidden');return}
     let n=0,h='';s.forEach(c=>{const a=c.val(),st=a.type==='student';n++;
-      h+=`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(a.childName)}</b> (${esc(a.age||'?')} ${lang==='uz'?'yosh':'лет'})<span class="tag ${st?'ts':'tp'}">${st?(lang==='uz'?"O'QUVCHI":'УЧЕНИК'):(lang==='uz'?'OTA-ONA':'РОДИТЕЛЬ')}</span><br><small style="color:var(--muted)">${st?'':(lang==='uz'?'Ota-ona: ':'Родитель: ')+esc(a.parentName)+' | '}${lang==='uz'?'Tel:':'Тел:'} ${esc(a.phone)}<br><b style="color:var(--gold)">Parol: ${esc(a.password)}</b></small></div>
+      h+=`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(a.childName)}</b> (${esc(a.age||'?')} ${lang==='uz'?'yosh':'лет'})<span class="tag ${st?'ts':'tp'}">${st?(lang==='uz'?"O'QUVCHI":'УЧЕНИК'):(lang==='uz'?'OTA-ONA':'РОДИТЕЛЬ')}</span><br><small style="color:var(--muted)">${st?'':(lang==='uz'?'Ota-ona: ':'Родитель: ')+esc(a.parentName)+' | '}${lang==='uz'?'Tel:':'Тел:'} ${esc(a.phone)}<br><b style="color:var(--gold)">Parol: ${esc(a.password)}</b>${a.tgUser?`<br><b style="color:var(--blue)">TG: ${esc(a.tgUser)}</b>`:''}</small></div>
       <div style="display:flex;gap:10px;width:100%;margin-top:10px"><button class="btn sm bok" onclick="acceptApp('${c.key}')">${lang==='uz'?'QABUL':'ПРИНЯТЬ'}</button><button class="btn sm bd" onclick="rejectApp('${c.key}')">${lang==='uz'?'RAD ETISH':'ОТКЛОНИТЬ'}</button></div></div>`});
     box.innerHTML=h;if(bd){bd.innerText=n;bd.classList.remove('hidden')}});
   
@@ -736,7 +760,7 @@ function copyCred(id){const t=credText(id);(navigator.clipboard?navigator.clipbo
 function renderParents(){
   if(!$('at_parents'))return;
   const l=Object.entries(PR);
-  $('at_parents').innerHTML=`<button class="btn sm" style="margin-bottom:12px" onclick="editPar('')" data-uz="+ Ota-ona qo'shish" data-ru="+ Добавить родителя">${lang==='uz'?"+ Ota-ona qo'shish":"+ Добавить родителя"}</button>`+(l.map(([id,p])=>`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(p.name||id)}</b>${p.phone?` <small style="color:var(--muted)">+${esc(p.phone)}</small>`:''}<br><small style="color:var(--ok);font-weight:700">Login: ${esc(id)} · Parol: ${esc(p.password)}</small><br><small style="color:var(--muted)">${lang==='uz'?'Farzandlar:':'Дети:'} ${Object.keys(p.children||{}).map(k=>esc((PL[k]&&PL[k].name)||k)).join(', ')||'—'}</small></div><div class="row" style="width:100%;justify-content:flex-start"><button class="btn sm bo" onclick="editPar('${id}')">✏️</button><button class="btn sm bok" onclick="copyCred('${id}')" data-uz="📋 Nusxalash" data-ru="📋 Копировать">${lang==='uz'?'📋 Nusxalash':'📋 Копировать'}</button>${p.phone?`<a class="btn sm bo" href="sms:+${esc(p.phone)}?body=${encodeURIComponent(credText(id))}">✉️</a>`:''}<button class="btn sm bd" onclick="delPar('${id}')">🗑</button></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">${lang==='uz'?"Ota-onalar yo'q":"Нет родителей"}</p>`);
+  $('at_parents').innerHTML=`<button class="btn sm" style="margin-bottom:12px" onclick="editPar('')" data-uz="+ Ota-ona qo'shish" data-ru="+ Добавить родителя">${lang==='uz'?"+ Ota-ona qo'shish":"+ Добавить родителя"}</button>`+(l.map(([id,p])=>`<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(p.name||id)}</b>${p.phone?` <small style="color:var(--muted)">+${esc(p.phone)}</small>`:''}<br><small style="color:var(--ok);font-weight:700">Login: ${esc(id)} · Parol: ${esc(p.password)}</small><br><small style="color:var(--muted)">${lang==='uz'?'Farzandlar:':'Дети:'} ${Object.keys(p.children||{}).map(k=>esc((PL[k]&&PL[k].name)||k)).join(', ')||'—'}</small><br><small style="color:var(--blue)">${p.tgUser?`TG: ${esc(p.tgUser)}`:''}</small></div><div class="row" style="width:100%;justify-content:flex-start"><button class="btn sm bo" onclick="editPar('${id}')">✏️</button><button class="btn sm bok" onclick="copyCred('${id}')" data-uz="📋 Nusxalash" data-ru="📋 Копировать">${lang==='uz'?'📋 Nusxalash':'📋 Копировать'}</button>${p.phone?`<a class="btn sm bo" href="sms:+${esc(p.phone)}?body=${encodeURIComponent(credText(id))}">✉️</a>`:''}<button class="btn sm bd" onclick="delPar('${id}')">🗑</button></div></div>`).join('')||`<p style="text-align:center;color:var(--muted)">${lang==='uz'?"Ota-onalar yo'q":"Нет родителей"}</p>`);
 }
 function editPar(id){
   if(!$('parTitle'))return;
@@ -748,7 +772,7 @@ function editPar(id){
 }
 function savePar(){
   if(!db)return;
-  const old=$('paOld').value,l=digits(v('paLogin')),p=v('paPass'),n=v('paName'),ph=l; // phone is login
+  const old=$('paOld').value,l=digits(v('paLogin')),p=v('paPass'),n=v('paName'),ph=l; 
   if(!n)return alert(lang==='uz'?"Ism kiriting!":"Введите имя!");
   if(!l || l.length < 9) return alert(lang==='uz'?"Telefon raqamni to'liq kiriting!":"Введите номер телефона полностью!");
   if(!p || p.length < 4) return alert(lang==='uz'?"Parol kamida 4 ta belgi bo'lsin!":"Пароль должен быть не менее 4 символов!");
@@ -757,7 +781,9 @@ function savePar(){
   const ch={},u={};document.querySelectorAll('#paKidsBox input:checked').forEach(c=>ch[c.value]=true);
   v('paNew').split(',').map(x=>x.trim()).filter(Boolean).forEach(nm=>{const id=genId();u['players/'+id]=newKid(nm);ch[id]=true});
   if(old&&old!==l)u['parents/'+old]=null;
-  u['parents/'+l]={name:n,phone:ph,password:p,children:ch};
+  
+  // Admin qo'lda qo'shganda Telegram username bo'sh qoladi
+  u['parents/'+l]={name:n,phone:ph,password:p,tgUser:'',children:ch};
   db.ref().update(u).then(()=>{closeModal();confetti()}).catch(e=>alert(e.message));
 }
 const delPar=id=>confirm(lang==='uz'?"O'chirilsinmi?":"Удалить?")&&db.ref('parents/'+id).remove();
@@ -782,7 +808,8 @@ async function acceptApp(k){
      const u={}, ch={};
      names.forEach(nm=>{const id=genId();u['players/'+id]=newKid(nm,a.age);ch[id]=true});
      
-     u['parents/'+ph]={name:a.parentName||'Ota-ona', phone:ph, password:a.password, children:ch};
+     // Ota-ona o'zi yozgan parolni bazaga saqlaymiz
+     u['parents/'+ph]={name:a.parentName||'Ota-ona', phone:ph, password:a.password, tgUser:a.tgUser||'', children:ch};
      u['applications/'+k]=null;
      
      await db.ref().update(u); confetti();
@@ -882,7 +909,7 @@ function renderProfile(){
   $('prName').innerText=me.name||'Ism';
   $('prPhoto').src = me.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(me.name||'U')}&background=1E293B&color=3B82F6&size=150`;
   $('prJersey').innerText = me.jersey ? "👕 #" + me.jersey : (lang==='uz'?"Raqam kiritilmagan":"Номер не указан");
-  $('prInfo').innerText=`Login: ${PAR.id}`+(PAR.phone?`\n${lang==='uz'?'Telefon:':'Телефон:'} +${PAR.phone}`:'')+`\n${lang==='uz'?'Farzandlar:':'Дети:'} ${kidsOf().length} ${lang==='uz'?"ta":"чел."}`;
+  $('prInfo').innerText=`Login: ${PAR.id}`+(PAR.phone?`\n${lang==='uz'?'Telefon:':'Телефон:'} +${PAR.phone}`:'')+(PAR.tgUser?`\nTelegram: ${PAR.tgUser}`:'')+`\n${lang==='uz'?'Farzandlar:':'Дети:'} ${kidsOf().length} ${lang==='uz'?"ta":"чел."}`;
   $('prBio').innerText = me.bio || (lang==='uz'?"O'zi haqida ma'lumot kiritilmagan.":"Информация о себе не заполнена.");
 }
 
