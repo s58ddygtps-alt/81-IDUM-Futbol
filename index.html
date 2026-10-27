@@ -3,1092 +3,1946 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#070b1f">
+<meta name="theme-color" content="#060d19">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Qarabağ FK Akademiyasi</title>
+<title>Qarabağ FK Academy</title>
+
+<!-- Shriftlar: Unbounded va Manrope -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" crossorigin="anonymous"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Telegram WebApp SDK -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<!-- Firebase Compat SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <style>
-/* CSS o'zgaruvchilari (Ranglar) */
 :root {
-    --bg: #070b1f;
-    --card: rgba(255, 255, 255, .07);
-    --cb: rgba(255, 255, 255, .14);
-    --blue: #3d7bff;
-    --coral: #ff4d6d;
-    --gold: #ffc83d;
-    --ok: #2ee6a6;
-    --text: #f1f4ff;
-    --muted: #9aa4c7;
-    --input: rgba(5, 8, 26, .55);
-    --glow: 0 0 28px rgba(61, 123, 255, .35);
-}
-body.light {
-    --bg: #eef2ff;
-    --card: rgba(255, 255, 255, .75);
-    --cb: rgba(61, 123, 255, .2);
-    --text: #12183a;
-    --muted: #5b6592;
-    --input: rgba(255, 255, 255, .9);
-    --glow: 0 8px 30px rgba(61, 123, 255, .18);
+  --bg: #060d19;
+  --card-bg: rgba(13, 24, 46, 0.72);
+  --card-border: rgba(212, 175, 55, 0.22);
+  --card-border-light: rgba(255, 255, 255, 0.1);
+  --gold: #d4af37;
+  --gold-glow: rgba(212, 175, 55, 0.45);
+  --gold-light: #f5d77f;
+  --blue: #1c4ed8;
+  --navy-dark: #0a1324;
+  --coral: #ff4d6d;
+  --ok: #2ee6a6;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --input-bg: rgba(6, 13, 25, 0.75);
 }
 
-/* Asosiy stillar */
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { background: var(--bg); color: var(--text); font-family: 'Manrope', sans-serif; min-height: 100vh; padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); overflow-x: hidden; transition: background .4s; }
-h1, h2, h3, .brand, .btn, .tab, .mode { font-family: 'Unbounded', sans-serif; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-/* Fon animatsiyasi */
-.aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
-.aurora i { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .5; animation: drift 18s ease-in-out infinite alternate; }
-.aurora i:nth-child(1) { width: 60vw; height: 60vw; background: var(--blue); top: -15vw; left: -15vw; }
-.aurora i:nth-child(2) { width: 50vw; height: 50vw; background: var(--coral); bottom: -12vw; right: -14vw; animation-duration: 22s; }
-.aurora i:nth-child(3) { width: 35vw; height: 35vw; background: var(--gold); top: 40%; left: 45%; opacity: .22; animation-duration: 26s; }
-body.light .aurora i { opacity: .26; }
-@keyframes drift { to { transform: translate(12vw, 9vh) scale(1.2); } }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  min-height: 100vh;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  overflow-x: hidden;
+  position: relative;
+}
 
-/* Ekranlar */
-.screen { display: none; padding: 20px 16px; max-width: 560px; margin: 0 auto; }
-.screen.active { display: block; animation: rise .5s cubic-bezier(.2,.9,.3,1); }
-@keyframes rise { from { opacity: 0; transform: translateY(24px) scale(.98); } to { opacity: 1; transform: none; } }
+/* Sarlavhalar */
+h1, h2, h3, .brand, .btn, .tab, .mode, .bn-i span, .jersey-badge {
+  font-family: 'Unbounded', sans-serif;
+}
+
+/* Orqa fondagi Aurora effekti */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora i {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(85px);
+  opacity: 0.35;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.aurora i:nth-child(1) { width: 70vw; height: 70vw; background: #0c2340; top: -20vw; left: -15vw; }
+.aurora i:nth-child(2) { width: 60vw; height: 60vw; background: #d4af37; bottom: -15vw; right: -15vw; opacity: 0.18; animation-duration: 28s; }
+.aurora i:nth-child(3) { width: 45vw; height: 45vw; background: #1e3a8a; top: 40%; left: 30%; opacity: 0.22; animation-duration: 32s; }
+@keyframes drift { to { transform: translate(14vw, 10vh) scale(1.15); } }
+
+/* Asosiy Ekranlar */
+.screen {
+  display: none;
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.screen.active {
+  display: block;
+  animation: fadeIn .4s cubic-bezier(.2, .9, .3, 1);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* Header */
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.brand { font-size: 20px; font-weight: 900; background: linear-gradient(90deg, var(--blue), var(--coral), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200%; animation: shift 6s linear infinite; }
-@keyframes shift { to { background-position: 200% 0; } }
-.top { display: flex; gap: 8px; }
-.icon-btn { background: var(--card); border: 1px solid var(--cb); width: 38px; height: 38px; border-radius: 12px; font-size: 16px; cursor: pointer; color: var(--text); }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-top: 4px;
+}
+.brand-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  background: radial-gradient(circle, #1a2a44 0%, #060d19 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px var(--gold-glow);
+  font-size: 18px;
+}
+.brand {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(100deg, #fff, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+.lang-btn {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  color: var(--gold-light);
+  padding: 6px 14px;
+  border-radius: 12px;
+  font: 700 11px 'Unbounded', sans-serif;
+  cursor: pointer;
+  transition: all .2s;
+}
+.lang-btn:active { transform: scale(.94); }
 
-/* Kartochkalar (Glassmorphism) */
-.card { background: var(--card); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--cb); border-radius: 22px; padding: 20px; margin-bottom: 16px; box-shadow: var(--glow); position: relative; overflow: hidden; }
+/* Kartalar va Glassmorphism */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  position: relative;
+}
 
-/* Inputlar */
-.ig { margin-bottom: 12px; }
-.ig label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
-.inp { width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--cb); background: var(--input); color: var(--text); font: 600 14px 'Manrope', sans-serif; outline: none; transition: .25s; }
-.inp:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(61, 123, 255, .22); }
-select.inp option { color: #111; }
+/* Kirish / Rejimlar */
+.modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: var(--input-bg);
+  padding: 4px;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  border: 1px solid var(--card-border-light);
+}
+.mode {
+  padding: 11px 4px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .3s;
+}
+.mode.on {
+  background: linear-gradient(135deg, var(--gold), #997517);
+  color: #060d19;
+  box-shadow: 0 4px 14px var(--gold-glow);
+}
+.pane { display: none; }
+.pane.on { display: block; animation: fadeIn .3s ease; }
+
+/* Formalar va Kiritish maydonlari */
+.ig { margin-bottom: 13px; }
+.ig label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.inp {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border-light);
+  background: var(--input-bg);
+  color: var(--text);
+  font: 600 13.5px 'Manrope', sans-serif;
+  outline: none;
+  transition: .25s;
+}
+.inp:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
+select.inp option {
+  background-color: #0d182e;
+  color: #fff;
+}
+.note {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 6px;
+}
 
 /* Tugmalar */
-.btn { width: 100%; padding: 14px; border-radius: 14px; border: none; background: linear-gradient(120deg, var(--blue), #7a5cff); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(61, 123, 255, .4); transition: transform .15s; }
-.btn::after { content: ""; position: absolute; top: 0; left: -70%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .45), transparent); transform: skewX(-20deg); transition: left .6s; }
-.btn:hover::after { left: 130%; }
-.btn:active { transform: scale(.96); }
-.bo { background: transparent; color: var(--text); border: 1.5px solid var(--cb); box-shadow: none; }
-.sm { padding: 8px 11px; font-size: 10px; width: auto; border-radius: 10px; margin-top: 0; }
-.bd { background: linear-gradient(120deg, var(--coral), #ff8a5c); box-shadow: 0 6px 18px rgba(255, 77, 109, .4); }
-.bok { background: linear-gradient(120deg, #12b886, var(--ok)); color: #032; box-shadow: 0 6px 18px rgba(46, 230, 166, .35); }
+.btn {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 13px;
+  border: none;
+  background: linear-gradient(135deg, var(--gold), #aa8420);
+  color: #060d19;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px var(--gold-glow);
+  transition: all .2s;
+}
+.btn:active { transform: scale(.97); opacity: .9; }
+.btn.bo {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--card-border);
+  box-shadow: none;
+}
+.btn.bd {
+  background: linear-gradient(135deg, var(--coral), #ba1a38);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(255, 77, 109, 0.35);
+}
+.btn.bok {
+  background: linear-gradient(135deg, #10b981, var(--ok));
+  color: #04241a;
+  box-shadow: 0 6px 18px rgba(46, 230, 166, 0.3);
+}
+.btn.sm {
+  width: auto;
+  padding: 7px 11px;
+  font-size: 10px;
+  border-radius: 9px;
+  margin-top: 0;
+}
 
-/* Kirish ekrani */
-.hero-title { font: 900 30px/1.05 'Unbounded'; margin: 6vh 0 8px; letter-spacing: -1px; }
-.sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
-.modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; background: var(--input); padding: 5px; border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--cb); }
-.mode { padding: 11px 4px; text-align: center; border-radius: 12px; font-size: 10px; font-weight: 700; color: var(--muted); cursor: pointer; transition: .3s; }
-.mode.on { background: linear-gradient(120deg, var(--blue), #7a5cff); color: #fff; box-shadow: 0 6px 16px rgba(61, 123, 255, .45); }
-.pane { display: none; }
-.pane.on { display: block; animation: rise .4s; }
-.note { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+/* Badjlar */
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-block;
+}
+.bs { background: rgba(46, 230, 166, 0.15); color: var(--ok); border: 1px solid var(--ok); }
+.bx { background: rgba(255, 77, 109, 0.15); color: var(--coral); border: 1px solid var(--coral); }
+.bw { background: rgba(212, 175, 55, 0.15); color: var(--gold-light); border: 1px solid var(--gold); }
+.jersey-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--gold), #7a5c10);
+  color: #060d19;
+  font-size: 10.5px;
+  font-weight: 900;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  box-shadow: 0 2px 8px var(--gold-glow);
+}
 
-/* Profil rasmi */
-.ph { text-align: center; transition: transform .15s; border: 1px solid transparent; background: linear-gradient(var(--bg), var(--bg)) padding-box, conic-gradient(from var(--a, 0deg), var(--blue), var(--coral), var(--gold), var(--blue)) border-box; animation: spin 6s linear infinite; }
-@property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-@keyframes spin { to { --a: 360deg; } }
-.ph::before { content: ""; position: absolute; inset: 0; background: var(--card); }
-.ph > * { position: relative; }
-.pphoto { width: 116px; height: 146px; object-fit: cover; border-radius: 16px; margin: 0 auto 14px; display: block; background: #1E293B; box-shadow: 0 14px 34px rgba(0, 0, 0, .45), 0 0 0 3px rgba(255, 255, 255, .18); }
-.pname { font-size: 20px; font-weight: 900; margin-bottom: 4px; }
-.puser { color: var(--blue); font-size: 13px; font-weight: 700; margin-bottom: 12px; }
-.badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 16px; }
-.bi { background: rgba(61, 123, 255, .18); padding: 6px 11px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px solid var(--blue); }
-.star { background: rgba(255, 200, 61, .2); border-color: var(--gold); color: var(--gold); animation: pulse 2s infinite; }
-@keyframes pulse { 50% { box-shadow: 0 0 18px rgba(255, 200, 61, .7); } }
+/* Statistika panellari */
+.sb { margin-bottom: 12px; }
+.sbh { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+.sbg { height: 9px; background: var(--input-bg); border-radius: 8px; overflow: hidden; border: 1px solid var(--card-border-light); }
+.sf { height: 100%; border-radius: 8px; transition: width 1s cubic-bezier(.2, .9, .3, 1); }
+.fg { background: linear-gradient(90deg, #10b981, var(--ok)); box-shadow: 0 0 10px var(--ok); }
+.fr { background: linear-gradient(90deg, var(--coral), #ff8a5c); box-shadow: 0 0 10px var(--coral); }
 
-/* Statistika */
-.sb { margin-bottom: 13px; text-align: left; }
-.sbh { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-.sbg { height: 12px; background: var(--input); border-radius: 10px; overflow: hidden; border: 1px solid var(--cb); }
-.sf { height: 100%; border-radius: 10px; transition: width 1.2s cubic-bezier(.2, .9, .3, 1); }
-.fg { background: linear-gradient(90deg, #12b886, var(--ok)); box-shadow: 0 0 14px var(--ok); }
-.fr { background: linear-gradient(90deg, var(--coral), #ff8a5c); box-shadow: 0 0 14px var(--coral); }
+/* Futbol Maydoni (Pitch) */
+.pitch-container {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: #14532d;
+  background-image: 
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0px, rgba(255, 255, 255, 0.04) 28px, transparent 28px, transparent 56px),
+    radial-gradient(circle at center, #1e743e 0%, #0d381e 100%);
+  border: 3px solid rgba(255, 255, 255, 0.65);
+  border-radius: 18px;
+  position: relative;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.5);
+  overflow: hidden;
+  margin-top: 10px;
+}
+.pitch-half-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translateY(-50%);
+}
+.pitch-center-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.pitch-box-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 130px;
+  height: 60px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top: none;
+  transform: translateX(-50%);
+}
+.pitch-box-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 130px;
+  height: 60px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-bottom: none;
+  transform: translateX(-50%);
+}
+/* O'yinchilar pozitsiyalari (Taktika) */
+.pitch-pos {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  cursor: pointer;
+  text-align: center;
+}
+.pos-shirt {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-light), #96700c);
+  border: 2px solid #fff;
+  color: #060d19;
+  font: 900 13px 'Unbounded', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+  transition: transform .2s;
+}
+.pitch-pos:active .pos-shirt { transform: scale(1.15); }
+.pos-role {
+  font: 700 8.5px 'Unbounded', sans-serif;
+  background: rgba(6, 13, 25, 0.85);
+  color: var(--gold-light);
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-top: 3px;
+  white-space: nowrap;
+  border: 0.5px solid rgba(212, 175, 55, 0.4);
+}
+.pos-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 4px #000;
+  margin-top: 1px;
+  max-width: 75px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-/* Galereya */
-.gal { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; }
-.gal::-webkit-scrollbar, .tabs::-webkit-scrollbar { display: none; }
-.gal img { width: 110px; height: 110px; border-radius: 14px; object-fit: cover; flex-shrink: 0; scroll-snap-align: start; border: 1px solid var(--cb); }
+/* Pastki Navigatsiya (6 ta bo'lim) */
+.bn {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  width: min(calc(100% - 20px), 520px);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px;
+  padding: 6px;
+  border-radius: 22px;
+  background: rgba(10, 19, 36, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65);
+  z-index: 99;
+}
+.bn-i {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 7px 2px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .2s;
+}
+.bn-i .ic { font-size: 18px; line-height: 1; }
+.bn-i span { font-size: 8px; font-weight: 700; text-align: center; }
+.bn-i.on {
+  background: linear-gradient(135deg, var(--gold), #aa8420);
+  color: #060d19;
+  box-shadow: 0 4px 12px var(--gold-glow);
+}
+.bn-i:active { transform: scale(.92); }
 
-/* Taymer va Motivatsiya */
-.timer { text-align: center; padding: 18px; border-radius: 20px; margin-bottom: 16px; color: #fff; background: linear-gradient(120deg, var(--blue), #7a5cff, var(--coral)); background-size: 200%; animation: shift 8s linear infinite; box-shadow: 0 12px 34px rgba(122, 92, 255, .45); }
-.timer b { display: block; font: 900 19px 'Unbounded'; margin-top: 6px; }
-.mot { border-radius: 20px; padding: 20px; margin-bottom: 16px; color: #032; background: linear-gradient(135deg, var(--ok), #12b886); box-shadow: 0 12px 30px rgba(46, 230, 166, .3); }
-.mot small { font: 700 11px 'Unbounded'; opacity: .75; display: block; margin-bottom: 8px; }
-.mot div { font-size: 16px; font-weight: 700; font-style: italic; line-height: 1.4; }
-
-/* Holat belgilari */
-.badge { padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-block; }
-.bs { background: rgba(46, 230, 166, .15); color: var(--ok); border: 1px solid var(--ok); }
-.bx { background: rgba(255, 77, 109, .15); color: var(--coral); border: 1px solid var(--coral); }
-.bw { background: rgba(255, 200, 61, .15); color: var(--gold); border: 1px solid var(--gold); }
-
-/* Admin Tablar */
-.tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 5px; }
-.tab { padding: 11px 16px; border-radius: 999px; background: var(--card); border: 1px solid var(--cb); color: var(--muted); font-size: 10px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: .3s; }
-.tab.active { background: linear-gradient(120deg, var(--blue), #7a5cff); color: #fff; box-shadow: 0 6px 18px rgba(61, 123, 255, .5); }
-
-/* Modallar (Oynalar) */
-.ov { position: fixed; inset: 0; background: rgba(2, 4, 16, .7); backdrop-filter: blur(6px); z-index: 100; opacity: 0; visibility: hidden; transition: .3s; }
-.ov.active { opacity: 1; visibility: visible; }
-.modal { position: fixed; bottom: -100%; left: 0; right: 0; max-width: 560px; margin: 0 auto; background: var(--bg); border-radius: 26px 26px 0 0; padding: 24px; transition: .45s cubic-bezier(.2, .9, .3, 1); z-index: 101; max-height: 90vh; overflow-y: auto; border: 1px solid var(--cb); }
-.modal.active { bottom: 0; }
+/* Admin Paneli Tablari */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border-light);
+  color: var(--text-muted);
+  font-size: 9.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: .25s;
+}
+.tab.active {
+  background: linear-gradient(135deg, var(--gold), #96700c);
+  color: #060d19;
+  border-color: var(--gold);
+  box-shadow: 0 4px 14px var(--gold-glow);
+}
 .hidden { display: none !important; }
+.li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--input-bg);
+  border-radius: 14px;
+  margin-bottom: 8px;
+  border: 1px solid var(--card-border-light);
+  font-size: 13px;
+}
 
-/* Ro'yxat elementlari */
-.li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 13px; background: var(--input); border-radius: 14px; margin-bottom: 8px; border: 1px solid var(--cb); font-size: 13px; }
-.ann { background: rgba(255, 200, 61, .14); color: var(--gold); padding: 13px; border-radius: 14px; font-size: 13px; font-weight: 600; margin-bottom: 16px; border: 1px solid var(--gold); display: none; }
-.fin { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-.fc { background: var(--card); padding: 16px; border-radius: 18px; text-align: center; border: 1px solid var(--cb); }
-.fc b { font: 900 15px 'Unbounded'; color: var(--ok); }
-.fc div { font-size: 11px; color: var(--muted); margin-top: 5px; }
-.warn { background: rgba(255, 77, 109, .12); border: 1px solid var(--coral); color: var(--coral); padding: 10px; border-radius: 12px; font-size: 13px; font-weight: 700; margin-bottom: 15px; display: none; }
-.tag { font: 700 9px 'Unbounded'; padding: 3px 8px; border-radius: 999px; margin-left: 6px; }
-.ts { background: rgba(46, 230, 166, .18); color: var(--ok); }
-.tp { background: rgba(255, 200, 61, .18); color: var(--gold); }
-.row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; margin-top: 6px; }
+/* Modallar */
+.ov {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 15, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s;
+}
+.ov.active { opacity: 1; visibility: visible; }
+.modal {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  right: 0;
+  max-width: 520px;
+  margin: 0 auto;
+  background: #091325;
+  border-radius: 26px 26px 0 0;
+  padding: 24px;
+  transition: .4s cubic-bezier(.2, .9, .3, 1);
+  z-index: 101;
+  max-height: 88vh;
+  overflow-y: auto;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+}
+.modal.active { bottom: 0; }
 
-/* To'lov qismi */
-.pay { text-align: center; }
-.pbox { background: var(--card); border: 1px solid var(--cb); border-radius: 18px; padding: 16px; margin: 12px 0; text-align: left; }
-.pbox small { font: 700 10px 'Unbounded'; color: var(--muted); }
-.pbox b { display: block; font: 700 22px monospace; margin: 6px 0 12px; letter-spacing: 1px; }
-.spin { width: 54px; height: 54px; border: 4px solid var(--cb); border-top-color: var(--blue); border-radius: 50%; margin: 0 auto 12px; animation: rot 1s linear infinite; }
-@keyframes rot { to { transform: rotate(360deg); } }
-
-/* Pastki menyu (Navigatsiya) */
-.bn { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); width: min(calc(100% - 24px), 540px); display: flex; gap: 4px; padding: 8px; border-radius: 26px; background: rgba(12, 16, 38, .88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--cb); box-shadow: 0 14px 40px rgba(0, 0, 0, .45); z-index: 99; }
-body.light .bn { background: rgba(255, 255, 255, .92); box-shadow: 0 14px 34px rgba(61, 123, 255, .2); }
-.bn[hidden] { display: none; }
-.bn-i { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 9px 2px; border: 0; border-radius: 20px; background: transparent; color: var(--muted); font: 700 8.5px/1.2 'Unbounded', sans-serif; text-align: center; cursor: pointer; transition: .25s; }
-.bn-i .ic { font-size: 19px; line-height: 1; }
-.bn-i.on { background: var(--blue); color: #fff; box-shadow: 0 6px 16px rgba(61, 123, 255, .5); }
-.bn-i:active { transform: scale(.94); }
-
-/* Konfetti uchun */
+/* Canvas animatsiyasi */
 #fx { position: fixed; inset: 0; pointer-events: none; z-index: 300; }
-
-/* Bosh sahifa Gerbi */
-.hero-home { text-align: center; margin-top: 10vh; display: flex; flex-direction: column; align-items: center; }
-.hero-logo { width: 160px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
-.hero-title-qfk { font: 900 26px/1.1 'Unbounded'; background: linear-gradient(90deg, var(--gold), #fff, var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 15px; text-align: center; }
-.hero-text { font-size: 13px; line-height: 1.6; color: var(--muted); max-width: 90%; margin-bottom: 20px; text-align: center; }
-.hero-motto { font: 700 14px 'Unbounded'; color: var(--gold); margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
-
-/* Maydon (Pitch) */
-.pitch-container { position: relative; width: 100%; aspect-ratio: 2/3; background: #4ade80; border-radius: 16px; border: 2px solid #22c55e; overflow: hidden; margin-bottom: 20px; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
-.pitch-center-circle { position: absolute; top: 50%; left: 50%; width: 30%; aspect-ratio: 1; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); }
-.pitch-penalty-box-top { position: absolute; top: 0; left: 20%; width: 60%; height: 15%; border: 2px solid rgba(255,255,255,0.4); border-top: none; }
-.pitch-penalty-box-bottom { position: absolute; bottom: 0; left: 20%; width: 60%; height: 15%; border: 2px solid rgba(255,255,255,0.4); border-bottom: none; }
-.player-spot { position: absolute; width: 40px; height: 40px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #000; border: 2px solid #ccc; transform: translate(-50%, -50%); box-shadow: 0 4px 6px rgba(0,0,0,0.3); flex-direction: column; }
-.player-spot.gk { background: #fbbf24; }
-.player-name-small { font-size: 8px; position: absolute; top: 42px; color: #fff; text-shadow: 1px 1px 2px #000; white-space: nowrap; font-weight: bold; }
 </style>
 </head>
 <body>
-<!-- Fon effektlari -->
-<div class="aurora"><i></i><i></i><i></i><span id="fls"></span></div>
+
+<div class="aurora"><i></i><i></i><i></i></div>
 <canvas id="fx"></canvas>
 
-<!-- 1. KIRISH VA ARIZA EKRANI -->
+<!-- 1. KIRISH / RO'YXATDAN O'TISH EKRANI -->
 <div class="screen active" id="loginScreen">
   <div class="header">
-    <div class="brand">QARABAĞ FK</div>
-    <div class="top">
-      <button class="icon-btn" onclick="toggleTheme()">🌗</button>
-      <button class="icon-btn" style="font-size:11px;font-weight:800;width:auto;padding:0 10px;" id="langBtn" onclick="toggleLang()">UZ</button>
+    <div class="brand-box">
+      <div class="brand-logo">🐎</div>
+      <div class="brand">QARABAĞ FK</div>
+    </div>
+    <div class="top-actions">
+      <button class="lang-btn" id="langSwitchBtn">UZ</button>
     </div>
   </div>
-  <h1 class="hero-title" data-uz="Maydonga chiq." data-ru="Выходи на поле." data-az="Meydana çıx.">Maydonga chiq.</h1>
-  <p class="sub" data-uz="Qorabog' futbol akademiyasi" data-ru="Футбольная академия Карабах" data-az="Qarabağ futbol akademiyası">Qorabog' futbol akademiyasi</p>
-  
+
+  <div class="card" style="text-align:center; padding: 22px 16px; border-color: var(--gold);">
+    <div style="font-size: 34px; margin-bottom: 6px;">🏆</div>
+    <h1 style="font-size: 20px; margin-bottom: 6px;" data-uz="Qarabağ Futbol Akademiyasi" data-ru="Футбольная Академия Карабах" data-az="Qarabağ Futbol Akademiyası">Qarabağ Futbol Akademiyasi</h1>
+    <p class="note" data-uz="G'alaba ruhi va yuksak mahorat maktabi" data-ru="Школа победного духа и высокого мастерства" data-az="Qələbə ruhu və yüksək ustalıq məktəbi">G'alaba ruhi va yuksak mahorat maktabi</p>
+  </div>
+
   <div class="modes">
-    <div class="mode on" onclick="setMode(0,this)" data-uz="KIRISH" data-ru="ВХОД" data-az="GİRİŞ">KIRISH</div>
-    <div class="mode" onclick="setMode(1,this)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА" data-az="MÜRACİƏT">ARIZA TOPSHIRISH</div>
+    <div class="mode on" id="modeBtn0" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД" data-az="GİRİŞ">KIRISH</div>
+    <div class="mode" id="modeBtn1" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА" data-az="MÜRACİƏT">ARIZA TOPSHIRISH</div>
   </div>
 
   <div class="card">
+    <!-- Login paneli -->
     <div class="pane on" id="pane0">
-      <p class="note" style="margin:0 0 14px" data-uz="Faqat ota-onalar kira oladi." data-ru="Доступ только для родителей." data-az="Yalnız valideynlər daxil ola bilər.">Faqat ota-onalar kira oladi.</p>
       <div class="ig">
-        <label data-uz="Login (Telefon raqam)" data-ru="Логин (Номер телефона)" data-az="Login (Telefon nömrəsi)">Login (Telefon raqam)</label>
-        <input id="loginUser" class="inp" placeholder="998901234567" maxlength="20" autocomplete="username">
+        <label data-uz="Telefon raqami (Login)" data-ru="Номер телефона (Логин)" data-az="Telefon nömrəsi (Giriş)">Telefon raqami (Login)</label>
+        <input type="tel" id="loginUser" class="inp" placeholder="998901234567" autocomplete="username">
       </div>
       <div class="ig">
         <label data-uz="Parol" data-ru="Пароль" data-az="Şifrə">Parol</label>
-        <input type="password" id="loginPass" class="inp" maxlength="20" autocomplete="current-password" placeholder="••••••">
+        <input type="password" id="loginPass" class="inp" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ" data-az="DAXİL OL">TIZIMGA KIRISH</button>
+      <button class="btn" id="btnLogin" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ В СИСТЕМУ" data-az="SİSTEMƏ GİRİŞ">TIZIMGA KIRISH</button>
+      <p class="note" style="text-align:center; margin-top: 10px;" data-uz="Faqat tasdiqlangan ota-onalar tizimga kira oladi." data-ru="Вход только для подтверждённых родителей." data-az="Yalnız təsdiqlənmiş valideynlər daxil ola bilər.">Faqat tasdiqlangan ota-onalar tizimga kira oladi.</p>
     </div>
-    
+
+    <!-- Ariza topshirish paneli -->
     <div class="pane" id="pane1">
-      <h3 style="margin-bottom:14px;font-size:15px" data-uz="Ariza topshirish" data-ru="Подать заявку" data-az="Müraciət et">Ariza topshirish</h3>
-      <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя" data-az="Valideynin adı">Ota-onaning ismi</label><input id="appParentName" class="inp"></div>
-      <div class="ig"><label data-uz="Farzand ismi" data-ru="Имя ребенка" data-az="Uşağın adı">Farzand ismi</label><input id="appChildName" class="inp"></div>
-      <div class="ig"><label data-uz="Telefon raqamingiz (Login bo'ladi)" data-ru="Ваш номер (Логин)" data-az="Telefon nömrəniz (Login)">Telefon raqamingiz (Login bo'ladi)</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
       <div class="ig">
-        <label data-uz="Parol o'ylab toping" data-ru="Придумайте пароль" data-az="Şifrə yaradın">Parol o'ylab toping</label>
-        <input type="text" id="appPass" class="inp" minlength="4" maxlength="20" placeholder="Ali077%%">
-        <p class="note" style="margin-top:4px;font-size:10px;color:var(--gold)" data-uz="Katta harf va maxsus belgi (% _ . !) qatnashishi shart. Masalan: Ali077%%" data-ru="Заглавная буква и спецсимвол (% _ . !) обязательны. Пример: Ali077%%" data-az="Böyük hərf və xüsusi simvol (% _ . !) olmalıdır. Məsələn: Ali077%%">Katta harf va maxsus belgi (% _ . !) qatnashishi shart. Masalan: Ali077%%</p>
+        <label data-uz="Ota-onaning ismi" data-ru="Имя родителя" data-az="Valideynin adı">Ota-onaning ismi</label>
+        <input id="appParentName" class="inp" placeholder="Alisher Valiyev">
       </div>
-      <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка" data-az="Uşağın yaşı">Farzandning yoshi</label><input type="number" id="appAge" class="inp"></div>
-      <button id="btnApp" class="btn" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ ЗАЯВКУ" data-az="MÜRACİƏT GÖNDƏR">ARIZA YUBORISH</button>
+      <div class="ig">
+        <label data-uz="Farzand ismi (bir nechta bo'lsa vergul bilan)" data-ru="Имя ребенка (через запятую, если несколько)" data-az="Uşağın adı (bir neçədirsə vergüllə)">Farzand ismi</label>
+        <input id="appChildName" class="inp" placeholder="Ali, Vali">
+      </div>
+      <div class="ig">
+        <label data-uz="Telefon raqamingiz" data-ru="Ваш номер телефона" data-az="Telefon nömrəniz">Telefon raqamingiz</label>
+        <input type="tel" id="appPhone" class="inp" placeholder="998901234567">
+      </div>
+      <div class="ig">
+        <label data-uz="Farzandning yoshi" data-ru="Возраст ребенка" data-az="Uşağın yaşı">Farzandning yoshi</label>
+        <input type="number" id="appAge" class="inp" placeholder="10">
+      </div>
+      <div class="ig">
+        <label data-uz="Parol o'ylab toping (Katta harf va % _ . ! @ # $ bo'lsin)" data-ru="Придумайте пароль (Начните с заглавной и % _ . ! @ # $)" data-az="Şifrə təyin edin (Böyük hərflə başlayın və % _ . ! @ # $)">Parol o'ylab toping</label>
+        <input type="text" id="appPass" class="inp" placeholder="Masalan: Ali077%%">
+        <small class="note" style="color:var(--gold-light)" data-uz="Talab: Katta harf bilan boshlansin va kamida 1 ta maxsus belgi (% _ . ! @ # $) bo'lsin." data-ru="Требование: С заглавной буквы и минимум один спецсимвол (% _ . ! @ # $)" data-az="Tələb: Böyük hərflə başlasın və ən azı 1 xüsusi simvol (% _ . ! @ # $) olsun.">Talab: Katta harf bilan boshlansin va kamida 1 ta maxsus belgi (% _ . ! @ # $) bo'lsin.</small>
+      </div>
+      <button class="btn" id="btnApp" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ ЗАЯВКУ" data-az="MÜRACİƏTİ GÖNDƏR">ARIZA YUBORISH</button>
     </div>
   </div>
 </div>
 
-<!-- 2. OTA-ONA PANELI (BOSH SAHIFA) -->
-<div class="screen" id="familyScreen">
+<!-- 2. BOSH SAHIFA (QARABAĞ FK SLOGAN & BOLALAR) -->
+<div class="screen" id="homeScreen">
   <div class="header">
-    <div class="brand">QARABAĞ FK</div>
-    <div class="top">
-      <button class="icon-btn" onclick="toggleTheme()">🌗</button>
-      <button class="btn bo sm" onclick="logout()" data-uz="Chiqish" data-ru="Выйти" data-az="Çıxış">Chiqish</button>
+    <div class="brand-box">
+      <div class="brand-logo">🐎</div>
+      <div class="brand">QARABAĞ FK</div>
+    </div>
+    <div class="top-actions">
+      <button class="lang-btn" onclick="toggleLang()">UZ</button>
     </div>
   </div>
-  
-  <div class="card" style="text-align:center">
-    <small style="font:700 10px 'Unbounded';color:var(--muted)" data-uz="OTA-ONALAR PANELI" data-ru="ПАНЕЛЬ РОДИТЕЛЕЙ" data-az="VALİDEYN PANELİ">OTA-ONALAR PANELI</small>
-    <h2 id="fName" style="margin:8px 0 4px;font-size:20px"></h2>
-    <p class="note" style="margin:0" id="fLogin"></p>
-  </div>
-  
-  <div class="ann" id="fAnn"></div>
-  
-  <h3 style="margin:4px 0 12px;font-size:14px" data-uz="Farzandlarim" data-ru="Мои дети" data-az="Uşaqlarım">Farzandlarim</h3>
-  <div id="kidsList"></div>
-  
-  <div class="card hero-home">
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="Qarabag FK" class="hero-logo">
-    <h1 class="hero-title-qfk" data-uz="QARABAĞ FK" data-ru="КАРАБАХ ФК" data-az="QARABAĞ FK">QARABAĞ FK</h1>
-    <p class="hero-text" data-uz="Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish, rivojlantirish va kuchli jamoa shakllantirish." data-ru="Дух азербайджанского футбола, символ мужества и победы! Наша цель — выявлять, развивать молодые таланты и формировать сильную команду." data-az="Azərbaycan futbolunun ruhu cəsarət və qələbə rəmzi! Məqsədimiz gənc istedadları üzə çıxarmaq, inkişaf etdirmək və güclü komanda formalaşdırmaqdır.">Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish, rivojlantirish va kuchli jamoa shakllantirish.</p>
-    <div class="hero-motto" data-uz="Birlik. Jasorat. G'alaba!" data-ru="Единство. Мужество. Победа!" data-az="Birlik. Cəsarət. Qələbə!">Birlik. Jasorat. G'alaba!</div>
+
+  <!-- Qarabağ FK Logotipi va Shiori -->
+  <div class="card" style="text-align:center; border: 1.5px solid var(--gold); background: radial-gradient(circle at top, rgba(212,175,55,0.15) 0%, rgba(13,24,46,0.85) 75%);">
+    <div style="font-size: 42px; margin-bottom: 4px;">🐎</div>
+    <h2 style="font-size: 19px; color: var(--gold-light); margin-bottom: 4px;">QARABAĞ FK AKADEMIYASI</h2>
+    <div class="badge bw" style="margin-bottom: 12px;" data-uz="SHIORIMIZ: G'ALABA BIZNING AN'ANAMIZ" data-ru="ДЕВИЗ: ПОБЕДА — НАША ТРАДИЦИЯ" data-az="ŞÜAR: QƏLƏBƏ BİZİM ƏNƏNƏMİZDİR">SHIORIMIZ: G'ALABA BIZNING AN'ANAMIZ</div>
+    <p class="note" style="color: #cbd5e1; font-size: 12.5px;" data-uz="Maqsadimiz: Yosh iqtidorlarni yuksak professionalizm, jismoniy chidamlilik va buyuk sport axloqi ruhida tarbiyalash." data-ru="Наша цель: Воспитание молодых талантов в духе высокого профессионализма, стойкости и спортивной этики." data-az="Məqsədimiz: Gənc istedadları yüksək peşəkarlıq, fiziki dözümlülük və böyük idman əxlaqı ruhunda yetişdirmək.">
+      Maqsadimiz: Yosh iqtidorlarni yuksak professionalizm, jismoniy chidamlilik va buyuk sport axloqi ruhida tarbiyalash.
+    </p>
   </div>
 
-  <div class="card" style="text-align:center">
-    <h3 style="font-size:14px;margin-bottom:10px" data-uz="Savollaringiz bormi?" data-ru="Есть вопросы?" data-az="Suallarınız var?">Savollaringiz bormi?</h3>
-    <a href="tel:+998992677747" class="btn" style="background:#2AABEE">📞 Murabbiy: +998 99 267 77 47</a>
+  <h3 style="margin: 16px 0 10px; font-size: 14px;" data-uz="Farzandlarim" data-ru="Мои дети" data-az="Övladlarım">Farzandlarim</h3>
+  <div id="homeKidsList"></div>
+
+  <div class="card" style="text-align:center; margin-top: 15px;">
+    <h3 style="font-size: 13.5px; margin-bottom: 6px;" data-uz="Murabbiy bilan aloqa" data-ru="Связь с тренером" data-az="Məşqçi ilə əlaqə">Murabbiy bilan aloqa</h3>
+    <p class="note" id="homeCoachTxt" style="margin-bottom: 12px;"></p>
+    <a id="coachContactBtn" href="tel:+998992677747" class="btn bok">
+      📞 <span data-uz="Murabbiyga qo'ng'iroq" data-ru="Позвонить тренеру" data-az="Məşqçiyə zəng et">Murabbiyga qo'ng'iroq</span>
+    </a>
   </div>
 </div>
 
-<!-- 3. STATISTIKA EKRANI -->
-<div class="screen" id="statScreen">
-  <div class="header"><div class="brand">QARABAĞ FK</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Statistika" data-ru="Статистика" data-az="Statistika">Statistika</h2>
-  
-  <div class="card ph" id="tilt">
-    <img id="sPhoto" class="pphoto" alt="">
-    <h2 class="pname" id="sName">Ism</h2>
-    <p class="puser" id="sJersey"></p>
-    <div class="badges" id="sBadges"></div>
-    <div class="sb"><div class="sbh"><span data-uz="O'zlashtirish" data-ru="Успеваемость" data-az="Mənimsəmə">O'zlashtirish</span><span id="t1">0%</span></div><div class="sbg"><div class="sf fr" id="b1" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span data-uz="Gollar" data-ru="Голы" data-az="Qollar">Gollar</span><span id="t2">0 ta</span></div><div class="sbg"><div class="sf fr" id="b2" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span data-uz="Asistlar" data-ru="Ассисты" data-az="Asistlər">Asistlar</span><span id="t3">0 ta</span></div><div class="sbg"><div class="sf fr" id="b3" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span data-uz="Tezlik" data-ru="Скорость" data-az="Sürət">Tezlik</span><span id="t4">0%</span></div><div class="sbg"><div class="sf fr" id="b4" style="width:0"></div></div></div>
-    <div class="sb"><div class="sbh"><span data-uz="Mashg'ulotlar" data-ru="Тренировки" data-az="Məşqlər">Mashg'ulotlar</span><span id="t5">0 marta</span></div><div class="sbg"><div class="sf fr" id="b5" style="width:0"></div></div></div>
-  </div>
-
-  <div class="card">
-    <h3 style="margin-bottom:12px;font-size:14px" data-uz="Akademiya reytingi (Top 5)" data-ru="Рейтинг академии (Топ 5)" data-az="Akademiya reytinqi (Top 5)">Akademiya reytingi (Top 5)</h3>
-    <div id="board"></div>
-  </div>
-</div>
-
-<!-- 4. HAMYON EKRANI -->
-<div class="screen" id="walletScreen">
-  <div class="header"><div class="brand">QARABAĞ FK</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Hamyon" data-ru="Кошелек" data-az="Cüzdan">Hamyon</h2>
-  <div id="wList"></div>
-</div>
-
-<!-- 5. TURNIRLAR EKRANI -->
+<!-- 3. TURNIRLAR EKRANI -->
 <div class="screen" id="tourScreen">
-  <div class="header"><div class="brand">QARABAĞ FK</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</h2>
-  <div class="card">
-    <h3 style="margin-bottom:10px;font-size:14px;color:var(--gold)" data-uz="⚽ O'yin ma'lumotlari" data-ru="⚽ Информация об игре" data-az="⚽ Oyun məlumatları">⚽ O'yin ma'lumotlari</h3>
-    <p id="tOpponent" style="font-weight:700;margin-bottom:6px;font-size:16px"></p>
-    <p id="tTime" style="font-size:14px;color:var(--muted)"></p>
+  <div class="header">
+    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div>
+    <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div>
+  </div>
+
+  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="Turnirlar va O'yinlar" data-ru="Турниры и Матчи" data-az="Turnirlər və Oyunlar">Turnirlar va O'yinlar</h2>
+
+  <div class="card" style="border-left: 4px solid var(--gold);">
+    <small style="color:var(--gold); font: 700 10px 'Unbounded';" data-uz="NAVBATDAGI RASMIY UCHRASHUV" data-ru="СЛЕДУЮЩИЙ ОФИЦИАЛЬНЫЙ МАТЧ" data-az="NÖVBƏTİ RƏSMİ MATÇ">NAVBATDAGI RASMIY UCHRASHUV</small>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0;">
+      <b style="font-size: 16px;">Qarabağ FK</b>
+      <span class="badge bw">VS</span>
+      <b style="font-size: 16px;" id="tourOpponent">Raqib kutilmoqda</b>
+    </div>
+    <div style="font-size: 12.5px; color: var(--text-muted); display:flex; flex-direction:column; gap: 4px;">
+      <div>⏰ <span data-uz="Vaqti:" data-ru="Время:" data-az="Vaxt:">Vaqti:</span> <b id="tourMatchTime" style="color:var(--text)">—</b></div>
+    </div>
+  </div>
+
+  <div class="card" id="tourAnnCard">
+    <h3 style="margin-bottom: 8px; font-size: 13.5px;" data-uz="E'lonlar" data-ru="Объявления" data-az="Elanlar">E'lonlar</h3>
+    <p id="tourAnnText" class="note" style="color:var(--text); white-space: pre-line;"></p>
   </div>
 </div>
 
-<!-- 6. MAYDON EKRANI -->
-<div class="screen" id="pitchScreen">
-  <div class="header"><div class="brand">QARABAĞ FK</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Maydon" data-ru="Поле" data-az="Meydança">Maydon</h2>
-  <div class="pitch-container">
-    <div class="pitch-center-circle"></div>
-    <div class="pitch-penalty-box-top"></div>
-    <div class="pitch-penalty-box-bottom"></div>
-    <div class="player-spot gk" id="pos-gk" style="top: 90%; left: 50%;">GK</div>
-    <div class="player-spot" id="pos-df1" style="top: 70%; left: 25%;">DF</div>
-    <div class="player-spot" id="pos-df2" style="top: 70%; left: 75%;">DF</div>
-    <div class="player-spot" id="pos-mf1" style="top: 45%; left: 30%;">MF</div>
-    <div class="player-spot" id="pos-mf2" style="top: 45%; left: 70%;">MF</div>
-    <div class="player-spot" id="pos-fw" style="top: 20%; left: 50%;">FW</div>
+<!-- 4. STATISTIKA EKRANI -->
+<div class="screen" id="statScreen">
+  <div class="header">
+    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div>
+    <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div>
   </div>
+
+  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="O'yinchilar Statistikasi" data-ru="Статистика игроков" data-az="Oyunçu Statistikası">O'yinchilar Statistikasi</h2>
+  <div id="statKidsList"></div>
+</div>
+
+<!-- 5. MAYDON (PITCH) EKRANI - 6 TA POZITSIYA -->
+<div class="screen" id="pitchScreen">
+  <div class="header">
+    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div>
+    <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+    <h2 style="font-size: 17px;" data-uz="Asosiy Maydon Tarkibi" data-ru="Основной состав на поле" data-az="Əsas Meydan Heyəti">Asosiy Maydon Tarkibi</h2>
+    <span class="badge bs">6 O'YINCHI</span>
+  </div>
+  <p class="note" data-uz="Murabbiy tomonidan belgilangan jamoaviy taktik chizma" data-ru="Тактическая схема, установленная главным тренером" data-az="Baş məşqçi tərəfindən təyin edilmiş taktiki sxem">Murabbiy tomonidan belgilangan jamoaviy taktik chizma</p>
+
+  <!-- Taktik Maydon (2/3 nisbat) -->
+  <div class="pitch-container">
+    <div class="pitch-half-line"></div>
+    <div class="pitch-center-circle"></div>
+    <div class="pitch-box-top"></div>
+    <div class="pitch-box-bottom"></div>
+
+    <!-- 1. Hujumchi (FWD) - Yuqori markaz -->
+    <div class="pitch-pos" style="top: 16%; left: 50%;">
+      <div class="pos-shirt" id="pos_fwd_num">9</div>
+      <div class="pos-role">FWD</div>
+      <div class="pos-name" id="pos_fwd_name">—</div>
+    </div>
+
+    <!-- 2. Yarim himoyachi Chap (MID 1) -->
+    <div class="pitch-pos" style="top: 40%; left: 26%;">
+      <div class="pos-shirt" id="pos_mid1_num">8</div>
+      <div class="pos-role">LM</div>
+      <div class="pos-name" id="pos_mid1_name">—</div>
+    </div>
+
+    <!-- 3. Yarim himoyachi O'ng (MID 2) -->
+    <div class="pitch-pos" style="top: 40%; left: 74%;">
+      <div class="pos-shirt" id="pos_mid2_num">10</div>
+      <div class="pos-role">RM</div>
+      <div class="pos-name" id="pos_mid2_name">—</div>
+    </div>
+
+    <!-- 4. Chap Himoyachi (DEF 1) -->
+    <div class="pitch-pos" style="top: 65%; left: 28%;">
+      <div class="pos-shirt" id="pos_def1_num">3</div>
+      <div class="pos-role">LB</div>
+      <div class="pos-name" id="pos_def1_name">—</div>
+    </div>
+
+    <!-- 5. O'ng Himoyachi (DEF 2) -->
+    <div class="pitch-pos" style="top: 65%; left: 72%;">
+      <div class="pos-shirt" id="pos_def2_num">4</div>
+      <div class="pos-role">RB</div>
+      <div class="pos-name" id="pos_def2_name">—</div>
+    </div>
+
+    <!-- 6. Darvozabon (GK) - Pastki markaz -->
+    <div class="pitch-pos" style="top: 86%; left: 50%;">
+      <div class="pos-shirt" style="background: linear-gradient(135deg, #10b981, #047857);" id="pos_gk_num">1</div>
+      <div class="pos-role">GK</div>
+      <div class="pos-name" id="pos_gk_name">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. HAMYON (TO'LOVLAR) EKRANI -->
+<div class="screen" id="walletScreen">
+  <div class="header">
+    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div>
+    <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div>
+  </div>
+
+  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="To'lov va Hamyon" data-ru="Оплата и Кошелек" data-az="Ödəniş və Pulqabı">To'lov va Hamyon</h2>
+
+  <div class="card" style="border: 1px solid var(--gold);">
+    <small style="color:var(--gold); font: 700 10px 'Unbounded';" data-uz="OYLIK TO'LOV MIQDORI" data-ru="СУММА ЕЖЕМЕСЯЧНОЙ ОПЛАТЫ" data-az="AYLIQ ÖDƏNİŞ MƏBLƏĞİ">OYLIK TO'LOV MIQDORI</small>
+    <div style="font-size: 24px; font-weight: 800; font-family: 'Unbounded'; margin: 6px 0;" id="walletMonthlyAmt">350 000 UZS</div>
+    <p class="note" data-uz="To'lovni har oyning 5-sanasiga qadar amalga oshirishingiz so'raladi." data-ru="Просим производить оплату до 5-го числа каждого месяца." data-az="Ödənişi hər ayın 5-dək həyata keçirməyiniz xahiş olunur.">To'lovni har oyning 5-sanasiga qadar amalga oshirishingiz so'raladi.</p>
+  </div>
+
+  <div id="walletKidsList"></div>
 </div>
 
 <!-- 7. PROFIL EKRANI -->
 <div class="screen" id="profileScreen">
-  <div class="header"><div class="brand">QARABAĞ FK</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button></div></div>
-  <h2 class="hero-title" style="font-size:24px;margin-top:0" data-uz="Profil" data-ru="Профиль" data-az="Profil">Profil</h2>
-  <div class="card" style="text-align:center">
-    <img id="prPhoto" class="pphoto" alt="" style="margin-bottom:15px">
-    <h2 id="prName" style="font-size:20px;margin-bottom:8px"></h2>
-    <div id="prJersey" class="badge bs" style="margin-bottom:12px"></div>
-    <p class="note" id="prInfo" style="white-space:pre-line"></p>
+  <div class="header">
+    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div>
+    <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div>
   </div>
-  <div class="card">
-    <h3 style="font-size:14px;margin-bottom:6px" data-uz="O'zim haqimda" data-ru="Обо мне" data-az="Özüm haqqında">O'zim haqimda</h3>
-    <p class="note" id="prBio" style="font-size:14px;line-height:1.6;"></p>
+
+  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="Foydalanuvchi Profili" data-ru="Профиль пользователя" data-az="İstifadəçi Profili">Foydalanuvchi Profili</h2>
+
+  <div class="card" style="text-align:center;">
+    <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--input-bg); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 12px;">👤</div>
+    <h2 id="profParentName" style="font-size: 18px; margin-bottom: 4px;">—</h2>
+    <p class="note" id="profParentPhone" style="font-weight: 700; color: var(--gold);"></p>
+    <p class="note" id="profParentTg" style="margin-top: 4px;"></p>
   </div>
-  <div class="card" style="text-align:center">
-    <h3 style="font-size:14px;margin-bottom:10px" data-uz="Murabbiy bilan bog'lanish" data-ru="Связаться с тренером" data-az="Məşqçi ilə əlaqə">Murabbiy bilan bog'lanish</h3>
-    <a href="tel:+998992677747" class="btn" style="background:#2AABEE">📞 +998 99 267 77 47</a>
-  </div>
-  <button class="btn bd" onclick="logout()" data-uz="CHIQISH" data-ru="ВЫЙТИ" data-az="ÇIXIŞ">CHIQISH</button>
+
+  <button class="btn bd" style="margin-top: 14px;" onclick="logout()" data-uz="CHIQISH" data-ru="ВЫЙТИ" data-az="ÇIXIŞ">CHIQISH</button>
 </div>
 
-<!-- 8. ADMIN PANEL -->
+<!-- 8. ADMIN PANELI (8 TA TAB) -->
 <div class="screen" id="adminScreen">
   <div class="header">
-    <div class="brand">ADMIN</div>
-    <div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()" data-uz="Chiqish" data-ru="Выйти" data-az="Çıxış">Chiqish</button></div>
+    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ ADMIN</div></div>
+    <div class="top-actions">
+      <button class="lang-btn" onclick="toggleLang()">UZ</button>
+      <button class="btn bo sm" onclick="logout()">Chiqish</button>
+    </div>
   </div>
+
+  <!-- 8 ta Admin Tabi -->
   <div class="tabs">
-    <div class="tab active" onclick="adminTab('apps',this)" data-uz="ARIZALAR" data-ru="ЗАЯВКИ" data-az="MÜRACİƏTLƏR">ARIZALAR <span id="appBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
-    <div class="tab" onclick="adminTab('orders',this)" data-uz="TO'LOVLAR" data-ru="ОПЛАТЫ" data-az="ÖDƏNİŞLƏR">TO'LOVLAR <span id="ordBadge" class="hidden" style="background:var(--coral);color:#fff;border-radius:50%;padding:2px 6px">0</span></div>
-    <div class="tab" onclick="adminTab('parents',this)" data-uz="OTA-ONALAR" data-ru="РОДИТЕЛИ" data-az="VALİDEYNLƏR">OTA-ONALAR</div>
-    <div class="tab" onclick="adminTab('students',this)" data-uz="O'QUVCHILAR" data-ru="УЧЕНИКИ" data-az="TƏLƏBƏLƏR">O'QUVCHILAR</div>
-    <div class="tab" onclick="adminTab('attend',this)" data-uz="DAVOMAT" data-ru="ПОСЕЩАЕМОСТЬ" data-az="DAVAMİYYƏT">DAVOMAT</div>
-    <div class="tab" onclick="adminTab('stats',this)" data-uz="NATIJALAR" data-ru="РЕЗУЛЬТАТЫ" data-az="NƏTİCƏLƏR">NATIJALAR</div>
-    <div class="tab" onclick="adminTab('archive',this)" data-uz="ARXIV" data-ru="АРХИВ" data-az="ARXİV">ARXIV</div>
-    <div class="tab" onclick="adminTab('settings',this)" data-uz="SOZLAMALAR" data-ru="НАСТРОЙКИ" data-az="AYARLAR">SOZLAMALAR</div>
+    <div class="tab active" onclick="adminTab('apps', this)">ARIZALAR <span id="ad_badge_apps" class="badge bx sm hidden">0</span></div>
+    <div class="tab" onclick="adminTab('orders', this)">TO'LOVLAR <span id="ad_badge_orders" class="badge bx sm hidden">0</span></div>
+    <div class="tab" onclick="adminTab('parents', this)">OTA-ONALAR</div>
+    <div class="tab" onclick="adminTab('students', this)">O'QUVCHILAR</div>
+    <div class="tab" onclick="adminTab('attend', this)">DAVOMAT</div>
+    <div class="tab" onclick="adminTab('stats', this)">NATIJALAR</div>
+    <div class="tab" onclick="adminTab('archive', this)">ARXIV</div>
+    <div class="tab" onclick="adminTab('settings', this)">SOZLAMALAR</div>
   </div>
-  
-  <div id="fltBar" class="hidden" style="display:flex;gap:8px;margin-bottom:12px">
-    <input id="fQ" class="inp" placeholder="🔍 Ism yoki telefon" oninput="renderAdmin()">
-    <select id="fGroup" class="inp" style="max-width:130px" onchange="renderAdmin()"></select>
-  </div>
-  
-  <div class="atab card" id="at_apps"></div>
-  <div class="atab card hidden" id="at_orders"></div>
-  <div class="atab card hidden" id="at_parents"></div>
-  
+
+  <!-- Tab 1: Arizalar -->
+  <div class="card atab" id="at_apps"></div>
+
+  <!-- Tab 2: To'lovlar (Orders) -->
+  <div class="card atab hidden" id="at_orders"></div>
+
+  <!-- Tab 3: Ota-onalar -->
+  <div class="card atab hidden" id="at_parents"></div>
+
+  <!-- Tab 4: O'quvchilar -->
   <div class="atab hidden" id="at_students">
-    <div class="fin">
-      <div class="fc"><b id="finPaid">0</b><div data-uz="To'langan" data-ru="Оплачено" data-az="Ödənilib">To'langan</div></div>
-      <div class="fc"><b id="finDebt" style="color:var(--coral)">0</b><div data-uz="Qarzdorlik" data-ru="Долг" data-az="Borc">Qarzdorlik</div></div>
-    </div>
-    <div style="display:flex;gap:8px;margin-bottom:10px">
-      <button class="btn sm" onclick="exportCSV()">📥 CSV</button>
-      <button class="btn sm bo" onclick="copyDebtors()">📋 Qarzdorlar</button>
-    </div>
-    <div class="card" id="stList"></div>
+    <div class="card" id="studentsListAdmin"></div>
   </div>
-  
-  <div class="atab hidden" id="at_attend">
-    <div class="card">
-      <h3 style="margin-bottom:6px;font-size:14px">Bugungi davomat</h3>
-      <p class="note" style="margin:0 0 12px">Kelganlarni belgilab, bir marta saqlang.</p>
-      <div id="attList"></div>
-      <div style="display:flex;gap:8px">
-        <button class="btn bo sm" style="flex:1;padding:12px" onclick="checkAll()">Hammasini belgilash</button>
-        <button class="btn bok sm" style="flex:1;padding:12px" onclick="saveAttendance()">SAQLASH</button>
-      </div>
+
+  <!-- Tab 5: Davomat -->
+  <div class="card atab hidden" id="at_attend">
+    <h3 style="font-size: 14px; margin-bottom: 6px;">Bugungi mashg'ulot davomati</h3>
+    <p class="note" style="margin-bottom: 12px;">Kelgan o'quvchilarni belgilab, saqlang.</p>
+    <div id="attendBox"></div>
+    <div style="display:flex; gap: 8px; margin-top: 10px;">
+      <button class="btn bo sm" style="flex:1;" onclick="checkAllAttend()">Hammasini belgilash</button>
+      <button class="btn bok sm" style="flex:1;" onclick="saveAttendance()">SAQLASH</button>
     </div>
   </div>
-  
-  <div class="atab hidden" id="at_stats"><div class="card" id="stStats"></div></div>
-  <div class="atab hidden" id="at_archive"><div class="card"><h3 style="margin-bottom:10px;color:var(--coral);font-size:14px">Arxivlangan o'quvchilar</h3><div id="arList"></div></div></div>
-  
-  <div class="atab hidden" id="at_settings"><div class="card">
-    <h3 style="margin-bottom:12px;font-size:14px">Murabbiy va O'yin ma'lumotlari</h3>
-    <div class="ig"><label>Murabbiy haqida (Bosh sahifada chiqadi)</label><textarea id="sCoach" class="inp" rows="3"></textarea></div>
-    <div class="ig"><label>Raqib jamoa nomi (Turnirlarda chiqadi)</label><input id="sOpponent" class="inp"></div>
-    <div class="ig"><label>O'yin vaqti</label><input id="sMatchTime" class="inp"></div>
+
+  <!-- Tab 6: Natijalar -->
+  <div class="card atab hidden" id="at_stats"></div>
+
+  <!-- Tab 7: Arxiv -->
+  <div class="card atab hidden" id="at_archive">
+    <h3 style="font-size: 14px; color: var(--coral); margin-bottom: 10px;">Arxivlangan O'quvchilar</h3>
+    <div id="archiveBox"></div>
+  </div>
+
+  <!-- Tab 8: Sozlamalar (Eng muhim maydon selektlari bilan) -->
+  <div class="card atab hidden" id="at_settings">
+    <h3 style="font-size: 14px; margin-bottom: 12px; color: var(--gold-light);">Maydon Taktik Tarkibi (6 ta Pozitsiya)</h3>
     
-    <h3 style="margin:15px 0 10px;font-size:14px">Asosiy tarkib (Maydon paneli)</h3>
-    <div class="ig"><label>Darvozabon (GK)</label><select id="lineGK" class="inp"></select></div>
-    <div class="ig"><label>Himoyachi 1 (DF)</label><select id="lineDF1" class="inp"></select></div>
-    <div class="ig"><label>Himoyachi 2 (DF)</label><select id="lineDF2" class="inp"></select></div>
-    <div class="ig"><label>Yarim Himoyachi 1 (MF)</label><select id="lineMF1" class="inp"></select></div>
-    <div class="ig"><label>Yarim Himoyachi 2 (MF)</label><select id="lineMF2" class="inp"></select></div>
-    <div class="ig"><label>Hujumchi (FW)</label><select id="lineFW" class="inp"></select></div>
-    
-    <h3 style="margin:15px 0 10px;font-size:14px">Boshqa sozlamalar</h3>
-    <div class="ig"><label>E'lon (ota-onalarga)</label><textarea id="sAnn" class="inp" rows="2"></textarea></div>
-    <div class="ig"><label>Motivatsiya</label><textarea id="sMot" class="inp" rows="2"></textarea></div>
-    <div class="ig"><label>To'lov summasi</label><input id="sAmt" class="inp"></div>
-    <div class="ig"><label>Karta raqami</label><input id="sCard" class="inp"></div>
     <div class="ig">
-      <label>Mashg'ulot kuni</label>
-      <select id="sDow" class="inp">
-        <option value="1">Dushanba</option><option value="2">Seshanba</option><option value="3">Chorshanba</option>
-        <option value="4">Payshanba</option><option value="5">Juma</option><option value="6">Shanba</option><option value="0">Yakshanba</option>
-      </select>
+      <label>1. Darvozabon (GK)</label>
+      <select id="sel_gk" class="inp"></select>
     </div>
-    <div class="ig"><label>Mashg'ulot vaqti</label><input type="time" id="sTime" class="inp"></div>
-    <button class="btn" onclick="saveSettings()">SAQLASH</button>
-  </div></div>
+    <div class="ig">
+      <label>2. Chap Himoyachi (LB)</label>
+      <select id="sel_def1" class="inp"></select>
+    </div>
+    <div class="ig">
+      <label>3. O'ng Himoyachi (RB)</label>
+      <select id="sel_def2" class="inp"></select>
+    </div>
+    <div class="ig">
+      <label>4. Chap Yarim Himoya (LM)</label>
+      <select id="sel_mid1" class="inp"></select>
+    </div>
+    <div class="ig">
+      <label>5. O'ng Yarim Himoya (RM)</label>
+      <select id="sel_mid2" class="inp"></select>
+    </div>
+    <div class="ig">
+      <label>6. Hujumchi (FWD)</label>
+      <select id="sel_fwd" class="inp"></select>
+    </div>
+
+    <h3 style="font-size: 14px; margin: 16px 0 10px; color: var(--gold-light);">O'yin va Murabbiy Ma'lumotlari</h3>
+    <div class="ig">
+      <label>Raqib Jamoa Nomi</label>
+      <input id="setOpponent" class="inp" placeholder="Neftchi FK">
+    </div>
+    <div class="ig">
+      <label>O'yin Kuni va Vaqti</label>
+      <input id="setMatchTime" class="inp" placeholder="Shanba 16:00, Markaziy Arena">
+    </div>
+    <div class="ig">
+      <label>E'lon (Barcha foydalanuvchilarga)</label>
+      <textarea id="setAnn" class="inp" rows="2"></textarea>
+    </div>
+    <div class="ig">
+      <label>Murabbiy telefoni / ma'lumoti</label>
+      <input id="setCoach" class="inp" placeholder="+998 99 267 77 47">
+    </div>
+
+    <h3 style="font-size: 14px; margin: 16px 0 10px; color: var(--gold-light);">Moliya va To'lov</h3>
+    <div class="ig">
+      <label>Karta Raqami (To'lov uchun)</label>
+      <input id="setCard" class="inp" placeholder="8600 0000 0000 0000">
+    </div>
+    <div class="ig">
+      <label>Oylik To'lov Miqdori (UZS)</label>
+      <input id="setAmount" class="inp" placeholder="350 000">
+    </div>
+
+    <button class="btn" onclick="saveAdminSettings()">SOZLAMALARNI SAQLASH</button>
+  </div>
 </div>
 
-<!-- PASTKI NAVIGATSIYA -->
-<nav class="bn" id="bnav" hidden>
-  <button class="bn-i" data-t="home" onclick="goTab('home')"><span class="ic">🏠</span><span data-uz="Bosh sahifa" data-ru="Главная" data-az="Ana səhifə">Bosh sahifa</span></button>
-  <button class="bn-i" data-t="tour" onclick="goTab('tour')"><span class="ic">🏆</span><span data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</span></button>
-  <button class="bn-i" data-t="stat" onclick="goTab('stat')"><span class="ic">📊</span><span data-uz="Statistika" data-ru="Статистика" data-az="Statistika">Statistika</span></button>
-  <button class="bn-i" data-t="pitch" onclick="goTab('pitch')"><span class="ic">⚽</span><span data-uz="Maydon" data-ru="Поле" data-az="Meydança">Maydon</span></button>
-  <button class="bn-i" data-t="wallet" onclick="goTab('wallet')"><span class="ic">💳</span><span data-uz="Hamyon" data-ru="Кошелек" data-az="Cüzdan">Hamyon</span></button>
-  <button class="bn-i" data-t="profile" onclick="goTab('profile')"><span class="ic">👤</span><span data-uz="Profil" data-ru="Профиль" data-az="Profil">Profil</span></button>
+<!-- PASTKI ASOSIY NAVIGATSIYA (BOTTOM NAV) -->
+<nav class="bn" id="bottomNav" hidden>
+  <button class="bn-i on" data-target="homeScreen" onclick="navTo('homeScreen')">
+    <span class="ic">🏠</span>
+    <span data-uz="Asosiy" data-ru="Главная" data-az="Əsas">Asosiy</span>
+  </button>
+  <button class="bn-i" data-target="tourScreen" onclick="navTo('tourScreen')">
+    <span class="ic">🏆</span>
+    <span data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</span>
+  </button>
+  <button class="bn-i" data-target="statScreen" onclick="navTo('statScreen')">
+    <span class="ic">📊</span>
+    <span data-uz="Statistika" data-ru="Статы" data-az="Statistika">Statistika</span>
+  </button>
+  <button class="bn-i" data-target="pitchScreen" onclick="navTo('pitchScreen')">
+    <span class="ic">⚽</span>
+    <span data-uz="Maydon" data-ru="Поле" data-az="Meydan">Maydon</span>
+  </button>
+  <button class="bn-i" data-target="walletScreen" onclick="navTo('walletScreen')">
+    <span class="ic">💳</span>
+    <span data-uz="Hamyon" data-ru="Кошелек" data-az="Pulqabı">Hamyon</span>
+  </button>
+  <button class="bn-i" data-target="profileScreen" onclick="navTo('profileScreen')">
+    <span class="ic">👤</span>
+    <span data-uz="Profil" data-ru="Профиль" data-az="Profil">Profil</span>
+  </button>
 </nav>
 
-<!-- MODALLAR (Oynalar) -->
-<div class="ov" id="ov" onclick="closeModal()"></div>
-  
+<!-- MODALLAR -->
+<div class="ov" id="overlay" onclick="closeAllModals()"></div>
+
+<!-- To'lov Modali (Noyob summa) -->
 <div class="modal" id="payModal">
-  <div class="pay">
-    <h3 style="margin-bottom:14px;font-size:15px">HISOBNI TO'LDIRISH</h3>
-    <div class="spin" id="pSpin"></div>
-    <b id="pTitle" style="font-size:17px">To'lovni yakunlang</b>
-    <p class="note">Kartangizdan quyidagi rekvizitlarga o'tkazing</p>
-    <p style="color:var(--coral);font-weight:700;font-size:13px;margin:8px 0">Ko'rsatilgan summadan 1 so'm ham oshiq yoki kam bo'lmasin</p>
-    <div class="pbox"><small>TO'LOV SUMMASI</small><b id="oAmt">...</b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('a')">⧉ Nusxa olish</button></div>
-    <div class="pbox"><small>KARTA RAQAMI</small><b id="oCard"></b><button class="btn sm" style="width:100%;padding:12px" onclick="cp('c')">⧉ Nusxa olish</button></div>
-    <p style="margin-top:6px">⏰ Qolgan vaqt: <b id="oTime">10:00</b></p>
-    <button class="btn bo" onclick="sendReceipt()">💬 CHEKNI BOTGA YUBORISH</button>
-    <button class="btn bo" onclick="closeModal()">YOPISH</button>
+  <div style="text-align:center;">
+    <h3 style="font-size: 16px; margin-bottom: 4px;" data-uz="HISOBNI TO'LDIRISH" data-ru="ПОПОЛНЕНИЕ СЧЕТА" data-az="HESABI DOLDUR">HISOBNI TO'LDIRISH</h3>
+    <p class="note" data-uz="Kartangizdan quyidagi rekvizitlarga o'tkazing" data-ru="Переведите с карты на указанные реквизиты" data-az="Kartınızdan aşağıdakı rekvizitlərə köçürün">Kartangizdan quyidagi rekvizitlarga o'tkazing</p>
+    
+    <div style="background: rgba(255,77,109,0.12); border:1px solid var(--coral); color:var(--coral); padding:8px; border-radius:10px; font-size:11.5px; font-weight:700; margin:10px 0;" data-uz="DIQQAT! Bir so'm ham kam yoki ko'p bo'lmasin!" data-ru="ВНИМАНИЕ! Ровно указанная сумма до сума!" data-az="DİQQƏT! Göstərilən məbləğdən artıq və ya əskik olmasın!">
+      DIQQAT! Bir so'm ham kam yoki ko'p bo'lmasin!
+    </div>
+
+    <div class="card" style="text-align:left; margin: 10px 0;">
+      <small style="color:var(--text-muted); font: 700 9px 'Unbounded';">TO'LOV SUMMASI</small>
+      <div id="modalOrderAmount" style="font-size: 22px; font-family: monospace; font-weight:900; margin: 4px 0 8px; color: var(--ok);">...</div>
+      <button class="btn sm bo" style="width:100%" onclick="copyText('modalOrderAmount')">📋 Nusxa olish</button>
+    </div>
+
+    <div class="card" style="text-align:left; margin: 10px 0;">
+      <small style="color:var(--text-muted); font: 700 9px 'Unbounded';">KARTA RAQAMI</small>
+      <div id="modalOrderCard" style="font-size: 17px; font-family: monospace; font-weight:800; margin: 4px 0 8px; color: var(--gold-light);">...</div>
+      <button class="btn sm bo" style="width:100%" onclick="copyText('modalOrderCard')">📋 Nusxa olish</button>
+    </div>
+
+    <p class="note">⏰ Qolgan vaqt: <b id="modalOrderTimer" style="color:#fff;">10:00</b></p>
+
+    <button class="btn bok" style="margin-top: 10px;" onclick="sendReceiptBot()">🧾 CHEKNI BOTGA YUBORISH</button>
+    <button class="btn bo" style="margin-top: 8px;" onclick="closeAllModals()">YOPISH</button>
   </div>
 </div>
 
-<div class="modal" id="histModal">
-  <h3 style="margin-bottom:15px">To'lovlar tarixi</h3>
-  <div id="histList" style="max-height:300px;overflow-y:auto"></div>
-  <button class="btn bo" style="margin-top:15px" onclick="closeModal()">YOPISH</button>
-</div>
+<!-- O'yinchi Tahrirlash Modali (Admin) -->
+<div class="modal" id="playerEditModal">
+  <h3 style="font-size: 15px; margin-bottom: 12px;" id="plModalTitle">O'yinchini Tahrirlash</h3>
+  <input type="hidden" id="plEditId">
+  
+  <div class="ig"><label>Ism</label><input id="plEditName" class="inp"></div>
+  <div class="ig"><label>Futbolka Raqami (1-99)</label><input type="number" id="plEditNumber" class="inp" min="1" max="99"></div>
+  <div class="ig"><label>Rasm URL</label><input id="plEditPhoto" class="inp" placeholder="https://..."></div>
+  <div class="ig"><label>Guruh (masalan: 2013)</label><input id="plEditGroup" class="inp"></div>
+  <div class="ig"><label>Qisqacha Bio (Izoh)</label><textarea id="plEditBio" class="inp" rows="2"></textarea></div>
 
-<div class="modal" id="plModal">
-  <h3 style="margin-bottom:14px" id="plTitle">Tahrirlash</h3>
-  <input type="hidden" id="eId">
-  <div class="ig"><label>Ism</label><input id="eName" class="inp"></div>
-  <div class="ig"><label>Rasm URL</label><input id="ePhoto" class="inp" placeholder="https://rasm.jpg"></div>
-  <div class="ig"><label>Guruh</label><input id="eGroup" class="inp"></div>
-  <div class="ig"><label>Futbolka raqami (1-99)</label><input type="number" id="eJersey" class="inp" min="1" max="99"></div>
-  <div class="ig"><label>O'zi haqida (Bio)</label><textarea id="eBio" class="inp" rows="2"></textarea></div>
-  <div style="display:flex;gap:10px">
-    <div class="ig" style="flex:1"><label>Gollar</label><input type="number" id="eGoals" class="inp"></div>
-    <div class="ig" style="flex:1"><label>Asistlar</label><input type="number" id="eAssists" class="inp"></div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+    <div class="ig"><label>Gollar</label><input type="number" id="plEditGoals" class="inp"></div>
+    <div class="ig"><label>Asistlar</label><input type="number" id="plEditAssists" class="inp"></div>
   </div>
-  <div style="display:flex;gap:10px">
-    <div class="ig" style="flex:1"><label>Tezlik %</label><input type="number" id="eSpeed" class="inp"></div>
-    <div class="ig" style="flex:1"><label>O'zlashtirish %</label><input type="number" id="eProg" class="inp"></div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+    <div class="ig"><label>Tezlik %</label><input type="number" id="plEditSpeed" class="inp"></div>
+    <div class="ig"><label>O'zlashtirish %</label><input type="number" id="plEditProgress" class="inp"></div>
   </div>
-  <div class="ig"><label>Mashg'ulotlar soni</label><input type="number" id="eTr" class="inp"></div>
+
+  <div class="ig"><label>Mashg'ulotlar soni</label><input type="number" id="plEditTrainings" class="inp"></div>
+  
   <div class="ig">
-    <label>To'lov holati</label>
-    <select id="ePay" class="inp">
-      <option value="unpaid">To'lanmagan</option>
-      <option value="pending">Kutilmoqda</option>
-      <option value="paid">To'langan</option>
+    <label>To'lov Holati</label>
+    <select id="plEditPaid" class="inp">
+      <option value="unpaid">To'lanmagan ❌</option>
+      <option value="pending">Kutilmoqda ⏳</option>
+      <option value="paid">To'langan ✅</option>
     </select>
   </div>
-  <div class="ig"><label>Murabbiy izohi</label><textarea id="eNote" class="inp" rows="2"></textarea></div>
-  <div class="ig" style="display:flex;align-items:center;gap:10px"><input type="checkbox" id="eStar" style="width:20px;height:20px"><label for="eStar" style="margin:0">Oyning eng yaxshi o'yinchisi ⭐</label></div>
-  <button class="btn" onclick="savePlayer()">SAQLASH</button>
-  <button class="btn bo" onclick="closeModal()">BEKOR QILISH</button>
+
+  <button class="btn" onclick="savePlayerAdmin()">SAQLASH</button>
+  <button class="btn bo" style="margin-top: 8px;" onclick="closeAllModals()">BEKOR QILISH</button>
 </div>
 
-<div class="modal" id="parModal">
-  <h3 id="parTitle" style="margin-bottom:14px">Ota-ona</h3>
-  <input type="hidden" id="paOld">
-  <div class="ig"><label>Ism</label><input id="paName" class="inp"></div>
-  <div class="ig"><label>Login (Telefon raqam)</label><input id="paLogin" class="inp" type="tel"></div>
-  <div class="ig"><label>Parol</label><input id="paPass" class="inp" type="text"></div>
-  <div class="ig"><label>Farzandlar (mavjudlardan tanlang)</label><div id="paKidsBox" style="max-height:170px;overflow-y:auto"></div></div>
-  <div class="ig"><label>Yangi farzand ismi (vergul bilan, ixtiyoriy)</label><input id="paNew" class="inp"></div>
-  <button class="btn" onclick="savePar()">SAQLASH</button>
-  <button class="btn bo" onclick="closeModal()">BEKOR QILISH</button>
-</div>
-
+<!-- JAVASCRIPT VA INTEGRATSIYALAR -->
 <script>
-// ==========================================
-// 1. FIREBASE VA O'ZGARUVCHILAR
-// ==========================================
-const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
-const ADMIN_LOGIN = "Arif", ADMIN_PASS = "0717", BOT = "api_bot_coll";
-let db = null;
-try { firebase.initializeApp(firebaseConfig); db = firebase.database(); }
-catch(e) { alert("Bazaga ulanib bo'lmadi. Internetni tekshiring."); }
+document.addEventListener("DOMContentLoaded", function() {
 
-const $ = id => document.getElementById(id);
-const v = id => $(id).value.trim();
-const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const digits = s => String(s).replace(/\D/g, '');
-const ym = () => new Date().toISOString().slice(0, 7);
-const today = () => new Date().toLocaleDateString();
+  /* 1. Firebase Initsializatsiyasi */
+  const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
+  let db = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+  } catch (err) {
+    console.error("Firebase init xatosi:", err);
+  }
 
-let me = null, PL = {}, CK = new Set(), subs = [], cdT = null;
-let S = {
-    card: "", amount: "350 000", scheduleDay: 1, scheduleTime: "16:00",
-    announcement: "", motivation: "Mehnat qilgan yutadi!", coach: "", opponent: "", matchTime: "",
-    lineup: { gk: "", df1: "", df2: "", mf1: "", mf2: "", fw: "" }
-};
-const amt = () => parseInt(String(S.amount).replace(/\D/g, '')) || 0;
-function sub(ref, fn) { ref.on('value', fn); subs.push(ref); }
+  /* Telegram WebApp integratsiyasi */
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
+    tg.ready();
+    tg.expand();
+  }
 
-let ORD = null, ordT = null, curTotal = 0, admT = null, OR = {};
-let PAR = null, KIDS = {}, KS = new Set(), PR = {};
-const genId = () => 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
-const parentOf = id => Object.entries(PR).find(([, p]) => p.children && p.children[id]) || null;
-const phoneOf = id => { const p = parentOf(id); return (p && p[1].phone) || (/^\d{9,}$/.test(id) ? id : ''); };
-const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  /* Global Holat */
+  let currentLang = 'uz';
+  let currentUser = null; // Tizimdagi ota-ona
+  let SETTINGS = {
+    card: "8600 0000 0000 0000",
+    amount: "350 000",
+    opponent: "Neftchi FK",
+    matchTime: "Shanba 16:00",
+    announcement: "",
+    coachPhone: "+998 99 267 77 47",
+    lineup: { gk: "", def1: "", def2: "", mid1: "", mid2: "", fwd: "" }
+  };
+  let ALL_PLAYERS = {};
+  let ALL_PARENTS = {};
+  let ALL_APPLICATIONS = {};
+  let ALL_ORDERS = {};
+  let attendCheckSet = new Set();
+  let orderTimerInterval = null;
+  let activeOrder = null;
 
-// ==========================================
-// 2. ANIMATSIYALAR VA KONFETTI
-// ==========================================
-function confetti() {
-    const c = $('fx'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
-    const k = ['#3d7bff', '#ff4d6d', '#ffc83d', '#2ee6a6', '#fff'];
-    const ps = Array.from({ length: 130 }, () => ({
-        x: innerWidth / 2, y: innerHeight * .6, vx: (Math.random() - .5) * 16, vy: -Math.random() * 17 - 4, s: Math.random() * 7 + 3, c: k[Math.random() * 5 | 0], r: Math.random() * 6
+  /* Tarjimalar lug'ati */
+  const DICT = {
+    uz: {
+      appSuccess: "Arizangiz qabul qilindi! Murabbiy tasdiqlashini kuting.",
+      emptyFields: "Iltimos, hamma maydonlarni to'ldiring!",
+      passError: "Parol albatta Katta harf bilan boshlanishi va ichida kamida bitta maxsus belgi (% _ . ! @ # $) bo'lishi shart!",
+      userNotFound: "Bunday telefon raqamli ota-ona topilmadi!",
+      passWrong: "Parol noto'g'ri!",
+      paid: "To'langan ✅",
+      pending: "Kutilmoqda ⏳",
+      unpaid: "To'lanmagan ❌",
+      receiptPrompt: "Iltimos, to'lov cheki skrinshotini yuboring.",
+      copied: "Nusxa olindi: "
+    },
+    ru: {
+      appSuccess: "Заявка принята! Ожидайте подтверждения тренера.",
+      emptyFields: "Пожалуйста, заполните все поля!",
+      passError: "Пароль должен начинаться с заглавной буквы и содержать хотя бы один спецсимвол (% _ . ! @ # $)!",
+      userNotFound: "Родитель с таким номером телефона не найден!",
+      passWrong: "Неверный пароль!",
+      paid: "Оплачено ✅",
+      pending: "В ожидании ⏳",
+      unpaid: "Не оплачено ❌",
+      receiptPrompt: "Пожалуйста, отправьте скриншот чека об оплате.",
+      copied: "Скопировано: "
+    },
+    az: {
+      appSuccess: "Müraciətiniz qəbul olundu! Məşqçinin təsdiqini gözləyin.",
+      emptyFields: "Zəhmət olmasa, bütün sahələri doldurun!",
+      passError: "Şifrə mütləq Böyük hərflə başlamalı və ən azı bir xüsusi simvol (% _ . ! @ # $) içərməlidir!",
+      userNotFound: "Bu telefon nömrəli valideyn tapılmadı!",
+      passWrong: "Şifrə yanlışdır!",
+      paid: "Ödənilib ✅",
+      pending: "Gözlənilir ⏳",
+      unpaid: "Ödənilməyib ❌",
+      receiptPrompt: "Zəhmət olmasa, ödəniş qəbzinin skrinşotunu göndərin.",
+      copied: "Kopyalandı: "
+    }
+  };
+
+  /* Yordamchi Funksiyalar */
+  const $ = id => document.getElementById(id);
+  const cleanDigits = s => String(s || '').replace(/\D/g, '');
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+  /* Confetti (G'alaba effekti) */
+  function fireConfetti() {
+    const c = $('fx'), x = c.getContext('2d');
+    c.width = innerWidth; c.height = innerHeight;
+    const colors = ['#d4af37', '#f5d77f', '#2ee6a6', '#ff4d6d', '#ffffff'];
+    const p = Array.from({ length: 90 }, () => ({
+      x: innerWidth / 2, y: innerHeight * 0.6,
+      vx: (Math.random() - 0.5) * 14, vy: -Math.random() * 15 - 4,
+      s: Math.random() * 6 + 3, c: colors[Math.random() * colors.length | 0], r: Math.random() * 6
     }));
     let f = 0;
-    (function t() {
-        x.clearRect(0, 0, c.width, c.height);
-        ps.forEach(p => {
-            p.vy += .45; p.x += p.vx; p.y += p.vy; p.r += .2;
-            x.fillStyle = p.c; x.save(); x.translate(p.x, p.y); x.rotate(p.r);
-            x.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * .6); x.restore();
-        });
-        if (++f < 110) requestAnimationFrame(t); else x.clearRect(0, 0, c.width, c.height);
+    (function frame() {
+      x.clearRect(0, 0, c.width, c.height);
+      p.forEach(i => {
+        i.vy += 0.4; i.x += i.vx; i.y += i.vy; i.r += 0.2;
+        x.fillStyle = i.c; x.save(); x.translate(i.x, i.y); x.rotate(i.r);
+        x.fillRect(-i.s / 2, -i.s / 2, i.s, i.s); x.restore();
+      });
+      if (++f < 90) requestAnimationFrame(frame);
+      else x.clearRect(0, 0, c.width, c.height);
     })();
-}
-const tl = $('tilt');
-if (tl) {
-    tl.addEventListener('pointermove', e => {
-        const r = tl.getBoundingClientRect(), px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
-        tl.style.transform = `perspective(800px) rotateY(${px * 10}deg) rotateX(${-py * 10}deg)`;
+  }
+
+  /* Tilni Almashtirish (UZ -> RU -> AZ) */
+  window.toggleLang = function() {
+    if (currentLang === 'uz') currentLang = 'ru';
+    else if (currentLang === 'ru') currentLang = 'az';
+    else currentLang = 'uz';
+
+    document.querySelectorAll('.lang-btn').forEach(b => b.innerText = currentLang.toUpperCase());
+    document.querySelectorAll('[data-' + currentLang + ']').forEach(el => {
+      el.innerText = el.getAttribute('data-' + currentLang);
     });
-    tl.addEventListener('pointerleave', () => tl.style.transform = '');
-}
-function countUp(el, to, suf) {
-    let n = 0; const st = Math.max(1, Math.ceil(to / 30));
-    const i = setInterval(() => { n = Math.min(to, n + st); el.innerText = n + suf; if (n >= to) clearInterval(i); }, 25);
-}
 
-// ==========================================
-// 3. ASOSIY FUNKSIYALAR (TIL, TEMA, EKRAN)
-// ==========================================
-function toggleTheme() { document.body.classList.toggle('light'); }
-
-let lang = 'uz';
-function toggleLang() {
-    if (lang === 'uz') lang = 'ru';
-    else if (lang === 'ru') lang = 'az';
-    else lang = 'uz';
-    
-    const btn = $('langBtn');
-    if (btn) btn.innerText = lang.toUpperCase();
-    
-    document.querySelectorAll('[data-' + lang + ']').forEach(e => {
-        if (e.tagName === 'INPUT' || e.tagName === 'TEXTAREA') return;
-        e.innerHTML = e.getAttribute('data-' + lang);
-    });
-    document.querySelectorAll('[data-ph-' + lang + ']').forEach(e => {
-        e.placeholder = e.getAttribute('data-ph-' + lang);
-    });
-    document.querySelectorAll('option[data-' + lang + ']').forEach(e => {
-        e.innerText = e.getAttribute('data-' + lang);
-    });
-}
-
-function setMode(i, el) {
-    document.querySelectorAll('.mode').forEach(m => m.classList.remove('on')); el.classList.add('on');
-    document.querySelectorAll('.pane').forEach(p => p.classList.remove('on')); $('pane' + i).classList.add('on');
-}
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); $(id).classList.add('active'); scrollTo(0, 0); syncNav(id); }
-function openModal(id) { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); $('ov').classList.add('active'); $(id).classList.add('active'); }
-function closeModal() { payOff(); $('ov').classList.remove('active'); document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
-
-function startCountdown() {
-    clearInterval(cdT); const d = +S.scheduleDay, [h, m] = (S.scheduleTime || "16:00").split(':').map(Number);
-    cdT = setInterval(() => {
-        const n = new Date(), t = new Date(); t.setHours(h, m, 0, 0);
-        let k = d - n.getDay(); if (k < 0 || (k === 0 && t < n)) k += 7;
-        t.setDate(t.getDate() + k);
-        const ms = t - n, z = Math.floor;
-        const cdEl = $('cd'); if (cdEl) cdEl.innerText = `${z(ms / 864e5)}k ${z(ms % 864e5 / 36e5)}s ${z(ms % 36e5 / 6e4)}d ${z(ms % 6e4 / 1e3)}s`;
-    }, 1000);
-}
-function bar(i, val, max, suf) {
-    const p = Math.max(0, Math.min(100, val / max * 100)), b = $('b' + i);
-    if (!b) return;
-    b.style.width = '0'; requestAnimationFrame(() => b.style.width = p + '%');
-    b.className = 'sf ' + (p < 50 ? 'fr' : 'fg'); countUp($('t' + i), val, suf);
-}
-
-function onSettings(s) {
-    if (s.exists()) S = { ...S, ...s.val() };
-    startCountdown();
-    ['pAnn', 'fAnn'].forEach(i => { const a = $(i); if (!a) return; a.innerText = S.announcement || ''; a.style.display = S.announcement ? 'block' : 'none'; });
-    if (S.motivation && $('pMot')) $('pMot').innerText = `"${S.motivation}"`;
-    if ($('pCoachInfo')) $('pCoachInfo').innerText = S.coach || "Ma'lumot kiritilmagan";
-    if ($('tOpponent')) $('tOpponent').innerText = S.opponent || "Raqib kiritilmagan";
-    if ($('tTime')) $('tTime').innerText = S.matchTime || "Vaqt kiritilmagan";
-}
-if (db) db.ref('settings').on('value', onSettings);
-
-// ==========================================
-// 4. ARIZA VA LOGIN QISMI
-// ==========================================
-function done(btn, label, ids) {
-    confetti(); alert(lang === 'uz' ? "Arizangiz yuborildi! Murabbiy tasdiqlashini kuting." : (lang === 'ru' ? "Заявка отправлена! Ожидайте подтверждения." : "Müraciətiniz göndərildi! Təsdiqi gözləyin."));
-    ids.forEach(i => $(i).value = ''); btn.innerText = label; btn.disabled = false;
-    setMode(0, document.querySelector('.mode'));
-}
-function fail(btn, label, e) { alert(e.message || e); btn.innerText = label; btn.disabled = false; }
-
-function submitApplication() {
-    const parentName = v('appParentName'), childName = v('appChildName'), phone = digits(v('appPhone')), age = v('appAge'), pass = v('appPass'), b = $('btnApp'), L = "ARIZA YUBORISH";
-    
-    const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
-    const tgUsername = tgUser?.username ? '@' + tgUser.username : (tgUser?.first_name || '');
-
-    if (!parentName || !childName || phone.length < 9) return alert(lang === 'uz' ? "Hamma maydonni to'ldiring!" : (lang === 'ru' ? "Заполните все поля!" : "Bütün sahələri doldurun!"));
-    
-    const isPassValid = /^[A-Z].*[%_.!@#$^&*()].*$/.test(pass) && pass.length >= 4;
-    if (!isPassValid) {
-        return alert(lang === 'uz' ? "Parol xato! Katta harf va maxsus belgi (% _ . !) qatnashishi kerak. Masalan: Ali077%%" : (lang === 'ru' ? "Неверный пароль! Заглавная буква и спецсимвол обязательны. Пример: Ali077%%" : "Yanlış şifrə! Böyük hərf və xüsusi simvol olmalıdır. Məsələn: Ali077%%"));
+    if (currentUser) {
+      renderHomeKids();
+      renderStatKids();
+      renderWalletKids();
     }
-    
-    b.innerText = lang === 'uz' ? "Yuborilmoqda..." : (lang === 'ru' ? "Отправка..." : "Göndərilir..."); b.disabled = true;
-    if (!db) return fail(b, L, new Error("Baza ulanmagan"));
-    
-    db.ref('applications').push({
-        type: 'parent', parentName, childName, phone, age, password: pass, tgUser: tgUsername, date: today()
-    }).then(() => done(b, L, ['appParentName', 'appChildName', 'appPhone', 'appAge', 'appPass'])).catch(e => fail(b, L, e));
-}
+  };
+  $('langSwitchBtn').addEventListener('click', window.toggleLang);
 
-async function login() {
-    const u0 = v('loginUser'), p = v('loginPass');
-    if (!u0 || !p) return alert(lang === 'uz' ? "Login va parolni kiriting!" : (lang === 'ru' ? "Введите логин и пароль!" : "Login və şifrəni daxil edin!"));
-    if (!db) return alert("Baza ulanmagan");
-    
-    if (u0 === ADMIN_LOGIN && p === ADMIN_PASS) { showScreen('adminScreen'); startAdmin(); return; }
-    
-    const id = digits(u0);
-    try {
-        const s = await db.ref('parents/' + id).once('value');
-        if (!s.exists()) return alert(lang === 'uz' ? "Bunday login yo'q!" : (lang === 'ru' ? "Такого логина нет!" : "Belə login yoxdur!"));
-        if (String(s.val().password) !== p) return alert(lang === 'uz' ? "Parol xato!" : (lang === 'ru' ? "Неверный пароль!" : "Yanlış şifrə!"));
-        startParent(id);
-    } catch(e) { alert("Bazaga ulanishda xato: " + e.message); }
-}
+  /* Ekranni Ko'rsatish */
+  function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $(screenId).classList.add('active');
+    window.scrollTo(0, 0);
 
-// ==========================================
-// 5. OTA-ONA PANELI
-// ==========================================
-function startParent(id) {
-    PAR = { id }; KIDS = {}; KS = new Set();
-    sub(db.ref('parents/' + id), s => {
-        if (!s.exists()) { logout(); return; }
-        PAR = { id, ...s.val() };
-        if ($('fName')) $('fName').innerText = PAR.name || id;
-        if ($('fLogin')) $('fLogin').innerText = "Login: " + id;
-        
-        Object.keys(PAR.children || {}).forEach(k => {
-            if (KS.has(k)) return; KS.add(k);
-            sub(db.ref('players/' + k), x => {
-                KIDS[k] = x.exists() ? x.val() : null;
-                if (me && me.id === k) {
-                    if (KIDS[k] && !KIDS[k].isArchived) {
-                        me = { ...KIDS[k], id: k };
-                        if ($('statScreen').classList.contains('active')) renderStats();
-                        if ($('walletScreen').classList.contains('active')) renderWallet();
-                        if ($('profileScreen').classList.contains('active')) renderProfile();
-                    } else backFamily();
-                }
-                renderFamily();
-            });
-        });
-        if (!['familyScreen', 'statScreen', 'walletScreen', 'profileScreen', 'tourScreen', 'pitchScreen'].some(i => $(i).classList.contains('active'))) showScreen('familyScreen');
-        renderFamily();
+    const isAppScreen = ['homeScreen', 'tourScreen', 'statScreen', 'pitchScreen', 'walletScreen', 'profileScreen'].includes(screenId);
+    $('bottomNav').hidden = !(isAppScreen && currentUser);
+
+    document.querySelectorAll('.bn-i').forEach(btn => {
+      btn.classList.toggle('on', btn.getAttribute('data-target') === screenId);
     });
-}
+  }
+  window.navTo = function(screenId) { showScreen(screenId); };
 
-function renderFamily() {
-    if (!PAR || !$('kidsList')) return;
-    const ks = Object.keys(PAR.children || {}).filter(k => KIDS[k] && !KIDS[k].isArchived);
-    $('kidsList').innerHTML = ks.map(k => {
-        const p = KIDS[k], ok = p.paid === true || p.paid === "paid";
-        const cls = ok ? 'bs' : p.paid === "pending" ? 'bw' : 'bx';
-        const tx = ok ? (lang === 'uz' ? "To'langan ✅" : (lang === 'ru' ? "Оплачено ✅" : "Ödənilib ✅")) : p.paid === "pending" ? (lang === 'uz' ? "Kutilmoqda ⏳" : (lang === 'ru' ? "В ожидании ⏳" : "Gözlənilir ⏳")) : (lang === 'uz' ? "To'lanmagan ❌" : (lang === 'ru' ? "Не оплачено ❌" : "Ödənilməyib ❌"));
-        const ph = p.photoUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(p.name || 'U') + '&background=1E293B&color=3B82F6&size=150';
-        return `<div class="card" style="cursor:pointer;padding:16px" onclick="openKid('${k}')"><div style="display:flex;gap:14px;align-items:center"><img src="${esc(ph)}" alt="" style="width:58px;height:72px;object-fit:cover;border-radius:14px;background:#1E293B"><div style="flex:1;min-width:0"><b style="font-size:16px">${p.isStar ? '⭐ ' : ''}${esc(p.name)}</b><br><small style="color:var(--muted)">${lang === 'uz' ? 'Guruh' : (lang === 'ru' ? 'Группа' : 'Qrup')}: ${esc(p.group || '-')} · ${lang === 'uz' ? 'Gol' : (lang === 'ru' ? 'Голы' : 'Qollar')}: ${+p.goals || 0} · ${lang === 'uz' ? "Mashg'ulot" : (lang === 'ru' ? "Тренировки" : "Məşqlər")}: ${+p.trainings || 0}</small><div style="margin-top:8px"><span class="badge ${cls}">${tx}</span></div></div><span style="font-size:26px;color:var(--muted)">›</span></div></div>`;
-    }).join('') || `<div class="card"><p class="note" style="margin:0;text-align:center">${lang === 'uz' ? 'Farzand biriktirilmagan.' : (lang === 'ru' ? 'Ребенок не привязан.' : 'Uşaq əlavə edilməyib.')}</p></div>`;
-}
+  /* Modallarni Boshqarish */
+  function openModal(id) {
+    $('overlay').classList.add('active');
+    $(id).classList.add('active');
+  }
+  window.closeAllModals = function() {
+    $('overlay').classList.remove('active');
+    document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    if (orderTimerInterval) clearInterval(orderTimerInterval);
+  };
 
-function openKid(id) { if (!KIDS[id]) return; me = { ...KIDS[id], id }; renderStats(); showScreen('statScreen'); }
-function backFamily() { me = null; closeModal(); showScreen('familyScreen'); renderFamily(); }
-function logout() { clearInterval(admT); subs.forEach(r => r.off()); subs = []; me = null; PL = {}; PAR = null; KIDS = {}; KS = new Set(); PR = {}; if ($('loginUser')) $('loginUser').value = ''; if ($('loginPass')) $('loginPass').value = ''; showScreen('loginScreen'); }
+  /* Rejimni almashtirish (Kirish / Ariza) */
+  window.setMode = function(idx) {
+    $('modeBtn0').classList.toggle('on', idx === 0);
+    $('modeBtn1').classList.toggle('on', idx === 1);
+    $('pane0').classList.toggle('on', idx === 0);
+    $('pane1').classList.toggle('on', idx === 1);
+  };
 
-function payStatus() {
-    if (!$('pPay') || !$('btnPay')) return;
-    const s = $('pPay'), b = $('btnPay'), w = $('payWarn'), p = me.paid;
-    if (w) w.style.display = (new Date().getDate() > 5 && p === false) ? 'block' : 'none';
-    if (p === true || p === "paid") { s.innerText = lang === 'uz' ? "To'langan ✅" : (lang === 'ru' ? "Оплачено ✅" : "Ödənilib ✅"); s.className = "badge bs"; b.style.display = 'none'; if (w) w.style.display = 'none'; }
-    else if (p === "pending") { s.innerText = lang === 'uz' ? "Kutilmoqda ⏳" : (lang === 'ru' ? "В ожидании ⏳" : "Gözlənilir ⏳"); s.className = "badge bw"; b.style.display = 'flex'; b.innerText = lang === 'uz' ? "CHEKNI QAYTA YUBORISH" : (lang === 'ru' ? "ОТПРАВИТЬ ЧЕК СНОВА" : "ÇEKİ YENİDƏN GÖNDƏR"); }
-    else { s.innerText = lang === 'uz' ? "To'lanmagan ❌" : (lang === 'ru' ? "Не оплачено ❌" : "Ödənilməyib ❌"); s.className = "badge bx"; b.style.display = 'flex'; b.innerText = lang === 'uz' ? "TO'LOV QILISH" : (lang === 'ru' ? "ОПЛАТИТЬ" : "ÖDƏNİŞ ET"); }
-}
-function sendReceipt() { const l = `https://t.me/${BOT}?text=${encodeURIComponent(`To'lov cheki.\nO'quvchi: ${me.name}\nOta-ona logini: ${PAR ? PAR.id : '-'}`)}`; if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initData) Telegram.WebApp.openTelegramLink(l); else open(l, '_blank'); }
-function openHistory() { openModal('histModal'); if (!db) return; db.ref('payments/' + me.id).once('value').then(s => { const l = $('histList'); l.innerHTML = s.exists() ? Object.values(s.val()).reverse().map(p => `<div class="li"><span>${esc(p.date)}</span><b>${esc(p.amount)} so'm</b></div>`).join('') : `<p style='text-align:center;color:var(--muted)'>${lang === 'uz' ? "Tarix bo'sh" : (lang === 'ru' ? "История пуста" : "Tarix boşdur")}</p>`; }); }
+  /* 2. Parol Qoidasini Tekshirish (Regex) */
+  function isValidPassword(p) {
+    // Katta harf bilan boshlansin va kamida bitta [%_.\!@#$] qatnashsin
+    const passRegex = /^[A-Z](?=.*[%_.\!@#$]).+$/;
+    return passRegex.test(p);
+  }
 
-function payOff() { clearInterval(ordT); if (ORD) { ORD.off(); ORD = null; } }
-function cp(k) { const t = k === 'a' ? String(curTotal) : digits(S.card || ''); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => alert("Nusxalandi: " + t)).catch(() => prompt("Nusxalang:", t)); }
-function paidOk() { payOff(); closeModal(); confetti(); alert(lang === 'uz' ? "To'lov qabul qilindi! ✅" : (lang === 'ru' ? "Оплата принята! ✅" : "Ödəniş qəbul edildi! ✅")); }
+  /* 3. Ariza Topshirish */
+  window.submitApplication = async function() {
+    const parentName = $('appParentName').value.trim();
+    const childName = $('appChildName').value.trim();
+    const phone = cleanDigits($('appPhone').value);
+    const age = $('appAge').value.trim();
+    const password = $('appPass').value.trim();
+    const btn = $('btnApp');
 
-async function startPay() {
-    openModal('payModal'); payOff(); const base = amt();
-    if (!base) { closeModal(); return alert("Oylik to'lov summasi belgilanmagan."); }
-    if (!db) return alert("Baza ulanmagan");
-    $('pSpin').style.display = 'block'; $('pTitle').innerText = lang === 'uz' ? "To'lovni yakunlang" : (lang === 'ru' ? "Завершите оплату" : "Ödənişi tamamlayın"); $('oAmt').innerText = '...'; $('oCard').innerText = S.card || '—'; $('oTime').innerText = '10:00';
+    if (!parentName || !childName || phone.length < 9 || !age || !password) {
+      alert(DICT[currentLang].emptyFields);
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      alert(DICT[currentLang].passError);
+      return;
+    }
+
+    // Telegram Username'ni avtomatik olish
+    const tgUsername = tg?.initDataUnsafe?.user?.username || '';
+
+    btn.disabled = true;
+    btn.innerText = "...";
+
     try {
-        const s = await db.ref('orders').orderByChild('status').equalTo('pending').once('value'), used = new Set(); let mine = null;
-        s.forEach(c => { const o = c.val(); if (o.exp <= Date.now()) { c.ref.update({ status: 'expired' }); return; } used.add(o.total); if (o.player === me.id && o.base === base) mine = { key: c.key, ...o }; });
-        if (!mine) {
-            let t; do { t = base + 1 + Math.floor(Math.random() * 99); } while (used.has(t));
-            const r = db.ref('orders').push(), d = { player: me.id, name: me.name || '', base, total: t, status: 'pending', created: Date.now(), exp: Date.now() + 600000 };
-            await r.set(d); mine = { key: r.key, ...d };
+      await db.ref('applications').push({
+        parentName,
+        childName,
+        phone,
+        age,
+        password,
+        tgUsername,
+        date: new Date().toLocaleDateString()
+      });
+
+      fireConfetti();
+      alert(DICT[currentLang].appSuccess);
+      $('appParentName').value = '';
+      $('appChildName').value = '';
+      $('appPhone').value = '';
+      $('appAge').value = '';
+      $('appPass').value = '';
+      setMode(0);
+    } catch (e) {
+      alert("Xatolik: " + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = currentLang === 'uz' ? "ARIZA YUBORISH" : (currentLang === 'ru' ? "ОТПРАВИТЬ ЗАЯВКУ" : "MÜRACİƏTİ GÖNDƏR");
+    }
+  };
+
+  /* 4. Tizimga Kirish (Login) */
+  window.login = async function() {
+    const u = $('loginUser').value.trim();
+    const p = $('loginPass').value.trim();
+
+    if (!u || !p) {
+      alert(DICT[currentLang].emptyFields);
+      return;
+    }
+
+    // Admin Kirishi: Arif / 0717
+    if (u === "Arif" && p === "0717") {
+      showScreen('adminScreen');
+      return;
+    }
+
+    const phone = cleanDigits(u);
+    try {
+      const snap = await db.ref('parents/' + phone).once('value');
+      if (!snap.exists()) {
+        alert(DICT[currentLang].userNotFound);
+        return;
+      }
+
+      const pData = snap.val();
+      if (pData.password !== p) {
+        alert(DICT[currentLang].passWrong);
+        return;
+      }
+
+      // Muvaffaqiyatli kirish
+      currentUser = { phone, ...pData };
+      renderUserProfile();
+      renderHomeKids();
+      renderStatKids();
+      renderWalletKids();
+      showScreen('homeScreen');
+    } catch (e) {
+      alert("Xato: " + e.message);
+    }
+  };
+
+  window.logout = function() {
+    currentUser = null;
+    $('loginUser').value = '';
+    $('loginPass').value = '';
+    showScreen('loginScreen');
+  };
+
+  /* 5. Firebase Realtime Ma'lumotlarni Tinglash */
+  if (db) {
+    // Settings
+    db.ref('settings').on('value', snap => {
+      if (snap.exists()) {
+        SETTINGS = { ...SETTINGS, ...snap.val() };
+      }
+      applySettingsUI();
+    });
+
+    // Players
+    db.ref('players').on('value', snap => {
+      ALL_PLAYERS = snap.val() || {};
+      populatePitchSelects(); // SELECT dropdownlar to'ladi
+      renderPitchVisual();
+      if (currentUser) {
+        renderHomeKids();
+        renderStatKids();
+        renderWalletKids();
+      }
+      renderAdminStudents();
+      renderAdminAttendance();
+      renderAdminStats();
+      renderAdminArchive();
+    });
+
+    // Parents
+    db.ref('parents').on('value', snap => {
+      ALL_PARENTS = snap.val() || {};
+      renderAdminParents();
+    });
+
+    // Applications
+    db.ref('applications').on('value', snap => {
+      ALL_APPLICATIONS = snap.val() || {};
+      renderAdminApps();
+    });
+
+    // Orders
+    db.ref('orders').on('value', snap => {
+      ALL_ORDERS = snap.val() || {};
+      renderAdminOrders();
+    });
+  }
+
+  /* Sozlamalarni UI ga tatbiq etish */
+  function applySettingsUI() {
+    $('homeCoachTxt').innerText = SETTINGS.coachPhone || '';
+    $('coachContactBtn').href = 'tel:' + cleanDigits(SETTINGS.coachPhone || '');
+    $('tourOpponent').innerText = SETTINGS.opponent || '—';
+    $('tourMatchTime').innerText = SETTINGS.matchTime || '—';
+    $('tourAnnText').innerText = SETTINGS.announcement || 'Hozircha eʼlonlar yoʻq.';
+    $('walletMonthlyAmt').innerText = (SETTINGS.amount || '350 000') + ' UZS';
+
+    // Admin sozlamalari inputlari
+    $('setOpponent').value = SETTINGS.opponent || '';
+    $('setMatchTime').value = SETTINGS.matchTime || '';
+    $('setAnn').value = SETTINGS.announcement || '';
+    $('setCoach').value = SETTINGS.coachPhone || '';
+    $('setCard').value = SETTINGS.card || '';
+    $('setAmount').value = SETTINGS.amount || '';
+
+    renderPitchVisual();
+  }
+
+  /* Foydalanuvchi Profili */
+  function renderUserProfile() {
+    if (!currentUser) return;
+    $('profParentName').innerText = currentUser.name || 'Ota-ona';
+    $('profParentPhone').innerText = 'Tel: +' + currentUser.phone;
+    $('profParentTg').innerText = currentUser.tgUsername ? ('Telegram: @' + currentUser.tgUsername) : 'Telegram: Bogʻlanmagan';
+  }
+
+  /* Farzandlar Ro'yxatini Olish */
+  function getMyChildren() {
+    if (!currentUser || !currentUser.children) return [];
+    return Object.keys(currentUser.children)
+      .map(id => ({ id, ...ALL_PLAYERS[id] }))
+      .filter(p => p.name && !p.isArchived);
+  }
+
+  /* Bosh Sahifa: Farzandlar */
+  function renderHomeKids() {
+    const kids = getMyChildren();
+    const box = $('homeKidsList');
+    if (!kids.length) {
+      box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
+      return;
+    }
+
+    box.innerHTML = kids.map(k => {
+      const isPaid = k.paid === true || k.paid === 'paid';
+      const badgeCls = isPaid ? 'bs' : (k.paid === 'pending' ? 'bw' : 'bx');
+      const badgeTxt = isPaid ? DICT[currentLang].paid : (k.paid === 'pending' ? DICT[currentLang].pending : DICT[currentLang].unpaid);
+      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=0A1324&color=D4AF37&size=120`;
+
+      return `
+        <div class="card">
+          <div style="display:flex; align-items:center; gap: 14px;">
+            <img src="${esc(photo)}" style="width: 54px; height: 54px; border-radius: 14px; object-fit: cover; border: 1.5px solid var(--gold);">
+            <div style="flex:1;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="jersey-badge">#${k.number || '-'}</span>
+                <b style="font-size: 15px;">${esc(k.name)}</b>
+              </div>
+              <small class="note">Guruh: ${esc(k.group || 'Asosiy')}</small>
+              <div style="margin-top: 6px;"><span class="badge ${badgeCls}">${badgeTxt}</span></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* Statistika Ekrani */
+  function renderStatKids() {
+    const kids = getMyChildren();
+    const box = $('statKidsList');
+    if (!kids.length) {
+      box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
+      return;
+    }
+
+    const rBar = (lbl, val, max, suf) => {
+      const pc = Math.min(100, Math.max(0, (+val || 0) / max * 100));
+      return `
+        <div class="sb">
+          <div class="sbh"><span>${lbl}</span><span>${+val || 0}${suf}</span></div>
+          <div class="sbg"><div class="sf ${pc < 50 ? 'fr' : 'fg'}" style="width: ${pc}%"></div></div>
+        </div>
+      `;
+    };
+
+    box.innerHTML = kids.map(k => {
+      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=0A1324&color=D4AF37&size=120`;
+      return `
+        <div class="card">
+          <div style="display:flex; align-items:center; gap: 12px; margin-bottom: 14px;">
+            <img src="${esc(photo)}" style="width: 50px; height: 50px; border-radius: 12px; object-fit: cover; border: 1.5px solid var(--gold);">
+            <div>
+              <div style="display:flex; align-items:center; gap: 6px;">
+                <span class="jersey-badge">#${k.number || '-'}</span>
+                <b style="font-size: 16px;">${esc(k.name)}</b>
+              </div>
+              <p class="note" style="margin:2px 0 0;">${esc(k.bio || 'Qarabağ FK iqtidori')}</p>
+            </div>
+          </div>
+          ${rBar("O'zlashtirish", k.progress, 100, '%')}
+          ${rBar('Gollar', k.goals, 25, ' ta')}
+          ${rBar('Asistlar', k.assists, 20, ' ta')}
+          ${rBar('Tezlik', k.speed, 100, '%')}
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* Hamyon Ekrani */
+  function renderWalletKids() {
+    const kids = getMyChildren();
+    const box = $('walletKidsList');
+    if (!kids.length) {
+      box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand topilmadi.</p></div>`;
+      return;
+    }
+
+    box.innerHTML = kids.map(k => {
+      const isPaid = k.paid === true || k.paid === 'paid';
+      const badgeCls = isPaid ? 'bs' : (k.paid === 'pending' ? 'bw' : 'bx');
+      const badgeTxt = isPaid ? DICT[currentLang].paid : (k.paid === 'pending' ? DICT[currentLang].pending : DICT[currentLang].unpaid);
+
+      return `
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <b style="font-size: 15px;">${esc(k.name)}</b>
+              <p class="note">Oylik: ${esc(SETTINGS.amount || '350 000')} UZS</p>
+            </div>
+            <span class="badge ${badgeCls}">${badgeTxt}</span>
+          </div>
+          <div style="margin-top: 12px;">
+            ${!isPaid ? `<button class="btn sm" onclick="initiateKidPay('${k.id}')">💳 To'lov Qilish</button>` : `<div class="note" style="color:var(--ok);">To'lov qabul qilingan</div>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* Noyob Summa Generatsiyasi va To'lov */
+  window.initiateKidPay = async function(playerId) {
+    const p = ALL_PLAYERS[playerId];
+    if (!p) return;
+
+    const baseAmount = parseInt(String(SETTINGS.amount).replace(/\D/g, '')) || 350000;
+    // Tasodifiy 1 dan 99 gacha qo'shiladigan noyob summa
+    const uniqueAdd = Math.floor(Math.random() * 98) + 1;
+    const totalAmount = baseAmount + uniqueAdd;
+
+    const expTime = Date.now() + (10 * 60 * 1000); // 10 daqiqa
+
+    const orderData = {
+      playerId,
+      playerName: p.name,
+      parentPhone: currentUser.phone,
+      base: baseAmount,
+      total: totalAmount,
+      status: 'pending',
+      created: Date.now(),
+      exp: expTime
+    };
+
+    try {
+      const ref = await db.ref('orders').push(orderData);
+      orderData.key = ref.key;
+      activeOrder = orderData;
+
+      $('modalOrderAmount').innerText = fmt(totalAmount) + " UZS";
+      $('modalOrderCard').innerText = SETTINGS.card || '8600 0000 0000 0000';
+
+      openModal('payModal');
+      startOrderCountdown(expTime, ref.key);
+
+      // Agar to'lov admin tomonidan tasdiqlansa, avtomatik modalni yopish
+      ref.on('value', snap => {
+        const val = snap.val();
+        if (val && val.status === 'paid') {
+          closeAllModals();
+          fireConfetti();
+          alert("To'lovingiz tasdiqlandi! Rahmat.");
         }
-        curTotal = mine.total; $('oAmt').innerText = fmt(mine.total) + " UZS";
-        ORD = db.ref('orders/' + mine.key); ORD.on('value', x => { const o = x.val(); if (o && o.status === 'paid') paidOk(); });
-        ordT = setInterval(() => {
-            const l = Math.max(0, Math.round((mine.exp - Date.now()) / 1000));
-            $('oTime').innerText = String(Math.floor(l / 60)).padStart(2, '0') + ':' + String(l % 60).padStart(2, '0');
-            if (!l) { payOff(); db.ref('orders/' + mine.key).update({ status: 'expired' }); $('pSpin').style.display = 'none'; $('pTitle').innerText = lang === 'uz' ? "Vaqt tugadi." : "Время истекло."; }
-        }, 1000);
-    } catch(e) { alert("Xatolik: " + e.message); }
-}
+      });
+    } catch (e) {
+      alert("Xato: " + e.message);
+    }
+  };
 
-// ==========================================
-// 6. ADMIN PANEL
-// ==========================================
-function startAdmin() {
-    if (!db) return;
-    
-    window.populateLineup = function() {
-        const opts = '<option value="">Tanlang</option>' + Object.entries(PL).filter(([, p]) => !p.isArchived).map(([id, p]) => `<option value="${id}">${esc(p.name)}</option>`).join('');
-        ['lineGK', 'lineDF1', 'lineDF2', 'lineMF1', 'lineMF2', 'lineFW'].forEach(sel => {
-            const el = $(sel);
-            if (el) {
-                if (el.dataset.opts !== opts) { el.innerHTML = opts; el.dataset.opts = opts; }
-                const key = sel.replace('line', '').toLowerCase();
-                el.value = S.lineup ? S.lineup[key] || '' : '';
-            }
-        });
+  function startOrderCountdown(exp, orderKey) {
+    if (orderTimerInterval) clearInterval(orderTimerInterval);
+    orderTimerInterval = setInterval(() => {
+      const left = Math.max(0, Math.floor((exp - Date.now()) / 1000));
+      const m = Math.floor(left / 60);
+      const s = left % 60;
+      $('modalOrderTimer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+      if (left <= 0) {
+        clearInterval(orderTimerInterval);
+        db.ref('orders/' + orderKey).update({ status: 'expired' });
+        $('modalOrderTimer').innerText = "Vaqt tugadi!";
+      }
+    }, 1000);
+  }
+
+  window.sendReceiptBot = function() {
+    if (!activeOrder) return;
+    const txt = `To'lov cheki (Qarabağ FK)\nO'yinchi: ${activeOrder.playerName}\nSumma: ${fmt(activeOrder.total)} UZS\nTel: +${activeOrder.parentPhone}`;
+    const botUrl = `https://t.me/share/url?url=${encodeURIComponent(txt)}`;
+
+    if (tg && tg.openTelegramLink) tg.openTelegramLink(botUrl);
+    else window.open(botUrl, '_blank');
+  };
+
+  window.copyText = function(elId) {
+    const val = cleanDigits($(elId).innerText);
+    navigator.clipboard.writeText(val).then(() => {
+      alert(DICT[currentLang].copied + val);
+    }).catch(() => prompt("Nusxalang:", val));
+  };
+
+  /* 6. Maydon (Pitch) Taktik Tarkibini Chizish */
+  function renderPitchVisual() {
+    const lu = SETTINGS.lineup || {};
+    const setPos = (role, id) => {
+      const p = ALL_PLAYERS[id];
+      $(`pos_${role}_num`).innerText = (p && p.number) ? p.number : '-';
+      $(`pos_${role}_name`).innerText = (p && p.name) ? p.name : '—';
     };
 
-    sub(db.ref('settings'), s => {
-        if (s.exists()) S = { ...S, ...s.val() };
-        if ($('sCard')) $('sCard').value = S.card || '';
-        if ($('sAmt')) $('sAmt').value = S.amount || '';
-        if ($('sDow')) $('sDow').value = S.scheduleDay;
-        if ($('sTime')) $('sTime').value = S.scheduleTime || '16:00';
-        if ($('sAnn')) $('sAnn').value = S.announcement || '';
-        if ($('sMot')) $('sMot').value = S.motivation || '';
-        if ($('sCoach')) $('sCoach').value = S.coach || '';
-        if ($('sOpponent')) $('sOpponent').value = S.opponent || '';
-        if ($('sMatchTime')) $('sMatchTime').value = S.matchTime || '';
-        populateLineup(); renderAdmin();
-    });
-    
-    sub(db.ref('applications'), s => {
-        const box = $('at_apps'), bd = $('appBadge'); if (!box) return;
-        if (!s.exists()) { box.innerHTML = `<p style='text-align:center;color:var(--muted)'>${lang === 'uz' ? "Yangi arizalar yo'q" : "Новых заявок нет"}</p>`; if (bd) bd.classList.add('hidden'); return; }
-        let n = 0, h = '';
-        s.forEach(c => {
-            const a = c.val(), st = a.type === 'student'; n++;
-            h += `<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(a.childName)}</b> (${esc(a.age || '?')} ${lang === 'uz' ? 'yosh' : 'лет'})<span class="tag ${st ? 'ts' : 'tp'}">${st ? "O'QUVCHI" : 'OTA-ONA'}</span><br><small style="color:var(--muted)">${st ? '' : 'Ota-ona: ' + esc(a.parentName) + ' | '}Tel: ${esc(a.phone)}<br><b style="color:var(--gold)">Parol: ${esc(a.password)}</b>${a.tgUser ? `<br><b style="color:var(--blue)">TG: ${esc(a.tgUser)}</b>` : ''}</small></div>
-            <div style="display:flex;gap:10px;width:100%;margin-top:10px"><button class="btn sm bok" onclick="acceptApp('${c.key}')">QABUL</button><button class="btn sm bd" onclick="rejectApp('${c.key}')">RAD ETISH</button></div></div>`;
-        });
-        box.innerHTML = h; if (bd) { bd.innerText = n; bd.classList.remove('hidden'); }
-    });
-    
-    sub(db.ref('orders').orderByChild('created').limitToLast(60), s => { OR = {}; s.forEach(c => { OR[c.key] = c.val(); }); renderOrders(); });
-    clearInterval(admT); admT = setInterval(renderOrders, 15000);
-    sub(db.ref('parents'), s => { PR = s.val() || {}; renderParents(); });
-    sub(db.ref('players'), s => { PL = s.val() || {}; monthlyReset(); renderAdmin(); renderParents(); populateLineup(); });
-}
+    setPos('gk', lu.gk);
+    setPos('def1', lu.def1);
+    setPos('def2', lu.def2);
+    setPos('mid1', lu.mid1);
+    setPos('mid2', lu.mid2);
+    setPos('fwd', lu.fwd);
+  }
 
-function renderOrders() {
-    if (!$('at_orders') || !$('ordBadge')) return;
-    const l = Object.entries(OR).filter(([, o]) => o.status === 'pending' && o.exp > Date.now()).sort((a, b) => b[1].created - a[1].created), b = $('ordBadge');
-    b.innerText = l.length; b.classList.toggle('hidden', !l.length);
-    $('at_orders').innerHTML = `<p class="note" style="margin:0 0 12px">Bank ilovangizga tushgan summani shu ro'yxatdagi summa bilan solishtirib, tasdiqlang.</p>` + (l.map(([k, o]) => `<div class="li"><div><b>${esc(o.name)}</b><br><small style="color:var(--muted)">${esc(((parentOf(o.player) || [0, {}])[1]).name || '')} · ${Math.ceil((o.exp - Date.now()) / 60000)} daq qoldi</small></div><div style="text-align:right"><b style="color:var(--ok)">${fmt(o.total)}</b><div class="row"><button class="btn sm bok" onclick="confirmOrder('${k}')">✔ Tasdiqlash</button></div></div></div>`).join('') || `<p style="text-align:center;color:var(--muted)">Kutilayotgan to'lov yo'q</p>`);
-}
-function confirmOrder(k) {
-    if (!db) return;
-    const o = OR[k]; if (!o || !confirm(`${o.name}: ${fmt(o.total)} so'm tushdimi?`)) return;
-    const pk = db.ref('payments/' + o.player).push().key, u = {};
-    u['orders/' + k + '/status'] = 'paid'; u['orders/' + k + '/paidAt'] = Date.now();
-    u['players/' + o.player + '/paid'] = true; u['players/' + o.player + '/payMonth'] = ym();
-    u[`payments/${o.player}/${pk}`] = { date: today(), amount: o.base };
-    db.ref().update(u).then(confetti).catch(e => alert(e.message));
-}
+  /* ADMIN: O'yinchilar kelgach, Sozlamalardagi 6 ta SELECT ni to'ldirish */
+  function populatePitchSelects() {
+    const selects = ['sel_gk', 'sel_def1', 'sel_def2', 'sel_mid1', 'sel_mid2', 'sel_fwd'];
+    const activePlayers = Object.entries(ALL_PLAYERS).filter(([, p]) => !p.isArchived);
 
-function monthlyReset() {
-    if (!db) return;
-    const u = {};
-    Object.entries(PL).forEach(([id, p]) => { if (!p.isArchived && p.paid === true && p.payMonth && p.payMonth !== ym()) u['players/' + id + '/paid'] = false; });
-    if (Object.keys(u).length) db.ref().update(u);
-}
+    selects.forEach(selId => {
+      const el = $(selId);
+      if (!el) return;
+      const currentSelected = (SETTINGS.lineup && SETTINGS.lineup[selId.replace('sel_', '')]) || '';
 
-function renderAdmin() {
-    if (!$('stList')) return;
-    const q = $('fQ') ? v('fQ').toLowerCase() : '', g = $('fGroup') ? $('fGroup').value : '', groups = new Set();
-    let paid = 0, debt = 0, sh = '', at = '', st = '', ar = '';
-    
-    Object.entries(PL).forEach(([id, p]) => {
-        if (p.isArchived) { ar += `<div class="li"><div><b>${esc(p.name)}</b><br><small>${esc(p.group || '')}</small></div><div class="row"><button class="btn sm bok" onclick="restore('${id}')">TIKLASH</button><button class="btn sm bd" onclick="delForever('${id}')">O'CHIRISH</button></div></div>`; return; }
-        
-        groups.add(p.group || ''); const isPaid = p.paid === true || p.paid === "paid"; isPaid ? paid += amt() : debt += amt();
-        
-        const pa = parentOf(id);
-        const hay = ((p.name || '') + ' ' + (pa ? pa[1].name + ' ' + pa[0] + ' ' + (pa[1].phone || '') : '') + ' ' + id).toLowerCase();
-        if ((g && (p.group || '') !== g) || (q && !hay.includes(q))) return;
-        
-        const cls = isPaid ? 'bs' : p.paid === "pending" ? 'bw' : 'bx', txt = isPaid ? "To'langan" : p.paid === "pending" ? 'Kutilmoqda' : 'Qarzdor';
-        const pr0 = parentOf(id), ph = phoneOf(id);
-        
-        sh += `<div class="li"><div>${p.isStar ? '⭐ ' : ''}<b>${esc(p.name)}</b><br><small style="color:var(--muted)">Guruh: ${esc(p.group || '-')} | Ota-ona: ${esc(pr0 ? pr0[1].name : '—')}</small></div><div style="text-align:right"><span class="badge ${cls}">${txt}</span><div class="row">${isPaid ? '' : `<button class="btn sm bok" onclick="markPaid('${id}')">✔ To'landi</button>${ph ? `<a class="btn sm bo" href="sms:+${ph}?body=${encodeURIComponent(remindText(p))}">✉️</a>` : ''}`}<button class="btn sm bo" onclick="editPlayer('${id}')">✏️</button><button class="btn sm bd" onclick="archive('${id}')">🗑</button></div></div></div>`;
-        
-        const done = (p.attendanceDates || []).includes(today());
-        at += `<label class="li"><span>${esc(p.name)} <small style="color:var(--muted)">${esc(p.group || '')}</small></span>${done ? '<span class="badge bs">✅ belgilangan</span>' : `<input type="checkbox" style="width:22px;height:22px" ${CK.has(id) ? 'checked' : ''} onchange="this.checked?CK.add('${id}'):CK.delete('${id}')">`}</label>`;
-        
-        const pr = +p.progress || 0, go = +p.goals || 0, as = +p.assists || 0;
-        const r = (l, n, t, ok) => `<div class="sb" style="margin-bottom:8px"><div class="sbh" style="font-size:11px"><span>${l}</span><span>${t}</span></div><div class="sbg" style="height:8px"><div class="sf ${ok ? 'fg' : 'fr'}" style="width:${Math.min(n, 100)}%"></div></div></div>`;
-        st += `<div style="border-bottom:1px solid var(--cb);padding-bottom:14px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b>${esc(p.name)}</b><button class="btn sm bo" onclick="editPlayer('${id}')">TAHRIRLASH</button></div>${r("O'zlashtirish", pr, pr + '%', pr >= 50)}${r('Gollar', go * 5, go + ' ta', go >= 5)}${r('Asistlar', as * 5, as + ' ta', as >= 5)}</div>`;
+      let opts = `<option value="">-- Tanlang --</option>`;
+      activePlayers.forEach(([id, p]) => {
+        opts += `<option value="${id}" ${id === currentSelected ? 'selected' : ''}>#${p.number || '-'} ${esc(p.name)}</option>`;
+      });
+      el.innerHTML = opts;
     });
-    
-    const gs = $('fGroup');
-    if (gs) {
-        const gh = '<option value="">Barcha guruh</option>' + [...groups].sort().map(x => `<option value="${esc(x)}">${esc(x) || 'Guruhsiz'}</option>`).join('');
-        if (gs.dataset.h !== gh) { gs.innerHTML = gh; gs.dataset.h = gh; gs.value = g; }
+  }
+
+  /* 7. ADMIN BOSHQARUVI */
+  window.adminTab = function(tName, el) {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.atab').forEach(p => p.classList.add('hidden'));
+    $('at_' + tName).classList.remove('hidden');
+  };
+
+  /* Tab 1: Arizalar */
+  function renderAdminApps() {
+    const entries = Object.entries(ALL_APPLICATIONS);
+    const box = $('at_apps');
+    const badge = $('ad_badge_apps');
+
+    badge.innerText = entries.length;
+    badge.classList.toggle('hidden', !entries.length);
+
+    if (!entries.length) {
+      box.innerHTML = `<p class="note" style="text-align:center;">Yangi arizalar mavjud emas.</p>`;
+      return;
     }
-    const e = "<p style='text-align:center;color:var(--muted)'>Hech narsa topilmadi</p>";
-    if ($('stList')) $('stList').innerHTML = sh || e;
-    if ($('attList')) $('attList').innerHTML = at || e;
-    if ($('stStats')) $('stStats').innerHTML = st || e;
-    if ($('arList')) $('arList').innerHTML = ar || "<p style='text-align:center;color:var(--muted)'>Arxiv bo'sh</p>";
-    if ($('finPaid')) $('finPaid').innerText = paid.toLocaleString() + " so'm";
-    if ($('finDebt')) $('finDebt').innerText = debt.toLocaleString() + " so'm";
-}
 
-const remindText = p => `Assalomu alaykum! ${p.name} uchun ${S.amount} so'm oylik to'lovni amalga oshirishingizni so'raymiz. Karta: ${S.card}.`;
-function copyDebtors() {
-    const l = Object.entries(PL).filter(([, p]) => !p.isArchived && p.paid !== true && p.paid !== "paid").map(([id, p]) => `${p.name} (${phoneOf(id) ? '+' + phoneOf(id) : '—'})`);
-    if (!l.length) return alert("Qarzdorlar yo'q 🎉");
-    const t = `Qarzdorlar (${l.length}):\n` + l.join('\n');
-    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => alert("Nusxalandi!")).catch(() => prompt("Nusxalang:", t));
-}
-function markPaid(id) {
-    if (!db || !confirm("To'lov qabul qilindimi?")) return;
-    const k = db.ref('payments/' + id).push().key, u = {};
-    u['players/' + id + '/paid'] = true; u['players/' + id + '/payMonth'] = ym();
-    u[`payments/${id}/${k}`] = { date: today(), amount: amt() };
-    db.ref().update(u).then(confetti);
-}
-function checkAll() { Object.entries(PL).forEach(([id, p]) => { if (!p.isArchived && !(p.attendanceDates || []).includes(today())) CK.add(id); }); renderAdmin(); }
-function saveAttendance() {
-    if (!db) return;
-    const u = {};
-    CK.forEach(id => { const p = PL[id]; if (!p) return; const d = p.attendanceDates || []; if (d.includes(today())) return; u['players/' + id + '/attendanceDates'] = [...d, today()]; u['players/' + id + '/trainings'] = (+p.trainings || 0) + 1; });
-    if (!Object.keys(u).length) return alert("Hech kim belgilanmadi.");
-    db.ref().update(u).then(() => { alert(Object.keys(u).length / 2 + " ta o'quvchi belgilandi!"); CK.clear(); confetti(); });
-}
-const restore = id => confirm("Qayta tiklaysizmi?") && db.ref('players/' + id + '/isArchived').set(false);
-const archive = id => confirm("Arxivga o'tkazasizmi?") && db.ref('players/' + id + '/isArchived').set(true);
-const delForever = id => {
-    if (!confirm("DIQQAT! Butunlay o'chadi. Rozimisiz?")) return;
-    const u = {}; u['players/' + id] = null; u['payments/' + id] = null;
-    Object.entries(PR).forEach(([pid, p]) => { if (p.children && p.children[id]) u[`parents/${pid}/children/${id}`] = null; });
-    db.ref().update(u);
-};
+    box.innerHTML = entries.map(([id, a]) => `
+      <div class="li" style="flex-direction:column; align-items:flex-start;">
+        <div style="width:100%; display:flex; justify-content:space-between;">
+          <b>${esc(a.childName)}</b> <span class="badge bw">${esc(a.age)} yosh</span>
+        </div>
+        <small class="note">Ota-ona: ${esc(a.parentName)} | Tel: +${esc(a.phone)}</small>
+        <small class="note">TG: @${esc(a.tgUsername || 'yoʻq')} | Parol: <b style="color:var(--gold-light);">${esc(a.password)}</b></small>
+        <div style="display:flex; gap:8px; width:100%; margin-top:8px;">
+          <button class="btn sm bok" style="flex:1;" onclick="acceptApp('${id}')">✔ Qabul Qilish</button>
+          <button class="btn sm bd" style="flex:1;" onclick="rejectApp('${id}')">✖ Rad Etish</button>
+        </div>
+      </div>
+    `).join('');
+  }
 
-function exportCSV() {
-    let c = "Ism,Ota-ona logini,Guruh,Raqam,Gollar,Asistlar,Tezlik,O'zlashtirish,To'lov\n";
-    Object.entries(PL).forEach(([id, p]) => { if (!p.isArchived) c += `"${p.name}","${(parentOf(id) || [''])[0]}","${p.group || ''}","${p.jersey || ''}","${p.goals || 0}","${p.assists || 0}","${p.speed || 0}","${p.progress || 0}","${p.paid}"\n`; });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(["\ufeff" + c], { type: 'text/csv;charset=utf-8;' })); a.download = "oquvchilar_royxati.csv"; a.click();
-}
-function saveSettings() {
-    if (!db) return;
-    const lineup = { gk: $('lineGK') ? $('lineGK').value : '', df1: $('lineDF1') ? $('lineDF1').value : '', df2: $('lineDF2') ? $('lineDF2').value : '', mf1: $('lineMF1') ? $('lineMF1').value : '', mf2: $('lineMF2') ? $('lineMF2').value : '', fw: $('lineFW') ? $('lineFW').value : '' };
-    db.ref('settings').update({ card: v('sCard'), amount: v('sAmt'), scheduleDay: v('sDow'), scheduleTime: v('sTime'), announcement: $('sAnn').value, motivation: $('sMot').value, coach: $('sCoach').value, opponent: v('sOpponent'), matchTime: v('sMatchTime'), lineup: lineup })
-        .then(() => alert("Sozlamalar saqlandi!")).catch(e => alert(e.message));
-}
-function editPlayer(id) {
-    const p = PL[id]; if (!p) return;
-    $('plTitle').innerText = "Tahrirlash: " + p.name; $('eId').value = id;
-    $('eName').value = p.name || ''; $('ePhoto').value = p.photoUrl || ''; $('eGroup').value = p.group || ''; $('eJersey').value = p.jersey || ''; $('eBio').value = p.bio || '';
-    $('eGoals').value = p.goals || 0; $('eAssists').value = p.assists || 0; $('eSpeed').value = p.speed || 0; $('eProg').value = p.progress || 0; $('eTr').value = p.trainings || 0;
-    $('ePay').value = p.paid === true ? "paid" : p.paid === "pending" ? "pending" : "unpaid"; $('eNote').value = p.note || ''; $('eStar').checked = !!p.isStar;
-    openModal('plModal');
-}
-function savePlayer() {
-    if (!db) return;
-    const id = $('eId').value, old = PL[id] || {}, pv = $('ePay').value, paidNow = pv === "paid";
-    const f = { name: v('eName'), photoUrl: v('ePhoto'), group: v('eGroup'), jersey: v('eJersey'), bio: v('eBio'), goals: +$('eGoals').value || 0, assists: +$('eAssists').value || 0, speed: +$('eSpeed').value || 0, progress: +$('eProg').value || 0, trainings: +$('eTr').value || 0, note: $('eNote').value.trim(), isStar: $('eStar').checked, paid: paidNow ? true : pv === "pending" ? "pending" : false };
-    const rec = { ...old, ...f, isArchived: false }; delete rec.password;
-    if (paidNow) rec.payMonth = ym();
-    const u = {}; u['players/' + id] = rec;
-    if (paidNow && old.paid !== true) u[`payments/${id}/${db.ref('payments/' + id).push().key}`] = { date: today(), amount: amt() };
-    db.ref().update(u).then(() => { alert("Saqlandi!"); closeModal(); }).catch(e => alert(e.message));
-}
+  window.acceptApp = async function(appId) {
+    const a = ALL_APPLICATIONS[appId];
+    if (!a) return;
 
-const newKid = (name, age) => ({ name, age: age || '', paid: false, goals: 0, assists: 0, speed: 0, progress: 0, trainings: 0, isArchived: false, attendanceDates: [] });
-const credText = id => `Qarabağ FK\nLogin: ${id}\nParol: ${PR[id].password}\nSayt: ${location.href.split(/[?#]/)[0]}`;
-function copyCred(id) { const t = credText(id); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => alert("Nusxalandi!")).catch(() => prompt("Nusxalang:", t)); }
-function renderParents() {
-    if (!$('at_parents')) return;
-    const l = Object.entries(PR);
-    $('at_parents').innerHTML = `<button class="btn sm" style="margin-bottom:12px" onclick="editPar('')">+ Ota-ona qo'shish</button>` + (l.map(([id, p]) => `<div class="li" style="flex-direction:column;align-items:flex-start"><div><b>${esc(p.name || id)}</b>${p.phone ? ` <small style="color:var(--muted)">+${esc(p.phone)}</small>` : ''}<br><small style="color:var(--ok);font-weight:700">Login: ${esc(id)} · Parol: ${esc(p.password)}</small><br><small style="color:var(--muted)">Farzandlar: ${Object.keys(p.children || {}).map(k => esc((PL[k] && PL[k].name) || k)).join(', ') || '—'}</small><br><small style="color:var(--blue)">${p.tgUser ? `TG: ${esc(p.tgUser)}` : ''}</small></div><div class="row" style="width:100%;justify-content:flex-start"><button class="btn sm bo" onclick="editPar('${id}')">✏️</button><button class="btn sm bok" onclick="copyCred('${id}')">📋 Nusxalash</button>${p.phone ? `<a class="btn sm bo" href="sms:+${esc(p.phone)}?body=${encodeURIComponent(credText(id))}">✉️</a>` : ''}<button class="btn sm bd" onclick="delPar('${id}')">🗑</button></div></div>`).join('') || `<p style="text-align:center;color:var(--muted)">Ota-onalar yo'q</p>`);
-}
-function editPar(id) {
-    if (!$('parTitle')) return;
-    const p = PR[id] || {}, ch = p.children || {};
-    $('parTitle').innerText = id ? "Ota-onani tahrirlash" : "Yangi ota-ona"; $('paOld').value = id;
-    $('paName').value = p.name || ''; $('paLogin').value = id || ''; $('paPass').value = p.password || ''; $('paNew').value = '';
-    $('paKidsBox').innerHTML = Object.entries(PL).filter(([, k]) => !k.isArchived).map(([k, x]) => `<label class="li" style="padding:10px"><span>${esc(x.name)}</span><input type="checkbox" value="${k}" ${ch[k] ? 'checked' : ''} style="width:20px;height:20px"></label>`).join('') || `<p class="note">Hozircha o'quvchi yo'q.</p>`;
-    openModal('parModal');
-}
-function savePar() {
-    if (!db) return;
-    const old = $('paOld').value, l = digits(v('paLogin')), p = v('paPass'), n = v('paName'), ph = l;
-    if (!n) return alert("Ism kiriting!");
-    if (!l || l.length < 9) return alert("Telefon raqamni to'liq kiriting!");
-    if (!p || p.length < 4) return alert("Parol kamida 4 ta belgi bo'lsin!");
-    if (l !== old && PR[l]) return alert("Bu login band!");
-    const ch = {}, u = {}; document.querySelectorAll('#paKidsBox input:checked').forEach(c => ch[c.value] = true);
-    v('paNew').split(',').map(x => x.trim()).filter(Boolean).forEach(nm => { const id = genId(); u['players/' + id] = newKid(nm); ch[id] = true; });
-    if (old && old !== l) u['parents/' + old] = null;
-    u['parents/' + l] = { name: n, phone: ph, password: p, tgUser: '', children: ch };
-    db.ref().update(u).then(() => { closeModal(); confetti(); }).catch(e => alert(e.message));
-}
-const delPar = id => confirm("O'chirilsinmi?") && db.ref('parents/' + id).remove();
-async function acceptApp(k) {
-    if (!db) return;
-    const a = (await db.ref('applications/' + k).once('value')).val(); if (!a) return;
-    const ph = digits(a.phone || ''), ex = ph ? Object.entries(PR).find(([, p]) => p.phone === ph) : null;
-    const names = String(a.childName || '').split(',').map(x => x.trim()).filter(Boolean);
-    if (!names.length) return alert("Farzand ismi yo'q!");
-    if (ex) {
-        alert("Bu raqamli ota-ona bor. Yangi farzand qo'shilmoqda...");
-        const u = {}, ch = {};
-        names.forEach(nm => { const id = genId(); u['players/' + id] = newKid(nm, a.age); ch[id] = true; });
-        Object.keys(ch).forEach(id => u[`parents/${ex[0]}/children/${id}`] = true);
-        u['applications/' + k] = null;
-        await db.ref().update(u); confetti(); alert("Farzand qo'shildi!");
-    } else {
-        if (!a.password) return alert("Xatolik: Parol yo'q.");
-        const u = {}, ch = {};
-        names.forEach(nm => { const id = genId(); u['players/' + id] = newKid(nm, a.age); ch[id] = true; });
-        u['parents/' + ph] = { name: a.parentName || 'Ota-ona', phone: ph, password: a.password, tgUser: a.tgUser || '', children: ch };
-        u['applications/' + k] = null;
-        await db.ref().update(u); confetti();
-        alert(`Qabul qilindi!\n\nLogin: ${ph}\nParol: ${a.password}`);
-    }
-}
-const rejectApp = k => confirm("O'chirilsinmi?") && db.ref('applications/' + k).remove();
-function adminTab(t, el) {
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active')); el.classList.add('active');
-    document.querySelectorAll('.atab').forEach(x => x.classList.add('hidden')); if ($('at_' + t)) $('at_' + t).classList.remove('hidden');
-    if ($('fltBar')) $('fltBar').classList.toggle('hidden', t !== 'students' && t !== 'attend');
-}
+    const childNames = String(a.childName).split(',').map(s => s.trim()).filter(Boolean);
+    const updates = {};
+    const kidsObj = {};
 
-// ==========================================
-// 7. O'QUVCHI EKRANLARI
-// ==========================================
-const NAV_SCREENS = ['familyScreen', 'tourScreen', 'statScreen', 'walletScreen', 'profileScreen', 'pitchScreen'];
-const NAV_TAB = { familyScreen: 'home', tourScreen: 'tour', statScreen: 'stat', walletScreen: 'wallet', profileScreen: 'profile', pitchScreen: 'pitch' };
-function syncNav(id) {
-    const n = $('bnav'), on = NAV_SCREENS.includes(id) && !!PAR;
-    if (n) n.hidden = !on;
-    document.querySelectorAll('.bn-i').forEach(b => b.classList.toggle('on', b.dataset.t === NAV_TAB[id]));
-}
-function goTab(t) {
-    if (!PAR) return;
-    if (t === 'home') return backFamily();
-    if (t === 'tour') { showScreen('tourScreen'); return; }
-    if (t === 'stat') { renderStats(); return showScreen('statScreen'); }
-    if (t === 'pitch') { renderPitch(); return showScreen('pitchScreen'); }
-    if (t === 'wallet') { renderWallet(); return showScreen('walletScreen'); }
-    if (t === 'profile') { renderProfile(); return showScreen('profileScreen'); }
-}
-function kidsOf() { return Object.keys((PAR && PAR.children) || {}).filter(k => KIDS[k] && !KIDS[k].isArchived); }
+    childNames.forEach(cn => {
+      const pid = 'p_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
+      updates['players/' + pid] = {
+        name: cn,
+        number: Math.floor(Math.random() * 90) + 10,
+        age: a.age || '',
+        goals: 0, assists: 0, speed: 70, progress: 60, trainings: 0,
+        paid: false, isArchived: false, group: '2014'
+      };
+      kidsObj[pid] = true;
+    });
 
-function renderStats() {
-    if (!$('sList') && !$('sName')) return;
-    if (!me && kidsOf().length > 0) { openKid(kidsOf()[0]); }
-    if (!me) return;
-    const u = me;
-    if ($('sName')) $('sName').innerText = u.name || 'Ism';
-    if ($('sPhoto')) $('sPhoto').src = u.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name || 'U')}&background=1E293B&color=3B82F6&size=150`;
-    if ($('sJersey')) $('sJersey').innerText = u.jersey ? "#" + u.jersey + " raqam" : "";
-    bar(1, +u.progress || 0, 100, "%"); bar(2, +u.goals || 0, 20, " ta"); bar(3, +u.assists || 0, 20, " ta"); bar(4, +u.speed || 0, 100, "%"); bar(5, +u.trainings || 0, 30, " marta");
-    let b = ''; if (u.isStar) b += `<div class="bi star">⭐ Oyning eng yaxshisi</div>`; if (+u.goals >= 10) b += `<div class="bi">🥇 Gol hujumchisi</div>`; if (+u.speed >= 80) b += `<div class="bi">⚡ Tezkor</div>`; if (+u.progress >= 80) b += `<div class="bi">🧠 Aqlli o'yinchi</div>`; $('sBadges').innerHTML = b;
-    db.ref('players').once('value').then(s => { const l = []; s.forEach(c => { const p = c.val(); if (!p.isArchived) l.push({ name: p.name || '', score: (+p.goals || 0) * 3 + (+p.assists || 0) * 2 + (+p.progress || 0) }); }); l.sort((a, b) => b.score - a.score); $('board').innerHTML = l.slice(0, 5).map((p, i) => `<div class="li"><span>${['🥇', '🥈', '🥉'][i] || (i + 1) + '.'} ${esc(p.name)}</span><b style="color:var(--blue)">${p.score} ball</b></div>`).join('') || "Ma'lumot yo'q"; });
-}
-
-function renderWallet() {
-    if (!$('wList')) return;
-    $('wList').innerHTML = kidsOf().map(k => {
-        const p = KIDS[k], ok = p.paid === true || p.paid === "paid", cls = ok ? 'bs' : p.paid === "pending" ? 'bw' : 'bx', tx = ok ? "To'langan ✅" : p.paid === "pending" ? "Kutilmoqda ⏳" : "To'lanmagan ❌";
-        return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div><b>${esc(p.name)}</b><br><small style="color:var(--muted)">Oylik: ${esc(S.amount)} so'm</small></div><span class="badge ${cls}">${tx}</span></div><div class="row" style="justify-content:flex-start;margin-top:12px">${ok ? '' : `<button class="btn sm" onclick="openKid('${k}');startPay()">💳 To'lov qilish</button>`}<button class="btn sm bo" onclick="openKid('${k}');openHistory()">🧾 Tarix</button></div></div>`;
-    }).join('') || `<div class="card"><p class="note" style="text-align:center;margin:0">Farzand biriktirilmagan</p></div>`;
-}
-
-function renderPitch() {
-    if (!$('pos-gk')) return;
-    const lineup = S.lineup || {};
-    const setPos = (elId, playerId, defaultText) => {
-        const el = $(elId); if (!el) return;
-        const p = PL[playerId];
-        if (p) { el.innerHTML = `${p.jersey || ''}<div class="player-name-small">${esc((p.name || '').split(' ')[0])}</div>`; el.style.color = '#000'; }
-        else { el.innerHTML = defaultText; el.style.color = '#888'; }
+    updates['parents/' + a.phone] = {
+      name: a.parentName,
+      phone: a.phone,
+      password: a.password,
+      tgUsername: a.tgUsername || '',
+      children: kidsObj
     };
-    setPos('pos-gk', lineup.gk, 'GK'); setPos('pos-df1', lineup.df1, 'DF'); setPos('pos-df2', lineup.df2, 'DF');
-    setPos('pos-mf1', lineup.mf1, 'MF'); setPos('pos-mf2', lineup.mf2, 'MF'); setPos('pos-fw', lineup.fw, 'FW');
-}
 
-function renderProfile() {
-    if (!$('prName')) return;
-    if (!me && kidsOf().length > 0) openKid(kidsOf()[0]);
-    if (!me) return;
-    $('prName').innerText = me.name || 'Ism';
-    $('prPhoto').src = me.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(me.name || 'U')}&background=1E293B&color=3B82F6&size=150`;
-    $('prJersey').innerText = me.jersey ? "👕 #" + me.jersey : "Raqam kiritilmagan";
-    $('prInfo').innerText = `Login: ${PAR.id}` + (PAR.phone ? `\nTelefon: +${PAR.phone}` : '') + (PAR.tgUser ? `\nTelegram: ${PAR.tgUser}` : '') + `\nFarzandlar: ${kidsOf().length} ta`;
-    $('prBio').innerText = me.bio || "O'zi haqida ma'lumot kiritilmagan.";
-}
+    updates['applications/' + appId] = null;
 
-// PWA Manifest
-try {
-    const ic = "data:image/svg+xml," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#070b1f'/><text x='50' y='64' font-size='42' font-weight='900' text-anchor='middle' fill='#3d7bff' font-family='sans-serif'>QFK</text></svg>");
-    const l = document.createElement('link'); l.rel = 'manifest'; l.href = URL.createObjectURL(new Blob([JSON.stringify({ name: "Qarabag FK Academy", short_name: "Qarabag FK", start_url: location.pathname, display: "standalone", background_color: "#070b1f", theme_color: "#070b1f", icons: [{ src: ic, sizes: "512x512", type: "image/svg+xml" }] })], { type: 'application/manifest+json' }));
-    document.head.appendChild(l);
-} catch(e) {}
+    try {
+      await db.ref().update(updates);
+      fireConfetti();
+      alert("Ariza qabul qilindi va ota-onaga hisob yaratildi!");
+    } catch (e) {
+      alert("Xato: " + e.message);
+    }
+  };
 
-closeModal();
+  window.rejectApp = function(id) {
+    if (confirm("Haqiqatan ham oʻchirmoqchimisiz?")) {
+      db.ref('applications/' + id).remove();
+    }
+  };
+
+  /* Tab 2: To'lovlar (Orders) */
+  function renderAdminOrders() {
+    const list = Object.entries(ALL_ORDERS).filter(([, o]) => o.status === 'pending');
+    const box = $('at_orders');
+    const badge = $('ad_badge_orders');
+
+    badge.innerText = list.length;
+    badge.classList.toggle('hidden', !list.length);
+
+    if (!list.length) {
+      box.innerHTML = `<p class="note" style="text-align:center;">Kutilayotgan to'lovlar yo'q.</p>`;
+      return;
+    }
+
+    box.innerHTML = list.map(([k, o]) => `
+      <div class="li">
+        <div>
+          <b>${esc(o.playerName)}</b>
+          <p class="note">Tel: +${esc(o.parentPhone)}</p>
+        </div>
+        <div style="text-align:right;">
+          <b style="color:var(--ok); font-family:monospace; font-size:15px;">${fmt(o.total)} UZS</b>
+          <div style="margin-top:4px;">
+            <button class="btn sm bok" onclick="confirmOrderAdmin('${k}')">✔ Tasdiqlash</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.confirmOrderAdmin = async function(orderKey) {
+    const o = ALL_ORDERS[orderKey];
+    if (!o) return;
+
+    if (!confirm(`${o.playerName} uchun ${fmt(o.total)} UZS to'lov kelib tushdimi?`)) return;
+
+    const u = {};
+    u['orders/' + orderKey + '/status'] = 'paid';
+    u['players/' + o.playerId + '/paid'] = true;
+    u[`payments/${o.playerId}/${Date.now()}`] = { amount: o.total, date: new Date().toLocaleDateString() };
+
+    try {
+      await db.ref().update(u);
+      fireConfetti();
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  /* Tab 3: Ota-onalar */
+  function renderAdminParents() {
+    const list = Object.entries(ALL_PARENTS);
+    const box = $('at_parents');
+    if (!list.length) {
+      box.innerHTML = `<p class="note" style="text-align:center;">Ota-onalar mavjud emas.</p>`;
+      return;
+    }
+
+    box.innerHTML = list.map(([ph, p]) => `
+      <div class="li" style="flex-direction:column; align-items:flex-start;">
+        <div style="display:flex; justify-content:space-between; width:100%;">
+          <b>${esc(p.name)}</b>
+          <small class="note">+${esc(ph)}</small>
+        </div>
+        <div class="note" style="color:var(--gold-light);">Parol: <b>${esc(p.password)}</b> | TG: @${esc(p.tgUsername || 'yoʻq')}</div>
+        <div style="margin-top:6px;">
+          <button class="btn sm bo" onclick="copyLoginCreds('+${ph}', '${esc(p.password)}')">📋 Nusxa Olish</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.copyLoginCreds = function(l, p) {
+    const t = `Qarabağ FK\nLogin: ${l}\nParol: ${p}`;
+    navigator.clipboard.writeText(t).then(() => alert("Ota-ona ma'lumotlari nusxalandi!")).catch(() => prompt("Nusxalang:", t));
+  };
+
+  /* Tab 4: O'quvchilar */
+  function renderAdminStudents() {
+    const list = Object.entries(ALL_PLAYERS).filter(([, p]) => !p.isArchived);
+    const box = $('studentsListAdmin');
+    if (!list.length) {
+      box.innerHTML = `<p class="note" style="text-align:center;">O'quvchilar yo'q.</p>`;
+      return;
+    }
+
+    box.innerHTML = list.map(([id, p]) => {
+      const isPaid = p.paid === true || p.paid === 'paid';
+      return `
+        <div class="li">
+          <div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="jersey-badge">#${p.number || '-'}</span>
+              <b>${esc(p.name)}</b>
+            </div>
+            <small class="note">Guruh: ${esc(p.group || '2014')} | Gol: ${p.goals || 0}</small>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge ${isPaid ? 'bs' : 'bx'}">${isPaid ? 'To\'langan' : 'Qarzdor'}</span>
+            <div style="display:flex; gap:4px; margin-top:4px;">
+              <button class="btn sm bo" onclick="openEditPlayerModal('${id}')">✏️</button>
+              <button class="btn sm bd" onclick="archiveStudent('${id}')">🗑</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.openEditPlayerModal = function(id) {
+    const p = ALL_PLAYERS[id];
+    if (!p) return;
+    $('plEditId').value = id;
+    $('plModalTitle').innerText = "Tahrirlash: " + p.name;
+    $('plEditName').value = p.name || '';
+    $('plEditNumber').value = p.number || '';
+    $('plEditPhoto').value = p.photoUrl || '';
+    $('plEditGroup').value = p.group || '';
+    $('plEditBio').value = p.bio || '';
+    $('plEditGoals').value = p.goals || 0;
+    $('plEditAssists').value = p.assists || 0;
+    $('plEditSpeed').value = p.speed || 0;
+    $('plEditProgress').value = p.progress || 0;
+    $('plEditTrainings').value = p.trainings || 0;
+    $('plEditPaid').value = p.paid === true ? 'paid' : (p.paid === 'pending' ? 'pending' : 'unpaid');
+
+    openModal('playerEditModal');
+  };
+
+  window.savePlayerAdmin = async function() {
+    const id = $('plEditId').value;
+    if (!id) return;
+
+    const paidVal = $('plEditPaid').value;
+    const upd = {
+      name: $('plEditName').value.trim(),
+      number: parseInt($('plEditNumber').value) || 1,
+      photoUrl: $('plEditPhoto').value.trim(),
+      group: $('plEditGroup').value.trim(),
+      bio: $('plEditBio').value.trim(),
+      goals: parseInt($('plEditGoals').value) || 0,
+      assists: parseInt($('plEditAssists').value) || 0,
+      speed: parseInt($('plEditSpeed').value) || 0,
+      progress: parseInt($('plEditProgress').value) || 0,
+      trainings: parseInt($('plEditTrainings').value) || 0,
+      paid: paidVal === 'paid' ? true : (paidVal === 'pending' ? 'pending' : false)
+    };
+
+    try {
+      await db.ref('players/' + id).update(upd);
+      closeAllModals();
+      alert("O'quvchi ma'lumotlari saqlandi!");
+    } catch (e) {
+      alert("Xato: " + e.message);
+    }
+  };
+
+  window.archiveStudent = function(id) {
+    if (confirm("O'quvchini arxivga o'tkazasizmi?")) {
+      db.ref('players/' + id + '/isArchived').set(true);
+    }
+  };
+
+  /* Tab 5: Davomat */
+  function renderAdminAttendance() {
+    const list = Object.entries(ALL_PLAYERS).filter(([, p]) => !p.isArchived);
+    const box = $('attendBox');
+    const today = new Date().toLocaleDateString();
+
+    if (!list.length) {
+      box.innerHTML = `<p class="note" style="text-align:center;">O'quvchilar yo'q.</p>`;
+      return;
+    }
+
+    box.innerHTML = list.map(([id, p]) => {
+      const alreadyChecked = (p.attendanceDates || []).includes(today);
+      return `
+        <label class="li" style="cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="jersey-badge">#${p.number || '-'}</span>
+            <b>${esc(p.name)}</b>
+          </div>
+          ${alreadyChecked ? `<span class="badge bs">✅ Kelgan</span>` : `
+            <input type="checkbox" style="width:20px; height:20px;" ${attendCheckSet.has(id) ? 'checked' : ''} onchange="this.checked ? attendCheckSet.add('${id}') : attendCheckSet.delete('${id}')">
+          `}
+        </label>
+      `;
+    }).join('');
+  }
+
+  window.checkAllAttend = function() {
+    const today = new Date().toLocaleDateString();
+    Object.entries(ALL_PLAYERS).forEach(([id, p]) => {
+      if (!p.isArchived && !(p.attendanceDates || []).includes(today)) {
+        attendCheckSet.add(id);
+      }
+    });
+    renderAdminAttendance();
+  };
+
+  window.saveAttendance = async function() {
+    if (!attendCheckSet.size) {
+      alert("Hech kim tanlanmadi!");
+      return;
+    }
+    const today = new Date().toLocaleDateString();
+    const u = {};
+
+    attendCheckSet.forEach(id => {
+      const p = ALL_PLAYERS[id];
+      if (!p) return;
+      const dates = p.attendanceDates || [];
+      if (!dates.includes(today)) {
+        u['players/' + id + '/attendanceDates'] = [...dates, today];
+        u['players/' + id + '/trainings'] = (+p.trainings || 0) + 1;
+      }
+    });
+
+    try {
+      await db.ref().update(u);
+      attendCheckSet.clear();
+      fireConfetti();
+      alert("Davomat saqlandi!");
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  /* Tab 6: Natijalar */
+  function renderAdminStats() {
+    const list = Object.entries(ALL_PLAYERS).filter(([, p]) => !p.isArchived);
+    const box = $('at_stats');
+    if (!list.length) {
+      box.innerHTML = `<p class="note" style="text-align:center;">O'quvchilar yo'q.</p>`;
+      return;
+    }
+
+    box.innerHTML = list.map(([id, p]) => `
+      <div style="border-bottom: 1px solid var(--card-border-light); padding-bottom: 10px; margin-bottom: 10px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+          <b>#${p.number || '-'} ${esc(p.name)}</b>
+          <button class="btn sm bo" onclick="openEditPlayerModal('${id}')">Tahrirlash</button>
+        </div>
+        <small class="note">Gol: ${p.goals || 0} | Asist: ${p.assists || 0} | Tezlik: ${p.speed || 0}% | O'zlashtirish: ${p.progress || 0}% | Mashg'ulot: ${p.trainings || 0}</small>
+      </div>
+    `).join('');
+  }
+
+  /* Tab 7: Arxiv */
+  function renderAdminArchive() {
+    const list = Object.entries(ALL_PLAYERS).filter(([, p]) => p.isArchived);
+    const box = $('archiveBox');
+    if (!list.length) {
+      box.innerHTML = `<p class="note" style="text-align:center;">Arxiv bo'sh.</p>`;
+      return;
+    }
+
+    box.innerHTML = list.map(([id, p]) => `
+      <div class="li">
+        <b>${esc(p.name)}</b>
+        <div style="display:flex; gap:6px;">
+          <button class="btn sm bok" onclick="restoreStudent('${id}')">Tiklash</button>
+          <button class="btn sm bd" onclick="deleteStudentForever('${id}')">O'chirish</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.restoreStudent = function(id) {
+    if (confirm("Qayta tiklaysizmi?")) {
+      db.ref('players/' + id + '/isArchived').set(false);
+    }
+  };
+
+  window.deleteStudentForever = function(id) {
+    if (confirm("Butunlay o'chiriladi. Qaytara olmaysiz! Rozimisiz?")) {
+      db.ref('players/' + id).remove();
+    }
+  };
+
+  /* Tab 8: Sozlamalarni Saqlash */
+  window.saveAdminSettings = async function() {
+    const upd = {
+      opponent: $('setOpponent').value.trim(),
+      matchTime: $('setMatchTime').value.trim(),
+      announcement: $('setAnn').value.trim(),
+      coachPhone: $('setCoach').value.trim(),
+      card: $('setCard').value.trim(),
+      amount: $('setAmount').value.trim(),
+      lineup: {
+        gk: $('sel_gk').value,
+        def1: $('sel_def1').value,
+        def2: $('sel_def2').value,
+        mid1: $('sel_mid1').value,
+        mid2: $('sel_mid2').value,
+        fwd: $('sel_fwd').value
+      }
+    };
+
+    try {
+      await db.ref('settings').update(upd);
+      alert("Barcha sozlamalar va taktik tarkib muvaffaqiyatli saqlandi!");
+    } catch (e) {
+      alert("Xato: " + e.message);
+    }
+  };
+
+});
 </script>
 </body>
 </html>
