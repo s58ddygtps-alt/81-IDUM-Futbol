@@ -55,180 +55,47 @@ h1, h2, h3, .brand, .btn, .tab, .mode, .bn-i span, .jersey-badge {
 }
 
 /* Orqa fondagi Aurora effekti */
-.aurora {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-.aurora i {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(85px);
-  opacity: 0.35;
-  animation: drift 22s ease-in-out infinite alternate;
-}
+.aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.aurora i { position: absolute; border-radius: 50%; filter: blur(85px); opacity: 0.35; animation: drift 22s ease-in-out infinite alternate; }
 .aurora i:nth-child(1) { width: 70vw; height: 70vw; background: #0c2340; top: -20vw; left: -15vw; }
 .aurora i:nth-child(2) { width: 60vw; height: 60vw; background: #d4af37; bottom: -15vw; right: -15vw; opacity: 0.18; animation-duration: 28s; }
 .aurora i:nth-child(3) { width: 45vw; height: 45vw; background: #1e3a8a; top: 40%; left: 30%; opacity: 0.22; animation-duration: 32s; }
 @keyframes drift { to { transform: translate(14vw, 10vh) scale(1.15); } }
 
 /* Asosiy Ekranlar */
-.screen {
-  display: none;
-  padding: 16px;
-  max-width: 520px;
-  margin: 0 auto;
-}
-.screen.active {
-  display: block;
-  animation: fadeIn .4s cubic-bezier(.2, .9, .3, 1);
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.screen { display: none; padding: 16px; max-width: 520px; margin: 0 auto; }
+.screen.active { display: block; animation: fadeIn .4s cubic-bezier(.2, .9, .3, 1); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-  padding-top: 4px;
-}
-.brand-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.brand-logo {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1.5px solid var(--gold);
-  background: radial-gradient(circle, #1a2a44 0%, #060d19 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 15px var(--gold-glow);
-  font-size: 18px;
-}
-.brand {
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  background: linear-gradient(100deg, #fff, var(--gold-light), var(--gold));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.top-actions {
-  display: flex;
-  gap: 8px;
-}
-.lang-btn {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--card-border);
-  color: var(--gold-light);
-  padding: 6px 14px;
-  border-radius: 12px;
-  font: 700 11px 'Unbounded', sans-serif;
-  cursor: pointer;
-  transition: all .2s;
-}
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-top: 4px; }
+.brand-box { display: flex; align-items: center; gap: 10px; }
+.brand-logo { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--gold); background: radial-gradient(circle, #1a2a44 0%, #060d19 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--gold-glow); font-size: 18px; }
+.brand { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(100deg, #fff, var(--gold-light), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.top-actions { display: flex; gap: 8px; }
+.lang-btn { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); color: var(--gold-light); padding: 6px 14px; border-radius: 12px; font: 700 11px 'Unbounded', sans-serif; cursor: pointer; transition: all .2s; }
 .lang-btn:active { transform: scale(.94); }
 
-/* Kartalar va Glassmorphism */
-.card {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 18px;
-  margin-bottom: 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  position: relative;
-}
+/* Kartalar */
+.card { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border); border-radius: 20px; padding: 18px; margin-bottom: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45); position: relative; }
 
 /* Kirish / Rejimlar */
-.modes {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  background: var(--input-bg);
-  padding: 4px;
-  border-radius: 14px;
-  margin-bottom: 16px;
-  border: 1px solid var(--card-border-light);
-}
-.mode {
-  padding: 11px 4px;
-  text-align: center;
-  border-radius: 10px;
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all .3s;
-}
-.mode.on {
-  background: linear-gradient(135deg, var(--gold), #997517);
-  color: #060d19;
-  box-shadow: 0 4px 14px var(--gold-glow);
-}
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--input-bg); padding: 4px; border-radius: 14px; margin-bottom: 16px; border: 1px solid var(--card-border-light); }
+.mode { padding: 11px 4px; text-align: center; border-radius: 10px; font-size: 10.5px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all .3s; }
+.mode.on { background: linear-gradient(135deg, var(--gold), #997517); color: #060d19; box-shadow: 0 4px 14px var(--gold-glow); }
 .pane { display: none; }
 .pane.on { display: block; animation: fadeIn .3s ease; }
 
-/* Formalar va Kiritish maydonlari */
+/* Formalar */
 .ig { margin-bottom: 13px; }
-.ig label {
-  display: block;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-.inp {
-  width: 100%;
-  padding: 13px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--card-border-light);
-  background: var(--input-bg);
-  color: var(--text);
-  font: 600 13.5px 'Manrope', sans-serif;
-  outline: none;
-  transition: .25s;
-}
-.inp:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
-}
+.ig label { display: block; font-size: 11.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+.inp { width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--card-border-light); background: var(--input-bg); color: var(--text); font: 600 13.5px 'Manrope', sans-serif; outline: none; transition: .25s; }
+.inp:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25); }
 select.inp option { background-color: #0d182e; color: #fff; }
 .note { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-top: 6px; }
 
 /* Tugmalar */
-.btn {
-  width: 100%;
-  padding: 13px 16px;
-  border-radius: 13px;
-  border: none;
-  background: linear-gradient(135deg, var(--gold), #aa8420);
-  color: #060d19;
-  font-size: 11.5px;
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  box-shadow: 0 6px 20px var(--gold-glow);
-  transition: all .2s;
-}
+.btn { width: 100%; padding: 13px 16px; border-radius: 13px; border: none; background: linear-gradient(135deg, var(--gold), #aa8420); color: #060d19; font-size: 11.5px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 6px 20px var(--gold-glow); transition: all .2s; }
 .btn:active { transform: scale(.97); opacity: .9; }
 .btn.bo { background: transparent; color: var(--text); border: 1px solid var(--card-border); box-shadow: none; }
 .btn.bd { background: linear-gradient(135deg, var(--coral), #ba1a38); color: #fff; box-shadow: 0 6px 18px rgba(255, 77, 109, 0.35); }
@@ -240,12 +107,7 @@ select.inp option { background-color: #0d182e; color: #fff; }
 .bs { background: rgba(46, 230, 166, 0.15); color: var(--ok); border: 1px solid var(--ok); }
 .bx { background: rgba(255, 77, 109, 0.15); color: var(--coral); border: 1px solid var(--coral); }
 .bw { background: rgba(212, 175, 55, 0.15); color: var(--gold-light); border: 1px solid var(--gold); }
-.jersey-badge {
-  display: inline-flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--gold), #7a5c10); color: #060d19;
-  font-size: 10.5px; font-weight: 900; width: 26px; height: 26px;
-  border-radius: 7px; box-shadow: 0 2px 8px var(--gold-glow);
-}
+.jersey-badge { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--gold), #7a5c10); color: #060d19; font-size: 10.5px; font-weight: 900; width: 26px; height: 26px; border-radius: 7px; box-shadow: 0 2px 8px var(--gold-glow); }
 
 /* Statistika panellari */
 .sb { margin-bottom: 12px; }
@@ -256,35 +118,21 @@ select.inp option { background-color: #0d182e; color: #fff; }
 .fr { background: linear-gradient(90deg, var(--coral), #ff8a5c); box-shadow: 0 0 10px var(--coral); }
 
 /* Futbol Maydoni (Pitch) */
-.pitch-container {
-  width: 100%; aspect-ratio: 2 / 3;
-  background: #14532d;
-  background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 28px, transparent 28px, transparent 56px), radial-gradient(circle at center, #1e743e 0%, #0d381e 100%);
-  border: 3px solid rgba(255, 255, 255, 0.65); border-radius: 18px;
-  position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.5);
-  overflow: hidden; margin-top: 10px;
-}
+.pitch-container { width: 100%; aspect-ratio: 2 / 3; background: #14532d; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 28px, transparent 28px, transparent 56px), radial-gradient(circle at center, #1e743e 0%, #0d381e 100%); border: 3px solid rgba(255, 255, 255, 0.65); border-radius: 18px; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; margin-top: 10px; }
 .pitch-half-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.5); transform: translateY(-50%); }
 .pitch-center-circle { position: absolute; top: 50%; left: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.5); border-radius: 50%; transform: translate(-50%, -50%); }
 .pitch-box-top { position: absolute; top: 0; left: 50%; width: 130px; height: 60px; border: 2px solid rgba(255,255,255,0.5); border-top: none; transform: translateX(-50%); }
 .pitch-box-bottom { position: absolute; bottom: 0; left: 50%; width: 130px; height: 60px; border: 2px solid rgba(255,255,255,0.5); border-bottom: none; transform: translateX(-50%); }
-
 .pitch-pos { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); z-index: 2; cursor: pointer; text-align: center; }
 .pos-shirt { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-light), #96700c); border: 2px solid #fff; color: #060d19; font: 900 13px 'Unbounded', sans-serif; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.6); transition: transform .2s; }
 .pitch-pos:active .pos-shirt { transform: scale(1.15); }
 .pos-role { font: 700 8.5px 'Unbounded', sans-serif; background: rgba(6, 13, 25, 0.85); color: var(--gold-light); padding: 2px 6px; border-radius: 6px; margin-top: 3px; white-space: nowrap; border: 0.5px solid rgba(212, 175, 55, 0.4); }
 .pos-name { font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 4px #000; margin-top: 1px; max-width: 75px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* Pastki Navigatsiya (6 ta bo'lim) */
-.bn {
-  position: fixed; left: 50%; transform: translateX(-50%);
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
-  width: min(calc(100% - 20px), 520px);
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; padding: 6px;
-  border-radius: 22px; background: rgba(10, 19, 36, 0.92);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65); z-index: 99;
-}
+/* Pastki Navigatsiya */
+.bn { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); width: min(calc(100% - 20px), 520px); display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; padding: 6px; border-radius: 22px; background: rgba(10, 19, 36, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65); z-index: 99; }
+/* MUHIM: Pastki menyu yashirin bo'lishi qoidasi */
+.bn[hidden] { display: none !important; }
 .bn-i { min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 7px 2px; border: 0; border-radius: 14px; background: transparent; color: var(--text-muted); cursor: pointer; transition: all .2s; }
 .bn-i .ic { font-size: 18px; line-height: 1; }
 .bn-i span { font-size: 8px; font-weight: 700; text-align: center; }
@@ -313,7 +161,7 @@ select.inp option { background-color: #0d182e; color: #fff; }
 <div class="aurora"><i></i><i></i><i></i></div>
 <canvas id="fx"></canvas>
 
-<!-- 1. KIRISH VA ARIZA EKRANI -->
+<!-- 1. KIRISH / ARIZA EKRANI -->
 <div class="screen active" id="loginScreen">
   <div class="header">
     <div class="brand-box">
@@ -321,7 +169,7 @@ select.inp option { background-color: #0d182e; color: #fff; }
       <div class="brand">QARABAĞ FK</div>
     </div>
     <div class="top-actions">
-      <button class="lang-btn" id="langSwitchBtn" onclick="toggleLang()">UZ</button>
+      <button class="lang-btn" onclick="toggleLang()">UZ</button>
     </div>
   </div>
 
@@ -332,8 +180,8 @@ select.inp option { background-color: #0d182e; color: #fff; }
   </div>
 
   <div class="modes">
-    <div class="mode on" id="modeBtn0" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД" data-az="GİRİŞ">KIRISH</div>
-    <div class="mode" id="modeBtn1" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА" data-az="MÜRACİƏT">ARIZA TOPSHIRISH</div>
+    <div class="mode on" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД" data-az="GİRİŞ">KIRISH</div>
+    <div class="mode" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА" data-az="MÜRACİƏT">ARIZA TOPSHIRISH</div>
   </div>
 
   <div class="card">
@@ -346,7 +194,7 @@ select.inp option { background-color: #0d182e; color: #fff; }
         <label data-uz="Parol" data-ru="Пароль" data-az="Şifrə">Parol</label>
         <input type="password" id="loginPass" class="inp" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <button class="btn" id="btnLogin" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ В СИСТЕМУ" data-az="SİSTEMƏ GİRİŞ">TIZIMGA KIRISH</button>
+      <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ В СИСТЕМУ" data-az="SİSTEMƏ GİRİŞ">TIZIMGA KIRISH</button>
     </div>
 
     <div class="pane" id="pane1">
@@ -531,7 +379,7 @@ select.inp option { background-color: #0d182e; color: #fff; }
   </div>
 </div>
 
-<!-- PASTKI MENYU -->
+<!-- PASTKI MENYU (Boshida yashirin holatda turadi: hidden) -->
 <nav class="bn" id="bottomNav" hidden>
   <button class="bn-i on" data-target="homeScreen" onclick="navTo('homeScreen')"><span class="ic">🏠</span><span data-uz="Asosiy" data-ru="Главная" data-az="Əsas">Asosiy</span></button>
   <button class="bn-i" data-target="tourScreen" onclick="navTo('tourScreen')"><span class="ic">🏆</span><span data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</span></button>
@@ -544,7 +392,6 @@ select.inp option { background-color: #0d182e; color: #fff; }
 <!-- MODALLAR -->
 <div class="ov" id="overlay" onclick="closeAllModals()"></div>
 
-<!-- To'lov Modali -->
 <div class="modal" id="payModal">
   <div style="text-align:center;">
     <h3 style="font-size: 16px; margin-bottom: 4px;" data-uz="TO'LOV QILISH" data-ru="ОПЛАТА" data-az="ÖDƏNİŞ">TO'LOV QILISH</h3>
@@ -567,7 +414,6 @@ select.inp option { background-color: #0d182e; color: #fff; }
   </div>
 </div>
 
-<!-- O'yinchini Tahrirlash (Admin) -->
 <div class="modal" id="playerEditModal">
   <h3 style="font-size: 15px; margin-bottom: 12px;" id="plModalTitle">Tahrirlash</h3>
   <input type="hidden" id="plEditId">
@@ -600,7 +446,6 @@ select.inp option { background-color: #0d182e; color: #fff; }
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-  /* Firebase sozlamalari */
   const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
   let db = null;
   try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch (err) {}
@@ -631,6 +476,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
+  // Fon animatsiyasi (Konfetti)
   function fireConfetti() {
     const c = $('fx'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
     const colors = ['#d4af37', '#f5d77f', '#2ee6a6', '#ff4d6d', '#ffffff'];
@@ -646,12 +492,21 @@ document.addEventListener("DOMContentLoaded", function() {
     if (currentUser) { renderHomeKids(); renderStatKids(); renderWalletKids(); }
   };
 
+  // Ekranlar orasidagi o'tish va pastki menyuni boshqarish
   function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     $(screenId).classList.add('active');
     window.scrollTo(0, 0);
+
+    // Pastki menyu FAQAT o'quvchi profiliga kirilganda ko'rinadi
     const isAppScreen = ['homeScreen', 'tourScreen', 'statScreen', 'pitchScreen', 'walletScreen', 'profileScreen'].includes(screenId);
-    $('bottomNav').hidden = !(isAppScreen && currentUser);
+    
+    if (isAppScreen && currentUser) {
+      $('bottomNav').removeAttribute('hidden'); // Ko'rsatish
+    } else {
+      $('bottomNav').setAttribute('hidden', 'true'); // Yashirish (Admin, Login va h.k.)
+    }
+
     document.querySelectorAll('.bn-i').forEach(btn => btn.classList.toggle('on', btn.getAttribute('data-target') === screenId));
   }
   window.navTo = function(screenId) { showScreen(screenId); };
@@ -663,6 +518,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function isValidPassword(p) { return /^[A-Z](?=.*[%_.\!@#$]).+$/.test(p); }
 
+  // ARIZA TOPSHIRISH
   window.submitApplication = async function() {
     const parentName = $('appParentName').value.trim(), childName = $('appChildName').value.trim(), phone = cleanDigits($('appPhone').value), age = $('appAge').value.trim(), password = $('appPass').value.trim(), btn = $('btnApp');
     if (!parentName || !childName || phone.length < 9 || !age || !password) return alert(DICT[currentLang].emptyFields);
@@ -679,28 +535,52 @@ document.addEventListener("DOMContentLoaded", function() {
     } catch (e) { alert("Xato: " + e.message); } finally { btn.disabled = false; btn.innerText = currentLang === 'uz' ? "ARIZA YUBORISH" : (currentLang === 'ru' ? "ОТПРАВИТЬ ЗАЯВКУ" : "MÜRACİƏTİ GÖNDƏR"); }
   };
 
+  // TIZIMGA KIRISH
   window.login = async function() {
     const u = $('loginUser').value.trim(), p = $('loginPass').value.trim();
     if (!u || !p) return alert(DICT[currentLang].emptyFields);
-    if (u === "Arif" && p === "0717") { showScreen('adminScreen'); return; }
+    
+    // Admin
+    if (u === "Arif" && p === "0717") { 
+      showScreen('adminScreen'); 
+      return; 
+    }
 
+    // Ota-ona
     const phone = cleanDigits(u);
     try {
       const snap = await db.ref('parents/' + phone).once('value');
       if (!snap.exists()) return alert(DICT[currentLang].userNotFound);
       const pData = snap.val();
       if (pData.password !== p) return alert(DICT[currentLang].passWrong);
+      
       currentUser = { phone, ...pData };
-      renderUserProfile(); renderHomeKids(); renderStatKids(); renderWalletKids();
-      showScreen('homeScreen');
+      renderUserProfile(); 
+      renderHomeKids(); 
+      renderStatKids(); 
+      renderWalletKids();
+      showScreen('homeScreen'); // Bu yerda pastki menyu avtomatik ko'rinadi
     } catch (e) { alert("Xato: " + e.message); }
   };
 
-  window.logout = function() { currentUser = null; $('loginUser').value = ''; $('loginPass').value = ''; showScreen('loginScreen'); };
+  // CHIQISH
+  window.logout = function() { 
+    currentUser = null; 
+    $('loginUser').value = ''; 
+    $('loginPass').value = ''; 
+    showScreen('loginScreen'); 
+  };
 
+  // FIREBASE TINGLOVCHILARI
   if (db) {
     db.ref('settings').on('value', snap => { if (snap.exists()) SETTINGS = { ...SETTINGS, ...snap.val() }; applySettingsUI(); });
-    db.ref('players').on('value', snap => { ALL_PLAYERS = snap.val() || {}; populatePitchSelects(); renderPitchVisual(); if (currentUser) { renderHomeKids(); renderStatKids(); renderWalletKids(); } renderAdminStudents(); renderAdminAttendance(); renderAdminArchive(); });
+    db.ref('players').on('value', snap => { 
+      ALL_PLAYERS = snap.val() || {}; 
+      populatePitchSelects(); 
+      renderPitchVisual(); 
+      if (currentUser) { renderHomeKids(); renderStatKids(); renderWalletKids(); } 
+      renderAdminStudents(); renderAdminAttendance(); renderAdminArchive(); 
+    });
     db.ref('parents').on('value', snap => { ALL_PARENTS = snap.val() || {}; renderAdminParents(); });
     db.ref('applications').on('value', snap => { ALL_APPLICATIONS = snap.val() || {}; renderAdminApps(); });
     db.ref('orders').on('value', snap => { ALL_ORDERS = snap.val() || {}; renderAdminOrders(); });
@@ -913,6 +793,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const upd = { opponent: $('setOpponent').value.trim(), matchTime: $('setMatchTime').value.trim(), announcement: $('setAnn').value.trim(), coachPhone: $('setCoach').value.trim(), card: $('setCard').value.trim(), amount: $('setAmount').value.trim(), lineup: { gk: $('sel_gk').value, def1: $('sel_def1').value, def2: $('sel_def2').value, mid1: $('sel_mid1').value, mid2: $('sel_mid2').value, fwd: $('sel_fwd').value } };
     try { await db.ref('settings').update(upd); alert("Sozlamalar saqlandi!"); } catch (e) { alert("Xato: " + e.message); }
   };
+
+  // Boshlang'ich holat: Pastki menyuni yashirish
+  showScreen('loginScreen');
 
 });
 </script>
