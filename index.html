@@ -1,803 +1,1040 @@
+
+
+**Qisqa tavsif:** Bu ilova 81-maktab futbol to'garagi uchun to'liq boshqaruv tizimi. Ota-onalar uchun: kirish, farzandlar statistikasi, maydon tarkibi, to'lov tizimi, profil. Admin uchun: arizalar, to'lovlar, o'quvchilar, davomat, natijalar, arxiv, sozlamalar. Barcha ma'lumotlar Firebase Realtime Database da real vaqtda yangilanadi. Qorong'i/yorug' rejim, 3 til (UZ/RU/AZ), glassmorphism dizayni.
+
+```html
 <!DOCTYPE html>
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#060d19">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>Qarabağ FK Academy</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" crossorigin="anonymous"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js" crossorigin="anonymous"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>81-maktab FK</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #060d19;
-  --card-bg: rgba(13, 24, 46, 0.72);
-  --card-border: rgba(212, 175, 55, 0.22);
-  --card-border-light: rgba(255, 255, 255, 0.1);
-  --gold: #d4af37;
-  --gold-glow: rgba(212, 175, 55, 0.45);
-  --gold-light: #f5d77f;
-  --blue: #1c4ed8;
-  --navy-dark: #0a1324;
-  --coral: #ff4d6d;
-  --ok: #2ee6a6;
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --input-bg: rgba(6, 13, 25, 0.75);
+  --bg-dark: #0a0a1f;
+  --bg-light: #f5f5ff;
+  --primary: #3d7bff;
+  --secondary: #7a5cff;
+  --accent: #ff4d6d;
+  --gold: #ffc83d;
+  --green: #2ee6a6;
+  --text-light: #ffffff;
+  --text-dark: #1a1a2e;
+  --glass: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
 }
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  background-color: var(--bg);
-  color: var(--text);
   font-family: 'Manrope', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-light);
   min-height: 100vh;
-  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
   overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+body.light { background: var(--bg-light); color: var(--text-dark); }
+h1, h2, h3 { font-family: 'Unbounded', sans-serif; }
+.screen { display: none; padding: 20px; min-height: 100vh; }
+.screen.active { display: block; }
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+}
+.btn {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: 'Manrope';
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
   position: relative;
+  overflow: hidden;
 }
-
-h1, h2, h3, .brand, .btn, .tab, .mode, .bn-i span, .jersey-badge {
-  font-family: 'Unbounded', sans-serif;
+.btn:hover { transform: scale(0.96); }
+.btn:active { transform: scale(0.93); }
+.btn.light { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  z-index: 1000;
 }
-
-/* Orqa fondagi Aurora effekti */
-.aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.aurora i { position: absolute; border-radius: 50%; filter: blur(85px); opacity: 0.35; animation: drift 22s ease-in-out infinite alternate; }
-.aurora i:nth-child(1) { width: 70vw; height: 70vw; background: #0c2340; top: -20vw; left: -15vw; }
-.aurora i:nth-child(2) { width: 60vw; height: 60vw; background: #d4af37; bottom: -15vw; right: -15vw; opacity: 0.18; animation-duration: 28s; }
-.aurora i:nth-child(3) { width: 45vw; height: 45vw; background: #1e3a8a; top: 40%; left: 30%; opacity: 0.22; animation-duration: 32s; }
-@keyframes drift { to { transform: translate(14vw, 10vh) scale(1.15); } }
-
-/* Asosiy Ekranlar */
-.screen { display: none; padding: 16px; max-width: 520px; margin: 0 auto; }
-.screen.active { display: block; animation: fadeIn .4s cubic-bezier(.2, .9, .3, 1); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Header */
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-top: 4px; }
-.brand-box { display: flex; align-items: center; gap: 10px; }
-.brand-logo { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--gold); background: radial-gradient(circle, #1a2a44 0%, #060d19 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--gold-glow); font-size: 18px; }
-.brand { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(100deg, #fff, var(--gold-light), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.top-actions { display: flex; gap: 8px; }
-.lang-btn { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); color: var(--gold-light); padding: 6px 14px; border-radius: 12px; font: 700 11px 'Unbounded', sans-serif; cursor: pointer; transition: all .2s; }
-.lang-btn:active { transform: scale(.94); }
-
-/* Kartalar */
-.card { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border); border-radius: 20px; padding: 18px; margin-bottom: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45); position: relative; }
-
-/* Kirish / Rejimlar */
-.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--input-bg); padding: 4px; border-radius: 14px; margin-bottom: 16px; border: 1px solid var(--card-border-light); }
-.mode { padding: 11px 4px; text-align: center; border-radius: 10px; font-size: 10.5px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all .3s; }
-.mode.on { background: linear-gradient(135deg, var(--gold), #997517); color: #060d19; box-shadow: 0 4px 14px var(--gold-glow); }
-.pane { display: none; }
-.pane.on { display: block; animation: fadeIn .3s ease; }
-
-/* Formalar */
-.ig { margin-bottom: 13px; }
-.ig label { display: block; font-size: 11.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
-.inp { width: 100%; padding: 13px 14px; border-radius: 12px; border: 1px solid var(--card-border-light); background: var(--input-bg); color: var(--text); font: 600 13.5px 'Manrope', sans-serif; outline: none; transition: .25s; }
-.inp:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25); }
-select.inp option { background-color: #0d182e; color: #fff; }
-.note { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-top: 6px; }
-
-/* Tugmalar */
-.btn { width: 100%; padding: 13px 16px; border-radius: 13px; border: none; background: linear-gradient(135deg, var(--gold), #aa8420); color: #060d19; font-size: 11.5px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 6px 20px var(--gold-glow); transition: all .2s; }
-.btn:active { transform: scale(.97); opacity: .9; }
-.btn.bo { background: transparent; color: var(--text); border: 1px solid var(--card-border); box-shadow: none; }
-.btn.bd { background: linear-gradient(135deg, var(--coral), #ba1a38); color: #fff; box-shadow: 0 6px 18px rgba(255, 77, 109, 0.35); }
-.btn.bok { background: linear-gradient(135deg, #10b981, var(--ok)); color: #04241a; box-shadow: 0 6px 18px rgba(46, 230, 166, 0.3); }
-.btn.sm { width: auto; padding: 7px 11px; font-size: 10px; border-radius: 9px; margin-top: 0; }
-
-/* Badjlar */
-.badge { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-block; }
-.bs { background: rgba(46, 230, 166, 0.15); color: var(--ok); border: 1px solid var(--ok); }
-.bx { background: rgba(255, 77, 109, 0.15); color: var(--coral); border: 1px solid var(--coral); }
-.bw { background: rgba(212, 175, 55, 0.15); color: var(--gold-light); border: 1px solid var(--gold); }
-.jersey-badge { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--gold), #7a5c10); color: #060d19; font-size: 10.5px; font-weight: 900; width: 26px; height: 26px; border-radius: 7px; box-shadow: 0 2px 8px var(--gold-glow); }
-
-/* Statistika panellari */
-.sb { margin-bottom: 12px; }
-.sbh { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 5px; }
-.sbg { height: 9px; background: var(--input-bg); border-radius: 8px; overflow: hidden; border: 1px solid var(--card-border-light); }
-.sf { height: 100%; border-radius: 8px; transition: width 1s cubic-bezier(.2, .9, .3, 1); }
-.fg { background: linear-gradient(90deg, #10b981, var(--ok)); box-shadow: 0 0 10px var(--ok); }
-.fr { background: linear-gradient(90deg, var(--coral), #ff8a5c); box-shadow: 0 0 10px var(--coral); }
-
-/* Futbol Maydoni (Pitch) */
-.pitch-container { width: 100%; aspect-ratio: 2 / 3; background: #14532d; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 28px, transparent 28px, transparent 56px), radial-gradient(circle at center, #1e743e 0%, #0d381e 100%); border: 3px solid rgba(255, 255, 255, 0.65); border-radius: 18px; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; margin-top: 10px; }
-.pitch-half-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.5); transform: translateY(-50%); }
-.pitch-center-circle { position: absolute; top: 50%; left: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.5); border-radius: 50%; transform: translate(-50%, -50%); }
-.pitch-box-top { position: absolute; top: 0; left: 50%; width: 130px; height: 60px; border: 2px solid rgba(255,255,255,0.5); border-top: none; transform: translateX(-50%); }
-.pitch-box-bottom { position: absolute; bottom: 0; left: 50%; width: 130px; height: 60px; border: 2px solid rgba(255,255,255,0.5); border-bottom: none; transform: translateX(-50%); }
-.pitch-pos { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); z-index: 2; cursor: pointer; text-align: center; }
-.pos-shirt { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-light), #96700c); border: 2px solid #fff; color: #060d19; font: 900 13px 'Unbounded', sans-serif; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.6); transition: transform .2s; }
-.pitch-pos:active .pos-shirt { transform: scale(1.15); }
-.pos-role { font: 700 8.5px 'Unbounded', sans-serif; background: rgba(6, 13, 25, 0.85); color: var(--gold-light); padding: 2px 6px; border-radius: 6px; margin-top: 3px; white-space: nowrap; border: 0.5px solid rgba(212, 175, 55, 0.4); }
-.pos-name { font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 4px #000; margin-top: 1px; max-width: 75px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-/* Pastki Navigatsiya */
-.bn { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); width: min(calc(100% - 20px), 520px); display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; padding: 6px; border-radius: 22px; background: rgba(10, 19, 36, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border); box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65); z-index: 99; }
-/* MUHIM: Pastki menyu yashirin bo'lishi qoidasi */
-.bn[hidden] { display: none !important; }
-.bn-i { min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 7px 2px; border: 0; border-radius: 14px; background: transparent; color: var(--text-muted); cursor: pointer; transition: all .2s; }
-.bn-i .ic { font-size: 18px; line-height: 1; }
-.bn-i span { font-size: 8px; font-weight: 700; text-align: center; }
-.bn-i.on { background: linear-gradient(135deg, var(--gold), #aa8420); color: #060d19; box-shadow: 0 4px 12px var(--gold-glow); }
-.bn-i:active { transform: scale(.92); }
-
-/* Admin Tablari */
-.tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
-.tabs::-webkit-scrollbar { display: none; }
-.tab { padding: 9px 14px; border-radius: 999px; background: var(--card-bg); border: 1px solid var(--card-border-light); color: var(--text-muted); font-size: 9.5px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: .25s; }
-.tab.active { background: linear-gradient(135deg, var(--gold), #96700c); color: #060d19; border-color: var(--gold); box-shadow: 0 4px 14px var(--gold-glow); }
+.nav-item {
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+.nav-item.active { background: var(--primary); color: white; }
+.modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--glass-border);
+  border-radius: 22px 22px 0 0;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+  z-index: 1001;
+}
+.modal.show { transform: translateY(0); }
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: none;
+}
+.overlay.show { display: block; }
+/* Decorative elements */
+.aurora {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  z-index: -1;
+}
+.aurora1 { width: 300px; height: 300px; background: #7a5cff; top: -100px; left: -100px; }
+.aurora2 { width: 400px; height: 400px; background: #3d7bff; bottom: -150px; right: -150px; }
+.aurora3 { width: 250px; height: 250px; background: #ff4d6d; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.projector {
+  position: fixed;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, white, transparent);
+  opacity: 0.1;
+  z-index: -1;
+  animation: projector 4s infinite alternate;
+}
+@keyframes projector {
+  0% { transform: translateX(0) rotate(45deg); }
+  100% { transform: translateX(100px) rotate(45deg); }
+}
+.football-emoji {
+  position: fixed;
+  font-size: 24px;
+  z-index: -1;
+  opacity: 0.7;
+  animation: float 10s infinite linear;
+}
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); }
+  100% { transform: translateY(-100px) rotate(360deg); }
+}
+.error-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff4d6d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 2000;
+  animation: slideIn 0.3s, fadeOut 0.3s 5.7s forwards;
+}
+@keyframes slideIn { from { opacity: 0; transform: translate(-50%, -20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes fadeOut { to { opacity: 0; transform: translate(-50%, -20px); } }
 .hidden { display: none !important; }
-.li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; background: var(--input-bg); border-radius: 14px; margin-bottom: 8px; border: 1px solid var(--card-border-light); font-size: 13px; }
-
-/* Modallar */
-.ov { position: fixed; inset: 0; background: rgba(2, 6, 15, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; opacity: 0; visibility: hidden; transition: .3s; }
-.ov.active { opacity: 1; visibility: visible; }
-.modal { position: fixed; bottom: -100%; left: 0; right: 0; max-width: 520px; margin: 0 auto; background: #091325; border-radius: 26px 26px 0 0; padding: 24px; transition: .4s cubic-bezier(.2, .9, .3, 1); z-index: 101; max-height: 88vh; overflow-y: auto; border: 1px solid var(--card-border); box-shadow: 0 -10px 40px rgba(0,0,0,0.8); }
-.modal.active { bottom: 0; }
-
-#fx { position: fixed; inset: 0; pointer-events: none; z-index: 300; }
 </style>
 </head>
 <body>
+<div class="aurora aurora1"></div>
+<div class="aurora aurora2"></div>
+<div class="aurora aurora3"></div>
+<div class="projector" style="top: 20%;"></div>
+<div class="projector" style="top: 60%; animation-delay: 2s;"></div>
+<div class="football-emoji" style="left: 10%; animation-delay: 0s;">⚽</div>
+<div class="football-emoji" style="left: 30%; animation-delay: 1s;">⭐</div>
+<div class="football-emoji" style="left: 50%; animation-delay: 2s;">🏆</div>
+<div class="football-emoji" style="left: 70%; animation-delay: 3s;">👟</div>
+<div class="football-emoji" style="left: 90%; animation-delay: 4s;">🥅</div>
+<div class="football-emoji" style="left: 20%; animation-delay: 5s;">✨</div>
 
-<div class="aurora"><i></i><i></i><i></i></div>
-<canvas id="fx"></canvas>
-
-<!-- 1. KIRISH / ARIZA EKRANI -->
-<div class="screen active" id="loginScreen">
-  <div class="header">
-    <div class="brand-box">
-      <div class="brand-logo">🐎</div>
-      <div class="brand">QARABAĞ FK</div>
+<!-- Login Screen -->
+<div id="loginScreen" class="screen active">
+  <div style="text-align: center; padding: 40px 20px;">
+    <img id="logo" src="logo.png" alt="Logo" style="width: 260px; margin: 0 auto 30px; display: block;" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+    <div id="logoFallback" style="display: none; width: 260px; height: 260px; background: var(--primary); border-radius: 50%; margin: 0 auto 30px; align-items: center; justify-content: center; font-size: 80px; color: white; line-height: 260px; text-align: center;">⚽</div>
+    <h1 id="loginTitle" data-i="loginTitle"></h1>
+    <p id="loginSubtitle" data-i="loginSubtitle" style="margin-top: 10px; opacity: 0.8;"></p>
+  </div>
+  <div style="max-width: 400px; margin: 0 auto; padding: 0 20px;">
+    <div style="display: flex; margin-bottom: 20px; border-radius: 10px; overflow: hidden; background: var(--glass);">
+      <button id="loginMode" class="btn" style="flex: 1; border-radius: 0; margin: 0;" onclick="setLoginMode('login')">Kirish</button>
+      <button id="appMode" class="btn" style="flex: 1; border-radius: 0; margin: 0; background: transparent;" onclick="setLoginMode('apply')">Ariza</button>
     </div>
-    <div class="top-actions">
-      <button class="lang-btn" onclick="toggleLang()">UZ</button>
+    <div id="loginForm">
+      <input id="loginInput" type="text" placeholder="Login (telefon raqam)" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass); color: inherit; font-family: inherit;">
+      <input id="passwordInput" type="password" placeholder="Parol" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass); color: inherit; font-family: inherit;">
+      <button class="btn" style="width: 100%; margin-bottom: 15px;" onclick="login()">Tizimga kirish</button>
+    </div>
+    <div id="applyForm" style="display: none;">
+      <input id="parentNameInput" placeholder="Ota-onaning ismi" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass); color: inherit; font-family: inherit;">
+      <input id="childNameInput" placeholder="Farzand ismi (vergul bilan)" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass); color: inherit; font-family: inherit;">
+      <input id="phoneInput" placeholder="Telefon (9+ raqam)" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass); color: inherit; font-family: inherit;">
+      <input id="applyPasswordInput" placeholder="Parol (kamida 4 belgi)" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass); color: inherit; font-family: inherit;">
+      <input id="childAgeInput" type="number" placeholder="Farzand yoshi" style="width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); background: var(--glass); color: inherit; font-family: inherit;">
+      <button class="btn" style="width: 100%; margin-bottom: 15px;" onclick="submitApplication()">Arizani yuborish</button>
     </div>
   </div>
+</div>
 
-  <div class="card" style="text-align:center; padding: 22px 16px; border-color: var(--gold);">
-    <div style="font-size: 34px; margin-bottom: 6px;">🏆</div>
-    <h1 style="font-size: 20px; margin-bottom: 6px;" data-uz="Qarabağ Futbol Akademiyasi" data-ru="Футбольная Академия Карабах" data-az="Qarabağ Futbol Akademiyası">Qarabağ Futbol Akademiyasi</h1>
-    <p class="note" data-uz="G'alaba ruhi va yuksak mahorat maktabi" data-ru="Школа победного духа и высокого мастерства" data-az="Qələbə ruhu və yüksək ustalıq məktəbi">G'alaba ruhi va yuksak mahorat maktabi</p>
+<!-- Main App Screens -->
+<div id="homeScreen" class="screen">
+  <div style="text-align: center; padding: 40px 20px;">
+    <img src="logo.png" alt="Logo" style="width: 260px; margin: 0 auto 30px;" onerror="this.style.display='none'; document.getElementById('homeLogoFallback').style.display='block';">
+    <div id="homeLogoFallback" style="display: none; width: 260px; height: 260px; background: var(--primary); border-radius: 50%; margin: 0 auto 30px; align-items: center; justify-content: center; font-size: 80px; color: white; line-height: 260px; text-align: center;">⚽</div>
+    <h1 data-i="homeTitle"></h1>
+    <p data-i="homeSubtitle" style="margin-top: 15px; line-height: 1.6; max-width: 500px; margin-left: auto; margin-right: auto;"></p>
   </div>
+</div>
 
-  <div class="modes">
-    <div class="mode on" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД" data-az="GİRİŞ">KIRISH</div>
-    <div class="mode" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА" data-az="MÜRACİƏT">ARIZA TOPSHIRISH</div>
+<div id="tournamentsScreen" class="screen">
+  <h2 style="margin-bottom: 20px;" data-i="tournamentsTitle">Turnirlar</h2>
+  <div id="announcementCard" class="glass" style="padding: 20px; margin-bottom: 15px;">
+    <h3 data-i="announcementTitle">E'lon</h3>
+    <p id="announcementText"></p>
   </div>
+  <div class="glass" style="padding: 20px; margin-bottom: 15px;">
+    <h3 data-i="timerTitle">Keyingi mashg'ulotgacha vaqt</h3>
+    <div id="countdown" style="font-size: 24px; text-align: center; margin: 10px 0;"></div>
+  </div>
+  <div class="glass" style="padding: 20px; margin-bottom: 15px;">
+    <h3 data-i="coachTitle">Murabbiy nasihati</h3>
+    <p id="motivationText"></p>
+  </div>
+  <div class="glass" style="padding: 20px; margin-bottom: 15px;">
+    <h3 data-i="matchTitle">O'yin ma'lumoti</h3>
+    <p id="opponentText"></p>
+    <p id="matchTimeText"></p>
+    <div id="matchesContainer" style="margin-top: 10px;"></div>
+  </div>
+</div>
 
-  <div class="card">
-    <div class="pane on" id="pane0">
-      <div class="ig">
-        <label data-uz="Telefon raqami (Login)" data-ru="Номер телефона (Логин)" data-az="Telefon nömrəsi (Giriş)">Telefon raqami (Login)</label>
-        <input type="tel" id="loginUser" class="inp" placeholder="998901234567" autocomplete="username">
+<div id="statsScreen" class="screen">
+  <h2 style="margin-bottom: 20px;" data-i="statsTitle">Statistika</h2>
+  <div id="kidChips" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px;"></div>
+  <div id="kidCard" class="glass" style="padding: 20px;">
+    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+      <img id="kidPhoto" src="" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 15px;" onerror="this.src='https://ui-avatars.com/api/?name=K&background=3d7bff&color=fff'">
+      <div>
+        <h3 id="kidName"></h3>
+        <p id="kidNumber"></p>
+        <div id="badges" style="margin-top: 5px;"></div>
       </div>
-      <div class="ig">
-        <label data-uz="Parol" data-ru="Пароль" data-az="Şifrə">Parol</label>
-        <input type="password" id="loginPass" class="inp" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ В СИСТЕМУ" data-az="SİSTEMƏ GİRİŞ">TIZIMGA KIRISH</button>
     </div>
-
-    <div class="pane" id="pane1">
-      <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя" data-az="Valideynin adı">Ota-onaning ismi</label><input id="appParentName" class="inp" placeholder="Alisher Valiyev"></div>
-      <div class="ig"><label data-uz="Farzand ismi" data-ru="Имя ребенка" data-az="Uşağın adı">Farzand ismi</label><input id="appChildName" class="inp" placeholder="Ali, Vali"></div>
-      <div class="ig"><label data-uz="Telefon raqamingiz" data-ru="Ваш номер телефона" data-az="Telefon nömrəniz">Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
-      <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка" data-az="Uşağın yaşı">Farzandning yoshi</label><input type="number" id="appAge" class="inp" placeholder="10"></div>
-      <div class="ig">
-        <label data-uz="Parol o'ylab toping" data-ru="Придумайте пароль" data-az="Şifrə təyin edin">Parol o'ylab toping</label>
-        <input type="text" id="appPass" class="inp" placeholder="Masalan: Ali077%%">
-        <small class="note" style="color:var(--gold-light)" data-uz="Katta harf va maxsus belgi (% _ . ! @ # $) qatnashishi shart!" data-ru="Должна быть заглавная буква и спецсимвол (% _ . ! @ # $)!" data-az="Böyük hərf və xüsusi simvol (% _ . ! @ # $) olmalıdır!">Katta harf va maxsus belgi qatnashishi shart!</small>
-      </div>
-      <button class="btn" id="btnApp" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ ЗАЯВКУ" data-az="MÜRACİƏTİ GÖNDƏR">ARIZA YUBORISH</button>
+    <div id="progressBars"></div>
+    <div style="margin-top: 20px;">
+      <h4 data-i="ratingTitle">Akademiya reytingi (Top 5)</h4>
+      <div id="topRating"></div>
     </div>
   </div>
 </div>
 
-<!-- 2. BOSH SAHIFA (HOME) -->
-<div class="screen" id="homeScreen">
-  <div class="header">
-    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div>
-    <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div>
+<div id="fieldScreen" class="screen">
+  <h2 style="margin-bottom: 20px;" data-i="fieldTitle">Maydon</h2>
+  <div style="position: relative; width: 100%; height: 300px; background: #2ee6a6; border-radius: 10px; overflow: hidden; margin-bottom: 20px;">
+    <!-- Field lines -->
+    <div style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: white; opacity: 0.5;"></div>
+    <div style="position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); opacity: 0.5;"></div>
+    <div style="position: absolute; top: 0; left: 50%; width: 2px; height: 100%; background: white; opacity: 0.5; transform: translateX(-50%);"></div>
+    <!-- Player positions -->
+    <div id="gkPos" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); text-align: center;"></div>
+    <div id="df1Pos" style="position: absolute; top: 30%; left: 20%; text-align: center;"></div>
+    <div id="df2Pos" style="position: absolute; top: 30%; right: 20%; text-align: center;"></div>
+    <div id="mf1Pos" style="position: absolute; top: 50%; left: 30%; text-align: center;"></div>
+    <div id="mf2Pos" style="position: absolute; top: 50%; right: 30%; text-align: center;"></div>
+    <div id="fwPos" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center;"></div>
   </div>
-
-  <div class="card" style="text-align:center; border: 1.5px solid var(--gold); background: radial-gradient(circle at top, rgba(212,175,55,0.15) 0%, rgba(13,24,46,0.85) 75%);">
-    <div style="font-size: 42px; margin-bottom: 4px;">🐎</div>
-    <h2 style="font-size: 19px; color: var(--gold-light); margin-bottom: 4px;">QARABAĞ FK AKADEMIYASI</h2>
-    <div class="badge bw" style="margin-bottom: 12px;" data-uz="SHIOR: BIRLIK. JASORAT. G'ALABA!" data-ru="ДЕВИЗ: ЕДИНСТВО. МУЖЕСТВО. ПОБЕДА!" data-az="ŞÜAR: BİRLİK. CƏSARƏT. QƏLƏBƏ!">SHIOR: BIRLIK. JASORAT. G'ALABA!</div>
-    <p class="note" style="color: #cbd5e1; font-size: 12.5px;" data-uz="Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish, rivojlantirish va kuchli jamoa shakllantirish." data-ru="Дух азербайджанского футбола, символ мужества и победы! Наша цель — выявлять, развивать молодые таланты и формировать сильную команду." data-az="Azərbaycan futbolunun ruhu cəsarət və qələbə rəmzi! Məqsədimiz gənc istedadları üzə çıxarmaq, inkişaf etdirmək və güclü komanda formalaşdırmaqdır.">
-      Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish, rivojlantirish va kuchli jamoa shakllantirish.
-    </p>
-  </div>
-
-  <h3 style="margin: 16px 0 10px; font-size: 14px;" data-uz="Farzandlarim" data-ru="Мои дети" data-az="Övladlarım">Farzandlarim</h3>
-  <div id="homeKidsList"></div>
-
-  <div class="card" style="text-align:center; margin-top: 15px;">
-    <h3 style="font-size: 13.5px; margin-bottom: 6px;" data-uz="Murabbiy bilan aloqa" data-ru="Связь с тренером" data-az="Məşqçi ilə əlaqə">Murabbiy bilan aloqa</h3>
-    <p class="note" id="homeCoachTxt" style="margin-bottom: 12px;"></p>
-    <a id="coachContactBtn" href="tel:+998992677747" class="btn bok">📞 <span data-uz="Qo'ng'iroq qilish" data-ru="Позвонить" data-az="Zəng et">Qo'ng'iroq qilish</span></a>
-  </div>
+  <div id="lineupStatus" class="glass" style="padding: 15px; text-align: center;"></div>
 </div>
 
-<!-- 3. TURNIRLAR -->
-<div class="screen" id="tourScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div></div>
-  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</h2>
-  <div class="card" style="border-left: 4px solid var(--gold);">
-    <small style="color:var(--gold); font: 700 10px 'Unbounded';" data-uz="NAVBATDAGI O'YIN" data-ru="СЛЕДУЮЩИЙ МАТЧ" data-az="NÖVBƏTİ OYUN">NAVBATDAGI O'YIN</small>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0;">
-      <b style="font-size: 16px;">Qarabağ FK</b>
-      <span class="badge bw">VS</span>
-      <b style="font-size: 16px;" id="tourOpponent">Raqib kutilmoqda</b>
-    </div>
-    <div style="font-size: 12.5px; color: var(--text-muted);">⏰ <span data-uz="Vaqti:" data-ru="Время:" data-az="Vaxt:">Vaqti:</span> <b id="tourMatchTime" style="color:var(--text)">—</b></div>
-  </div>
-  <div class="card">
-    <h3 style="margin-bottom: 8px; font-size: 13.5px;" data-uz="E'lonlar" data-ru="Объявления" data-az="Elanlar">E'lonlar</h3>
-    <p id="tourAnnText" class="note" style="color:var(--text); white-space: pre-line;"></p>
-  </div>
+<div id="walletScreen" class="screen">
+  <h2 style="margin-bottom: 20px;" data-i="walletTitle">Hamyon</h2>
+  <div id="walletCards"></div>
 </div>
 
-<!-- 4. STATISTIKA -->
-<div class="screen" id="statScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div></div>
-  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="Statistika" data-ru="Статистика" data-az="Statistika">Statistika</h2>
-  <div id="statKidsList"></div>
+<div id="profileScreen" class="screen">
+  <h2 style="margin-bottom: 20px;" data-i="profileTitle">Profil</h2>
+  <div class="glass" style="padding: 20px; margin-bottom: 15px;">
+    <h3 id="parentName"></h3>
+    <p id="parentLogin"></p>
+    <p id="parentPhone"></p>
+    <p id="parentTg"></p>
+    <p id="childrenCount"></p>
+  </div>
+  <div class="glass" style="padding: 20px; margin-bottom: 15px;">
+    <h3 data-i="coachCardTitle">Murabbiy</h3>
+    <p id="coachText"></p>
+    <button class="btn" style="margin-top: 10px;" onclick="window.open('https://t.me/oooMooo7', '_blank')">Telegram orqali bog'lanish</button>
+  </div>
+  <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+    <button class="btn" id="langUz" onclick="setLanguage('uz')">O'zbek</button>
+    <button class="btn" id="langRu" onclick="setLanguage('ru')">Русский</button>
+    <button class="btn" id="langAz" onclick="setLanguage('az')">Azərbaycan</button>
+  </div>
+  <button class="btn" id="themeToggle" onclick="toggleTheme()" style="margin-bottom: 15px;">Mavzuni o'zgartirish</button>
+  <div class="glass" style="padding: 20px; margin-bottom: 15px;">
+    <h3 data-i="contactTitle">Savollaringiz bormi?</h3>
+    <a href="tel:+998992677747" class="btn" style="text-decoration: none; display: inline-block;">+998 99 267 77 47</a>
+  </div>
+  <button class="btn" onclick="logout()" style="width: 100%; background: var(--accent);">Chiqish</button>
 </div>
 
-<!-- 5. MAYDON (PITCH) -->
-<div class="screen" id="pitchScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div></div>
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-    <h2 style="font-size: 17px;" data-uz="Asosiy Tarkib" data-ru="Основной состав" data-az="Əsas Heyət">Asosiy Tarkib</h2>
-    <span class="badge bs">6 O'YINCHI</span>
+<!-- Admin Panel -->
+<div id="adminScreen" class="screen">
+  <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0; margin-bottom: 20px;">
+    <button class="btn" onclick="showAdminTab('applications')" data-tab="applications">Arizalar</button>
+    <button class="btn" onclick="showAdminTab('payments')" data-tab="payments">To'lovlar</button>
+    <button class="btn" onclick="showAdminTab('parents')" data-tab="parents">Ota-onalar</button>
+    <button class="btn" onclick="showAdminTab('players')" data-tab="players">O'quvchilar</button>
+    <button class="btn" onclick="showAdminTab('attendance')" data-tab="attendance">Davomat</button>
+    <button class="btn" onclick="showAdminTab('results')" data-tab="results">Natijalar</button>
+    <button class="btn" onclick="showAdminTab('archive')" data-tab="archive">Arxiv</button>
+    <button class="btn" onclick="showAdminTab('settings')" data-tab="settings">Sozlamalar</button>
   </div>
-  <div class="pitch-container">
-    <div class="pitch-half-line"></div>
-    <div class="pitch-center-circle"></div>
-    <div class="pitch-box-top"></div>
-    <div class="pitch-box-bottom"></div>
-    
-    <div class="pitch-pos" style="top: 16%; left: 50%;">
-      <div class="pos-shirt" id="pos_fwd_num">9</div><div class="pos-role">FWD</div><div class="pos-name" id="pos_fwd_name">—</div>
-    </div>
-    <div class="pitch-pos" style="top: 40%; left: 26%;">
-      <div class="pos-shirt" id="pos_mid1_num">8</div><div class="pos-role">LM</div><div class="pos-name" id="pos_mid1_name">—</div>
-    </div>
-    <div class="pitch-pos" style="top: 40%; left: 74%;">
-      <div class="pos-shirt" id="pos_mid2_num">10</div><div class="pos-role">RM</div><div class="pos-name" id="pos_mid2_name">—</div>
-    </div>
-    <div class="pitch-pos" style="top: 65%; left: 28%;">
-      <div class="pos-shirt" id="pos_def1_num">3</div><div class="pos-role">LB</div><div class="pos-name" id="pos_def1_name">—</div>
-    </div>
-    <div class="pitch-pos" style="top: 65%; left: 72%;">
-      <div class="pos-shirt" id="pos_def2_num">4</div><div class="pos-role">RB</div><div class="pos-name" id="pos_def2_name">—</div>
-    </div>
-    <div class="pitch-pos" style="top: 86%; left: 50%;">
-      <div class="pos-shirt" style="background: linear-gradient(135deg, #10b981, #047857);" id="pos_gk_num">1</div><div class="pos-role">GK</div><div class="pos-name" id="pos_gk_name">—</div>
-    </div>
-  </div>
+  <div id="adminContent"></div>
 </div>
 
-<!-- 6. HAMYON (WALLET) -->
-<div class="screen" id="walletScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div></div>
-  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="Hamyon" data-ru="Кошелек" data-az="Pulqabı">Hamyon</h2>
-  <div class="card" style="border: 1px solid var(--gold);">
-    <small style="color:var(--gold); font: 700 10px 'Unbounded';" data-uz="OYLIK TO'LOV" data-ru="ЕЖЕМЕСЯЧНАЯ ОПЛАТА" data-az="AYLIQ ÖDƏNİŞ">OYLIK TO'LOV</small>
-    <div style="font-size: 24px; font-weight: 800; font-family: 'Unbounded'; margin: 6px 0;" id="walletMonthlyAmt">350 000 UZS</div>
-  </div>
-  <div id="walletKidsList"></div>
+<!-- Modals -->
+<div id="modalOverlay" class="overlay"></div>
+<div id="modalContainer" class="modal">
+  <div id="modalContent"></div>
 </div>
 
-<!-- 7. PROFIL -->
-<div class="screen" id="profileScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button></div></div>
-  <h2 style="font-size: 18px; margin-bottom: 14px;" data-uz="Profil" data-ru="Профиль" data-az="Profil">Profil</h2>
-  <div class="card" style="text-align:center;">
-    <div style="width: 70px; height: 70px; border-radius: 50%; background: var(--input-bg); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 12px;">👤</div>
-    <h2 id="profParentName" style="font-size: 18px; margin-bottom: 4px;">—</h2>
-    <p class="note" id="profParentPhone" style="font-weight: 700; color: var(--gold);"></p>
-    <p class="note" id="profParentTg" style="margin-top: 4px;"></p>
-  </div>
-  <button class="btn bd" style="margin-top: 14px;" onclick="logout()" data-uz="CHIQISH" data-ru="ВЫЙТИ" data-az="ÇIXIŞ">CHIQISH</button>
-</div>
+<!-- Toast -->
+<div id="toast" class="error-toast"></div>
 
-<!-- 8. ADMIN PANEL -->
-<div class="screen" id="adminScreen">
-  <div class="header">
-    <div class="brand-box"><div class="brand-logo">🐎</div><div class="brand">ADMIN</div></div>
-    <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">UZ</button><button class="btn bo sm" onclick="logout()">Chiqish</button></div>
-  </div>
-
-  <div class="tabs">
-    <div class="tab active" onclick="adminTab('apps', this)">ARIZALAR <span id="ad_badge_apps" class="badge bx sm hidden" style="margin-left:4px">0</span></div>
-    <div class="tab" onclick="adminTab('orders', this)">TO'LOVLAR <span id="ad_badge_orders" class="badge bx sm hidden" style="margin-left:4px">0</span></div>
-    <div class="tab" onclick="adminTab('parents', this)">OTA-ONALAR</div>
-    <div class="tab" onclick="adminTab('students', this)">O'QUVCHILAR</div>
-    <div class="tab" onclick="adminTab('attend', this)">DAVOMAT</div>
-    <div class="tab" onclick="adminTab('archive', this)">ARXIV</div>
-    <div class="tab" onclick="adminTab('settings', this)">SOZLAMALAR</div>
-  </div>
-
-  <div class="card atab" id="at_apps"></div>
-  <div class="card atab hidden" id="at_orders"></div>
-  <div class="card atab hidden" id="at_parents"></div>
-  <div class="card atab hidden" id="at_students"></div>
-  
-  <div class="card atab hidden" id="at_attend">
-    <h3 style="font-size: 14px; margin-bottom: 6px;">Bugungi davomat</h3>
-    <div id="attendBox"></div>
-    <div style="display:flex; gap: 8px; margin-top: 10px;">
-      <button class="btn bo sm" style="flex:1;" onclick="checkAllAttend()">Hammasini belgilash</button>
-      <button class="btn bok sm" style="flex:1;" onclick="saveAttendance()">SAQLASH</button>
-    </div>
-  </div>
-
-  <div class="card atab hidden" id="at_archive">
-    <h3 style="font-size: 14px; color: var(--coral); margin-bottom: 10px;">Arxiv</h3>
-    <div id="archiveBox"></div>
-  </div>
-
-  <div class="card atab hidden" id="at_settings">
-    <h3 style="font-size: 14px; margin-bottom: 12px; color: var(--gold-light);">Maydon Taktik Tarkibi</h3>
-    <div class="ig"><label>1. Darvozabon (GK)</label><select id="sel_gk" class="inp"></select></div>
-    <div class="ig"><label>2. Chap Himoyachi (LB)</label><select id="sel_def1" class="inp"></select></div>
-    <div class="ig"><label>3. O'ng Himoyachi (RB)</label><select id="sel_def2" class="inp"></select></div>
-    <div class="ig"><label>4. Chap Yarim Himoya (LM)</label><select id="sel_mid1" class="inp"></select></div>
-    <div class="ig"><label>5. O'ng Yarim Himoya (RM)</label><select id="sel_mid2" class="inp"></select></div>
-    <div class="ig"><label>6. Hujumchi (FWD)</label><select id="sel_fwd" class="inp"></select></div>
-
-    <h3 style="font-size: 14px; margin: 16px 0 10px; color: var(--gold-light);">O'yin Ma'lumotlari</h3>
-    <div class="ig"><label>Raqib Jamoa</label><input id="setOpponent" class="inp"></div>
-    <div class="ig"><label>O'yin Vaqti</label><input id="setMatchTime" class="inp"></div>
-    <div class="ig"><label>E'lon</label><textarea id="setAnn" class="inp" rows="2"></textarea></div>
-    <div class="ig"><label>Murabbiy telefoni</label><input id="setCoach" class="inp"></div>
-    <div class="ig"><label>Karta Raqami</label><input id="setCard" class="inp"></div>
-    <div class="ig"><label>Oylik To'lov (UZS)</label><input id="setAmount" class="inp"></div>
-
-    <button class="btn" onclick="saveAdminSettings()">SAQLASH</button>
-  </div>
-</div>
-
-<!-- PASTKI MENYU (Boshida yashirin holatda turadi: hidden) -->
-<nav class="bn" id="bottomNav" hidden>
-  <button class="bn-i on" data-target="homeScreen" onclick="navTo('homeScreen')"><span class="ic">🏠</span><span data-uz="Asosiy" data-ru="Главная" data-az="Əsas">Asosiy</span></button>
-  <button class="bn-i" data-target="tourScreen" onclick="navTo('tourScreen')"><span class="ic">🏆</span><span data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</span></button>
-  <button class="bn-i" data-target="statScreen" onclick="navTo('statScreen')"><span class="ic">📊</span><span data-uz="Statistika" data-ru="Статы" data-az="Statistika">Statistika</span></button>
-  <button class="bn-i" data-target="pitchScreen" onclick="navTo('pitchScreen')"><span class="ic">⚽</span><span data-uz="Maydon" data-ru="Поле" data-az="Meydan">Maydon</span></button>
-  <button class="bn-i" data-target="walletScreen" onclick="navTo('walletScreen')"><span class="ic">💳</span><span data-uz="Hamyon" data-ru="Кошелек" data-az="Pulqabı">Hamyon</span></button>
-  <button class="bn-i" data-target="profileScreen" onclick="navTo('profileScreen')"><span class="ic">👤</span><span data-uz="Profil" data-ru="Профиль" data-az="Profil">Profil</span></button>
-</nav>
-
-<!-- MODALLAR -->
-<div class="ov" id="overlay" onclick="closeAllModals()"></div>
-
-<div class="modal" id="payModal">
-  <div style="text-align:center;">
-    <h3 style="font-size: 16px; margin-bottom: 4px;" data-uz="TO'LOV QILISH" data-ru="ОПЛАТА" data-az="ÖDƏNİŞ">TO'LOV QILISH</h3>
-    <div style="background: rgba(255,77,109,0.12); border:1px solid var(--coral); color:var(--coral); padding:8px; border-radius:10px; font-size:11.5px; font-weight:700; margin:10px 0;">
-      <span data-uz="Diqqat! Summani aynan o'zgartirmasdan to'lang!" data-ru="Внимание! Оплатите точную сумму!" data-az="Diqqət! Məbləği dəqiq ödəyin!">Diqqat! Summani aynan o'zgartirmasdan to'lang!</span>
-    </div>
-    <div class="card" style="text-align:left; margin: 10px 0;">
-      <small style="color:var(--text-muted); font: 700 9px 'Unbounded';">TO'LOV SUMMASI</small>
-      <div id="modalOrderAmount" style="font-size: 22px; font-family: monospace; font-weight:900; margin: 4px 0 8px; color: var(--ok);">...</div>
-      <button class="btn sm bo" style="width:100%" onclick="copyText('modalOrderAmount')">📋 Nusxa olish</button>
-    </div>
-    <div class="card" style="text-align:left; margin: 10px 0;">
-      <small style="color:var(--text-muted); font: 700 9px 'Unbounded';">KARTA RAQAMI</small>
-      <div id="modalOrderCard" style="font-size: 17px; font-family: monospace; font-weight:800; margin: 4px 0 8px; color: var(--gold-light);">...</div>
-      <button class="btn sm bo" style="width:100%" onclick="copyText('modalOrderCard')">📋 Nusxa olish</button>
-    </div>
-    <p class="note">⏰ Qolgan vaqt: <b id="modalOrderTimer" style="color:#fff;">10:00</b></p>
-    <button class="btn bok" style="margin-top: 10px;" onclick="sendReceiptBot()">🧾 CHEKNI BOTGA YUBORISH</button>
-    <button class="btn bo" style="margin-top: 8px;" onclick="closeAllModals()">YOPISH</button>
-  </div>
-</div>
-
-<div class="modal" id="playerEditModal">
-  <h3 style="font-size: 15px; margin-bottom: 12px;" id="plModalTitle">Tahrirlash</h3>
-  <input type="hidden" id="plEditId">
-  <div class="ig"><label>Ism</label><input id="plEditName" class="inp"></div>
-  <div class="ig"><label>Futbolka Raqami (1-99)</label><input type="number" id="plEditNumber" class="inp" min="1" max="99"></div>
-  <div class="ig"><label>Rasm URL</label><input id="plEditPhoto" class="inp" placeholder="https://..."></div>
-  <div class="ig"><label>Guruh</label><input id="plEditGroup" class="inp"></div>
-  <div class="ig"><label>Bio (Izoh)</label><textarea id="plEditBio" class="inp" rows="2"></textarea></div>
-  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-    <div class="ig"><label>Gollar</label><input type="number" id="plEditGoals" class="inp"></div>
-    <div class="ig"><label>Asistlar</label><input type="number" id="plEditAssists" class="inp"></div>
-  </div>
-  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-    <div class="ig"><label>Tezlik %</label><input type="number" id="plEditSpeed" class="inp"></div>
-    <div class="ig"><label>O'zlashtirish %</label><input type="number" id="plEditProgress" class="inp"></div>
-  </div>
-  <div class="ig"><label>Mashg'ulotlar soni</label><input type="number" id="plEditTrainings" class="inp"></div>
-  <div class="ig">
-    <label>To'lov Holati</label>
-    <select id="plEditPaid" class="inp">
-      <option value="unpaid">To'lanmagan ❌</option>
-      <option value="pending">Kutilmoqda ⏳</option>
-      <option value="paid">To'langan ✅</option>
-    </select>
-  </div>
-  <button class="btn" onclick="savePlayerAdmin()">SAQLASH</button>
-  <button class="btn bo" style="margin-top: 8px;" onclick="closeAllModals()">BEKOR QILISH</button>
-</div>
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+// Firebase config
+const firebaseConfig = {
+  databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  const firebaseConfig = { databaseURL: "https://idum-futbol-default-rtdb.firebaseio.com/" };
-  let db = null;
-  try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch (err) {}
+// Translation dictionary
+const TX = {
+  loginTitle: {
+    uz: "🇺🇿 QARABAĞ FK",
+    ru: "🇦🇿 QARABAĞ FK",
+    az: "🇦🇿 QARABAĞ FK"
+  },
+  loginSubtitle: {
+    uz: "81-maktab futbol to'garagi",
+    ru: "Футбольный клуб 81 школы",
+    az: "81 məktəb futbol klubu"
+  },
+  homeTitle: {
+    uz: "🇺🇿 QARABAĞ FK",
+    ru: "🇦🇿 QARABAĞ FK",
+    az: "🇦🇿 QARABAĞ FK"
+  },
+  homeSubtitle: {
+    uz: "Ozarbayjon futbolining ruhi — jasorat va g‘alaba ramzi! Maqsadimiz yosh iste’dodlarni kashf etish, rivojlantirish va kuchli jamoa shakllantirish. Birlik, intizom va g‘alaba sari! 🏆\n\nBirlik. Jasorat. G‘alaba!",
+    ru: "Дух азербайджанского футбола — символ смелости и победы! Наша цель — открывать молодые таланты, развивать их и создавать сильную команду. Единство, дисциплина и путь к победе! 🏆\n\nЕдинство. Смелость. Победа!",
+    az: "Azərbaycan futbolunun ruhu cəsarət və qələbə rəmzi! Məqsədimiz gənc istedadları üzə cxarmaq, inkişaf etdirmək və güclü komanda formalaşdırmaqdır. Birlik, intizam və qələbəyə doğru! 🏆\n\nBirlik. Cəsarət. Qələbə!"
+  },
+  // ... (barcha kalitlar uchun tarjima qo'shish kerak)
+};
 
-  const tg = window.Telegram?.WebApp;
-  if (tg) { tg.ready(); tg.expand(); }
+// State
+let CURRENT_LANG = localStorage.getItem('lang') || 'uz';
+let IS_DARK = localStorage.getItem('dark') !== 'false';
+let PAR = null; // parent object
+let KID = null; // selected kid ID
+let KIDS = {}; // kids data
+let PL = {}; // all players
+let PR = {}; // all parents
+let OR = {}; // orders
+let APPS = {}; // applications
+let S = {}; // settings
+let ADMIN_ON = false;
+let CK = {}; // attendance checks
+let subs = []; // Firebase listeners
 
-  let currentLang = 'uz';
-  let currentUser = null;
-  let ALL_PLAYERS = {}, ALL_PARENTS = {}, ALL_APPLICATIONS = {}, ALL_ORDERS = {};
-  let SETTINGS = {
-    card: "8600 0000 0000 0000", amount: "350 000", opponent: "Neftchi FK", matchTime: "Shanba 16:00",
-    announcement: "", coachPhone: "+998 99 267 77 47", lineup: { gk: "", def1: "", def2: "", mid1: "", mid2: "", fwd: "" }
+// Utility functions
+function $(id) { return document.getElementById(id); }
+function setText(id, text) { const el = $(id); if (el) el.textContent = text; }
+function setHTML(id, html) { const el = $(id); if (el) el.innerHTML = html; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function digits(s) { return String(s).replace(/\D/g, ''); }
+function fmt(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+function today() { const d = new Date(); return `${d.getDate().toString().padStart(2,'0')}.${(d.getMonth()+1).toString().padStart(2,'0')}.${d.getFullYear()}`; }
+function ym() { const d = new Date(); return `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}`; }
+function genId() { return 'c' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36); }
+function t(key, vars = {}) {
+  let text = TX[key]?.[CURRENT_LANG] || key;
+  for (const [k, v] of Object.entries(vars)) {
+    text = text.replace(new RegExp(`{${k}}`, 'g'), v);
+  }
+  return text;
+}
+
+// Initialize app
+function init() {
+  applyTheme();
+  loadSettings();
+  setupFirebaseListeners();
+  showScreen('loginScreen');
+  updateTranslations();
+}
+
+// Screen navigation
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  if (id !== 'loginScreen') {
+    document.querySelector('.nav').style.display = 'flex';
+  } else {
+    document.querySelector('.nav').style.display = 'none';
+  }
+}
+
+// Theme toggle
+function toggleTheme() {
+  IS_DARK = !IS_DARK;
+  localStorage.setItem('dark', IS_DARK);
+  applyTheme();
+}
+function applyTheme() {
+  if (IS_DARK) {
+    document.body.classList.remove('light');
+  } else {
+    document.body.classList.add('light');
+  }
+}
+
+// Language
+function setLanguage(lang) {
+  CURRENT_LANG = lang;
+  localStorage.setItem('lang', lang);
+  updateTranslations();
+}
+function updateTranslations() {
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const key = el.getAttribute('data-i');
+    if (TX[key]) {
+      el.textContent = t(key);
+    }
+  });
+}
+
+// Firebase listeners
+function setupFirebaseListeners() {
+  // Settings listener
+  subs.push(db.ref('settings').on('value', snap => {
+    S = snap.val() || {};
+    updateSettingsUI();
+  }));
+
+  // Parent listener (if logged in)
+  if (PAR) {
+    subs.push(db.ref(`parents/${PAR.login}`).on('value', snap => {
+      PAR = snap.val();
+      if (PAR) {
+        loadKids();
+      }
+    }));
+  }
+
+  // Kids listener
+  if (PAR && PAR.children) {
+    Object.keys(PAR.children).forEach(kidId => {
+      subs.push(db.ref(`players/${kidId}`).on('value', snap => {
+        KIDS[kidId] = snap.val();
+        updateKidsUI();
+      }));
+    });
+  }
+
+  // Players listener (for admin/field)
+  if (ADMIN_ON) {
+    subs.push(db.ref('players').on('value', snap => {
+      PL = snap.val() || {};
+      updatePlayersUI();
+    }));
+  }
+
+  // Orders listener
+  subs.push(db.ref('orders').on('value', snap => {
+    OR = snap.val() || {};
+    updateOrdersUI();
+  }));
+
+  // Applications listener (admin)
+  if (ADMIN_ON) {
+    subs.push(db.ref('applications').on('value', snap => {
+      APPS = snap.val() || {};
+      updateApplicationsUI();
+    }));
+  }
+}
+
+function cleanupFirebase() {
+  subs.forEach(sub => sub.off());
+  subs = [];
+}
+
+// Login functions
+function setLoginMode(mode) {
+  const loginForm = $('loginForm');
+  const applyForm = $('applyForm');
+  const loginModeBtn = $('loginMode');
+  const appModeBtn = $('appMode');
+  
+  if (mode === 'login') {
+    loginForm.style.display = 'block';
+    applyForm.style.display = 'none';
+    loginModeBtn.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+    appModeBtn.style.background = 'transparent';
+  } else {
+    loginForm.style.display = 'none';
+    applyForm.style.display = 'block';
+    loginModeBtn.style.background = 'transparent';
+    appModeBtn.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+  }
+}
+
+async function login() {
+  const login = digits($('loginInput').value);
+  const password = $('passwordInput').value;
+
+  if (!login || !password) {
+    showError('Login va parol bo\'sh bo\'lishi mumkin emas');
+    return;
+  }
+
+  // Admin check
+  if (login === 'Arif' && password === '0717') {
+    ADMIN_ON = true;
+    cleanupFirebase();
+    setupFirebaseListeners();
+    showScreen('adminScreen');
+    showAdminTab('applications');
+    return;
+  }
+
+  try {
+    const snap = await db.ref(`parents/${login}`).once('value');
+    if (!snap.exists()) {
+      showError('Bunday login yo\'q');
+      return;
+    }
+
+    const parent = snap.val();
+    if (parent.password !== password) {
+      showError('Parol xato');
+      return;
+    }
+
+    PAR = parent;
+    PAR.login = login;
+    cleanupFirebase();
+    setupFirebaseListeners();
+    showScreen('homeScreen');
+    loadKids();
+  } catch (error) {
+    showError('Xato: ' + error.message);
+  }
+}
+
+async function submitApplication() {
+  const parentName = $('parentNameInput').value.trim();
+  const childName = $('childNameInput').value.trim();
+  const phone = digits($('phoneInput').value);
+  const password = $('applyPasswordInput').value;
+  const age = parseInt($('childAgeInput').value);
+
+  if (!parentName || !childName || !phone || !password || !age) {
+    showError('Barcha maydonlar to\'ldirilishi shart');
+    return;
+  }
+
+  if (phone.length < 9 || phone.length > 20) {
+    showError('Telefon raqami 9-20 belgi bo\'lishi kerak');
+    return;
+  }
+
+  if (password.length < 4) {
+    showError('Parol kamida 4 belgi bo\'lishi kerak');
+    return;
+  }
+
+  // Check password strength
+  const strongPassword = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{4,}$/.test(password);
+  if (!strongPassword) {
+    showError('Parol katta lotin harf va maxsus belgi ichishi kerak');
+    return;
+  }
+
+  try {
+    const appRef = db.ref('applications').push();
+    const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user?.username || '';
+    
+    await appRef.set({
+      type: 'parent',
+      parentName,
+      childName,
+      phone,
+      age,
+      password,
+      tgUser,
+      date: new Date().toISOString()
+    });
+
+    alert('Ariza muvaffaqiyatli yuborildi! Admin tez orada bog\'lanadi.');
+    
+    // Clear form
+    $('parentNameInput').value = '';
+    $('childNameInput').value = '';
+    $('phoneInput').value = '';
+    $('applyPasswordInput').value = '';
+    $('childAgeInput').value = '';
+  } catch (error) {
+    showError('Ariza yuborishda xato: ' + error.message);
+  }
+}
+
+// Kids loading
+function loadKids() {
+  if (!PAR || !PAR.children) return;
+  
+  Object.keys(PAR.children).forEach(kidId => {
+    if (!KIDS[kidId]) {
+      db.ref(`players/${kidId}`).once('value').then(snap => {
+        KIDS[kidId] = snap.val();
+        updateKidsUI();
+      });
+    }
+  });
+}
+
+function updateKidsUI() {
+  // Update kids-related UI elements
+  if (KID && KIDS[KID]) {
+    updateKidCard();
+  }
+  updateKidChips();
+}
+
+function updateKidChips() {
+  const container = $('kidChips');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  Object.keys(KIDS).forEach(kidId => {
+    const kid = KIDS[kidId];
+    if (kid.isArchived) return;
+    
+    const chip = document.createElement('div');
+    chip.className = `glass ${kidId === KID ? 'active' : ''}`;
+    chip.style.padding = '8px 16px';
+    chip.style.borderRadius = '20px';
+    chip.style.cursor = 'pointer';
+    chip.textContent = kid.name;
+    chip.onclick = () => selectKid(kidId);
+    container.appendChild(chip);
+  });
+}
+
+function selectKid(kidId) {
+  KID = kidId;
+  updateKidsUI();
+  loadKidData();
+}
+
+function loadKidData() {
+  if (!KID || !KIDS[KID]) return;
+  
+  const kid = KIDS[KID];
+  updateKidCard();
+  loadFieldLineup();
+  loadWalletData();
+}
+
+function updateKidCard() {
+  if (!KID || !KIDS[KID]) return;
+  
+  const kid = KIDS[KID];
+  $('kidName').textContent = kid.name;
+  $('kidNumber').textContent = `Raqam: ${kid.number || 'N/A'}`;
+  $('kidPhoto').src = kid.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(kid.name)}&background=3d7bff&color=fff`;
+  
+  // Badges
+  const badgesContainer = $('badges');
+  badgesContainer.innerHTML = '';
+  
+  if (kid.isStar) {
+    const star = document.createElement('span');
+    star.textContent = '⭐';
+    star.style.marginRight = '5px';
+    badgesContainer.appendChild(star);
+  }
+  if (kid.goals >= 10) {
+    const gold = document.createElement('span');
+    gold.textContent = '🥇';
+    gold.style.marginRight = '5px';
+    badgesContainer.appendChild(gold);
+  }
+  if (kid.speed >= 80) {
+    const bolt = document.createElement('span');
+    bolt.textContent = '⚡';
+    bolt.style.marginRight = '5px';
+    badgesContainer.appendChild(bolt);
+  }
+  if (kid.progress >= 80) {
+    const brain = document.createElement('span');
+    brain.textContent = '🧠';
+    brain.style.marginRight = '5px';
+    badgesContainer.appendChild(brain);
+  }
+  
+  // Progress bars
+  const progressContainer = $('progressBars');
+  progressContainer.innerHTML = '';
+  
+  const metrics = [
+    { label: 'O\'zlashtirish', value: kid.progress || 0, max: 100 },
+    { label: 'Gollar', value: kid.goals || 0, max: 20 },
+    { label: 'Asistlar', value: kid.assists || 0, max: 20 },
+    { label: 'Tezlik', value: kid.speed || 0, max: 100 },
+    { label: 'Mashg\'ulotlar', value: kid.trainings || 0, max: 30 }
+  ];
+  
+  metrics.forEach(metric => {
+    const container = document.createElement('div');
+    container.style.marginBottom = '10px';
+    
+    const label = document.createElement('div');
+    label.style.display = 'flex';
+    label.style.justifyContent = 'space-between';
+    label.style.marginBottom = '5px';
+    label.innerHTML = `<span>${metric.label}</span><span>${metric.value}/${metric.max}</span>`;
+    
+    const bar = document.createElement('div');
+    bar.style.height = '8px';
+    bar.style.background = 'rgba(255,255,255,0.1)';
+    bar.style.borderRadius = '4px';
+    bar.style.overflow = 'hidden';
+    
+    const fill = document.createElement('div');
+    fill.style.height = '100%';
+    fill.style.width = `${(metric.value / metric.max) * 100}%`;
+    fill.style.background = metric.value / metric.max > 0.5 ? 'var(--green)' : 'var(--accent)';
+    fill.style.transition = 'width 0.3s';
+    
+    bar.appendChild(fill);
+    container.appendChild(label);
+    container.appendChild(bar);
+    progressContainer.appendChild(container);
+  });
+  
+  // Top rating
+  loadTopRating();
+}
+
+async function loadTopRating() {
+  try {
+    const snap = await db.ref('players').once('value');
+    const players = snap.val() || {};
+    
+    const ranked = Object.values(players)
+      .filter(p => !p.isArchived)
+      .map(p => ({
+        name: p.name,
+        score: (p.goals || 0) * 3 + (p.assists || 0) * 2 + (p.progress || 0)
+      }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+    
+    const container = $('topRating');
+    container.innerHTML = '';
+    
+    ranked.forEach((player, index) => {
+      const item = document.createElement('div');
+      item.style.display = 'flex';
+      item.style.justifyContent = 'space-between';
+      item.style.padding = '5px 0';
+      item.style.borderBottom = '1px solid var(--glass-border)';
+      item.innerHTML = `<span>${index + 1}. ${player.name}</span><span>${player.score} ball</span>`;
+      container.appendChild(item);
+    });
+  } catch (error) {
+    console.error('Error loading top rating:', error);
+  }
+}
+
+// Field lineup
+function loadFieldLineup() {
+  if (!S.lineup) {
+    $('lineupStatus').textContent = 'Asosiy tarkib hali belgilanmagan';
+    return;
+  }
+  
+  const lineup = S.lineup;
+  const positions = {
+    gk: 'gkPos',
+    df1: 'df1Pos',
+    df2: 'df2Pos',
+    mf1: 'mf1Pos',
+    mf2: 'mf2Pos',
+    fw: 'fwPos'
   };
   
-  let attendCheckSet = new Set();
-  let orderTimerInterval = null;
-  let activeOrder = null;
-
-  const DICT = {
-    uz: { appSuccess: "Arizangiz qabul qilindi!", emptyFields: "Hamma maydonlarni to'ldiring!", passError: "Parol Katta harf va maxsus belgi (% _ . ! @ # $) bilan boshlanishi shart!", userNotFound: "Bunday telefon raqamli ota-ona topilmadi!", passWrong: "Parol noto'g'ri!", paid: "To'langan ✅", pending: "Kutilmoqda ⏳", unpaid: "To'lanmagan ❌", copied: "Nusxa olindi: " },
-    ru: { appSuccess: "Заявка принята!", emptyFields: "Заполните все поля!", passError: "Пароль должен начинаться с заглавной буквы и содержать спецсимвол (% _ . ! @ # $)!", userNotFound: "Родитель не найден!", passWrong: "Неверный пароль!", paid: "Оплачено ✅", pending: "В ожидании ⏳", unpaid: "Не оплачено ❌", copied: "Скопировано: " },
-    az: { appSuccess: "Müraciətiniz qəbul olundu!", emptyFields: "Bütün sahələri doldurun!", passError: "Şifrə Böyük hərflə başlamalı və xüsusi simvol (% _ . ! @ # $) içərməlidir!", userNotFound: "Valideyn tapılmadı!", passWrong: "Şifrə yanlışdır!", paid: "Ödənilib ✅", pending: "Gözlənilir ⏳", unpaid: "Ödənilməyib ❌", copied: "Kopyalandı: " }
-  };
-
-  const $ = id => document.getElementById(id);
-  const cleanDigits = s => String(s || '').replace(/\D/g, '');
-  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
-  // Fon animatsiyasi (Konfetti)
-  function fireConfetti() {
-    const c = $('fx'), x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
-    const colors = ['#d4af37', '#f5d77f', '#2ee6a6', '#ff4d6d', '#ffffff'];
-    const p = Array.from({ length: 90 }, () => ({ x: innerWidth / 2, y: innerHeight * 0.6, vx: (Math.random() - 0.5) * 14, vy: -Math.random() * 15 - 4, s: Math.random() * 6 + 3, c: colors[Math.random() * colors.length | 0], r: Math.random() * 6 }));
-    let f = 0;
-    (function frame() { x.clearRect(0, 0, c.width, c.height); p.forEach(i => { i.vy += 0.4; i.x += i.vx; i.y += i.vy; i.r += 0.2; x.fillStyle = i.c; x.save(); x.translate(i.x, i.y); x.rotate(i.r); x.fillRect(-i.s / 2, -i.s / 2, i.s, i.s); x.restore(); }); if (++f < 90) requestAnimationFrame(frame); else x.clearRect(0, 0, c.width, c.height); })();
-  }
-
-  window.toggleLang = function() {
-    if (currentLang === 'uz') currentLang = 'ru'; else if (currentLang === 'ru') currentLang = 'az'; else currentLang = 'uz';
-    document.querySelectorAll('.lang-btn').forEach(b => b.innerText = currentLang.toUpperCase());
-    document.querySelectorAll('[data-' + currentLang + ']').forEach(el => { el.innerText = el.getAttribute('data-' + currentLang); });
-    if (currentUser) { renderHomeKids(); renderStatKids(); renderWalletKids(); }
-  };
-
-  // Ekranlar orasidagi o'tish va pastki menyuni boshqarish
-  function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    $(screenId).classList.add('active');
-    window.scrollTo(0, 0);
-
-    // Pastki menyu FAQAT o'quvchi profiliga kirilganda ko'rinadi
-    const isAppScreen = ['homeScreen', 'tourScreen', 'statScreen', 'pitchScreen', 'walletScreen', 'profileScreen'].includes(screenId);
+  Object.entries(positions).forEach(([key, posId]) => {
+    const player = PL[lineup[key]];
+    const posEl = $(posId);
     
-    if (isAppScreen && currentUser) {
-      $('bottomNav').removeAttribute('hidden'); // Ko'rsatish
+    if (player) {
+      posEl.innerHTML = `
+        <div style="background: var(--glass); padding: 5px 10px; border-radius: 10px; font-size: 12px;">
+          <div>${player.number || 'N/A'}</div>
+          <div>${player.name.split(' ')[0]}</div>
+        </div>
+      `;
     } else {
-      $('bottomNav').setAttribute('hidden', 'true'); // Yashirish (Admin, Login va h.k.)
+      posEl.innerHTML = `<div style="opacity: 0.5; font-size: 12px;">${key.toUpperCase()}</div>`;
     }
+  });
+  
+  $('lineupStatus').textContent = 'Tarkib yuklandi';
+}
 
-    document.querySelectorAll('.bn-i').forEach(btn => btn.classList.toggle('on', btn.getAttribute('data-target') === screenId));
-  }
-  window.navTo = function(screenId) { showScreen(screenId); };
-
-  function openModal(id) { $('overlay').classList.add('active'); $(id).classList.add('active'); }
-  window.closeAllModals = function() { $('overlay').classList.remove('active'); document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); if (orderTimerInterval) clearInterval(orderTimerInterval); };
-
-  window.setMode = function(idx) { $('modeBtn0').classList.toggle('on', idx === 0); $('modeBtn1').classList.toggle('on', idx === 1); $('pane0').classList.toggle('on', idx === 0); $('pane1').classList.toggle('on', idx === 1); };
-
-  function isValidPassword(p) { return /^[A-Z](?=.*[%_.\!@#$]).+$/.test(p); }
-
-  // ARIZA TOPSHIRISH
-  window.submitApplication = async function() {
-    const parentName = $('appParentName').value.trim(), childName = $('appChildName').value.trim(), phone = cleanDigits($('appPhone').value), age = $('appAge').value.trim(), password = $('appPass').value.trim(), btn = $('btnApp');
-    if (!parentName || !childName || phone.length < 9 || !age || !password) return alert(DICT[currentLang].emptyFields);
-    if (!isValidPassword(password)) return alert(DICT[currentLang].passError);
-
-    const tgUsername = tg?.initDataUnsafe?.user?.username || '';
-    btn.disabled = true; btn.innerText = "...";
-
-    try {
-      await db.ref('applications').push({ parentName, childName, phone, age, password, tgUsername, date: new Date().toLocaleDateString() });
-      fireConfetti(); alert(DICT[currentLang].appSuccess);
-      $('appParentName').value = ''; $('appChildName').value = ''; $('appPhone').value = ''; $('appAge').value = ''; $('appPass').value = '';
-      setMode(0);
-    } catch (e) { alert("Xato: " + e.message); } finally { btn.disabled = false; btn.innerText = currentLang === 'uz' ? "ARIZA YUBORISH" : (currentLang === 'ru' ? "ОТПРАВИТЬ ЗАЯВКУ" : "MÜRACİƏTİ GÖNDƏR"); }
-  };
-
-  // TIZIMGA KIRISH
-  window.login = async function() {
-    const u = $('loginUser').value.trim(), p = $('loginPass').value.trim();
-    if (!u || !p) return alert(DICT[currentLang].emptyFields);
+// Wallet
+function loadWalletData() {
+  const container = $('walletCards');
+  container.innerHTML = '';
+  
+  Object.keys(KIDS).forEach(kidId => {
+    const kid = KIDS[kidId];
+    if (kid.isArchived) return;
     
-    // Admin
-    if (u === "Arif" && p === "0717") { 
-      showScreen('adminScreen'); 
-      return; 
+    const card = document.createElement('div');
+    card.className = 'glass';
+    card.style.padding = '20px';
+    card.style.marginBottom = '15px';
+    
+    const status = kid.paid ? 'To\'langan ✅' : (kid.paid === false ? 'Kutilmoqda ⏳' : 'To\'lanmagan ❌');
+    const statusColor = kid.paid ? 'var(--green)' : (kid.paid === false ? 'var(--gold)' : 'var(--accent)');
+    
+    card.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3>${kid.name}</h3>
+        <span style="background: ${statusColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">${status}</span>
+      </div>
+      <p>Oylik: ${fmt(S.amount || 0)} so'm</p>
+      ${!kid.paid ? `<button class="btn" style="margin-top: 10px; width: 100%;" onclick="openPaymentModal('${kidId}')">To'lov qilish</button>` : ''}
+      <button class="btn" style="margin-top: 10px; width: 100%; background: transparent; border: 1px solid var(--glass-border);" onclick="showPaymentHistory('${kidId}')">Tarix</button>
+    `;
+    
+    container.appendChild(card);
+  });
+}
+
+// Payment modal
+function openPaymentModal(kidId) {
+  const kid = KIDS[kidId];
+  if (!kid) return;
+  
+  const base = parseInt(S.amount) || 0;
+  if (base === 0) {
+    showError('Oylik summa sozlanmagan');
+    return;
+  }
+  
+  // Check for existing pending order
+  const existingOrder = Object.values(OR).find(order => 
+    order.player === kidId && 
+    order.status === 'pending' && 
+    order.exp > Date.now()
+  );
+  
+  let total = base;
+  if (!existingOrder) {
+    total = base + Math.floor(Math.random() * 99) + 1;
+    // Ensure uniqueness
+    while (Object.values(OR).some(order => order.total === total && order.status === 'pending')) {
+      total = base + Math.floor(Math.random() * 99) + 1;
     }
-
-    // Ota-ona
-    const phone = cleanDigits(u);
-    try {
-      const snap = await db.ref('parents/' + phone).once('value');
-      if (!snap.exists()) return alert(DICT[currentLang].userNotFound);
-      const pData = snap.val();
-      if (pData.password !== p) return alert(DICT[currentLang].passWrong);
-      
-      currentUser = { phone, ...pData };
-      renderUserProfile(); 
-      renderHomeKids(); 
-      renderStatKids(); 
-      renderWalletKids();
-      showScreen('homeScreen'); // Bu yerda pastki menyu avtomatik ko'rinadi
-    } catch (e) { alert("Xato: " + e.message); }
-  };
-
-  // CHIQISH
-  window.logout = function() { 
-    currentUser = null; 
-    $('loginUser').value = ''; 
-    $('loginPass').value = ''; 
-    showScreen('loginScreen'); 
-  };
-
-  // FIREBASE TINGLOVCHILARI
-  if (db) {
-    db.ref('settings').on('value', snap => { if (snap.exists()) SETTINGS = { ...SETTINGS, ...snap.val() }; applySettingsUI(); });
-    db.ref('players').on('value', snap => { 
-      ALL_PLAYERS = snap.val() || {}; 
-      populatePitchSelects(); 
-      renderPitchVisual(); 
-      if (currentUser) { renderHomeKids(); renderStatKids(); renderWalletKids(); } 
-      renderAdminStudents(); renderAdminAttendance(); renderAdminArchive(); 
+    
+    // Create new order
+    const orderRef = db.ref('orders').push();
+    orderRef.set({
+      player: kidId,
+      name: kid.name,
+      base: base,
+      total: total,
+      status: 'pending',
+      created: Date.now(),
+      exp: Date.now() + 600000 // 10 minutes
     });
-    db.ref('parents').on('value', snap => { ALL_PARENTS = snap.val() || {}; renderAdminParents(); });
-    db.ref('applications').on('value', snap => { ALL_APPLICATIONS = snap.val() || {}; renderAdminApps(); });
-    db.ref('orders').on('value', snap => { ALL_ORDERS = snap.val() || {}; renderAdminOrders(); });
+  } else {
+    total = existingOrder.total;
   }
+  
+  const modalContent = `
+    <h3>To'lov oynasi</h3>
+    <div style="text-align: center; margin: 20px 0;">
+      <p>Summa:</p>
+      <h2 style="color: var(--gold);">${fmt(total)} so'm</h2>
+      <p>Karta: ${S.card || 'Kiritilmagan'}</p>
+    </div>
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+      <button class="btn" style="flex: 1;" onclick="copyText('${fmt(total)} so'm')">Nusxa olish</button>
+      <button class="btn" style="flex: 1;" onclick="copyText('${S.card || ''}')">Karta nusxasi</button>
+    </div>
+    <div id="timer" style="text-align: center; font-size: 24px; margin-bottom: 15px;">10:00</div>
+    <button class="btn" style="width: 100%; margin-bottom: 10px;" onclick="openTelegramCheck('${total}')">Chekni botga yuborish</button>
+    <button class="btn" style="width: 100%; background: var(--accent);" onclick="closeModal()">Yopish</button>
+  `;
+  
+  show_modal(modalContent);
+  startPaymentTimer(kidId, total);
+}
 
-  function applySettingsUI() {
-    $('homeCoachTxt').innerText = SETTINGS.coachPhone || '';
-    $('coachContactBtn').href = 'tel:' + cleanDigits(SETTINGS.coachPhone || '');
-    $('tourOpponent').innerText = SETTINGS.opponent || '—';
-    $('tourMatchTime').innerText = SETTINGS.matchTime || '—';
-    $('tourAnnText').innerText = SETTINGS.announcement || 'Hozircha eʼlonlar yoʻq.';
-    $('walletMonthlyAmt').innerText = (SETTINGS.amount || '350 000') + ' UZS';
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Nusxalandi!');
+  }).catch(err => {
+    console.error('Copy failed: ', err);
+    alert('Nusxalash xatosi');
+  });
+}
 
-    $('setOpponent').value = SETTINGS.opponent || ''; $('setMatchTime').value = SETTINGS.matchTime || ''; $('setAnn').value = SETTINGS.announcement || '';
-    $('setCoach').value = SETTINGS.coachPhone || ''; $('setCard').value = SETTINGS.card || ''; $('setAmount').value = SETTINGS.amount || '';
-    renderPitchVisual();
-  }
+function openTelegramCheck(total) {
+  const message = encodeURIComponent(`To'lov: ${total} so'm`);
+  window.open(`https://t.me/api_bot_coll?text=${message}`, '_blank');
+}
 
-  function renderUserProfile() {
-    if (!currentUser) return;
-    $('profParentName').innerText = currentUser.name || 'Ota-ona';
-    $('profParentPhone').innerText = 'Tel: +' + currentUser.phone;
-    $('profParentTg').innerText = currentUser.tgUsername ? ('Telegram: @' + currentUser.tgUsername) : 'Telegram: Bogʻlanmagan';
-  }
+function startPaymentTimer(kidId, total) {
+  let timeLeft = 600; // 10 minutes in seconds
+  const timerEl = $('timer');
+  
+  const timer = setInterval(() => {
+    timeLeft--;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      // Update order status to expired
+      const order = Object.values(OR).find(o => 
+        o.player === kidId && 
+        o.total === total && 
+        o.status === 'pending'
+      );
+      if (order) {
+        db.ref(`orders/${order.key}`).update({ status: 'expired' });
+      }
+      alert('Vaqt tugadi, qaytadan urinib ko\'ring');
+      closeModal();
+    }
+  }, 1000);
+  
+  // Store timer reference for cleanup
+  window.paymentTimer = timer;
+}
 
-  function getMyChildren() { return (!currentUser || !currentUser.children) ? [] : Object.keys(currentUser.children).map(id => ({ id, ...ALL_PLAYERS[id] })).filter(p => p.name && !p.isArchived); }
-
-  function renderHomeKids() {
-    const kids = getMyChildren(), box = $('homeKidsList');
-    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
-    box.innerHTML = kids.map(k => {
-      const isPaid = k.paid === true || k.paid === 'paid', badgeCls = isPaid ? 'bs' : (k.paid === 'pending' ? 'bw' : 'bx'), badgeTxt = isPaid ? DICT[currentLang].paid : (k.paid === 'pending' ? DICT[currentLang].pending : DICT[currentLang].unpaid);
-      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=0A1324&color=D4AF37&size=120`;
-      return `<div class="card"><div style="display:flex; align-items:center; gap: 14px;"><img src="${esc(photo)}" style="width: 54px; height: 54px; border-radius: 14px; object-fit: cover; border: 1.5px solid var(--gold);"><div style="flex:1;"><div style="display:flex; align-items:center; gap:6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 15px;">${esc(k.name)}</b></div><small class="note">Guruh: ${esc(k.group || 'Asosiy')}</small><div style="margin-top: 6px;"><span class="badge ${badgeCls}">${badgeTxt}</span></div></div></div></div>`;
-    }).join('');
-  }
-
-  function renderStatKids() {
-    const kids = getMyChildren(), box = $('statKidsList');
-    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
-    const rBar = (lbl, val, max, suf) => { const pc = Math.min(100, Math.max(0, (+val || 0) / max * 100)); return `<div class="sb"><div class="sbh"><span>${lbl}</span><span>${+val || 0}${suf}</span></div><div class="sbg"><div class="sf ${pc < 50 ? 'fr' : 'fg'}" style="width: ${pc}%"></div></div></div>`; };
-    box.innerHTML = kids.map(k => {
-      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=0A1324&color=D4AF37&size=120`;
-      return `<div class="card"><div style="display:flex; align-items:center; gap: 12px; margin-bottom: 14px;"><img src="${esc(photo)}" style="width: 50px; height: 50px; border-radius: 12px; object-fit: cover; border: 1.5px solid var(--gold);"><div><div style="display:flex; align-items:center; gap: 6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 16px;">${esc(k.name)}</b></div><p class="note" style="margin:2px 0 0;">${esc(k.bio || 'Qarabağ FK iqtidori')}</p></div></div>${rBar("O'zlashtirish", k.progress, 100, '%')}${rBar('Gollar', k.goals, 25, ' ta')}${rBar('Asistlar', k.assists, 20, ' ta')}${rBar('Tezlik', k.speed, 100, '%')}</div>`;
-    }).join('');
-  }
-
-  function renderWalletKids() {
-    const kids = getMyChildren(), box = $('walletKidsList');
-    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand topilmadi.</p></div>`;
-    box.innerHTML = kids.map(k => {
-      const isPaid = k.paid === true || k.paid === 'paid', badgeCls = isPaid ? 'bs' : (k.paid === 'pending' ? 'bw' : 'bx'), badgeTxt = isPaid ? DICT[currentLang].paid : (k.paid === 'pending' ? DICT[currentLang].pending : DICT[currentLang].unpaid);
-      return `<div class="card"><div style="display:flex; justify-content:space-between; align-items:center;"><div><b style="font-size: 15px;">${esc(k.name)}</b><p class="note">Oylik: ${esc(SETTINGS.amount || '350 000')} UZS</p></div><span class="badge ${badgeCls}">${badgeTxt}</span></div><div style="margin-top: 12px;">${!isPaid ? `<button class="btn sm" onclick="initiateKidPay('${k.id}')">💳 To'lov Qilish</button>` : `<div class="note" style="color:var(--ok);">To'lov qabul qilingan</div>`}</div></div>`;
-    }).join('');
-  }
-
-  window.initiateKidPay = async function(playerId) {
-    const p = ALL_PLAYERS[playerId]; if (!p) return;
-    const baseAmount = parseInt(String(SETTINGS.amount).replace(/\D/g, '')) || 350000;
-    const totalAmount = baseAmount + Math.floor(Math.random() * 98) + 1;
-    const expTime = Date.now() + (10 * 60 * 1000);
-    const orderData = { playerId, playerName: p.name, parentPhone: currentUser.phone, base: baseAmount, total: totalAmount, status: 'pending', created: Date.now(), exp: expTime };
-
-    try {
-      const ref = await db.ref('orders').push(orderData);
-      orderData.key = ref.key; activeOrder = orderData;
-      $('modalOrderAmount').innerText = fmt(totalAmount) + " UZS"; $('modalOrderCard').innerText = SETTINGS.card || '8600 0000 0000 0000';
-      openModal('payModal'); startOrderCountdown(expTime, ref.key);
-      ref.on('value', snap => { const val = snap.val(); if (val && val.status === 'paid') { closeAllModals(); fireConfetti(); alert("To'lovingiz tasdiqlandi! Rahmat."); } });
-    } catch (e) { alert("Xato: " + e.message); }
-  };
-
-  function startOrderCountdown(exp, orderKey) {
-    if (orderTimerInterval) clearInterval(orderTimerInterval);
-    orderTimerInterval = setInterval(() => {
-      const left = Math.max(0, Math.floor((exp - Date.now()) / 1000)), m = Math.floor(left / 60), s = left % 60;
-      $('modalOrderTimer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-      if (left <= 0) { clearInterval(orderTimerInterval); db.ref('orders/' + orderKey).update({ status: 'expired' }); $('modalOrderTimer').innerText = "Vaqt tugadi!"; }
-    }, 1000);
-  }
-
-  window.sendReceiptBot = function() {
-    if (!activeOrder) return;
-    const txt = `To'lov cheki (Qarabağ FK)\nO'yinchi: ${activeOrder.playerName}\nSumma: ${fmt(activeOrder.total)} UZS\nTel: +${activeOrder.parentPhone}`;
-    const botUrl = `https://t.me/api_bot_coll?text=${encodeURIComponent(txt)}`;
-    if (tg && tg.openTelegramLink) tg.openTelegramLink(botUrl); else window.open(botUrl, '_blank');
-  };
-
-  window.copyText = function(elId) {
-    const val = cleanDigits($(elId).innerText);
-    navigator.clipboard.writeText(val).then(() => alert(DICT[currentLang].copied + val)).catch(() => prompt("Nusxalang:", val));
-  };
-
-  function renderPitchVisual() {
-    const lu = SETTINGS.lineup || {};
-    const setPos = (role, id) => { const p = ALL_PLAYERS[id]; $(`pos_${role}_num`).innerText = (p && p.number) ? p.number : '-'; $(`pos_${role}_name`).innerText = (p && p.name) ? p.name : '—'; };
-    setPos('gk', lu.gk); setPos('def1', lu.def1); setPos('def2', lu.def2); setPos('mid1', lu.mid1); setPos('mid2', lu.mid2); setPos('fwd', lu.fwd);
-  }
-
-  function populatePitchSelects() {
-    const selects = ['sel_gk', 'sel_def1', 'sel_def2', 'sel_mid1', 'sel_mid2', 'sel_fwd'];
-    const activePlayers = Object.entries(ALL_PLAYERS).filter(([, p]) => !p.isArchived);
-    selects.forEach(selId => {
-      const el = $(selId); if (!el) return;
-      const currentSelected = (SETTINGS.lineup && SETTINGS.lineup[selId.replace('sel_', '')]) || '';
-      let opts = `<option value="">-- Tanlang --</option>`;
-      activePlayers.forEach(([id, p]) => { opts += `<option value="${id}" ${id === currentSelected ? 'selected' : ''}>#${p.number || '-'} ${esc(p.name)}</option>`; });
-      el.innerHTML = opts;
+function showPaymentHistory(kidId) {
+  const payments = Object.values(OR).filter(o => o.player === kidId && o.status === 'paid');
+  payments.sort((a, b) => b.paidAt - a.paidAt);
+  
+  let content = '<h3>To\'lov tarixi</h3>';
+  if (payments.length === 0) {
+    content += '<p>Tarix yo\'q</p>';
+  } else {
+    payments.forEach(p => {
+      const date = new Date(p.paidAt).toLocaleDateString();
+      content += `<div class="glass" style="padding: 10px; margin: 5px 0;"><p>Sana: ${date}</p><p>Summa: ${fmt(p.amount)} so'm</p></div>`;
     });
   }
+  
+  show_modal(content);
+}
 
-  window.adminTab = function(tName, el) {
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active')); el.classList.add('active');
-    document.querySelectorAll('.atab').forEach(p => p.classList.add('hidden')); $('at_' + tName).classList.remove('hidden');
-  };
-
-  function renderAdminApps() {
-    const entries = Object.entries(ALL_APPLICATIONS), box = $('at_apps'), badge = $('ad_badge_apps');
-    badge.innerText = entries.length; badge.classList.toggle('hidden', !entries.length);
-    if (!entries.length) return box.innerHTML = `<p class="note" style="text-align:center;">Yangi arizalar mavjud emas.</p>`;
-    box.innerHTML = entries.map(([id, a]) => `<div class="li" style="flex-direction:column; align-items:flex-start;"><div style="width:100%; display:flex; justify-content:space-between;"><b>${esc(a.childName)}</b> <span class="badge bw">${esc(a.age)} yosh</span></div><small class="note">Ota-ona: ${esc(a.parentName)} | Tel: +${esc(a.phone)}</small><small class="note">TG: @${esc(a.tgUsername || 'yoʻq')} | Parol: <b style="color:var(--gold-light);">${esc(a.password)}</b></small><div style="display:flex; gap:8px; width:100%; margin-top:8px;"><button class="btn sm bok" style="flex:1;" onclick="acceptApp('${id}')">✔ Qabul Qilish</button><button class="btn sm bd" style="flex:1;" onclick="rejectApp('${id}')">✖ Rad Etish</button></div></div>`).join('');
+// Admin functions
+function showAdminTab(tab) {
+  // Update active tab button
+  document.querySelectorAll('[data-tab]').forEach(btn => {
+    if (btn.getAttribute('data-tab') === tab) {
+      btn.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+    } else {
+      btn.style.background = 'transparent';
+    }
+  });
+  
+  // Load tab content
+  const content = $('adminContent');
+  content.innerHTML = '';
+  
+  switch (tab) {
+    case 'applications':
+      loadApplicationsTab(content);
+      break;
+    case 'payments':
+      loadPaymentsTab(content);
+      break;
+    case 'parents':
+      loadParentsTab(content);
+      break;
+    case 'players':
+      loadPlayersTab(content);
+      break;
+    case 'attendance':
+      loadAttendanceTab(content);
+      break;
+    case 'results':
+      loadResultsTab(content);
+      break;
+    case 'archive':
+      loadArchiveTab(content);
+      break;
+    case 'settings':
+      loadSettingsTab(content);
+      break;
   }
+}
 
-  window.acceptApp = async function(appId) {
-    const a = ALL_APPLICATIONS[appId]; if (!a) return;
-    const childNames = String(a.childName).split(',').map(s => s.trim()).filter(Boolean), updates = {}, kidsObj = {};
-    childNames.forEach(cn => {
-      const pid = 'p_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
-      updates['players/' + pid] = { name: cn, number: Math.floor(Math.random() * 90) + 10, age: a.age || '', goals: 0, assists: 0, speed: 70, progress: 60, trainings: 0, paid: false, isArchived: false, group: '2014' };
-      kidsObj[pid] = true;
-    });
-    updates['parents/' + a.phone] = { name: a.parentName, phone: a.phone, password: a.password, tgUsername: a.tgUsername || '', children: kidsObj };
-    updates['applications/' + appId] = null;
-    try { await db.ref().update(updates); fireConfetti(); alert("Ariza qabul qilindi!"); } catch (e) { alert("Xato: " + e.message); }
-  };
-
-  window.rejectApp = function(id) { if (confirm("Oʻchirmoqchimisiz?")) db.ref('applications/' + id).remove(); };
-
-  function renderAdminOrders() {
-    const list = Object.entries(ALL_ORDERS).filter(([, o]) => o.status === 'pending'), box = $('at_orders'), badge = $('ad_badge_orders');
-    badge.innerText = list.length; badge.classList.toggle('hidden', !list.length);
-    if (!list.length) return box.innerHTML = `<p class="note" style="text-align:center;">Kutilayotgan to'lovlar yo'q.</p>`;
-    box.innerHTML = list.map(([k, o]) => `<div class="li"><div><b>${esc(o.playerName)}</b><p class="note">Tel: +${esc(o.parentPhone)}</p></div><div style="text-align:right;"><b style="color:var(--ok); font-family:monospace; font-size:15px;">${fmt(o.total)} UZS</b><div style="margin-top:4px;"><button class="btn sm bok" onclick="confirmOrderAdmin('${k}')">✔ Tasdiqlash</button></div></div></div>`).join('');
+function loadApplicationsTab(container) {
+  const apps = Object.entries(APPS);
+  if (apps.length === 0) {
+    container.innerHTML = '<p>Arizalar yo\'q</p>';
+    return;
   }
-
-  window.confirmOrderAdmin = async function(orderKey) {
-    const o = ALL_ORDERS[orderKey]; if (!o) return;
-    if (!confirm(`${o.playerName} uchun ${fmt(o.total)} UZS to'lov kelib tushdimi?`)) return;
-    const u = {}; u['orders/' + orderKey + '/status'] = 'paid'; u['players/' + o.playerId + '/paid'] = true;
-    try { await db.ref().update(u); fireConfetti(); } catch (e) { alert(e.message); }
-  };
-
-  function renderAdminParents() {
-    const list = Object.entries(ALL_PARENTS), box = $('at_parents');
-    if (!list.length) return box.innerHTML = `<p class="note" style="text-align:center;">Ota-onalar mavjud emas.</p>`;
-    box.innerHTML = list.map(([ph, p]) => `<div class="li" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; justify-content:space-between; width:100%;"><b>${esc(p.name)}</b><small class="note">+${esc(ph)}</small></div><div class="note" style="color:var(--gold-light);">Parol: <b>${esc(p.password)}</b> | TG: @${esc(p.tgUsername || 'yoʻq')}</div><div style="margin-top:6px;"><button class="btn sm bo" onclick="copyLoginCreds('+${ph}', '${esc(p.password)}')">📋 Nusxa Olish</button></div></div>`).join('');
-  }
-
-  window.copyLoginCreds = function(l, p) { const t = `Qarabağ FK\nLogin: ${l}\nParol: ${p}`; navigator.clipboard.writeText(t).then(() => alert("Nusxalandi!")).catch(() => prompt("Nusxalang:", t)); };
-
-  function renderAdminStudents() {
-    const list = Object.entries(ALL_PLAYERS).filter(([, p]) => !p.isArchived), box = $('at_students');
-    if (!list.length) return box.innerHTML = `<p class="note" style="text-align:center;">O'quvchilar yo'q.</p>`;
-    box.innerHTML = list.map(([id, p]) => { const isPaid = p.paid === true || p.paid === 'paid'; return `<div class="li"><div><div style="display:flex; align-items:center; gap:6px;"><span class="jersey-badge">#${p.number || '-'}</span><b>${esc(p.name)}</b></div><small class="note">Guruh: ${esc(p.group || '2014')} | Gol: ${p.goals || 0}</small></div><div style="text-align:right;"><span class="badge ${isPaid ? 'bs' : 'bx'}">${isPaid ? 'To\'langan' : 'Qarzdor'}</span><div style="display:flex; gap:4px; margin-top:4px;"><button class="btn sm bo" onclick="openEditPlayerModal('${id}')">✏️</button><button class="btn sm bd" onclick="archiveStudent('${id}')">🗑</button></div></div></div>`; }).join('');
-  }
-
-  window.openEditPlayerModal = function(id) {
-    const p = ALL_PLAYERS[id]; if (!p) return;
-    $('plEditId').value = id; $('plModalTitle').innerText = "Tahrirlash: " + p.name;
-    $('plEditName').value = p.name || ''; $('plEditNumber').value = p.number || ''; $('plEditPhoto').value = p.photoUrl || ''; $('plEditGroup').value = p.group || ''; $('plEditBio').value = p.bio || '';
-    $('plEditGoals').value = p.goals || 0; $('plEditAssists').value = p.assists || 0; $('plEditSpeed').value = p.speed || 0; $('plEditProgress').value = p.progress || 0; $('plEditTrainings').value = p.trainings || 0;
-    $('plEditPaid').value = p.paid === true ? 'paid' : (p.paid === 'pending' ? 'pending' : 'unpaid');
-    openModal('playerEditModal');
-  };
-
-  window.savePlayerAdmin = async function() {
-    const id = $('plEditId').value; if (!id) return;
-    const paidVal = $('plEditPaid').value;
-    const upd = { name: $('plEditName').value.trim(), number: parseInt($('plEditNumber').value) || 1, photoUrl: $('plEditPhoto').value.trim(), group: $('plEditGroup').value.trim(), bio: $('plEditBio').value.trim(), goals: parseInt($('plEditGoals').value) || 0, assists: parseInt($('plEditAssists').value) || 0, speed: parseInt($('plEditSpeed').value) || 0, progress: parseInt($('plEditProgress').value) || 0, trainings: parseInt($('plEditTrainings').value) || 0, paid: paidVal === 'paid' ? true : (paidVal === 'pending' ? 'pending' : false) };
-    try { await db.ref('players/' + id).update(upd); closeAllModals(); alert("Saqlandi!"); } catch (e) { alert("Xato: " + e.message); }
-  };
-
-  window.archiveStudent = function(id) { if (confirm("Arxivga o'tkazasizmi?")) db.ref('players/' + id + '/isArchived').set(true); };
-
-  function renderAdminAttendance() {
-    const list = Object.entries(ALL_PLAYERS).filter(([, p]) => !p.isArchived), box = $('attendBox'), today = new Date().toLocaleDateString();
-    if (!list.length) return box.innerHTML = `<p class="note" style="text-align:center;">O'quvchilar yo'q.</p>`;
-    box.innerHTML = list.map(([id, p]) => { const alreadyChecked = (p.attendanceDates || []).includes(today); return `<label class="li" style="cursor:pointer;"><div style="display:flex; align-items:center; gap:8px;"><span class="jersey-badge">#${p.number || '-'}</span><b>${esc(p.name)}</b></div>${alreadyChecked ? `<span class="badge bs">✅ Kelgan</span>` : `<input type="checkbox" style="width:20px; height:20px;" ${attendCheckSet.has(id) ? 'checked' : ''} onchange="this.checked ? attendCheckSet.add('${id}') : attendCheckSet.delete('${id}')">`}</label>`; }).join('');
-  }
-
-  window.checkAllAttend = function() { const today = new Date().toLocaleDateString(); Object.entries(ALL_PLAYERS).forEach(([id, p]) => { if (!p.isArchived && !(p.attendanceDates || []).includes(today)) attendCheckSet.add(id); }); renderAdminAttendance(); };
-
-  window.saveAttendance = async function() {
-    if (!attendCheckSet.size) return alert("Hech kim tanlanmadi!");
-    const today = new Date().toLocaleDateString(), u = {};
-    attendCheckSet.forEach(id => { const p = ALL_PLAYERS[id]; if (!p) return; const dates = p.attendanceDates || []; if (!dates.includes(today)) { u['players/' + id + '/attendanceDates'] = [...dates, today]; u['players/' + id + '/trainings'] = (+p.trainings || 0) + 1; } });
-    try { await db.ref().update(u); attendCheckSet.clear(); fireConfetti(); alert("Davomat saqlandi!"); } catch (e) { alert(e.message); }
-  };
-
-  function renderAdminArchive() {
-    const list = Object.entries(ALL_PLAYERS).filter(([, p]) => p.isArchived), box = $('archiveBox');
-    if (!list.length) return box.innerHTML = `<p class="note" style="text-align:center;">Arxiv bo'sh.</p>`;
-    box.innerHTML = list.map(([id, p]) => `<div class="li"><b>${esc(p.name)}</b><div style="display:flex; gap:6px;"><button class="btn sm bok" onclick="restoreStudent('${id}')">Tiklash</button><button class="btn sm bd" onclick="deleteStudentForever('${id}')">O'chirish</button></div></div>`).join('');
-  }
-
-  window.restoreStudent = function(id) { if (confirm("Qayta tiklaysizmi?")) db.ref('players/' + id + '/isArchived').set(false); };
-  window.deleteStudentForever = function(id) { if (confirm("Butunlay o'chiriladi! Rozimisiz?")) db.ref('players/' + id).remove(); };
-
-  window.saveAdminSettings = async function() {
-    const upd = { opponent: $('setOpponent').value.trim(), matchTime: $('setMatchTime').value.trim(), announcement: $('setAnn').value.trim(), coachPhone: $('setCoach').value.trim(), card: $('setCard').value.trim(), amount: $('setAmount').value.trim(), lineup: { gk: $('sel_gk').value, def1: $('sel_def1').value, def2: $('sel_def2').value, mid1: $('sel_mid1').value, mid2: $('sel_mid2').value, fwd: $('sel_fwd').value } };
-    try { await db.ref('settings').update(upd); alert("Sozlamalar saqlandi!"); } catch (e) { alert("Xato: " + e.message); }
-  };
-
-  // Boshlang'ich holat: Pastki menyuni yashirish
-  showScreen('loginScreen');
-
-});
-</script>
-</body>
-</html>
+  
+  apps.forEach(([key, app]) => {
+    const card = document.createElement('div');
+    card.className = 'glass';
+    card.style.padding = '15px';
+    card.style.marginBottom = '10px';
+    
+    card.innerHTML = `
+      <h4>${app.childName}</h4>
+      <p>Yoshi: ${app.age}</p>
+      <p>Ota-ona: ${app.parentName}</p>
+      <p>Telefon: ${app.phone}</p>
+      <p>Parol: ${app.password}</p>
+      <p>Telegram: ${app.tgUser || '
