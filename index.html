@@ -6,16 +6,39 @@
 <meta name="theme-color" content="#070b1f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>81 IDUM Pro Stats</title>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- FONTSHARE ORQALI YANGI SHIRIFTLAR -->
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
-/* ================= ASOSIY (81 IDUM) DIZAYNI ================= */
-:root{--bg:#070b1f;--card:rgba(255,255,255,.07);--cb:rgba(255,255,255,.14);--blue:#3d7bff;--coral:#ff4d6d;--gold:#ffc83d;--ok:#2ee6a6;--text:#f1f4ff;--muted:#9aa4c7;--input:rgba(5,8,26,.55);--glow:0 0 28px rgba(61,123,255,.35)}
-body.light{--bg:#eef2ff;--card:rgba(255,255,255,.75);--cb:rgba(61,123,255,.2);--text:#12183a;--muted:#5b6592;--input:rgba(255,255,255,.9);--glow:0 8px 30px rgba(61,123,255,.18)}
+/* ================= ASOSIY DIZAYN (81 IDUM) ================= */
+:root{
+  --bg:#070b1f;--card:rgba(255,255,255,.06);--cb:rgba(255,255,255,.12);
+  --blue:#3d7bff;--coral:#ff4d6d;--gold:#ffc83d;--ok:#2ee6a6;
+  --text:#f1f4ff;--muted:#9aa4c7;--input:rgba(5,8,26,.55);
+  --glow:0 0 28px rgba(61,123,255,.35);
+  --inset-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 2px 4px rgba(0,0,0,0.2);
+  --font-display: 'Clash Display', 'Unbounded', sans-serif;
+  --font-body: 'Satoshi', 'Manrope', sans-serif;
+}
+body.light{
+  --bg:#eef2ff;--card:rgba(255,255,255,.75);--cb:rgba(61,123,255,.2);
+  --text:#12183a;--muted:#5b6592;--input:rgba(255,255,255,.9);
+  --glow:0 8px 30px rgba(61,123,255,.18);
+  --inset-shadow: inset 0 0 0 1px rgba(61,123,255,0.1), inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;min-height:100vh;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));overflow-x:hidden;transition:background .4s}
-h1,h2,h3,.brand,.btn,.tab,.mode{font-family:'Unbounded',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));overflow-x:hidden;transition:background .4s}
+h1,h2,h3,.brand,.btn,.tab,.mode{font-family:var(--font-display);font-weight:600}
+
+/* --- 3D IKONKALAR --- */
+.icon-3d { width: 44px; height: 44px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3)); transition: transform 0.3s ease; }
+.icon-3d-sm { width: 26px; height: 26px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25)); }
+.icon-3d:hover { transform: translateY(-2px) scale(1.05); }
+
 .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden}
 .aurora i{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:drift 18s ease-in-out infinite alternate}
 .aurora i:nth-child(1){width:60vw;height:60vw;background:var(--blue);top:-15vw;left:-15vw}
@@ -23,17 +46,21 @@ h1,h2,h3,.brand,.btn,.tab,.mode{font-family:'Unbounded',sans-serif}
 .aurora i:nth-child(3){width:35vw;height:35vw;background:var(--gold);top:40%;left:45%;opacity:.22;animation-duration:26s}
 body.light .aurora i{opacity:.26}
 @keyframes drift{to{transform:translate(12vw,9vh) scale(1.2)}}
+
 .screen{display:none;padding:20px 16px;max-width:560px;margin:0 auto}
 .screen.active{display:block;animation:rise .5s cubic-bezier(.2,.9,.3,1)}
 @keyframes rise{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.brand{font-size:20px;font-weight:900;background:linear-gradient(90deg,var(--blue),var(--coral),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;animation:shift 6s linear infinite}
+.brand{font-size:22px;font-weight:700;background:linear-gradient(90deg,var(--blue),var(--coral),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;animation:shift 6s linear infinite}
 @keyframes shift{to{background-position:200% 0}}
+
 .top{display:flex;gap:8px}
-.icon-btn{background:var(--card);border:1px solid var(--cb);width:38px;height:38px;border-radius:12px;font-size:16px;cursor:pointer;color:var(--text)}
-.card{background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--cb);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:var(--glow);position:relative;overflow:hidden}
+.icon-btn{background:var(--card);border:1px solid var(--cb);width:38px;height:38px;border-radius:12px;font-size:16px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;box-shadow:var(--inset-shadow)}
+
+.card{background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--cb);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:var(--glow), var(--inset-shadow);position:relative;overflow:hidden}
 .ig{margin-bottom:12px}.ig label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
-.inp{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--cb);background:var(--input);color:var(--text);font:600 14px 'Manrope',sans-serif;outline:none;transition:.25s}
+.inp{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--cb);background:var(--input);color:var(--text);font:600 14px var(--font-body);outline:none;transition:.25s}
 .inp:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(61,123,255,.22)}
 select.inp option{color:#111}
 .btn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(120deg,var(--blue),#7a5cff);color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px;display:flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(61,123,255,.4);transition:transform .15s}
@@ -43,19 +70,21 @@ select.inp option{color:#111}
 .sm{padding:8px 11px;font-size:10px;width:auto;border-radius:10px;margin-top:0}
 .bd{background:linear-gradient(120deg,var(--coral),#ff8a5c);box-shadow:0 6px 18px rgba(255,77,109,.4)}
 .bok{background:linear-gradient(120deg,#12b886,var(--ok));color:#032;box-shadow:0 6px 18px rgba(46,230,166,.35)}
-.hero-title{font:900 30px/1.05 'Unbounded';margin:6vh 0 8px;letter-spacing:-1px}
+
+.hero-title{font:700 30px/1.05 var(--font-display);margin:6vh 0 8px;letter-spacing:-1px}
 .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
 .modes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;background:var(--input);padding:5px;border-radius:16px;margin-bottom:16px;border:1px solid var(--cb)}
 .mode{padding:11px 4px;text-align:center;border-radius:12px;font-size:10px;font-weight:700;color:var(--muted);cursor:pointer;transition:.3s}
 .mode.on{background:linear-gradient(120deg,var(--blue),#7a5cff);color:#fff;box-shadow:0 6px 16px rgba(61,123,255,.45)}
 .pane{display:none}.pane.on{display:block;animation:rise .4s}
 .note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+
 .ph{text-align:center;transition:transform .15s;border:1px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(from var(--a,0deg),var(--blue),var(--coral),var(--gold),var(--blue)) border-box;animation:spin 6s linear infinite}
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes spin{to{--a:360deg}}
 .ph::before{content:"";position:absolute;inset:0;background:var(--card)}.ph>*{position:relative}
 .pphoto{width:116px;height:146px;object-fit:cover;border-radius:16px;margin:0 auto 14px;display:block;background:#1E293B;box-shadow:0 14px 34px rgba(0,0,0,.45),0 0 0 3px rgba(255,255,255,.18)}
-.pname{font-size:20px;font-weight:900;margin-bottom:4px}.puser{color:var(--blue);font-size:13px;font-weight:700;margin-bottom:12px}
+.pname{font-size:20px;font-weight:700;margin-bottom:4px}.puser{color:var(--blue);font-size:13px;font-weight:700;margin-bottom:12px}
 .badges{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:16px}
 .bi{background:rgba(61,123,255,.18);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:700;border:1px solid var(--blue)}
 .star{background:rgba(255,200,61,.2);border-color:var(--gold);color:var(--gold);animation:pulse 2s infinite}
@@ -67,9 +96,9 @@ select.inp option{color:#111}
 .gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory}.gal::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}
 .gal img{width:110px;height:110px;border-radius:14px;object-fit:cover;flex-shrink:0;scroll-snap-align:start;border:1px solid var(--cb)}
 .timer{text-align:center;padding:18px;border-radius:20px;margin-bottom:16px;color:#fff;background:linear-gradient(120deg,var(--blue),#7a5cff,var(--coral));background-size:200%;animation:shift 8s linear infinite;box-shadow:0 12px 34px rgba(122,92,255,.45)}
-.timer b{display:block;font:900 19px 'Unbounded';margin-top:6px}
+.timer b{display:block;font:700 19px var(--font-display);margin-top:6px}
 .mot{border-radius:20px;padding:20px;margin-bottom:16px;color:#032;background:linear-gradient(135deg,var(--ok),#12b886);box-shadow:0 12px 30px rgba(46,230,166,.3)}
-.mot small{font:700 11px 'Unbounded';opacity:.75;display:block;margin-bottom:8px}.mot div{font-size:16px;font-weight:700;font-style:italic;line-height:1.4}
+.mot small{font:700 11px var(--font-display);opacity:.75;display:block;margin-bottom:8px}.mot div{font-size:16px;font-weight:700;font-style:italic;line-height:1.4}
 .badge{padding:6px 12px;border-radius:999px;font-size:11px;font-weight:700;display:inline-block}
 .bs{background:rgba(46,230,166,.15);color:var(--ok);border:1px solid var(--ok)}.bx{background:rgba(255,77,109,.15);color:var(--coral);border:1px solid var(--coral)}.bw{background:rgba(255,200,61,.15);color:var(--gold);border:1px solid var(--gold)}
 .tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:5px}
@@ -81,38 +110,32 @@ select.inp option{color:#111}
 .li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px;background:var(--input);border-radius:14px;margin-bottom:8px;border:1px solid var(--cb);font-size:13px}
 .ann{background:rgba(255,200,61,.14);color:var(--gold);padding:13px;border-radius:14px;font-size:13px;font-weight:600;margin-bottom:16px;border:1px solid var(--gold);display:none}
 .fin{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
-.fc{background:var(--card);padding:16px;border-radius:18px;text-align:center;border:1px solid var(--cb)}.fc b{font:900 15px 'Unbounded';color:var(--ok)}.fc div{font-size:11px;color:var(--muted);margin-top:5px}
+.fc{background:var(--card);padding:16px;border-radius:18px;text-align:center;border:1px solid var(--cb)}.fc b{font:700 15px var(--font-display);color:var(--ok)}.fc div{font-size:11px;color:var(--muted);margin-top:5px}
 .warn{background:rgba(255,77,109,.12);border:1px solid var(--coral);color:var(--coral);padding:10px;border-radius:12px;font-size:13px;font-weight:700;margin-bottom:15px;display:none}
-.tag{font:700 9px 'Unbounded';padding:3px 8px;border-radius:999px;margin-left:6px}.ts{background:rgba(46,230,166,.18);color:var(--ok)}.tp{background:rgba(255,200,61,.18);color:var(--gold)}
+.tag{font:700 9px var(--font-display);padding:3px 8px;border-radius:999px;margin-left:6px}.ts{background:rgba(46,230,166,.18);color:var(--ok)}.tp{background:rgba(255,200,61,.18);color:var(--gold)}
 .row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:6px}
 .pay{text-align:center}.pbox{background:var(--card);border:1px solid var(--cb);border-radius:18px;padding:16px;margin:12px 0;text-align:left}
-.pbox small{font:700 10px 'Unbounded';color:var(--muted)}.pbox b{display:block;font:700 22px monospace;margin:6px 0 12px;letter-spacing:1px}
+.pbox small{font:700 10px var(--font-display);color:var(--muted)}.pbox b{display:block;font:700 22px monospace;margin:6px 0 12px;letter-spacing:1px}
 .spin{width:54px;height:54px;border:4px solid var(--cb);border-top-color:var(--blue);border-radius:50%;margin:0 auto 12px;animation:rot 1s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}
-.fl{position:absolute;bottom:-10vh;opacity:0;animation:flt linear infinite;will-change:transform}
-@keyframes flt{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.25}90%{opacity:.25}100%{transform:translateY(-120vh) rotate(360deg);opacity:0}}
-.beam{position:absolute;top:-10vh;width:40vw;height:130vh;background:linear-gradient(to bottom,rgba(255,255,255,.17),transparent 70%);transform-origin:top center;filter:blur(18px);clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);animation:sway 9s ease-in-out infinite alternate}
-@keyframes sway{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
-.ball{position:absolute;bottom:12px;left:-60px;font-size:28px;opacity:.5;animation:roll 20s linear infinite}
-@keyframes roll{to{left:105%;transform:rotate(1800deg)}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:300}
+
+/* ================= YANGI PASTKI NAVIGATSIYA (3D IKONKALAR) ================= */
 .bn{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);width:min(calc(100% - 24px),540px);display:flex;gap:4px;padding:8px;border-radius:26px;background:rgba(12,16,38,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--cb);box-shadow:0 14px 40px rgba(0,0,0,.45);z-index:99}
 body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,123,255,.2)}
 .bn[hidden]{display:none}
-.bn-i{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:9px 2px;border:0;border-radius:20px;background:transparent;color:var(--muted);font:700 8.5px/1.2 'Unbounded',sans-serif;text-align:center;cursor:pointer;transition:.25s}
-.bn-i .ic{font-size:19px;line-height:1}
+.bn-i{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px 2px;border:0;border-radius:20px;background:transparent;color:var(--muted);font:700 9px/1.2 var(--font-body);text-align:center;cursor:pointer;transition:.25s}
+.bn-i .ic{display:flex;align-items:center;justify-content:center;height:28px}
 .bn-i.on{background:var(--blue);color:#fff;box-shadow:0 6px 16px rgba(61,123,255,.5)}
 .bn-i:active{transform:scale(.94)}
-#fx{position:fixed;inset:0;pointer-events:none;z-index:300}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* ================= YANGI DAVLAT XIZMATLARI (LIGHT THEME) ================= */
-#govApp { background-color: #f4f6f9; color: #1a1d21; font-family: 'Inter', sans-serif; padding-bottom: 90px; min-height: 100vh; }
-#govApp .screen { max-width: 500px; margin: 0 auto; padding: 16px; }
+/* ================= DAVLAT XIZMATLARI (GOV APP) ================= */
+#govApp { background-color: #f4f6f9; color: #1a1d21; font-family: var(--font-body); padding-bottom: 90px; min-height: 100vh; }
 #govApp .g-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px; }
-#govApp .g-header-left { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 700; color: #1a1d21; }
+#govApp .g-header-left { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 700; color: #1a1d21; font-family: var(--font-display); }
 #govApp .g-icon-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #1a1d21; display: flex; align-items: center; justify-content: center; }
 #govApp .g-month-selector { display: flex; justify-content: space-between; align-items: center; background: #fff; border-radius: 50px; padding: 8px 16px; margin-bottom: 20px; font-weight: 600; font-size: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); color: #1a1d21; }
 #govApp .g-month-selector button { width: 32px; height: 32px; border-radius: 50%; border: none; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #1a1d21; }
-#govApp .g-balance-card { background: linear-gradient(135deg, #1e5ab9, #123f87); border-radius: 24px; padding: 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden; }
+#govApp .g-balance-card { background: linear-gradient(135deg, #1e5ab9, #123f87); border-radius: 24px; padding: 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), 0 12px 24px rgba(30,90,185,0.3); }
 #govApp .g-balance-card small { font-size: 14px; opacity: 0.8; display: block; margin-bottom: 8px; }
 #govApp .g-balance-card h1 { font-size: 28px; font-weight: 700; margin-bottom: 16px; }
 #govApp .g-progress-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
@@ -121,10 +144,7 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 #govApp .g-icons-scroll { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
 #govApp .g-icons-scroll::-webkit-scrollbar { display: none; }
 #govApp .g-icon-item { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 70px; }
-#govApp .g-icon-box { width: 54px; height: 54px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; }
-#govApp .g-icon-box .badge { position: absolute; top: -6px; right: -6px; background: #1e5ab9; color: white; font-size: 11px; font-weight: bold; padding: 2px 7px; border-radius: 10px; border: 2px solid #f4f6f9; }
-#govApp .g-icon-item span { font-size: 12px; text-align: center; color: #1a1d21; line-height: 1.2; }
-#govApp .bg-blue { background: #e0eaff; } #govApp .bg-green { background: #d1fae5; } #govApp .bg-purple { background: #ede9fe; } #govApp .bg-orange { background: #ffedd5; } #govApp .bg-pink { background: #fce7f3; } #govApp .bg-gray { background: #f3f4f6; }
+#govApp .g-icon-item span { font-size: 12px; text-align: center; color: #1a1d21; line-height: 1.2; font-weight: 500; }
 #govApp .g-chart-card { background: #fff; border-radius: 24px; padding: 20px; margin-bottom: 20px; }
 #govApp .g-chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 #govApp .g-chart-legend { display: flex; gap: 16px; font-size: 13px; font-weight: 500; }
@@ -135,7 +155,7 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 #govApp .g-chart-y-axis { display: flex; flex-direction: column; justify-content: space-between; height: 100%; font-size: 10px; color: #8b929e; width: 40px; }
 #govApp .g-profile-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 #govApp .g-profile-user { display: flex; align-items: center; gap: 12px; }
-#govApp .g-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; background: #ccc; }
+#govApp .g-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; background: #ccc; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 #govApp .g-user-info h3 { font-size: 18px; font-weight: 700; }
 #govApp .g-user-info p { font-size: 13px; color: #8b929e; }
 #govApp .g-action-icons { display: flex; gap: 16px; font-size: 20px; color: #8b929e; }
@@ -148,9 +168,10 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 #govApp .g-id-number { font-family: monospace; font-size: 11px; color: #214d3d; margin-top: 10px; letter-spacing: 1px; }
 #govApp .g-btn-primary { width: 100%; padding: 16px; background: #1e5ab9; color: white; border: none; border-radius: 16px; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; cursor: pointer; text-align: left;}
 #govApp .g-menu-list { background: #fff; border-radius: 24px; padding: 8px 16px; margin-bottom: 20px; }
-#govApp .g-menu-item { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+#govApp .g-menu-item { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; border-radius: 16px; }
+#govApp .g-menu-item:hover { background: #f8f9fc; }
 #govApp .g-menu-item:last-child { border-bottom: none; }
-#govApp .g-menu-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 16px; font-size: 18px; }
+#govApp .g-menu-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-right: 16px; background: #f0f4ff; }
 #govApp .g-menu-text { flex: 1; }
 #govApp .g-menu-text h4 { font-size: 15px; font-weight: 600; color: #1a1d21; margin-bottom: 4px; }
 #govApp .g-menu-text p { font-size: 13px; color: #8b929e; }
@@ -217,7 +238,7 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 <!-- OTA-ONA / O'YINCHI -->
 <div class="screen" id="familyScreen">
   <div class="header"><div class="brand">81 IDUM</div><div class="top"><button class="icon-btn" onclick="toggleTheme()">🌗</button><button class="btn bo sm" onclick="logout()">Chiqish</button></div></div>
-  <div class="card" style="text-align:center"><small style="font:700 10px 'Unbounded';color:var(--muted)">OTA-ONALAR PANELI</small><h2 id="fName" style="margin:8px 0 4px;font-size:20px"></h2><p class="note" style="margin:0" id="fLogin"></p></div>
+  <div class="card" style="text-align:center"><small style="font:700 10px var(--font-display);color:var(--muted)">OTA-ONALAR PANELI</small><h2 id="fName" style="margin:8px 0 4px;font-size:20px"></h2><p class="note" style="margin:0" id="fLogin"></p></div>
   <div class="ann" id="fAnn"></div>
   <h3 style="margin:4px 0 12px;font-size:14px">Farzandlarim</h3>
   <div id="kidsList"></div>
@@ -303,12 +324,28 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
   </div></div>
 </div>
 
+<!-- 81 IDUM PASTKI NAVIGATSIYASI -->
 <nav class="bn" id="bnav" hidden>
-  <button class="bn-i" data-t="home" onclick="goTab('home')"><span class="ic">🏠</span><span>Bosh sahifa</span></button>
-  <button class="bn-i" data-t="tour" onclick="goTab('tour')"><span class="ic">🏆</span><span>Turnirlar</span></button>
-  <button class="bn-i" data-t="stat" onclick="goTab('stat')"><span class="ic">📊</span><span>Statistika</span></button>
-  <button class="bn-i" data-t="wallet" onclick="goTab('wallet')"><span class="ic">💳</span><span>Hamyon</span></button>
-  <button class="bn-i" data-t="profile" onclick="goTab('profile')"><span class="ic">👤</span><span>Profil</span></button>
+  <button class="bn-i" data-t="home" onclick="goTab('home')">
+    <span class="ic"><img src="https://cdn.3dicons.com/3dicons/home.png" class="icon-3d-sm" alt="Home"></span>
+    <span>Bosh sahifa</span>
+  </button>
+  <button class="bn-i" data-t="tour" onclick="goTab('tour')">
+    <span class="ic"><img src="https://cdn.3dicons.com/3dicons/trophy.png" class="icon-3d-sm" alt="Tours"></span>
+    <span>Turnirlar</span>
+  </button>
+  <button class="bn-i" data-t="stat" onclick="goTab('stat')">
+    <span class="ic"><img src="https://cdn.3dicons.com/3dicons/chart.png" class="icon-3d-sm" alt="Stats"></span>
+    <span>Statistika</span>
+  </button>
+  <button class="bn-i" data-t="wallet" onclick="goTab('wallet')">
+    <span class="ic"><img src="https://cdn.3dicons.com/3dicons/wallet.png" class="icon-3d-sm" alt="Wallet"></span>
+    <span>Hamyon</span>
+  </button>
+  <button class="bn-i" data-t="profile" onclick="goTab('profile')">
+    <span class="ic"><img src="https://cdn.3dicons.com/3dicons/user.png" class="icon-3d-sm" alt="Profile"></span>
+    <span>Profil</span>
+  </button>
 </nav>
 
 <div class="screen" id="tourScreen">
@@ -335,13 +372,14 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
   <h2 class="hero-title" style="font-size:24px;margin-top:0">Profil</h2>
   <div class="card" style="text-align:center"><h2 id="prName" style="font-size:20px;margin-bottom:8px"></h2><p class="note" id="prInfo" style="white-space:pre-line"></p></div>
   
-  <button class="btn" onclick="openGovApp()" style="background:linear-gradient(120deg,#1e5ab9,#123f87); margin-bottom:16px;">🏛️ Davlat Xizmatlari (Yangi)</button>
+  <!-- DAVLAT XIZMATLARIGA O'TISH TUGMASI -->
+  <button class="btn" onclick="openGovApp()" style="background:linear-gradient(120deg,#1e5ab9,#123f87); margin-bottom:16px; padding:16px; font-size:14px;">🏛️ Davlat Xizmatlari (Yangi)</button>
 
   <div class="card" style="text-align:center"><h3 style="font-size:14px;margin-bottom:6px">Savollaringiz bormi?</h3><a href="tel:+998992677747" class="btn" style="background:#2AABEE">📞 Murabbiy: +998 99 267 77 47</a></div>
   <button class="btn bd" onclick="logout()">CHIQISH</button>
 </div>
 
-<!-- ================= YANGI DAVLAT XIZMATLARI PANELI ================= -->
+<!-- ================= DAVLAT XIZMATLARI (GOV APP) PANELI ================= -->
 <div id="govApp" class="screen">
   <!-- 1. MOLIYA -->
   <div id="view-finance" class="screen active">
@@ -365,16 +403,20 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
 
       <div class="g-icons-scroll">
           <div class="g-icon-item">
-              <div class="g-icon-box bg-blue">⇅<span class="badge">4</span></div>
-              <span>Daromad-<br>xarajat</span>
+              <img src="https://cdn.3dicons.com/3dicons/wallet.png" class="icon-3d" alt="Daromad">
+              <span>Daromad</span>
           </div>
           <div class="g-icon-item">
-              <div class="g-icon-box bg-pink">📄<span class="badge" style="background:#ef4444">1</span></div>
-              <span>Kredit<br>skoring</span>
+              <img src="https://cdn.3dicons.com/3dicons/credit-card.png" class="icon-3d" alt="Kartalar">
+              <span>Kartalar</span>
           </div>
           <div class="g-icon-item">
-              <div class="g-icon-box bg-gray">👨‍🦳</div>
-              <span>Pensiya</span>
+              <img src="https://cdn.3dicons.com/3dicons/gift.png" class="icon-3d" alt="Keshbek">
+              <span>Keshbek</span>
+          </div>
+          <div class="g-icon-item">
+              <img src="https://cdn.3dicons.com/3dicons/bank.png" class="icon-3d" alt="Soliqlar">
+              <span>Soliqlar</span>
           </div>
       </div>
 
@@ -399,10 +441,8 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
                       <line x1="0" y1="0" x2="300" y2="0" stroke="#f0f0f0" stroke-width="1"/>
                       <line x1="0" y1="50" x2="300" y2="50" stroke="#f0f0f0" stroke-width="1"/>
                       <line x1="0" y1="100" x2="300" y2="100" stroke="#f0f0f0" stroke-width="1"/>
-                      
                       <polyline fill="none" stroke="#ef4444" stroke-width="2" points="10,145 50,145 90,145 130,145 170,145 210,145 250,20 290,145"/>
                       <polyline fill="none" stroke="#10b981" stroke-width="2" points="10,145 50,145 90,145 130,145 170,145 210,145 250,70 290,145"/>
-                      
                       <circle cx="250" cy="20" r="4" fill="#fff" stroke="#ef4444" stroke-width="2"/>
                       <circle cx="250" cy="70" r="4" fill="#fff" stroke="#10b981" stroke-width="2"/>
                       <circle cx="290" cy="145" r="4" fill="#fff" stroke="#ef4444" stroke-width="2"/>
@@ -414,18 +454,13 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
               </div>
           </div>
       </div>
-
-      <h3 style="font-size:16px; margin-bottom:12px;">Yaqinlashayotgan kredit to'lovlari</h3>
-      <div class="g-info-card">
-          <div class="g-info-icon" style="background:#f3f4f6; color:#9ca3af; font-size:24px;">📅</div>
-      </div>
   </div>
 
   <!-- 2. PROFIL -->
   <div id="view-profile" class="screen">
       <div class="g-profile-header">
           <div class="g-profile-user">
-              <img src="https://ui-avatars.com/api/?name=Shoxrux&background=e0eaff&color=1e5ab9" class="g-avatar" alt="User">
+              <img src="https://cdn.3dicons.com/3dicons/avatar-3.png" class="g-avatar" style="background:#fff;" alt="User">
               <div class="g-user-info">
                   <h3>A. Shoxrux</h3>
                   <p>+998 (90) 099-25-33</p>
@@ -438,58 +473,37 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
       </div>
 
       <div class="g-id-card">
-          <div class="g-flag-text">O'ZBEKISTON RESPUBLIKASI / REPUBLIC OF UZBEKISTAN</div>
+          <div class="g-flag-text">O'ZBEKISTON RESPUBLIKASI</div>
           <div class="g-passport-info">
               <div style="width:100px; height:130px; background:#ccc; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:30px;">👤</div>
               <div class="g-id-details">
-                  <p>FAMILIYASI / SURNAME</p>
-                  <h4>ABBOSOV</h4>
-                  <p>ISMI / GIVEN NAME</p>
-                  <h4>SHOKHRUKH</h4>
-                  <p>TUG'ILGAN SANA / DATE OF BIRTH</p>
-                  <h4>08.03.2003</h4>
+                  <p>FAMILIYASI</p><h4>ABBOSOV</h4>
+                  <p>ISMI</p><h4>SHOKHRUKH</h4>
+                  <p>TUG'ILGAN SANA</p><h4>08.03.2003</h4>
               </div>
           </div>
-          <div class="g-id-number">P&lt;UZBABBOSOV&lt;&lt;SHOKHRUKH&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>AC17588038AZE0303088M29032195080303659004786</div>
       </div>
 
-      <button class="g-btn-primary">📄 Raqamli hujjatlar va ma'lumotlar <span style="background:#10b981; font-size:10px; padding:2px 8px; border-radius:10px;">Yangi</span></button>
+      <button class="g-btn-primary">📄 Raqamli hujjatlar <span style="background:#10b981; font-size:10px; padding:2px 8px; border-radius:10px;">Yangi</span></button>
 
       <div class="g-menu-list">
-          <div class="g-menu-item">
-              <div class="g-menu-icon bg-green">❤️</div>
-              <div class="g-menu-text">
-                  <h4>Mening salomatligim</h4>
-                  <p>Salomatligimga tegishli ma'lumotnom...</p>
-              </div>
-              <span style="background:#10b981; color:white; font-size:10px; padding:2px 8px; border-radius:10px; margin-right:8px;">Yangi</span>
-              <div class="g-menu-arrow">❯</div>
-          </div>
-
           <div class="g-menu-item" onclick="switchGovTab('family')">
-              <div class="g-menu-icon bg-gray">👨‍👩‍👦</div>
+              <div class="g-menu-icon">
+                  <img src="https://cdn.3dicons.com/3dicons/family.png" class="icon-3d-sm" alt="Family">
+              </div>
               <div class="g-menu-text">
                   <h4>Mening oilam</h4>
                   <p>Oila tarkibi</p>
               </div>
               <div class="g-menu-arrow">❯</div>
           </div>
-
           <div class="g-menu-item">
-              <div class="g-menu-icon bg-gray">🏠</div>
-              <div class="g-menu-text">
-                  <h4>Mening uyim</h4>
-                  <p>Mulk va kadastr</p>
+              <div class="g-menu-icon">
+                  <img src="https://cdn.3dicons.com/3dicons/heart.png" class="icon-3d-sm" alt="Health">
               </div>
-              <span style="background:#10b981; color:white; font-size:10px; padding:2px 8px; border-radius:10px; margin-right:8px;">Yangi</span>
-              <div class="g-menu-arrow">❯</div>
-          </div>
-          
-          <div class="g-menu-item">
-              <div class="g-menu-icon bg-gray">🚗</div>
               <div class="g-menu-text">
-                  <h4>Mening avtotransportim</h4>
-                  <p>Transport vositalari</p>
+                  <h4>Mening salomatligim</h4>
+                  <p>Tibbiy ma'lumotlar</p>
               </div>
               <div class="g-menu-arrow">❯</div>
           </div>
@@ -532,17 +546,6 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
           <div class="g-copy-btn">📋</div>
       </div>
 
-      <div class="g-section-title">Ma'lumotnomalar va salomatlik</div>
-
-      <div class="g-info-card">
-          <div class="g-info-icon" style="background:#d1fae5; color:#10b981;">🩺</div>
-          <div class="g-info-content">
-              <p>Salomatlik</p>
-              <h4 style="font-size:13px; color:#8b929e; font-weight:400;">Tibbiy karta va salomatlik ma'lumotlari</h4>
-          </div>
-          <div class="g-menu-arrow">❯</div>
-      </div>
-
       <div style="background:#fff; border-radius:24px; display:flex; justify-content:center; gap:30px; padding:16px; margin-top:20px; box-shadow:0 -2px 10px rgba(0,0,0,0.02);">
           <div style="text-align:center; opacity:0.5;">
               <div style="width:50px; height:50px; border-radius:50%; background:#fce7f3; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; color:#ef4444; font-weight:bold;">AC</div>
@@ -580,7 +583,6 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
       </div>
   </div>
 </div>
-
 
 <!-- MODALLAR -->
 <div class="ov" id="ov" onclick="closeModal()"></div>
@@ -625,8 +627,9 @@ body.light .bn{background:rgba(255,255,255,.92);box-shadow:0 14px 34px rgba(61,1
   <button class="btn" onclick="savePar()">SAQLASH</button><button class="btn bo" onclick="closeModal()">BEKOR QILISH</button></div>
 
 <script>
+// BOT TO'G'RILANDI!
 const firebaseConfig={databaseURL:"https://idum-futbol-default-rtdb.firebaseio.com/"};
-const ADMIN_LOGIN="Arif",ADMIN_PASS="0717",BOT="api_bot_coll";
+const ADMIN_LOGIN="Arif",ADMIN_PASS="0717",BOT="todo_plus_bot";
 let db=null;
 try{firebase.initializeApp(firebaseConfig);db=firebase.database()}
 catch(e){document.addEventListener('DOMContentLoaded',()=>{const b=document.createElement('div');b.style.cssText='position:fixed;top:0;left:0;right:0;padding:12px;background:#EF4444;color:#fff;z-index:999;font:600 13px sans-serif;text-align:center';b.textContent="Bazaga ulanib bo'lmadi. Internetni tekshirib, sahifani yangilang.";document.body.appendChild(b)})}
@@ -645,17 +648,14 @@ const parentOf=id=>Object.entries(PR).find(([,p])=>p.children&&p.children[id])||
 const phoneOf=id=>{const p=parentOf(id);return (p&&p[1].phone)||(/^\d{9,}$/.test(id)?id:'')};
 const fmt=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
 
-/* ====== Effektlar ====== */
+/* Effektlar */
 function confetti(){const c=$('fx'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const k=['#3d7bff','#ff4d6d','#ffc83d','#2ee6a6','#fff'];
 const ps=Array.from({length:130},()=>({x:innerWidth/2,y:innerHeight*.6,vx:(Math.random()-.5)*16,vy:-Math.random()*17-4,s:Math.random()*7+3,c:k[Math.random()*5|0],r:Math.random()*6}));let f=0;
 (function t(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.r+=.2;x.fillStyle=p.c;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);x.restore()});if(++f<110)requestAnimationFrame(t);else x.clearRect(0,0,c.width,c.height)})()}
 const tl=$('tilt');tl.addEventListener('pointermove',e=>{const r=tl.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;tl.style.transform=`perspective(800px) rotateY(${px*10}deg) rotateX(${-py*10}deg)`});tl.addEventListener('pointerleave',()=>tl.style.transform='');
 function countUp(el,to,suf){let n=0;const st=Math.max(1,Math.ceil(to/30)),i=setInterval(()=>{n=Math.min(to,n+st);el.innerText=n+suf;if(n>=to)clearInterval(i)},25)}
 
-(function(){const E=['⚽','⭐','🏆','👟','🥅','✨','⚽'],b=$('fls');for(let i=0;i<20;i++){const e=document.createElement('span');e.className='fl';e.textContent=E[i%E.length];
-e.style.cssText=`left:${Math.random()*96}vw;font-size:${14+Math.random()*22}px;animation-duration:${14+Math.random()*16}s;animation-delay:${-Math.random()*20}s`;b.appendChild(e)}})();
-
-/* ====== Umumiy ====== */
+/* Umumiy */
 function toggleTheme(){document.body.classList.toggle('light')}
 let lang='uz';function toggleLang(){lang=lang==='uz'?'ru':'uz';document.querySelectorAll('[data-'+lang+']').forEach(e=>e.innerText=e.getAttribute('data-'+lang))}
 function setMode(i,el){document.querySelectorAll('.mode').forEach(m=>m.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));$('pane'+i).classList.add('on')}
@@ -665,8 +665,14 @@ function showScreen(id){
     $('govApp').classList.add('active');
     $('govApp').style.display = 'block';
     switchGovTab('finance');
+    $('bnav').hidden = true;
   } else {
     $(id).classList.add('active');
+    if(['familyScreen','parentScreen','tourScreen','statScreen','walletScreen','profileScreen'].includes(id) && PAR){
+        $('bnav').hidden = false;
+    } else {
+        $('bnav').hidden = true;
+    }
   }
   scrollTo(0,0);syncNav(id)
 }
@@ -684,7 +690,7 @@ function onSettings(s){
   $('pAmt').innerText=S.amount;
 }
 
-/* ====== Ro'yxatdan o'tish ====== */
+/* Ro'yxatdan o'tish */
 function done(btn,label,ids){confetti();alert("Arizangiz yuborildi! Murabbiy tasdiqlashini kuting.");ids.forEach(i=>$(i).value='');btn.innerText=label;btn.disabled=false;setMode(0,document.querySelector('.mode'))}
 function fail(btn,label,e){alert(e.message||e);btn.innerText=label;btn.disabled=false}
 function submitApplication(){
@@ -693,7 +699,8 @@ function submitApplication(){
   b.innerText="Yuborilmoqda...";b.disabled=true;
   db.ref('applications').push({type:'parent',parentName,childName,phone,age,date:today()}).then(()=>done(b,L,['appParentName','appChildName','appPhone','appAge'])).catch(e=>fail(b,L,e));
 }
-/* ====== Kirish ====== */
+
+/* Kirish */
 if(db)db.ref('settings').on('value',onSettings);
 async function login(){
   const u0=v('loginUser'),p=v('loginPass');if(!u0||!p)return alert("Login va parolni kiriting!");
@@ -739,7 +746,7 @@ function openKid(id){if(!KIDS[id])return;me={...KIDS[id],id};showParent()}
 function backFamily(){me=null;closeModal();showScreen('familyScreen');renderFamily()}
 function logout(){clearInterval(admT);subs.forEach(r=>r.off());subs=[];me=null;PL={};PAR=null;KIDS={};KS=new Set();PR={};$('loginUser').value='';$('loginPass').value='';showScreen('loginScreen')}
 
-/* ====== Ota-ona / o'yinchi ekrani ====== */
+/* Ota-ona / o'yinchi ekrani */
 function showParent(){
   const u=me;showScreen('parentScreen');
   $('pName').innerText=u.name||'Ism kiritilmagan';$('pUser').innerText="@"+(u.name||'user').toLowerCase().replace(/\s+/g,'_');
@@ -770,7 +777,7 @@ function openHistory(){openModal('histModal');db.ref('payments/'+me.id).once('va
   l.innerHTML=s.exists()?Object.values(s.val()).reverse().map(p=>`<div class="li"><span>${esc(p.date)}</span><b>${esc(p.amount)} so'm</b></div>`).join(''):"<p style='text-align:center;color:var(--muted)'>Tarix bo'sh</p>"})}
 function markPending(){db.ref('players/'+me.id+'/paid').set("pending").then(()=>{closeModal();alert("Murabbiy tez orada tasdiqlaydi.")}).catch(e=>alert(e.message))}
 
-/* ====== Avtomatik to'lov (noyob summa) ====== */
+/* Avtomatik to'lov */
 function payOff(){clearInterval(ordT);if(ORD){ORD.off();ORD=null}}
 function cp(k){const t=k==='a'?String(curTotal):digits(S.card||'');(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Nusxalandi: "+t)).catch(()=>prompt("Nusxalang:",t))}
 function paidOk(){payOff();closeModal();confetti();alert("To'lov qabul qilindi! ✅")}
@@ -802,7 +809,7 @@ function confirmOrder(k){
   db.ref().update(u).then(confetti).catch(e=>alert(e.message));
 }
 
-/* ====== Admin ====== */
+/* Admin */
 function startAdmin(){
   sub(db.ref('settings'),s=>{if(s.exists())S={...S,...s.val()};
     $('sCard').value=S.card||'';$('sAmt').value=S.amount||'';$('sDow').value=S.scheduleDay;$('sTime').value=S.scheduleTime||'16:00';$('sAnn').value=S.announcement||'';
@@ -928,7 +935,7 @@ function adminTab(t,el){
   $('fltBar').classList.toggle('hidden',t!=='students'&&t!=='attend');
 }
 
-/* ====== Pastki navigatsiya (81 IDUM) ====== */
+/* Pastki navigatsiya (81 IDUM) */
 const NAV_SCREENS=['familyScreen','parentScreen','tourScreen','statScreen','walletScreen','profileScreen'];
 const NAV_TAB={familyScreen:'home',parentScreen:'home',tourScreen:'tour',statScreen:'stat',walletScreen:'wallet',profileScreen:'profile'};
 function syncNav(id){
@@ -958,4 +965,52 @@ async function loadTour(){
 }
 function renderStats(){
   const bar=(l,val,max,suf)=>{const pc=Math.min(100,(+val||0)/max*100);return `<div class="sb"><div class="sbh"><span>${l}</span><span>${+val||0}${suf}</span></div><div class="sbg"><div class="sf ${pc<50?'fr':'fg'}" style="width:${pc}%"></div></div></div>`};
-  $('sList').innerHTML=kidsOf().map(k=>{const p=KIDS[k];return `<div class="card"><h3 style="margin-bottom:12px;font-size:15px">${esc(p.name)}</h3>${bar("O'zlashtirish",p.progress,100,'%')}${bar('Gollar',p.goals,20,' ta')}${bar('Asistlar',p.assists,20,' ta')}${bar('Tezlik',p.speed,
+  $('sList').innerHTML=kidsOf().map(k=>{const p=KIDS[k];return `<div class="card"><h3 style="margin-bottom:12px;font-size:15px">${esc(p.name)}</h3>${bar("O'zlashtirish",p.progress,100,'%')}${bar('Gollar',p.goals,20,' ta')}${bar('Asistlar',p.assists,20,' ta')}${bar('Tezlik',p.speed,100,'%')}${bar("Mashg'ulotlar",p.trainings,30,' marta')}</div>`}).join('')
+    ||`<div class="card"><p class="note" style="text-align:center;margin:0">Farzand biriktirilmagan</p></div>`;
+}
+function renderWallet(){
+  $('wList').innerHTML=kidsOf().map(k=>{
+    const p=KIDS[k],ok=p.paid===true||p.paid==="paid",cls=ok?'bs':p.paid==="pending"?'bw':'bx',tx=ok?"To'langan ✅":p.paid==="pending"?"Kutilmoqda ⏳":"To'lanmagan ❌";
+    return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div><b>${esc(p.name)}</b><br><small style="color:var(--muted)">Oylik: ${esc(S.amount)} so'm</small></div><span class="badge ${cls}">${tx}</span></div><div class="row" style="justify-content:flex-start;margin-top:12px">${ok?'':`<button class="btn sm" onclick="payKid('${k}')">💳 To'lov qilish</button>`}<button class="btn sm bo" onclick="histKid('${k}')">🧾 Tarix</button></div></div>`;
+  }).join('')||`<div class="card"><p class="note" style="text-align:center;margin:0">Farzand biriktirilmagan</p></div>`;
+}
+function payKid(k){openKid(k);startPay()}
+function histKid(k){openKid(k);openHistory()}
+function renderProfile(){
+  $('prName').innerText=PAR.name||PAR.id;
+  $('prInfo').innerText=`Login: ${PAR.id}`+(PAR.phone?`\nTelefon: +${PAR.phone}`:'')+`\nFarzandlar: ${kidsOf().length} ta`;
+}
+
+/* ================= GOV APP LOGIKASI ================= */
+function openGovApp() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('govApp').classList.add('active');
+    document.getElementById('govApp').style.display = 'block';
+    document.getElementById('bnav').hidden = true;
+    switchGovTab('finance');
+    window.scrollTo(0, 0);
+}
+
+function closeGovApp() {
+    document.getElementById('govApp').style.display = 'none';
+    showScreen('profileScreen');
+}
+
+function switchGovTab(tab) {
+    document.querySelectorAll('#govApp .screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('view-' + tab).classList.add('active');
+    
+    document.querySelectorAll('#govApp .g-nav-item').forEach(nav => nav.classList.remove('active'));
+    if(tab === 'finance') document.getElementById('g-nav-finance').classList.add('active');
+    if(tab === 'profile' || tab === 'family') document.getElementById('g-nav-profile').classList.add('active');
+}
+
+/* PWA MANIFEST */
+try{const ic="data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#070b1f'/><text x='50' y='64' font-size='42' font-weight='900' text-anchor='middle' fill='#3d7bff' font-family='sans-serif'>81</text></svg>");
+const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify({name:"81 IDUM Pro Stats",short_name:"81 IDUM",start_url:location.pathname,display:"standalone",background_color:"#070b1f",theme_color:"#070b1f",icons:[{src:ic,sizes:"512x512",type:"image/svg+xml"}]})],{type:'application/manifest+json'}));document.head.appendChild(l);
+}catch(e){}
+
+closeModal();
+</script>
+</body>
+</html>
