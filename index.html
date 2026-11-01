@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#060d19">
+<meta name="theme-color" content="#090514">
 <title>Qarabağ FK Akademiyasi</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,18 +16,17 @@
 
 <style>
 :root {
-  --bg: #060d19;
-  --card-bg: rgba(13, 24, 46, 0.85);
-  --border: rgba(212, 175, 55, 0.25);
-  --gold: #d4af37;
-  --gold-light: #f5d77f;
-  --gold-glow: rgba(212, 175, 55, 0.3);
-  --blue: #1c4ed8;
-  --coral: #ff4d6d;
-  --ok: #2ee6a6;
+  --bg: #090514; /* To'q binafsha fon */
+  --card-bg: rgba(25, 15, 45, 0.7);
+  --border: rgba(168, 85, 247, 0.3); /* Binafsha ramka */
+  --primary: #9333EA; /* Asosiy binafsha */
+  --primary-light: #C084FC;
+  --primary-glow: rgba(147, 51, 234, 0.4);
   --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --input-bg: rgba(6, 13, 25, 0.8);
+  --text-muted: #a78bfa;
+  --input-bg: rgba(15, 8, 30, 0.8);
+  --ok: #2ee6a6;
+  --coral: #ff4d6d;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -42,89 +41,92 @@ body {
   position: relative;
 }
 
-/* ==========================================
-   1-RASM (ORQA FON) HAVOLASINI SHU YERGA QO'YING
-   ========================================== */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  /* Bu yerga 1-rasmning (binafsha) havolasini qo'ying. Namuna: */
-  background-image: url('https://i.postimg.cc/1-rasm-havolasi.jpg'); 
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  opacity: 0.4; /* Rasm xiraroq ko'rinib, yozuvlar o'qilishi uchun */
-}
-
-/* Qoraytiruvchi parda */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(180deg, rgba(6,13,25,0.7) 0%, rgba(6,13,25,0.95) 100%);
-}
-
 h1, h2, h3, .brand, .btn, .tab, .mode, .bn-i span { font-family: 'Unbounded', sans-serif; }
+
+/* Orqa fon effekti (Ultra Binafsha) */
+.aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.aurora i { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.4; }
+.aurora i:nth-child(1) { width: 80vw; height: 80vw; background: #4c1d95; top: -20vw; left: -20vw; }
+.aurora i:nth-child(2) { width: 70vw; height: 70vw; background: #d946ef; bottom: -15vw; right: -20vw; opacity: 0.2; }
+.aurora i:nth-child(3) { width: 50vw; height: 50vw; background: #3b82f6; top: 40%; left: 30%; opacity: 0.15; }
 
 /* Ekranlar */
 .screen { display: none; padding: 16px; max-width: 520px; margin: 0 auto; }
 .screen.active { display: block; animation: fadeIn .3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-/* Header */
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-top: 6px; }
-.brand-box { display: flex; align-items: center; gap: 10px; }
-
-/* Logotip (Kichik tepadagi) */
-.brand-logo { 
-  width: 40px; height: 40px; 
-  border-radius: 8px; /* Gerb to'liq ko'rinishi uchun aylana emas, yumaloq kvadrat */
-  border: 1.5px solid var(--gold); 
-  background: #0a1324; 
-  display: flex; align-items: center; justify-content: center; 
-  box-shadow: 0 0 12px var(--gold-glow); 
-  overflow: hidden; 
+/* Login ekrani uchun maxsus tuzilma */
+#loginScreen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 20px;
 }
-.brand-logo img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
-.brand { font-size: 16px; font-weight: 800; background: linear-gradient(90deg, #fff, var(--gold-light), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.top-actions { display: flex; gap: 8px; }
-.lang-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--gold-light); padding: 6px 12px; border-radius: 10px; font: 700 10px 'Unbounded'; cursor: pointer; }
 
-/* Kartalar */
+/* Header */
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.brand-box { display: flex; align-items: center; gap: 10px; }
+.brand-logo { width: 36px; height: 36px; border-radius: 8px; border: 1.5px solid var(--primary); background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px var(--primary-glow); overflow: hidden; }
+.brand-logo img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
+.brand { font-size: 16px; font-weight: 800; background: linear-gradient(90deg, #fff, var(--primary-light), var(--primary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lang-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--primary-light); padding: 6px 12px; border-radius: 10px; font: 700 10px 'Unbounded'; cursor: pointer; }
+
+/* Markaziy Logotip */
+.center-logo-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.main-logo {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0px 10px 30px var(--primary-glow));
+  margin-bottom: 15px;
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+.center-title { font: 900 22px 'Unbounded'; color: #fff; letter-spacing: 1px; text-shadow: 0 0 20px var(--primary-glow); }
+
+/* Kirish qismi */
+.login-container {
+  width: 100%;
+  margin-top: auto;
+}
 .card { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 14px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); position: relative; }
 
-/* Kirish */
 .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--input-bg); padding: 4px; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); }
 .mode { padding: 10px; text-align: center; border-radius: 8px; font-size: 10px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: .2s; }
-.mode.on { background: linear-gradient(135deg, var(--gold), #997517); color: #060d19; }
+.mode.on { background: linear-gradient(135deg, var(--primary), #7e22ce); color: #fff; box-shadow: 0 0 15px var(--primary-glow); }
 .pane { display: none; }
 .pane.on { display: block; }
 
-/* Formalar */
 .ig { margin-bottom: 12px; }
 .ig label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
 .inp { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font: 600 13px 'Manrope'; outline: none; transition: .2s; }
-.inp:focus { border-color: var(--gold); }
-select.inp option { background: #0d182e; color: #fff; }
+.inp:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+select.inp option { background: #190f2d; color: #fff; }
 .note { font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-top: 4px; }
 
-/* Tugmalar */
-.btn { width: 100%; padding: 13px; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--gold), #aa8420); color: #060d19; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 4px 15px var(--gold-glow); transition: .2s; margin-top: 8px; }
+.btn { width: 100%; padding: 13px; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--primary), #7e22ce); color: #fff; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none; box-shadow: 0 4px 15px var(--primary-glow); transition: .2s; margin-top: 8px; }
 .btn:active { transform: scale(.97); }
-.btn.bo { background: transparent; color: var(--text); border: 1px solid var(--border); box-shadow: none; }
+.btn.bo { background: transparent; color: var(--primary-light); border: 1px solid var(--primary); box-shadow: none; }
 .btn.bd { background: linear-gradient(135deg, var(--coral), #ba1a38); color: #fff; box-shadow: none; }
 .btn.bok { background: linear-gradient(135deg, #10b981, var(--ok)); color: #04241a; box-shadow: none; }
 .btn.sm { width: auto; padding: 6px 10px; font-size: 9px; border-radius: 8px; margin-top: 0; }
 
-/* Badjlar */
 .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; display: inline-block; }
 .bs { background: rgba(46, 230, 166, 0.15); color: var(--ok); border: 1px solid var(--ok); }
 .bx { background: rgba(255, 77, 109, 0.15); color: var(--coral); border: 1px solid var(--coral); }
-.bw { background: rgba(212, 175, 55, 0.15); color: var(--gold-light); border: 1px solid var(--gold); }
-.jersey-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--gold); color: #060d19; font-size: 10px; font-weight: 900; width: 24px; height: 24px; border-radius: 6px; }
+.bw { background: rgba(168, 85, 247, 0.15); color: var(--primary-light); border: 1px solid var(--primary); }
+.jersey-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--primary); color: #fff; font-size: 10px; font-weight: 900; width: 24px; height: 24px; border-radius: 6px; }
 
 /* Statistika */
 .sb { margin-bottom: 10px; }
@@ -142,90 +144,95 @@ select.inp option { background: #0d182e; color: #fff; }
 .pitch-box.bottom { bottom: 0; border-bottom: none; }
 
 .pitch-pos { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -50%); z-index: 2; }
-.pos-shirt { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); border: 2px solid #fff; color: #060d19; font: 900 12px 'Unbounded'; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-.pos-role { font: 700 8px 'Unbounded'; background: rgba(6, 13, 25, 0.9); color: var(--gold-light); padding: 2px 6px; border-radius: 4px; margin-top: 2px; border: 1px solid var(--border); }
+.pos-shirt { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); border: 2px solid #fff; color: #fff; font: 900 12px 'Unbounded'; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+.pos-role { font: 700 8px 'Unbounded'; background: rgba(9, 5, 20, 0.9); color: var(--primary-light); padding: 2px 6px; border-radius: 4px; margin-top: 2px; border: 1px solid var(--border); }
 .pos-name { font-size: 9px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px #000; margin-top: 2px; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Pastki menyu */
-.bn { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); width: min(calc(100% - 16px), 520px); display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; padding: 6px; border-radius: 20px; background: rgba(10, 19, 36, 0.95); backdrop-filter: blur(15px); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); z-index: 90; }
+.bn { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); width: min(calc(100% - 16px), 520px); display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; padding: 6px; border-radius: 20px; background: rgba(15, 8, 30, 0.95); backdrop-filter: blur(15px); border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); z-index: 90; }
 .bn[hidden] { display: none !important; }
 .bn-i { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 6px 2px; border: 0; border-radius: 12px; background: transparent; color: var(--text-muted); cursor: pointer; transition: .2s; }
 .bn-i .ic { font-size: 16px; }
 .bn-i span { font-size: 7.5px; font-weight: 700; text-align: center; }
-.bn-i.on { background: linear-gradient(135deg, var(--gold), #aa8420); color: #060d19; }
+.bn-i.on { background: linear-gradient(135deg, var(--primary), #7e22ce); color: #fff; box-shadow: 0 0 10px var(--primary-glow); }
 .bn-i:active { transform: scale(.9); }
 
 /* Admin Tablar */
 .tabs { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab { padding: 8px 12px; border-radius: 8px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text-muted); font-size: 9px; font-weight: 700; white-space: nowrap; cursor: pointer; }
-.tab.active { background: var(--gold); color: #060d19; border-color: var(--gold); }
+.tab.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
 .hidden { display: none !important; }
 .li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; background: var(--input-bg); border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border); font-size: 12px; }
 
 /* Modallar */
-.ov { position: fixed; inset: 0; background: rgba(2, 6, 15, 0.8); backdrop-filter: blur(4px); z-index: 100; opacity: 0; visibility: hidden; transition: .3s; }
+.ov { position: fixed; inset: 0; background: rgba(4, 2, 10, 0.8); backdrop-filter: blur(4px); z-index: 100; opacity: 0; visibility: hidden; transition: .3s; }
 .ov.active { opacity: 1; visibility: visible; }
-.modal { position: fixed; bottom: -100%; left: 0; right: 0; max-width: 520px; margin: 0 auto; background: #091325; border-radius: 22px 22px 0 0; padding: 20px; transition: .3s ease-in-out; z-index: 101; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border); }
+.modal { position: fixed; bottom: -100%; left: 0; right: 0; max-width: 520px; margin: 0 auto; background: #110921; border-radius: 22px 22px 0 0; padding: 20px; transition: .3s ease-in-out; z-index: 101; max-height: 90vh; overflow-y: auto; border: 1px solid var(--primary); }
 .modal.active { bottom: 0; }
 
 /* Bosh sahifa Hero */
-.hero-home { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; border: 1.5px solid var(--gold); background: radial-gradient(circle at top, rgba(212,175,55,0.15) 0%, rgba(13,24,46,0.9) 80%); }
-
-/* KATTA LOGOTIP (Bosh sahifada) */
-.hero-logo { 
-  width: 180px; /* Kattalashtirildi */
-  height: auto; 
-  margin-bottom: 15px; 
-  filter: drop-shadow(0px 8px 20px rgba(212, 175, 55, 0.6)); /* Oltin rang nur sochadi */
-}
-.hero-title-qfk { font: 900 20px/1.1 'Unbounded'; background: linear-gradient(90deg, var(--gold), #fff, var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 10px; }
+.hero-home { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; border: 1.5px solid var(--primary); background: radial-gradient(circle at top, rgba(147,51,234,0.15) 0%, rgba(25,15,45,0.9) 80%); }
+.hero-logo { width: 160px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 8px 20px var(--primary-glow)); }
+.hero-title-qfk { font: 900 20px/1.1 'Unbounded'; background: linear-gradient(90deg, #fff, var(--primary-light), var(--primary)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 10px; }
 .hero-text { font-size: 12px; line-height: 1.5; color: var(--text-muted); margin-bottom: 12px; }
-.hero-motto { font: 700 12px 'Unbounded'; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+.hero-motto { font: 700 12px 'Unbounded'; color: var(--primary-light); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
 </style>
 </head>
 <body>
+
+<div class="aurora"><i></i><i></i><i></i></div>
 
 <!-- 1. LOGIN / ARIZA -->
 <div class="screen active" id="loginScreen">
   <div class="header">
     <div class="brand-box">
-      <!-- KICHIK LOGOTIP -->
-      <div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div>
+      <div class="brand-logo">
+        <img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK">
+      </div>
       <div class="brand">QARABAĞ FK</div>
     </div>
     <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div>
   </div>
 
-  <div class="modes">
-    <div class="mode on" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД">KIRISH</div>
-    <div class="mode" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА">ARIZA TOPSHIRISH</div>
+  <!-- Markaziy Katta Logotip -->
+  <div class="center-logo-container">
+    <img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="Qarabağ FK" class="main-logo">
+    <div class="center-title">QARABAĞ FK</div>
   </div>
 
-  <div class="card">
-    <div class="pane on" id="pane0">
-      <div class="ig">
-        <label data-uz="Telefon raqami (Login)" data-ru="Номер телефона (Логин)">Telefon raqami (Login)</label>
-        <input type="text" id="loginUser" class="inp" placeholder="998901234567">
-      </div>
-      <div class="ig">
-        <label data-uz="Parol" data-ru="Пароль">Parol</label>
-        <input type="password" id="loginPass" class="inp" placeholder="••••••••">
-      </div>
-      <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ">TIZIMGA KIRISH</button>
+  <!-- Pastki Kirish Qismi -->
+  <div class="login-container">
+    <div class="modes">
+      <div class="mode on" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД">KIRISH</div>
+      <div class="mode" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА">ARIZA TOPSHIRISH</div>
     </div>
 
-    <div class="pane" id="pane1">
-      <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input id="appParentName" class="inp" placeholder="Alisher Valiyev"></div>
-      <div class="ig"><label data-uz="Farzand ismi" data-ru="Имя ребенка">Farzand ismi</label><input id="appChildName" class="inp" placeholder="Ali"></div>
-      <div class="ig"><label data-uz="Telefon raqamingiz" data-ru="Ваш номер телефона">Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
-      <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка">Farzandning yoshi</label><input type="number" id="appAge" class="inp" placeholder="10"></div>
-      <div class="ig">
-        <label data-uz="Parol o'ylab toping" data-ru="Придумайте пароль">Parol o'ylab toping</label>
-        <input type="text" id="appPass" class="inp" placeholder="Ali077%%">
-        <small class="note" style="color:var(--gold-light)" data-uz="Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!" data-ru="Заглавная буква и символ (% _ . ! @ # $) обязательны!">Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!</small>
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="pane on" id="pane0">
+        <div class="ig">
+          <label data-uz="Telefon raqami (Login)" data-ru="Номер телефона (Логин)">Telefon raqami (Login)</label>
+          <input type="text" id="loginUser" class="inp" placeholder="998901234567">
+        </div>
+        <div class="ig">
+          <label data-uz="Parol" data-ru="Пароль">Parol</label>
+          <input type="password" id="loginPass" class="inp" placeholder="••••••••">
+        </div>
+        <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ">TIZIMGA KIRISH</button>
       </div>
-      <button class="btn" id="btnApp" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ">ARIZA YUBORISH</button>
+
+      <div class="pane" id="pane1">
+        <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input id="appParentName" class="inp" placeholder="Alisher Valiyev"></div>
+        <div class="ig"><label data-uz="Farzand ismi" data-ru="Имя ребенка">Farzand ismi</label><input id="appChildName" class="inp" placeholder="Ali"></div>
+        <div class="ig"><label data-uz="Telefon raqamingiz" data-ru="Ваш номер телефона">Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
+        <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка">Farzandning yoshi</label><input type="number" id="appAge" class="inp" placeholder="10"></div>
+        <div class="ig">
+          <label data-uz="Parol o'ylab toping" data-ru="Придумайте пароль">Parol o'ylab toping</label>
+          <input type="text" id="appPass" class="inp" placeholder="Ali077%%">
+          <small class="note" style="color:var(--primary-light)" data-uz="Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!" data-ru="Заглавная буква и символ (% _ . ! @ # $) обязательны!">Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!</small>
+        </div>
+        <button class="btn" id="btnApp" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ">ARIZA YUBORISH</button>
+      </div>
     </div>
   </div>
 </div>
@@ -233,13 +240,12 @@ select.inp option { background: #0d182e; color: #fff; }
 <!-- 2. BOSH SAHIFA -->
 <div class="screen" id="homeScreen">
   <div class="header">
-    <div class="brand-box"><div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div>
+    <div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div>
     <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div>
   </div>
 
   <div class="card hero-home">
-    <!-- KATTA LOGOTIP -->
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="Qarabağ FK" class="hero-logo">
+    <img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="Qarabağ FK" class="hero-logo">
     
     <h1 class="hero-title-qfk" data-uz="QARABAĞ FK" data-ru="КАРАБАХ ФК">QARABAĞ FK</h1>
     <p class="hero-text" data-uz="🇺🇿 Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish va kuchli jamoa shakllantirish." data-ru="🇺🇿 Дух азербайджанского футбола, символ мужества и победы! Наша цель — выявлять и развивать молодые таланты.">
@@ -254,14 +260,14 @@ select.inp option { background: #0d182e; color: #fff; }
 
 <!-- 3. STATISTIKA -->
 <div class="screen" id="statScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
+  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
   <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Statistika" data-ru="Статистика">Statistika</h2>
   <div id="statKidsList"></div>
 </div>
 
 <!-- 4. MAYDON -->
 <div class="screen" id="pitchScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
+  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
     <h2 style="font-size: 16px;" data-uz="Asosiy Tarkib" data-ru="Состав">Asosiy Tarkib</h2>
     <span class="badge bs">6 O'YINCHI</span>
@@ -295,10 +301,10 @@ select.inp option { background: #0d182e; color: #fff; }
 
 <!-- 5. HAMYON -->
 <div class="screen" id="walletScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
+  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
   <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Hamyon" data-ru="Кошелек">Hamyon</h2>
-  <div class="card" style="border: 1px solid var(--gold);">
-    <small style="color:var(--gold); font: 700 9px 'Unbounded';" data-uz="OYLIK TO'LOV" data-ru="ОПЛАТА">OYLIK TO'LOV</small>
+  <div class="card" style="border: 1px solid var(--primary);">
+    <small style="color:var(--primary-light); font: 700 9px 'Unbounded';" data-uz="OYLIK TO'LOV" data-ru="ОПЛАТА">OYLIK TO'LOV</small>
     <div style="font-size: 20px; font-weight: 800; font-family: 'Unbounded'; margin: 6px 0;" id="walletMonthlyAmt">350 000 UZS</div>
   </div>
   <div id="walletKidsList"></div>
@@ -306,10 +312,10 @@ select.inp option { background: #0d182e; color: #fff; }
 
 <!-- 6. TURNIRLAR -->
 <div class="screen" id="tourScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
+  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
   <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Turnirlar" data-ru="Турниры">Turnirlar</h2>
-  <div class="card" style="border-left: 3px solid var(--gold);">
-    <small style="color:var(--gold); font: 700 9px 'Unbounded';" data-uz="KEYINGI O'YIN" data-ru="СЛЕДУЮЩИЙ МАТЧ">KEYINGI O'YIN</small>
+  <div class="card" style="border-left: 3px solid var(--primary);">
+    <small style="color:var(--primary-light); font: 700 9px 'Unbounded';" data-uz="KEYINGI O'YIN" data-ru="СЛЕДУЮЩИЙ МАТЧ">KEYINGI O'YIN</small>
     <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
       <b style="font-size: 14px;">Qarabağ FK</b>
       <span class="badge bw">VS</span>
@@ -325,13 +331,13 @@ select.inp option { background: #0d182e; color: #fff; }
 
 <!-- 7. PROFIL -->
 <div class="screen" id="profileScreen">
-  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
+  <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
   <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Profil" data-ru="Профиль">Profil</h2>
   <div class="card" style="text-align:center;">
-    <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--input-bg); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">👤</div>
+    <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--input-bg); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">👤</div>
     <h2 id="profParentName" style="font-size: 16px; margin-bottom: 4px;">—</h2>
-    <p class="note" id="profParentPhone" style="font-weight: 700; color: var(--gold);"></p>
-    <p class="note" id="profParentTg" style="margin-top: 4px; font-weight: 700; color: var(--blue);"></p>
+    <p class="note" id="profParentPhone" style="font-weight: 700; color: var(--primary-light);"></p>
+    <p class="note" id="profParentTg" style="margin-top: 4px; font-weight: 700; color: #60a5fa;"></p>
   </div>
   <button class="btn bd" style="margin-top: 12px;" onclick="logout()" data-uz="CHIQISH" data-ru="ВЫЙТИ">CHIQISH</button>
 </div>
@@ -339,7 +345,7 @@ select.inp option { background: #0d182e; color: #fff; }
 <!-- 8. ADMIN -->
 <div class="screen" id="adminScreen">
   <div class="header">
-    <div class="brand-box"><div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div><div class="brand">ADMIN</div></div>
+    <div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">ADMIN</div></div>
     <div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button><button class="btn bo sm" onclick="logout()">Chiqish</button></div>
   </div>
 
@@ -373,7 +379,7 @@ select.inp option { background: #0d182e; color: #fff; }
   </div>
 
   <div class="card atab hidden" id="at_settings">
-    <h3 style="font-size: 12px; margin-bottom: 10px; color: var(--gold-light);">Maydon Tarkibi</h3>
+    <h3 style="font-size: 12px; margin-bottom: 10px; color: var(--primary-light);">Maydon Tarkibi</h3>
     <div class="ig"><label>Darvozabon (GK)</label><select id="sel_gk" class="inp"></select></div>
     <div class="ig"><label>Chap Himoya (LB)</label><select id="sel_def1" class="inp"></select></div>
     <div class="ig"><label>O'ng Himoya (RB)</label><select id="sel_def2" class="inp"></select></div>
@@ -381,7 +387,7 @@ select.inp option { background: #0d182e; color: #fff; }
     <div class="ig"><label>O'ng Y.Himoya (RM)</label><select id="sel_mid2" class="inp"></select></div>
     <div class="ig"><label>Hujumchi (FWD)</label><select id="sel_fwd" class="inp"></select></div>
 
-    <h3 style="font-size: 12px; margin: 14px 0 10px; color: var(--gold-light);">O'yin</h3>
+    <h3 style="font-size: 12px; margin: 14px 0 10px; color: var(--primary-light);">O'yin</h3>
     <div class="ig"><label>Raqib</label><input id="setOpponent" class="inp"></div>
     <div class="ig"><label>Vaqti</label><input id="setMatchTime" class="inp"></div>
     <div class="ig"><label>E'lon</label><textarea id="setAnn" class="inp" rows="2"></textarea></div>
@@ -411,14 +417,14 @@ select.inp option { background: #0d182e; color: #fff; }
     <div style="background: rgba(255,77,109,0.1); border:1px solid var(--coral); color:var(--coral); padding:6px; border-radius:8px; font-size:10px; font-weight:700; margin:10px 0;">
       <span data-uz="Summani aynan o'zgartirmasdan to'lang!" data-ru="Оплатите точную сумму!">Summani aynan o'zgartirmasdan to'lang!</span>
     </div>
-    <div class="card" style="text-align:left; margin: 10px 0; padding:12px;">
+    <div class="card" style="text-align:left; margin: 10px 0; padding:12px; border-color:var(--primary);">
       <small style="color:var(--text-muted); font: 700 8px 'Unbounded';">TO'LOV SUMMASI</small>
       <div id="modalOrderAmount" style="font-size: 20px; font-family: monospace; font-weight:900; margin: 4px 0 6px; color: var(--ok);">...</div>
       <button class="btn sm bo" style="width:100%;padding:8px" onclick="copyText('modalOrderAmount')">📋 Nusxa olish</button>
     </div>
-    <div class="card" style="text-align:left; margin: 10px 0; padding:12px;">
+    <div class="card" style="text-align:left; margin: 10px 0; padding:12px; border-color:var(--primary);">
       <small style="color:var(--text-muted); font: 700 8px 'Unbounded';">KARTA RAQAMI</small>
-      <div id="modalOrderCard" style="font-size: 16px; font-family: monospace; font-weight:800; margin: 4px 0 6px; color: var(--gold-light);">...</div>
+      <div id="modalOrderCard" style="font-size: 16px; font-family: monospace; font-weight:800; margin: 4px 0 6px; color: var(--primary-light);">...</div>
       <button class="btn sm bo" style="width:100%;padding:8px" onclick="copyText('modalOrderCard')">📋 Nusxa olish</button>
     </div>
     <p class="note">⏰ Qolgan vaqt: <b id="modalOrderTimer" style="color:#fff;">10:00</b></p>
@@ -478,9 +484,6 @@ document.addEventListener("DOMContentLoaded", function() {
   let orderTimerInterval = null;
   let activeOrder = null;
 
-  // ==========================================
-  // ADMIN LOGIN VA PAROL SHU YERDA O'ZGARTIRILDI
-  // ==========================================
   const ADMIN_LOGIN = "1313";
   const ADMIN_PASS = "1212";
 
@@ -628,8 +631,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
     box.innerHTML = kids.map(k => {
       const isPaid = k.paid === true || k.paid === 'paid', badgeCls = isPaid ? 'bs' : (k.paid === 'pending' ? 'bw' : 'bx'), badgeTxt = isPaid ? DICT[currentLang].paid : (k.paid === 'pending' ? DICT[currentLang].pending : DICT[currentLang].unpaid);
-      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=0A1324&color=D4AF37&size=120`;
-      return `<div class="card"><div style="display:flex; align-items:center; gap: 12px;"><img src="${esc(photo)}" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--gold);"><div style="flex:1;"><div style="display:flex; align-items:center; gap:6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 14px;">${esc(k.name)}</b></div><small class="note">Guruh: ${esc(k.group || 'Asosiy')}</small><div style="margin-top: 4px;"><span class="badge ${badgeCls}">${badgeTxt}</span></div></div></div></div>`;
+      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=190f2d&color=C084FC&size=120`;
+      return `<div class="card"><div style="display:flex; align-items:center; gap: 12px;"><img src="${esc(photo)}" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--primary);"><div style="flex:1;"><div style="display:flex; align-items:center; gap:6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 14px;">${esc(k.name)}</b></div><small class="note">Guruh: ${esc(k.group || 'Asosiy')}</small><div style="margin-top: 4px;"><span class="badge ${badgeCls}">${badgeTxt}</span></div></div></div></div>`;
     }).join('');
   }
 
@@ -638,8 +641,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
     const rBar = (lbl, val, max, suf) => { const pc = Math.min(100, Math.max(0, (+val || 0) / max * 100)); return `<div class="sb"><div class="sbh"><span>${lbl}</span><span>${+val || 0}${suf}</span></div><div class="sbg"><div class="sf ${pc < 50 ? 'fr' : 'fg'}" style="width: ${pc}%"></div></div></div>`; };
     box.innerHTML = kids.map(k => {
-      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=0A1324&color=D4AF37&size=120`;
-      return `<div class="card"><div style="display:flex; align-items:center; gap: 10px; margin-bottom: 12px;"><img src="${esc(photo)}" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--gold);"><div><div style="display:flex; align-items:center; gap: 6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 14px;">${esc(k.name)}</b></div><p class="note" style="margin:2px 0 0;">${esc(k.bio || 'Qarabağ FK iqtidori')}</p></div></div>${rBar("O'zlashtirish", k.progress, 100, '%')}${rBar('Gollar', k.goals, 25, ' ta')}${rBar('Asistlar', k.assists, 20, ' ta')}${rBar('Tezlik', k.speed, 100, '%')}</div>`;
+      const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=190f2d&color=C084FC&size=120`;
+      return `<div class="card"><div style="display:flex; align-items:center; gap: 10px; margin-bottom: 12px;"><img src="${esc(photo)}" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--primary);"><div><div style="display:flex; align-items:center; gap: 6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 14px;">${esc(k.name)}</b></div><p class="note" style="margin:2px 0 0;">${esc(k.bio || 'Qarabağ FK iqtidori')}</p></div></div>${rBar("O'zlashtirish", k.progress, 100, '%')}${rBar('Gollar', k.goals, 25, ' ta')}${rBar('Asistlar', k.assists, 20, ' ta')}${rBar('Tezlik', k.speed, 100, '%')}</div>`;
     }).join('');
   }
 
@@ -727,7 +730,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const entries = Object.entries(ALL_APPLICATIONS), box = $('at_apps'), badge = $('ad_badge_apps');
     badge.innerText = entries.length; badge.classList.toggle('hidden', !entries.length);
     if (!entries.length) return box.innerHTML = `<p class="note" style="text-align:center;">Yangi arizalar mavjud emas.</p>`;
-    box.innerHTML = entries.map(([id, a]) => `<div class="li" style="flex-direction:column; align-items:flex-start;"><div style="width:100%; display:flex; justify-content:space-between;"><b>${esc(a.childName)}</b> <span class="badge bw">${esc(a.age)} yosh</span></div><small class="note">Ota-ona: ${esc(a.parentName)} | Tel: +${esc(a.phone)}</small><small class="note">TG: @${esc(a.tgUsername || 'yoʻq')} | Parol: <b style="color:var(--gold-light);">${esc(a.password)}</b></small><div style="display:flex; gap:6px; width:100%; margin-top:6px;"><button class="btn sm bok" style="flex:1;" onclick="acceptApp('${id}')">✔ Qabul</button><button class="btn sm bd" style="flex:1;" onclick="rejectApp('${id}')">✖ Rad etish</button></div></div>`).join('');
+    box.innerHTML = entries.map(([id, a]) => `<div class="li" style="flex-direction:column; align-items:flex-start;"><div style="width:100%; display:flex; justify-content:space-between;"><b>${esc(a.childName)}</b> <span class="badge bw">${esc(a.age)} yosh</span></div><small class="note">Ota-ona: ${esc(a.parentName)} | Tel: +${esc(a.phone)}</small><small class="note">TG: @${esc(a.tgUsername || 'yoʻq')} | Parol: <b style="color:var(--primary-light);">${esc(a.password)}</b></small><div style="display:flex; gap:6px; width:100%; margin-top:6px;"><button class="btn sm bok" style="flex:1;" onclick="acceptApp('${id}')">✔ Qabul</button><button class="btn sm bd" style="flex:1;" onclick="rejectApp('${id}')">✖ Rad etish</button></div></div>`).join('');
   }
 
   window.acceptApp = async function(appId) {
@@ -762,7 +765,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function renderAdminParents() {
     const list = Object.entries(ALL_PARENTS), box = $('at_parents');
     if (!list.length) return box.innerHTML = `<p class="note" style="text-align:center;">Ota-onalar mavjud emas.</p>`;
-    box.innerHTML = list.map(([ph, p]) => `<div class="li" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; justify-content:space-between; width:100%;"><b>${esc(p.name)}</b><small class="note">+${esc(ph)}</small></div><div class="note" style="color:var(--gold-light);">Parol: <b>${esc(p.password)}</b> | TG: @${esc(p.tgUsername || 'yoʻq')}</div><div style="margin-top:6px;"><button class="btn sm bo" onclick="copyLoginCreds('+${ph}', '${esc(p.password)}')">📋 Nusxa Olish</button></div></div>`).join('');
+    box.innerHTML = list.map(([ph, p]) => `<div class="li" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; justify-content:space-between; width:100%;"><b>${esc(p.name)}</b><small class="note">+${esc(ph)}</small></div><div class="note" style="color:var(--primary-light);">Parol: <b>${esc(p.password)}</b> | TG: @${esc(p.tgUsername || 'yoʻq')}</div><div style="margin-top:6px;"><button class="btn sm bo" onclick="copyLoginCreds('+${ph}', '${esc(p.password)}')">📋 Nusxa Olish</button></div></div>`).join('');
   }
 
   window.copyLoginCreds = function(l, p) { const t = `Qarabağ FK\nLogin: ${l}\nParol: ${p}`; navigator.clipboard.writeText(t).then(() => alert("Nusxalandi!")).catch(() => prompt("Nusxalang:", t)); };
