@@ -39,15 +39,35 @@ body {
   min-height: 100vh;
   padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   overflow-x: hidden;
+  position: relative;
+}
+
+/* ==========================================
+   1-RASM (ORQA FON) HAVOLASINI SHU YERGA QO'YING
+   ========================================== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /* Bu yerga 1-rasmning (binafsha) havolasini qo'ying. Namuna: */
+  background-image: url('https://i.postimg.cc/1-rasm-havolasi.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.4; /* Rasm xiraroq ko'rinib, yozuvlar o'qilishi uchun */
+}
+
+/* Qoraytiruvchi parda */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(6,13,25,0.7) 0%, rgba(6,13,25,0.95) 100%);
 }
 
 h1, h2, h3, .brand, .btn, .tab, .mode, .bn-i span { font-family: 'Unbounded', sans-serif; }
-
-/* Orqa fon effekti */
-.aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.aurora i { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.3; }
-.aurora i:nth-child(1) { width: 70vw; height: 70vw; background: #0c2340; top: -20vw; left: -15vw; }
-.aurora i:nth-child(2) { width: 60vw; height: 60vw; background: #d4af37; bottom: -15vw; right: -15vw; opacity: 0.15; }
 
 /* Ekranlar */
 .screen { display: none; padding: 16px; max-width: 520px; margin: 0 auto; }
@@ -57,8 +77,18 @@ h1, h2, h3, .brand, .btn, .tab, .mode, .bn-i span { font-family: 'Unbounded', sa
 /* Header */
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-top: 6px; }
 .brand-box { display: flex; align-items: center; gap: 10px; }
-.brand-logo { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--gold); background: #0a1324; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px var(--gold-glow); overflow: hidden; }
-.brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Logotip (Kichik tepadagi) */
+.brand-logo { 
+  width: 40px; height: 40px; 
+  border-radius: 8px; /* Gerb to'liq ko'rinishi uchun aylana emas, yumaloq kvadrat */
+  border: 1.5px solid var(--gold); 
+  background: #0a1324; 
+  display: flex; align-items: center; justify-content: center; 
+  box-shadow: 0 0 12px var(--gold-glow); 
+  overflow: hidden; 
+}
+.brand-logo img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
 .brand { font-size: 16px; font-weight: 800; background: linear-gradient(90deg, #fff, var(--gold-light), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .top-actions { display: flex; gap: 8px; }
 .lang-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--gold-light); padding: 6px 12px; border-radius: 10px; font: 700 10px 'Unbounded'; cursor: pointer; }
@@ -141,7 +171,14 @@ select.inp option { background: #0d182e; color: #fff; }
 
 /* Bosh sahifa Hero */
 .hero-home { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; border: 1.5px solid var(--gold); background: radial-gradient(circle at top, rgba(212,175,55,0.15) 0%, rgba(13,24,46,0.9) 80%); }
-.hero-logo { width: 120px; height: auto; margin-bottom: 12px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.6)); }
+
+/* KATTA LOGOTIP (Bosh sahifada) */
+.hero-logo { 
+  width: 180px; /* Kattalashtirildi */
+  height: auto; 
+  margin-bottom: 15px; 
+  filter: drop-shadow(0px 8px 20px rgba(212, 175, 55, 0.6)); /* Oltin rang nur sochadi */
+}
 .hero-title-qfk { font: 900 20px/1.1 'Unbounded'; background: linear-gradient(90deg, var(--gold), #fff, var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 10px; }
 .hero-text { font-size: 12px; line-height: 1.5; color: var(--text-muted); margin-bottom: 12px; }
 .hero-motto { font: 700 12px 'Unbounded'; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
@@ -149,12 +186,11 @@ select.inp option { background: #0d182e; color: #fff; }
 </head>
 <body>
 
-<div class="aurora"><i></i><i></i></div>
-
 <!-- 1. LOGIN / ARIZA -->
 <div class="screen active" id="loginScreen">
   <div class="header">
     <div class="brand-box">
+      <!-- KICHIK LOGOTIP -->
       <div class="brand-logo"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="QFK"></div>
       <div class="brand">QARABAĞ FK</div>
     </div>
@@ -170,7 +206,7 @@ select.inp option { background: #0d182e; color: #fff; }
     <div class="pane on" id="pane0">
       <div class="ig">
         <label data-uz="Telefon raqami (Login)" data-ru="Номер телефона (Логин)">Telefon raqami (Login)</label>
-        <input type="tel" id="loginUser" class="inp" placeholder="998901234567">
+        <input type="text" id="loginUser" class="inp" placeholder="998901234567">
       </div>
       <div class="ig">
         <label data-uz="Parol" data-ru="Пароль">Parol</label>
@@ -202,7 +238,9 @@ select.inp option { background: #0d182e; color: #fff; }
   </div>
 
   <div class="card hero-home">
+    <!-- KATTA LOGOTIP -->
     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0e/Qaraba%C4%9F_FK_logo.svg/1200px-Qaraba%C4%9F_FK_logo.svg.png" alt="Qarabağ FK" class="hero-logo">
+    
     <h1 class="hero-title-qfk" data-uz="QARABAĞ FK" data-ru="КАРАБАХ ФК">QARABAĞ FK</h1>
     <p class="hero-text" data-uz="🇺🇿 Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish va kuchli jamoa shakllantirish." data-ru="🇺🇿 Дух азербайджанского футбола, символ мужества и победы! Наша цель — выявлять и развивать молодые таланты.">
       🇺🇿 Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish va kuchli jamoa shakllantirish.
@@ -440,6 +478,12 @@ document.addEventListener("DOMContentLoaded", function() {
   let orderTimerInterval = null;
   let activeOrder = null;
 
+  // ==========================================
+  // ADMIN LOGIN VA PAROL SHU YERDA O'ZGARTIRILDI
+  // ==========================================
+  const ADMIN_LOGIN = "1313";
+  const ADMIN_PASS = "1212";
+
   const DICT = {
     uz: { appSuccess: "Arizangiz qabul qilindi!", emptyFields: "Hamma maydonlarni to'ldiring!", passError: "Parol Katta harf va maxsus belgi (% _ . ! @ # $) bilan boshlanishi shart!", userNotFound: "Bunday telefon raqamli ota-ona topilmadi!", passWrong: "Parol noto'g'ri!", paid: "To'langan ✅", pending: "Kutilmoqda ⏳", unpaid: "To'lanmagan ❌", copied: "Nusxa olindi: " },
     ru: { appSuccess: "Заявка принята!", emptyFields: "Заполните все поля!", passError: "Пароль должен начинаться с заглавной буквы и содержать спецсимвол (% _ . ! @ # $)!", userNotFound: "Родитель не найден!", passWrong: "Неверный пароль!", paid: "Оплачено ✅", pending: "В ожидании ⏳", unpaid: "Не оплачено ❌", copied: "Скопировано: " }
@@ -462,7 +506,6 @@ document.addEventListener("DOMContentLoaded", function() {
     $(screenId).classList.add('active');
     window.scrollTo(0, 0);
     
-    // Pastki menyu faqat ota-ona panelida ko'rinadi
     const isAppScreen = ['homeScreen', 'tourScreen', 'statScreen', 'pitchScreen', 'walletScreen', 'profileScreen'].includes(screenId);
     $('bottomNav').hidden = !(isAppScreen && currentUser);
     
@@ -485,9 +528,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function isValidPassword(p) { return /^[A-Z](?=.*[%_.\!@#$]).+$/.test(p); }
 
-  // ==========================================
-  // ARIZA TOPSHIRISH
-  // ==========================================
   window.submitApplication = async function() {
     const parentName = $('appParentName').value.trim(), childName = $('appChildName').value.trim(), phone = cleanDigits($('appPhone').value), age = $('appAge').value.trim(), password = $('appPass').value.trim(), btn = $('btnApp');
     
@@ -506,14 +546,11 @@ document.addEventListener("DOMContentLoaded", function() {
     finally { btn.disabled = false; btn.innerText = currentLang === 'uz' ? "ARIZA YUBORISH" : "ОТПРАВИТЬ"; }
   };
 
-  // ==========================================
-  // LOGIN / LOGOUT
-  // ==========================================
   window.login = async function() {
     const u = $('loginUser').value.trim(), p = $('loginPass').value.trim();
     if (!u || !p) return alert(DICT[currentLang].emptyFields);
     
-    if (u === "Arif" && p === "0717") { 
+    if (u === ADMIN_LOGIN && p === ADMIN_PASS) { 
       showScreen('adminScreen'); 
       return; 
     }
@@ -541,9 +578,6 @@ document.addEventListener("DOMContentLoaded", function() {
     showScreen('loginScreen'); 
   };
 
-  // ==========================================
-  // FIREBASE TINGLOVCHILARI
-  // ==========================================
   if (db) {
     db.ref('settings').on('value', snap => { 
       if (snap.exists()) SETTINGS = { ...SETTINGS, ...snap.val() }; 
@@ -589,9 +623,6 @@ document.addEventListener("DOMContentLoaded", function() {
     return (!currentUser || !currentUser.children) ? [] : Object.keys(currentUser.children).map(id => ({ id, ...ALL_PLAYERS[id] })).filter(p => p.name && !p.isArchived); 
   }
 
-  // ==========================================
-  // RENDERLAR (Ota-ona)
-  // ==========================================
   function renderHomeKids() {
     const kids = getMyChildren(), box = $('homeKidsList');
     if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
@@ -621,13 +652,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }).join('');
   }
 
-  // ==========================================
-  // TO'LOV MANTIG'I
-  // ==========================================
   window.initiateKidPay = async function(playerId) {
     const p = ALL_PLAYERS[playerId]; if (!p) return;
     const baseAmount = parseInt(String(SETTINGS.amount).replace(/\D/g, '')) || 350000;
-    const totalAmount = baseAmount + Math.floor(Math.random() * 98) + 1; // Noyob summa
+    const totalAmount = baseAmount + Math.floor(Math.random() * 98) + 1; 
     const expTime = Date.now() + (10 * 60 * 1000);
     const orderData = { playerId, playerName: p.name, parentPhone: currentUser.phone, base: baseAmount, total: totalAmount, status: 'pending', created: Date.now(), exp: expTime };
 
@@ -668,9 +696,6 @@ document.addEventListener("DOMContentLoaded", function() {
     navigator.clipboard.writeText(val).then(() => alert(DICT[currentLang].copied + val)).catch(() => prompt("Nusxalang:", val));
   };
 
-  // ==========================================
-  // MAYDON (PITCH) MANTIG'I
-  // ==========================================
   function renderPitchVisual() {
     const lu = SETTINGS.lineup || {};
     const setPos = (role, id) => { 
@@ -693,9 +718,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // ==========================================
-  // ADMIN PANEL MANTIG'I
-  // ==========================================
   window.adminTab = function(tName, el) {
     document.querySelectorAll('.tab').forEach(b => b.classList.remove('active')); el.classList.add('active');
     document.querySelectorAll('.atab').forEach(p => p.classList.add('hidden')); $('at_' + tName).classList.remove('hidden');
@@ -798,7 +820,6 @@ document.addEventListener("DOMContentLoaded", function() {
     try { await db.ref('settings').update(upd); alert("Sozlamalar saqlandi!"); } catch (e) { alert("Xato: " + e.message); }
   };
 
-  // Boshlang'ich holat
   showScreen('loginScreen');
 
 });
