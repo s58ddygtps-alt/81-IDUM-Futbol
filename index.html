@@ -16,10 +16,10 @@
 
 <style>
 :root {
-  --bg: #090514; /* To'q binafsha fon */
+  --bg: #090514; 
   --card-bg: rgba(25, 15, 45, 0.7);
-  --border: rgba(168, 85, 247, 0.3); /* Binafsha ramka */
-  --primary: #9333EA; /* Asosiy binafsha */
+  --border: rgba(168, 85, 247, 0.3); 
+  --primary: #9333EA; 
   --primary-light: #C084FC;
   --primary-glow: rgba(147, 51, 234, 0.4);
   --text: #f8fafc;
@@ -204,34 +204,34 @@ select.inp option { background: #190f2d; color: #fff; }
   <!-- Pastki Kirish Qismi -->
   <div class="login-container">
     <div class="modes">
-      <div class="mode on" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД">KIRISH</div>
-      <div class="mode" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА">ARIZA TOPSHIRISH</div>
+      <div class="mode on" onclick="setMode(0)" data-uz="KIRISH" data-ru="ВХОД" data-az="GİRİŞ">KIRISH</div>
+      <div class="mode" onclick="setMode(1)" data-uz="ARIZA TOPSHIRISH" data-ru="ЗАЯВКА" data-az="MÜRACİƏT">ARIZA TOPSHIRISH</div>
     </div>
 
     <div class="card" style="margin-bottom: 20px;">
       <div class="pane on" id="pane0">
         <div class="ig">
-          <label data-uz="Telefon raqami (Login)" data-ru="Номер телефона (Логин)">Telefon raqami (Login)</label>
+          <label data-uz="Telefon raqami (Login)" data-ru="Номер телефона (Логин)" data-az="Telefon nömrəsi (Giriş)">Telefon raqami (Login)</label>
           <input type="text" id="loginUser" class="inp" placeholder="998901234567">
         </div>
         <div class="ig">
-          <label data-uz="Parol" data-ru="Пароль">Parol</label>
+          <label data-uz="Parol" data-ru="Пароль" data-az="Şifrə">Parol</label>
           <input type="password" id="loginPass" class="inp" placeholder="••••••••">
         </div>
-        <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ">TIZIMGA KIRISH</button>
+        <button class="btn" onclick="login()" data-uz="TIZIMGA KIRISH" data-ru="ВОЙТИ" data-az="SİSTEMƏ GİRİŞ">TIZIMGA KIRISH</button>
       </div>
 
       <div class="pane" id="pane1">
-        <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя">Ota-onaning ismi</label><input id="appParentName" class="inp" placeholder="Alisher Valiyev"></div>
-        <div class="ig"><label data-uz="Farzand ismi" data-ru="Имя ребенка">Farzand ismi</label><input id="appChildName" class="inp" placeholder="Ali"></div>
-        <div class="ig"><label data-uz="Telefon raqamingiz" data-ru="Ваш номер телефона">Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
-        <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка">Farzandning yoshi</label><input type="number" id="appAge" class="inp" placeholder="10"></div>
+        <div class="ig"><label data-uz="Ota-onaning ismi" data-ru="Имя родителя" data-az="Valideynin adı">Ota-onaning ismi</label><input id="appParentName" class="inp" placeholder="Alisher Valiyev"></div>
+        <div class="ig"><label data-uz="Farzand ismi" data-ru="Имя ребенка" data-az="Uşağın adı">Farzand ismi</label><input id="appChildName" class="inp" placeholder="Ali"></div>
+        <div class="ig"><label data-uz="Telefon raqamingiz" data-ru="Ваш номер телефона" data-az="Telefon nömrəniz">Telefon raqamingiz</label><input type="tel" id="appPhone" class="inp" placeholder="998901234567"></div>
+        <div class="ig"><label data-uz="Farzandning yoshi" data-ru="Возраст ребенка" data-az="Uşağın yaşı">Farzandning yoshi</label><input type="number" id="appAge" class="inp" placeholder="10"></div>
         <div class="ig">
-          <label data-uz="Parol o'ylab toping" data-ru="Придумайте пароль">Parol o'ylab toping</label>
+          <label data-uz="Parol o'ylab toping" data-ru="Придумайте пароль" data-az="Şifrə təyin edin">Parol o'ylab toping</label>
           <input type="text" id="appPass" class="inp" placeholder="Ali077%%">
-          <small class="note" style="color:var(--primary-light)" data-uz="Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!" data-ru="Заглавная буква и символ (% _ . ! @ # $) обязательны!">Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!</small>
+          <small class="note" style="color:var(--primary-light)" data-uz="Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!" data-ru="Заглавная буква и символ (% _ . ! @ # $) обязательны!" data-az="Böyük hərf və simvol (% _ . ! @ # $) olmalıdır!">Katta harf va belgi (% _ . ! @ # $) qatnashishi shart!</small>
         </div>
-        <button class="btn" id="btnApp" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ">ARIZA YUBORISH</button>
+        <button class="btn" id="btnApp" onclick="submitApplication()" data-uz="ARIZA YUBORISH" data-ru="ОТПРАВИТЬ" data-az="MÜRACİƏTİ GÖNDƏR">ARIZA YUBORISH</button>
       </div>
     </div>
   </div>
@@ -247,21 +247,21 @@ select.inp option { background: #190f2d; color: #fff; }
   <div class="card hero-home">
     <img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="Qarabağ FK" class="hero-logo">
     
-    <h1 class="hero-title-qfk" data-uz="QARABAĞ FK" data-ru="КАРАБАХ ФК">QARABAĞ FK</h1>
-    <p class="hero-text" data-uz="🇺🇿 Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish va kuchli jamoa shakllantirish." data-ru="🇺🇿 Дух азербайджанского футбола, символ мужества и победы! Наша цель — выявлять и развивать молодые таланты.">
+    <h1 class="hero-title-qfk" data-uz="QARABAĞ FK" data-ru="КАРАБАХ ФК" data-az="QARABAĞ FK">QARABAĞ FK</h1>
+    <p class="hero-text" data-uz="🇺🇿 Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish va kuchli jamoa shakllantirish." data-ru="🇺🇿 Дух азербайджанского футбола, символ мужества и победы! Наша цель — выявлять и развивать молодые таланты." data-az="🇺🇿 Azərbaycan futbolunun ruhu cəsarət və qələbə rəmzi! Məqsədimiz gənc istedadları üzə çıxarmaq və güclü komanda formalaşdırmaqdır.">
       🇺🇿 Ozarbayjon futbolining ruhi jasorat va g'alaba ramzi! Maqsadimiz yosh iste'dodlarni kashf etish va kuchli jamoa shakllantirish.
     </p>
-    <div class="hero-motto" data-uz="Birlik. Jasorat. G'alaba!" data-ru="Единство. Мужество. Победа!">Birlik. Jasorat. G'alaba!</div>
+    <div class="hero-motto" data-uz="Birlik. Jasorat. G'alaba!" data-ru="Единство. Мужество. Победа!" data-az="Birlik. Cəsarət. Qələbə!">Birlik. Jasorat. G'alaba!</div>
   </div>
 
-  <h3 style="margin: 16px 0 10px; font-size: 13px;" data-uz="Farzandlarim" data-ru="Мои дети">Farzandlarim</h3>
+  <h3 style="margin: 16px 0 10px; font-size: 13px;" data-uz="Farzandlarim" data-ru="Мои дети" data-az="Uşaqlarım">Farzandlarim</h3>
   <div id="homeKidsList"></div>
 </div>
 
 <!-- 3. STATISTIKA -->
 <div class="screen" id="statScreen">
   <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
-  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Statistika" data-ru="Статистика">Statistika</h2>
+  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Statistika" data-ru="Статистика" data-az="Statistika">Statistika</h2>
   <div id="statKidsList"></div>
 </div>
 
@@ -269,7 +269,7 @@ select.inp option { background: #190f2d; color: #fff; }
 <div class="screen" id="pitchScreen">
   <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-    <h2 style="font-size: 16px;" data-uz="Asosiy Tarkib" data-ru="Состав">Asosiy Tarkib</h2>
+    <h2 style="font-size: 16px;" data-uz="Asosiy Tarkib" data-ru="Состав" data-az="Əsas Heyət">Asosiy Tarkib</h2>
     <span class="badge bs">6 O'YINCHI</span>
   </div>
   
@@ -302,9 +302,9 @@ select.inp option { background: #190f2d; color: #fff; }
 <!-- 5. HAMYON -->
 <div class="screen" id="walletScreen">
   <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
-  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Hamyon" data-ru="Кошелек">Hamyon</h2>
+  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Hamyon" data-ru="Кошелек" data-az="Pulqabı">Hamyon</h2>
   <div class="card" style="border: 1px solid var(--primary);">
-    <small style="color:var(--primary-light); font: 700 9px 'Unbounded';" data-uz="OYLIK TO'LOV" data-ru="ОПЛАТА">OYLIK TO'LOV</small>
+    <small style="color:var(--primary-light); font: 700 9px 'Unbounded';" data-uz="OYLIK TO'LOV" data-ru="ОПЛАТА" data-az="AYLIQ ÖDƏNİŞ">OYLIK TO'LOV</small>
     <div style="font-size: 20px; font-weight: 800; font-family: 'Unbounded'; margin: 6px 0;" id="walletMonthlyAmt">350 000 UZS</div>
   </div>
   <div id="walletKidsList"></div>
@@ -313,18 +313,18 @@ select.inp option { background: #190f2d; color: #fff; }
 <!-- 6. TURNIRLAR -->
 <div class="screen" id="tourScreen">
   <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
-  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Turnirlar" data-ru="Турниры">Turnirlar</h2>
+  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</h2>
   <div class="card" style="border-left: 3px solid var(--primary);">
-    <small style="color:var(--primary-light); font: 700 9px 'Unbounded';" data-uz="KEYINGI O'YIN" data-ru="СЛЕДУЮЩИЙ МАТЧ">KEYINGI O'YIN</small>
+    <small style="color:var(--primary-light); font: 700 9px 'Unbounded';" data-uz="KEYINGI O'YIN" data-ru="СЛЕДУЮЩИЙ МАТЧ" data-az="NÖVBƏTİ OYUN">KEYINGI O'YIN</small>
     <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
       <b style="font-size: 14px;">Qarabağ FK</b>
       <span class="badge bw">VS</span>
       <b style="font-size: 14px;" id="tourOpponent">—</b>
     </div>
-    <div style="font-size: 11px; color: var(--text-muted);">⏰ <span data-uz="Vaqti:" data-ru="Время:">Vaqti:</span> <b id="tourMatchTime" style="color:var(--text)">—</b></div>
+    <div style="font-size: 11px; color: var(--text-muted);">⏰ <span data-uz="Vaqti:" data-ru="Время:" data-az="Vaxt:">Vaqti:</span> <b id="tourMatchTime" style="color:var(--text)">—</b></div>
   </div>
   <div class="card">
-    <h3 style="margin-bottom: 6px; font-size: 12px;" data-uz="E'lonlar" data-ru="Объявления">E'lonlar</h3>
+    <h3 style="margin-bottom: 6px; font-size: 12px;" data-uz="E'lonlar" data-ru="Объявления" data-az="Elanlar">E'lonlar</h3>
     <p id="tourAnnText" class="note" style="color:var(--text);"></p>
   </div>
 </div>
@@ -332,14 +332,14 @@ select.inp option { background: #190f2d; color: #fff; }
 <!-- 7. PROFIL -->
 <div class="screen" id="profileScreen">
   <div class="header"><div class="brand-box"><div class="brand-logo"><img src="https://i.postimg.cc/cJzQ9g0G/B38A1A51-A3CD-462B-BD2A-F10192D82AAA.png" alt="QFK"></div><div class="brand">QARABAĞ FK</div></div><div class="top-actions"><button class="lang-btn" onclick="toggleLang()">RU</button></div></div>
-  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Profil" data-ru="Профиль">Profil</h2>
+  <h2 style="font-size: 16px; margin-bottom: 12px;" data-uz="Profil" data-ru="Профиль" data-az="Profil">Profil</h2>
   <div class="card" style="text-align:center;">
     <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--input-bg); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px;">👤</div>
     <h2 id="profParentName" style="font-size: 16px; margin-bottom: 4px;">—</h2>
     <p class="note" id="profParentPhone" style="font-weight: 700; color: var(--primary-light);"></p>
     <p class="note" id="profParentTg" style="margin-top: 4px; font-weight: 700; color: #60a5fa;"></p>
   </div>
-  <button class="btn bd" style="margin-top: 12px;" onclick="logout()" data-uz="CHIQISH" data-ru="ВЫЙТИ">CHIQISH</button>
+  <button class="btn bd" style="margin-top: 12px;" onclick="logout()" data-uz="CHIQISH" data-ru="ВЫЙТИ" data-az="ÇIXIŞ">CHIQISH</button>
 </div>
 
 <!-- 8. ADMIN -->
@@ -400,12 +400,12 @@ select.inp option { background: #190f2d; color: #fff; }
 
 <!-- PASTKI MENYU -->
 <nav class="bn" id="bottomNav" hidden>
-  <button class="bn-i on" data-target="homeScreen" onclick="navTo('homeScreen')"><span class="ic">🏠</span><span data-uz="Asosiy" data-ru="Главная">Asosiy</span></button>
-  <button class="bn-i" data-target="tourScreen" onclick="navTo('tourScreen')"><span class="ic">🏆</span><span data-uz="Turnirlar" data-ru="Турниры">Turnirlar</span></button>
-  <button class="bn-i" data-target="statScreen" onclick="navTo('statScreen')"><span class="ic">📊</span><span data-uz="Statistika" data-ru="Статы">Statistika</span></button>
-  <button class="bn-i" data-target="pitchScreen" onclick="navTo('pitchScreen')"><span class="ic">⚽</span><span data-uz="Maydon" data-ru="Поле">Maydon</span></button>
-  <button class="bn-i" data-target="walletScreen" onclick="navTo('walletScreen')"><span class="ic">💳</span><span data-uz="Hamyon" data-ru="Кошелек">Hamyon</span></button>
-  <button class="bn-i" data-target="profileScreen" onclick="navTo('profileScreen')"><span class="ic">👤</span><span data-uz="Profil" data-ru="Профиль">Profil</span></button>
+  <button class="bn-i on" data-target="homeScreen" onclick="navTo('homeScreen')"><span class="ic">🏠</span><span data-uz="Asosiy" data-ru="Главная" data-az="Əsas">Asosiy</span></button>
+  <button class="bn-i" data-target="tourScreen" onclick="navTo('tourScreen')"><span class="ic">🏆</span><span data-uz="Turnirlar" data-ru="Турниры" data-az="Turnirlər">Turnirlar</span></button>
+  <button class="bn-i" data-target="statScreen" onclick="navTo('statScreen')"><span class="ic">📊</span><span data-uz="Statistika" data-ru="Статы" data-az="Statistika">Statistika</span></button>
+  <button class="bn-i" data-target="pitchScreen" onclick="navTo('pitchScreen')"><span class="ic">⚽</span><span data-uz="Maydon" data-ru="Поле" data-az="Meydan">Maydon</span></button>
+  <button class="bn-i" data-target="walletScreen" onclick="navTo('walletScreen')"><span class="ic">💳</span><span data-uz="Hamyon" data-ru="Кошелек" data-az="Pulqabı">Hamyon</span></button>
+  <button class="bn-i" data-target="profileScreen" onclick="navTo('profileScreen')"><span class="ic">👤</span><span data-uz="Profil" data-ru="Профиль" data-az="Profil">Profil</span></button>
 </nav>
 
 <!-- MODALLAR -->
@@ -413,9 +413,9 @@ select.inp option { background: #190f2d; color: #fff; }
 
 <div class="modal" id="payModal">
   <div style="text-align:center;">
-    <h3 style="font-size: 14px; margin-bottom: 4px;" data-uz="TO'LOV QILISH" data-ru="ОПЛАТА">TO'LOV QILISH</h3>
+    <h3 style="font-size: 14px; margin-bottom: 4px;" data-uz="TO'LOV QILISH" data-ru="ОПЛАТА" data-az="ÖDƏNİŞ">TO'LOV QILISH</h3>
     <div style="background: rgba(255,77,109,0.1); border:1px solid var(--coral); color:var(--coral); padding:6px; border-radius:8px; font-size:10px; font-weight:700; margin:10px 0;">
-      <span data-uz="Summani aynan o'zgartirmasdan to'lang!" data-ru="Оплатите точную сумму!">Summani aynan o'zgartirmasdan to'lang!</span>
+      <span data-uz="Summani aynan o'zgartirmasdan to'lang!" data-ru="Оплатите точную сумму!" data-az="Məbləği dəqiq ödəyin!">Summani aynan o'zgartirmasdan to'lang!</span>
     </div>
     <div class="card" style="text-align:left; margin: 10px 0; padding:12px; border-color:var(--primary);">
       <small style="color:var(--text-muted); font: 700 8px 'Unbounded';">TO'LOV SUMMASI</small>
@@ -489,7 +489,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const DICT = {
     uz: { appSuccess: "Arizangiz qabul qilindi!", emptyFields: "Hamma maydonlarni to'ldiring!", passError: "Parol Katta harf va maxsus belgi (% _ . ! @ # $) bilan boshlanishi shart!", userNotFound: "Bunday telefon raqamli ota-ona topilmadi!", passWrong: "Parol noto'g'ri!", paid: "To'langan ✅", pending: "Kutilmoqda ⏳", unpaid: "To'lanmagan ❌", copied: "Nusxa olindi: " },
-    ru: { appSuccess: "Заявка принята!", emptyFields: "Заполните все поля!", passError: "Пароль должен начинаться с заглавной буквы и содержать спецсимвол (% _ . ! @ # $)!", userNotFound: "Родитель не найден!", passWrong: "Неверный пароль!", paid: "Оплачено ✅", pending: "В ожидании ⏳", unpaid: "Не оплачено ❌", copied: "Скопировано: " }
+    ru: { appSuccess: "Заявка принята!", emptyFields: "Заполните все поля!", passError: "Пароль должен начинаться с заглавной буквы и содержать спецсимвол (% _ . ! @ # $)!", userNotFound: "Родитель не найден!", passWrong: "Неверный пароль!", paid: "Оплачено ✅", pending: "В ожидании ⏳", unpaid: "Не оплачено ❌", copied: "Скопировано: " },
+    az: { appSuccess: "Müraciətiniz qəbul olundu!", emptyFields: "Bütün sahələri doldurun!", passError: "Şifrə Böyük hərflə başlamalı və xüsusi simvol (% _ . ! @ # $) içərməlidir!", userNotFound: "Valideyn tapılmadı!", passWrong: "Şifrə yanlışdır!", paid: "Ödənilib ✅", pending: "Gözlənilir ⏳", unpaid: "Ödənilməyib ❌", copied: "Kopyalandı: " }
   };
 
   const $ = id => document.getElementById(id);
@@ -498,8 +499,11 @@ document.addEventListener("DOMContentLoaded", function() {
   const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
   window.toggleLang = function() {
-    currentLang = currentLang === 'uz' ? 'ru' : 'uz';
-    document.querySelectorAll('.lang-btn').forEach(b => b.innerText = currentLang === 'uz' ? 'RU' : 'UZ');
+    if (currentLang === 'uz') currentLang = 'ru';
+    else if (currentLang === 'ru') currentLang = 'az';
+    else currentLang = 'uz';
+
+    document.querySelectorAll('.lang-btn').forEach(b => b.innerText = currentLang.toUpperCase());
     document.querySelectorAll('[data-' + currentLang + ']').forEach(el => { el.innerText = el.getAttribute('data-' + currentLang); });
     if (currentUser) { renderHomeKids(); renderStatKids(); renderWalletKids(); }
   };
@@ -546,7 +550,7 @@ document.addEventListener("DOMContentLoaded", function() {
       $('appParentName').value = ''; $('appChildName').value = ''; $('appPhone').value = ''; $('appAge').value = ''; $('appPass').value = '';
       setMode(0);
     } catch (e) { alert("Xato: " + e.message); } 
-    finally { btn.disabled = false; btn.innerText = currentLang === 'uz' ? "ARIZA YUBORISH" : "ОТПРАВИТЬ"; }
+    finally { btn.disabled = false; btn.innerText = currentLang === 'uz' ? "ARIZA YUBORISH" : (currentLang === 'ru' ? "ОТПРАВИТЬ" : "MÜRACİƏTİ GÖNDƏR"); }
   };
 
   window.login = async function() {
@@ -628,17 +632,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function renderHomeKids() {
     const kids = getMyChildren(), box = $('homeKidsList');
-    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
+    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">${currentLang === 'uz' ? "Farzand biriktirilmagan." : (currentLang === 'ru' ? "Ребенок не привязан." : "Uşaq əlavə edilməyib.")}</p></div>`;
     box.innerHTML = kids.map(k => {
       const isPaid = k.paid === true || k.paid === 'paid', badgeCls = isPaid ? 'bs' : (k.paid === 'pending' ? 'bw' : 'bx'), badgeTxt = isPaid ? DICT[currentLang].paid : (k.paid === 'pending' ? DICT[currentLang].pending : DICT[currentLang].unpaid);
       const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=190f2d&color=C084FC&size=120`;
-      return `<div class="card"><div style="display:flex; align-items:center; gap: 12px;"><img src="${esc(photo)}" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--primary);"><div style="flex:1;"><div style="display:flex; align-items:center; gap:6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 14px;">${esc(k.name)}</b></div><small class="note">Guruh: ${esc(k.group || 'Asosiy')}</small><div style="margin-top: 4px;"><span class="badge ${badgeCls}">${badgeTxt}</span></div></div></div></div>`;
+      return `<div class="card"><div style="display:flex; align-items:center; gap: 12px;"><img src="${esc(photo)}" style="width: 48px; height: 48px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--primary);"><div style="flex:1;"><div style="display:flex; align-items:center; gap:6px;"><span class="jersey-badge">#${k.number || '-'}</span><b style="font-size: 14px;">${esc(k.name)}</b></div><small class="note">${currentLang === 'uz' ? 'Guruh' : (currentLang === 'ru' ? 'Группа' : 'Qrup')}: ${esc(k.group || 'Asosiy')}</small><div style="margin-top: 4px;"><span class="badge ${badgeCls}">${badgeTxt}</span></div></div></div></div>`;
     }).join('');
   }
 
   function renderStatKids() {
     const kids = getMyChildren(), box = $('statKidsList');
-    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand biriktirilmagan.</p></div>`;
+    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">${currentLang === 'uz' ? "Farzand biriktirilmagan." : (currentLang === 'ru' ? "Ребенок не привязан." : "Uşaq əlavə edilməyib.")}</p></div>`;
     const rBar = (lbl, val, max, suf) => { const pc = Math.min(100, Math.max(0, (+val || 0) / max * 100)); return `<div class="sb"><div class="sbh"><span>${lbl}</span><span>${+val || 0}${suf}</span></div><div class="sbg"><div class="sf ${pc < 50 ? 'fr' : 'fg'}" style="width: ${pc}%"></div></div></div>`; };
     box.innerHTML = kids.map(k => {
       const photo = k.photoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(k.name)}&background=190f2d&color=C084FC&size=120`;
@@ -648,7 +652,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function renderWalletKids() {
     const kids = getMyChildren(), box = $('walletKidsList');
-    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">Farzand topilmadi.</p></div>`;
+    if (!kids.length) return box.innerHTML = `<div class="card"><p class="note" style="text-align:center;">${currentLang === 'uz' ? "Farzand topilmadi." : (currentLang === 'ru' ? "Ребенок не найден." : "Uşaq tapılmadı.")}</p></div>`;
     box.innerHTML = kids.map(k => {
       const isPaid = k.paid === true || k.paid === 'paid', badgeCls = isPaid ? 'bs' : (k.paid === 'pending' ? 'bw' : 'bx'), badgeTxt = isPaid ? DICT[currentLang].paid : (k.paid === 'pending' ? DICT[currentLang].pending : DICT[currentLang].unpaid);
       return `<div class="card"><div style="display:flex; justify-content:space-between; align-items:center;"><div><b style="font-size: 13px;">${esc(k.name)}</b><p class="note">Oylik: ${esc(SETTINGS.amount || '350 000')} UZS</p></div><span class="badge ${badgeCls}">${badgeTxt}</span></div><div style="margin-top: 10px;">${!isPaid ? `<button class="btn sm" onclick="initiateKidPay('${k.id}')">💳 To'lov Qilish</button>` : `<div class="note" style="color:var(--ok);">To'lov qabul qilingan</div>`}</div></div>`;
